@@ -1,0 +1,27 @@
+.p-datatable-header{
+    border:none;
+ }
+ 
+ .ant-tabs-nav-wrap{
+    height:57px !important;
+ }
+ 
+ .pi-search{
+    display: none !important;
+ }
+ 
+ .custom-input::placeholder {
+    color: #888; 
+    font-size: 5px !important; 
+  }
+
+  .ant-tabs-content-holder{
+    width: 1240px !important;
+    height:522px !important;
+    padding: 0 5px 10px 10px;
+    background-color: white;
+  }
+
+  .ant-tabs-nav-more{
+   display: none !important;
+  }
