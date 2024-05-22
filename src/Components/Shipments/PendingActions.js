@@ -23,13 +23,13 @@ import "./Booking.css";
 // import search from "../../../assets/Searchicon.png";
 import { Tabs, Row, Col, Input, Select, Table, Image } from "antd";
 import { SearchOutlined, CaretDownFilled } from "@ant-design/icons";
-import FilterDrawer from "./Filter";
+import FilterDrawer from "./ShipmentTable/Filter";
 import filter from "../../../assets/Filter 2.png";
 import calendar from "../../../assets/calendar.png";
 import { Dropdown, Space, Menu } from "antd";
 
 
-const AllBookings = ({ filterData }) => {
+const PendingActio = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5; // Number of items per page
   const [selectedButton, setSelectedButton] = useState(null);
@@ -39,7 +39,7 @@ const AllBookings = ({ filterData }) => {
 
   const bookingData = ShipmentData?.booking;
   const data = bookingData?.data;
-  console.log(data);
+  const PendingData = data.filter((item) => item.status === "Pending");
 
   const payload = {
     filter_month: "",
@@ -168,7 +168,7 @@ const AllBookings = ({ filterData }) => {
 
   const onSort = (field, order) => {
     console.log("sorting field", field);
-    let sortedData = [...data];
+    let sortedData = [...PendingData];
 
     sortedData.sort((a, b) => {
       return order === 1
@@ -180,7 +180,7 @@ const AllBookings = ({ filterData }) => {
         : -1;
     });
 
-    filterData(sortedData);
+    PendingData(sortedData);
   };
 
   // Function to parse dates in the "dd/mm/yyyy" format
@@ -236,7 +236,7 @@ const AllBookings = ({ filterData }) => {
       <Row
       justify="space-between"
       className="w-full"
-      style={{ padding: "10px 20px" ,backgroundColor:"white"}}
+      style={{ padding: "10px 20px" ,color:"white"}}
     >
       <Col>
         <Input
@@ -323,27 +323,6 @@ const AllBookings = ({ filterData }) => {
         <FilterDrawer visible={visible} onClose={onClose} />
       </Col>
     </Row>
-      // <div
-      //   className="d-flex justify-content-between pb-4"
-      //   style={{ background: "white" }}
-      // >
-      //   <IconField iconPosition="left">
-      //     <InputIcon className="pi pi-search" />
-      //     <InputText
-      //       value={globalFilterValue}
-      //       onChange={onGlobalFilterChange}
-      //       // prefix={search}
-      //       placeholder="Search booking id, origin, destination..."
-      //       style={{
-      //         width: "349px",
-      //         height: "36px",
-      //         borderRadius: "6px",
-      //         border: "1px solid #E7EAF0",
-      //         padding: "9px 11px 9px 11px",
-      //       }}
-      //     />
-      //   </IconField>
-      // </div>
     );
   };
   const onGlobalFilterChange = (e) => {
@@ -360,11 +339,14 @@ const AllBookings = ({ filterData }) => {
   return (
     <div
       style={{
+        width: "100%",
+        borderRadius: "8px",
+        padding: "20px",
         backgroundColor: "white",
       }}
     >
        <DataTable
-          value={data}
+          value={PendingData}
           dataKey="shipmentId"
           paginator={false}
           rows={10}
@@ -497,20 +479,4 @@ const AllBookings = ({ filterData }) => {
   );
 };
 
-export default AllBookings;
-{
-  /* <i className="pi pi-search" />
-          <InputText
-            value={globalFilterValue}
-            onChange={onGlobalFilterChange}
-            prefix={search}
-            placeholder="Search booking id, origin, destination..."
-            style={{
-              width: "349px",
-              height: "36px",
-              borderRadius: "6px",
-              border: "1px solid #E7EAF0",
-              padding: "9px 11px 9px 11px",
-            }}
-          /> */
-}
+export default PendingActio;
