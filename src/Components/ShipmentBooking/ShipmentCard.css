@@ -1,0 +1,73 @@
+
+
+.card1 {
+   
+    border: none;
+    border-radius: 8px;
+    overflow: hidden;
+    
+  }
+ 
+  .column {
+    border: none;
+    padding: 20px;
+    border-radius: 10px; 
+    display: flex;
+    padding: 50px 0;
+    
+  }
+  .column:hover, .column:focus-within{
+    box-shadow: 0 0 10px rgb(249, 53, 53) ;
+    border: 1px solid rgb(212, 10, 10);
+}
+  .icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .divider {
+    height: 60%;
+    width: 1px;
+    background-color: rgba(0,0,0,0.05); 
+    
+  }
+  .input-field::placeholder {
+    color:#ACB8C4; 
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 26px;
+  }
+  
+  .shipment-card {
+    position: relative;
+  }
+  
+  .origin-port{
+    left: 30%;
+  }
+  .dest-port{
+    left:50%;
+  }
+  .cargo-port{
+    left:70%;
+  }
+    
+  .searchIcon{
+     background: rgba(240, 30, 30, 1);
+     color: white;
+     font-size:60px;
+  }
+  
+ 
+  .origin-port {
+    left: 50%; 
+  }
+
+  .dest-port {
+    left: 50%; 
+  }
+
+  .cargo-port {
+    left: 50%; 
+  }
+
