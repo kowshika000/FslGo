@@ -20,7 +20,6 @@ import { InputText } from "primereact/inputtext";
 import { IconField } from "primereact/iconfield";
 import { InputIcon } from "primereact/inputicon";
 import "./Booking.css";
-// import search from "../../../assets/Searchicon.png";
 import { Tabs, Row, Col, Input, Select, Table, Image } from "antd";
 import { SearchOutlined, CaretDownFilled } from "@ant-design/icons";
 import FilterDrawer from "./Filter";
@@ -28,18 +27,17 @@ import filter from "../../../assets/Filter 2.png";
 import calendar from "../../../assets/calendar.png";
 import { Dropdown, Space, Menu } from "antd";
 
-
-const PendingActio = () => {
+const DeliveredTab = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5; // Number of items per page
   const [selectedButton, setSelectedButton] = useState(null);
   const dispatch = useDispatch();
   const ShipmentData = useSelector((state) => state.Booking);
-  console.log("shipmentData-All booking",ShipmentData);
 
   const bookingData = ShipmentData?.booking;
   const data = bookingData?.data;
-  const PendingData = data.filter((item) => item.status === "Pending");
+  const DeliveredData = data.filter((item) => item.status === "Delivered");
+  console.log(DeliveredData)
 
   const payload = {
     filter_month: "",
@@ -168,7 +166,7 @@ const PendingActio = () => {
 
   const onSort = (field, order) => {
     console.log("sorting field", field);
-    let sortedData = [...PendingData];
+    let sortedData = [...DeliveredData];
 
     sortedData.sort((a, b) => {
       return order === 1
@@ -180,7 +178,7 @@ const PendingActio = () => {
         : -1;
     });
 
-    PendingData(sortedData);
+    DeliveredData(sortedData);
   };
 
   // Function to parse dates in the "dd/mm/yyyy" format
@@ -234,95 +232,98 @@ const PendingActio = () => {
   const renderHeader = () => {
     return (
       <Row
-      justify="space-between"
-      className="w-full"
-      style={{ padding: "10px 20px" ,color:"white"}}
-    >
-      <Col>
-        <Input
-          placeholder="Search booking id , origin, destination... "
-          prefix={<SearchOutlined style={{ color: "#94A2B2" }} />}
-          style={{
-            width: "368.13px",
-            padding: "4px 11px",
-            borderRadius: "4px",
-          }}
-          onChange={handleSearch}
-        />
-      </Col>
-      <Col className="d-flex ">
-        <div
-          style={{ border: "1px solid #E7EAF0", borderRadius: "8px" }}
-          className="px-1 d-flex me-2"
-        >
-          <Image
-            src={calendar}
-            width="16px"
-            height="12px"
-            className="mt-2 pe-1"
-          />
-
-          <div
+        justify="space-between"
+        className="w-full"
+        style={{ padding: "10px 20px", color: "white" }}
+      >
+        <Col>
+          <Input
+            placeholder="Search booking id , origin, destination... "
+            prefix={<SearchOutlined style={{ color: "#94A2B2" }} />}
             style={{
-              alignContent: "center",
-              border: "none ",
-              outline: "none ",
+              width: "368.13px",
+              padding: "4px 11px",
+              borderRadius: "4px",
             }}
+            onChange={handleSearch}
+          />
+        </Col>
+        <Col className="d-flex ">
+          <div
+            style={{ border: "1px solid #E7EAF0", borderRadius: "8px" }}
+            className="px-1 d-flex me-2"
           >
-            <Dropdown
-              overlayStyle={{ minWidth: '200px' }} // Adjust the width as needed
-              overlay={
-                <Menu>
-                  {items.map(item => (
-                    <Menu.Item key={item.key} onClick={() => onClick(item)}>
-                      {item.label}
-                    </Menu.Item>
-                  ))}
-                </Menu>
-              }
-              trigger={['click']}
-            >
-              <a
-                onClick={(e) => e.preventDefault()}
-                style={{ color: "rgba(73, 90, 110, 1)" }}
-              >
-                <Space>
-                  <span
-                    style={{
-                      maxWidth: "160px",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {selectedDropdownItem
-                      ? selectedDropdownItem.label
-                      : "Past 30 days"}
-                  </span>
-                  <CaretDownFilled style={{ marginLeft: "4px" }} />
-                </Space>
-              </a>
-            </Dropdown>
-          </div>
-        </div>
-        <div className="filter d-flex py-1 px-2" style={{border:'1px solid rgb(231,234,240', borderRadius:'8px'}}>
-          <div className="ant-image cursor-pointer" onClick={showDrawer}>
-            <img
-              src={filter}
-              className="ant-image-img me-1 my-1"
-              style={{
-                verticalAlign: "center",
-                marginTop: "2px",
-                cursor: "pointer",
-              }}
+            <Image
+              src={calendar}
+              width="16px"
+              height="12px"
+              className="mt-2 pe-1"
             />
-          </div>
-          <span className="align-items-center text-dark">Filters</span>
-        </div>
 
-        <FilterDrawer visible={visible} onClose={onClose} />
-      </Col>
-    </Row>
+            <div
+              style={{
+                alignContent: "center",
+                border: "none ",
+                outline: "none ",
+              }}
+            >
+              <Dropdown
+                overlayStyle={{ minWidth: "200px" }} // Adjust the width as needed
+                overlay={
+                  <Menu>
+                    {items.map((item) => (
+                      <Menu.Item key={item.key} onClick={() => onClick(item)}>
+                        {item.label}
+                      </Menu.Item>
+                    ))}
+                  </Menu>
+                }
+                trigger={["click"]}
+              >
+                <a
+                  onClick={(e) => e.preventDefault()}
+                  style={{ color: "rgba(73, 90, 110, 1)" }}
+                >
+                  <Space>
+                    <span
+                      style={{
+                        maxWidth: "160px",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {selectedDropdownItem
+                        ? selectedDropdownItem.label
+                        : "Past 30 days"}
+                    </span>
+                    <CaretDownFilled style={{ marginLeft: "4px" }} />
+                  </Space>
+                </a>
+              </Dropdown>
+            </div>
+          </div>
+          <div
+            className="filter d-flex py-1 px-2"
+            style={{ border: "1px solid rgb(231,234,240", borderRadius: "8px" }}
+          >
+            <div className="ant-image cursor-pointer" onClick={showDrawer}>
+              <img
+                src={filter}
+                className="ant-image-img me-1 my-1"
+                style={{
+                  verticalAlign: "center",
+                  marginTop: "2px",
+                  cursor: "pointer",
+                }}
+              />
+            </div>
+            <span className="align-items-center text-dark">Filters</span>
+          </div>
+
+          <FilterDrawer visible={visible} onClose={onClose} />
+        </Col>
+      </Row>
     );
   };
   const onGlobalFilterChange = (e) => {
@@ -345,131 +346,131 @@ const PendingActio = () => {
         backgroundColor: "white",
       }}
     >
-       <DataTable
-          value={PendingData}
-          dataKey="shipmentId"
-          paginator={false}
-          rows={10}
-          rowsPerPageOptions={[5, 10, 25]}
-          currentPageReportTemplate="{first} to {last} out of {totalRecords} "
-          // paginatorTemplate=" PrevPageLink PageLinks NextPageLink  CurrentPageReport "
-          removableSort
-          header={header}
-          globalFilterFields={[
-            "id",
-            "origin",
-            "destination",
-            "booked_on",
-            "etd/atd",
-            "eta/ata",
-            "status",
-          ]}
-          rowClassName={rowClassName}
-        >
-          <Column
-            field="id"
-            header={
-              <span
-                onClick={() => onSort("id", sortOrder === 1 ? -1 : 1)}
-                style={{ fontFamily: "Roboto", cursor: "pointer" }}
-                className="px-4"
-              >
-                Shipment ID
-                <img src={sort} alt="Sort Icon" className="ps-1" />
-              </span>
-            }
-            body={shipmentTemplate}
-          ></Column>
+      <DataTable
+        value={DeliveredData}
+        dataKey="shipmentId"
+        paginator={false}
+        rows={10}
+        rowsPerPageOptions={[5, 10, 25]}
+        currentPageReportTemplate="{first} to {last} out of {totalRecords} "
+        // paginatorTemplate=" PrevPageLink PageLinks NextPageLink  CurrentPageReport "
+        removableSort
+        header={header}
+        globalFilterFields={[
+          "id",
+          "origin",
+          "destination",
+          "booked_on",
+          "etd/atd",
+          "eta/ata",
+          "status",
+        ]}
+        rowClassName={rowClassName}
+      >
+        <Column
+          field="id"
+          header={
+            <span
+              onClick={() => onSort("id", sortOrder === 1 ? -1 : 1)}
+              style={{ fontFamily: "Roboto", cursor: "pointer" }}
+              className="px-4"
+            >
+              Shipment ID
+              <img src={sort} alt="Sort Icon" className="ps-1" />
+            </span>
+          }
+          body={shipmentTemplate}
+        ></Column>
 
-          <Column
-            field="origin"
-            header={
-              <span
-                onClick={() => onSort("origin", sortOrder === 1 ? -1 : 1)}
-                style={{ fontFamily: "Roboto", cursor: "pointer" }}
-              >
-                Origin
-                <img src={sort} alt="Sort Icon" className="ps-1" />
-              </span>
-            }
-            body={originBodyTemplate}
-            headerClassName="custom-header p-3"
-            className="p-3"
-            style={{ width: "200px" }}
-          ></Column>
-          <Column
-            field="destination"
-            header={
-              <span
-                className="p-3"
-                onClick={() => onSort("destination", sortOrder === 1 ? -1 : 1)}
-                style={{ fontFamily: "Roboto", cursor: "pointer" }}
-              >
-                Destination
-                <img src={sort} alt="Sort Icon" className="ps-1" />
-              </span>
-            }
-            body={destinationBodyTemplate}
-            className="p-3"
-            style={{ width: "200px" }}
-          ></Column>
-          <Column
-            field="booked_on"
-            header={
-              <span className="p-3">
-                Booked on
-                <img src={sort} alt="Sort Icon" className="ps-1" />
-              </span>
-            }
-            bodyClassName="custom-cell"
-            className="p-3"
-          ></Column>
-          <Column
-            field="etd/atd"
-            header={
-              <span className="p-3">
-                ETD/ATD
-                <img src={sort} alt="Sort Icon" className="ps-1" />
-              </span>
-            }
-            bodyClassName="custom-cell"
-            className="p-3"
-          ></Column>
-          <Column
-            field="eta/ata"
-            header={
-              <span className="p-3">
-                ETA/ATA
-                <img src={sort} alt="Sort Icon" className="ps-1" />
-              </span>
-            }
-            bodyClassName="custom-cell"
-            className="p-3"
-          ></Column>
-          <Column
-            field="status"
-            header={<span className="p-3">Status</span>}
-            bodyClassName={(rowData) =>
-              rowData.status === "Booking In Progress"
-                ? "booking-progress-cell"
-                : "booked-cell "
-            }
-            className=" m-3 px-2"
-          ></Column>
-          <Column
-            field="action"
-            body={actionBodyTemplate}
-            header={<span className="p-3">Action</span>}
-            className="p-3"
-          ></Column>
-        </DataTable>
+        <Column
+          field="origin"
+          header={
+            <span
+              onClick={() => onSort("origin", sortOrder === 1 ? -1 : 1)}
+              style={{ fontFamily: "Roboto", cursor: "pointer" }}
+            >
+              Origin
+              <img src={sort} alt="Sort Icon" className="ps-1" />
+            </span>
+          }
+          body={originBodyTemplate}
+          headerClassName="custom-header p-3"
+          className="p-3"
+          style={{ width: "200px" }}
+        ></Column>
+        <Column
+          field="destination"
+          header={
+            <span
+              className="p-3"
+              onClick={() => onSort("destination", sortOrder === 1 ? -1 : 1)}
+              style={{ fontFamily: "Roboto", cursor: "pointer" }}
+            >
+              Destination
+              <img src={sort} alt="Sort Icon" className="ps-1" />
+            </span>
+          }
+          body={destinationBodyTemplate}
+          className="p-3"
+          style={{ width: "200px" }}
+        ></Column>
+        <Column
+          field="booked_on"
+          header={
+            <span className="p-3">
+              Booked on
+              <img src={sort} alt="Sort Icon" className="ps-1" />
+            </span>
+          }
+          bodyClassName="custom-cell"
+          className="p-3"
+        ></Column>
+        <Column
+          field="etd/atd"
+          header={
+            <span className="p-3">
+              ETD/ATD
+              <img src={sort} alt="Sort Icon" className="ps-1" />
+            </span>
+          }
+          bodyClassName="custom-cell"
+          className="p-3"
+        ></Column>
+        <Column
+          field="eta/ata"
+          header={
+            <span className="p-3">
+              ETA/ATA
+              <img src={sort} alt="Sort Icon" className="ps-1" />
+            </span>
+          }
+          bodyClassName="custom-cell"
+          className="p-3"
+        ></Column>
+        <Column
+          field="status"
+          header={<span className="p-3">Status</span>}
+          bodyClassName={(rowData) =>
+            rowData.status === "Booking In Progress"
+              ? "booking-progress-cell"
+              : "booked-cell "
+          }
+          className=" m-3 px-2"
+        ></Column>
+        <Column
+          field="action"
+          body={actionBodyTemplate}
+          header={<span className="p-3">Action</span>}
+          className="p-3"
+        ></Column>
+      </DataTable>
 
-        <Pagination
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          totalItems={bookingData?.lastPage}
-          itemsPerPage={bookingData?.perPage}
-        />
+      <Pagination
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        totalItems={bookingData?.lastPage}
+        itemsPerPage={bookingData?.perPage}
+      />
       <Steppertrack
         isModalOpen={isModalOpen}
         handleCancel={handleCancel}
@@ -479,4 +480,4 @@ const PendingActio = () => {
   );
 };
 
-export default PendingActio;
+export default DeliveredTab;
