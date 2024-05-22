@@ -8,10 +8,25 @@ import Union from "../../../../assets/Union.png";
 import menu from "../../../../assets/menustepper.png";
 
 function Steppertrack({ isModalOpen, handleCancel, rowData }) {
-  console.log(rowData?.status);
+  console.log("dfghj", rowData);
   const mileStoneData = useSelector((state) => state.Booking);
   const bookingData = mileStoneData?.booking;
   const data = bookingData?.data;
+  const handleStatusLabel = () => {
+    if (rowData?.status === "Arrived") {
+      return <button className="Booked me-3">Arrived</button>;
+    } else if (rowData?.status === "Delivered") {
+      return <button className="Booked me-3">Delivered</button>;
+    } else if (rowData?.status === "Departed") {
+      return <button className="Booked me-3">Departed</button>;
+    } else if (rowData?.status === "Received") {
+      return <button className="Booked me-3">Received</button>;
+    } else if (rowData?.status === "Booked") {
+      return <button className="Booked me-3">Booked</button>;
+    } else if (rowData?.status === "Booking In Progress") {
+      return <button className="cancel me-3">Booking In Progress</button>;
+    }
+  };
   return (
     <Modal open={isModalOpen} onCancel={handleCancel} width="80%">
       <div className="tracker">
@@ -20,83 +35,82 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
           style={{ height: "199px", padding: "20px" }}
         >
           <div className="d-flex justify-content-between">
-            <div className="d-flex">
-              <div>
-                <CountryFlag
-                  countryCode="AE"
-                  style={{ width: "18.67px", height: "14px" }}
-                />
-              </div>
-              <p
-                className="ms-2"
-                style={{
-                  fontWeight: "500",
-                  fontSize: "16px",
-                  lineHeight: "26px",
-                  letterSpacing: "1%",
-                  textAlign: "center",
-                }}
-              >
-                Jebel Ali(AEJEA)
-              </p>
-              <img
-                src={arrow1}
-                className="mx-2"
-                style={{ width: "11px", height: "6px", marginTop: "10px" }}
-              />
-              <div
-                className="px-1"
-                style={{
-                  width: "18.67px",
-                  height: "14px",
-                  paddingRight: "5px",
-                }}
-              >
-                <CountryFlag countryCode="IN" />
-              </div>
-              <p
-                className="ms-2"
-                style={{
-                  fontWeight: "500",
-                  fontSize: "16px",
-                  lineHeight: "26px",
-                  letterSpacing: "1%",
-                }}
-              >
-                Nhava Sheva(INNSA)
-              </p>
-              <p className="mx-3">|</p>
-
-              <p style={{ fontSize: "15px" }}>
-                <img src={Union} className="pe-2" />
-                <span
-                  style={{
-                    fontweight: "100",
-                    fontSize: "15px",
-                    lineHeight: "25px",
-                    letterSpacing: "1%",
-                  }}
-                >
-                  Est.T/T
-                </span>{" "}
-                <span
+            {rowData && (
+              <div className="d-flex">
+                <div>
+                  <CountryFlag
+                    countryCode={rowData?.origin_countrycode}
+                    style={{ width: "18.67px", height: "14px" }}
+                  />
+                </div>
+                <div
+                  className="ms-2"
                   style={{
                     fontWeight: "500",
-                    fontSize: "15px",
-                    lineHeight: "22px",
+                    fontSize: "16px",
+                    lineHeight: "26px",
+                    letterSpacing: "1%",
+                    textAlign: "center",
+                  }}
+                >
+                  {rowData?.origin}
+                </div>
+                <img
+                  src={arrow1}
+                  className="mx-2"
+                  style={{ width: "11px", height: "6px", marginTop: "10px" }}
+                />
+                <div
+                  className="px-1"
+                  style={{
+                    width: "18.67px",
+                    height: "14px",
+                    paddingRight: "5px",
+                  }}
+                >
+                  <CountryFlag countryCode={rowData?.destination_countrycode} />
+                </div>
+                <div
+                  className="ms-2"
+                  style={{
+                    fontWeight: "500",
+                    fontSize: "16px",
+                    lineHeight: "26px",
                     letterSpacing: "1%",
                   }}
                 >
-                  9 days(5 Days Port to Port)
-                </span>
-              </p>
-            </div>
+                  {rowData?.destination}
+                </div>
+                <p className="mx-3">|</p>
+
+                <p style={{ fontSize: "15px" }}>
+                  <img src={Union} className="pe-2" />
+                  <span
+                    style={{
+                      fontweight: "100",
+                      fontSize: "15px",
+                      lineHeight: "25px",
+                      letterSpacing: "1%",
+                    }}
+                  >
+                    Est.T/T
+                  </span>{" "}
+                  <span
+                    style={{
+                      fontWeight: "500",
+                      fontSize: "15px",
+                      lineHeight: "22px",
+                      letterSpacing: "1%",
+                    }}
+                  >
+                    9 days(5 Days Port to Port)
+                  </span>
+                </p>
+              </div>
+            )}
             <div>
-            {rowData?.status === "In Transit" ? (
-                <button className="Booked me-3">Booked</button>
-              ) : (
-                <button className="cancel me-3">Cancellation Requested</button>
-              )}
+             
+              {handleStatusLabel()}
               <span
                 style={{
                   backgroundColor: "#F2F4F8",
@@ -118,8 +132,8 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
               padding: "20px 0px 20px 0px",
               backgroundColor: "#F3F5F7",
               borderRadius: "8px",
-              overflowX:"auto",
-              overflowY:"hidden",
+              overflowX: "auto",
+              overflowY: "hidden",
             }}
           >
             <Stepper data={rowData} />

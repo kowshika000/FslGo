@@ -13,6 +13,9 @@ import { bookingRequest } from "../../../Redux/Actions/BookingAction";
 import { Tooltip } from "antd";
 import CountryFlag from "../../Core-Components/CountryFlag";
 import Steppertrack from "./Track/StepperTrack";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { IconButton } from "@mui/material";
 
 const ShipmentHistory = ({ selectedStatus }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -36,12 +39,12 @@ const ShipmentHistory = ({ selectedStatus }) => {
     mode: "",
     etd: "",
     eta: "",
-     filter_days: "7",
-     filter_month: ""
-  }
-  
+    filter_days: "7",
+    filter_month: "",
+  };
+
   useEffect(() => {
-    console.log(payload)
+    console.log(payload);
     dispatch(bookingRequest({ payload }));
   }, []);
 
@@ -52,14 +55,15 @@ const ShipmentHistory = ({ selectedStatus }) => {
   };
   console.log(selectedStatus);
   const [filteredData, setFilteredData] = useState([]);
-
+  const [sortField, setSortField] = useState(null);
+  const [sortOrder, setSortOrder] = useState(null);
   useEffect(() => {
     // Filter data based on selected status
     let filteredData = [];
     if (selectedStatus === "New Requests") {
       filteredData = data?.filter(
         (item) => item.status === "Booking In Progress"
-      ); 
+      );
       setTableVisible(true);
     } else if (selectedStatus === "Booked") {
       filteredData = data?.filter((item) => item.status === "Booked");
@@ -70,22 +74,20 @@ const ShipmentHistory = ({ selectedStatus }) => {
     } else if (selectedStatus === "Shipments") {
       filteredData = data;
       setTableVisible(true);
-    }
-    else if (selectedStatus === "Arrived") {
+    } else if (selectedStatus === "Arrived") {
       filteredData = data?.filter((item) => item.status === "Arrived");
       setTableVisible(true);
-    } 
-    else if (selectedStatus === "Received") {
+    } else if (selectedStatus === "Received") {
       filteredData = data?.filter((item) => item.status === "Received");
       setTableVisible(true);
-    } 
-    else if (selectedStatus === "Departed") {
+    } else if (selectedStatus === "Departed") {
       filteredData = data?.filter((item) => item.status === "Departed");
       setTableVisible(true);
-    }  else {
+    } else {
       filteredData = data;
     }
     setFilteredData(filteredData);
+    setCurrentPage(1);
   }, [selectedStatus, data]);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -97,10 +99,10 @@ const ShipmentHistory = ({ selectedStatus }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalRowData, setModalRowData] = useState(null);
   const showModal = (rowData) => {
-    console.log("shipmentRowData",rowData);
+    console.log("shipmentRowData", rowData);
     setModalRowData(rowData);
     setIsModalOpen(true);
-    console.log("shipmentData:",modalRowData);
+    console.log("shipmentData:", modalRowData);
   };
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -132,7 +134,7 @@ const ShipmentHistory = ({ selectedStatus }) => {
           gap: "8px",
         }}
         label={buttonLabel}
-        onClick={()=>showModal(rowData)}
+        onClick={() => showModal(rowData)}
       />
     );
   };
@@ -156,10 +158,14 @@ const ShipmentHistory = ({ selectedStatus }) => {
   const originBodyTemplate = (rowData) => {
     return (
       <div className="origin-cell">
-        <CountryFlag
-          countryCode={rowData?.origin_countrycode}
-        />
-        <span style={{ padding: "8px", fontWeight: "400", textTransform: 'capitalize' }}>
+        <CountryFlag countryCode={rowData?.origin_countrycode} />
+        <span
+          style={{
+            padding: "8px",
+            fontWeight: "400",
+            textTransform: "capitalize",
+          }}
+        >
           {rowData?.origin.length <= 20 ? (
             rowData?.origin
           ) : (
@@ -176,13 +182,16 @@ const ShipmentHistory = ({ selectedStatus }) => {
   const destinationBodyTemplate = (rowData) => {
     return (
       <div className="origin-cell">
-        <CountryFlag countryCode={rowData?.destination_countrycode} width={20} />
+        <CountryFlag
+          countryCode={rowData?.destination_countrycode}
+          width={20}
+        />
         <span style={{ padding: "8px", fontWeight: "400" }}>
           {rowData?.destination.length <= 20 ? (
             rowData?.destination
           ) : (
             <Tooltip placement="topLeft" title={rowData?.destination}>
-              <span role="button" style={{ textTransform: 'capitalize' }}>
+              <span role="button" style={{ textTransform: "capitalize" }}>
                 {rowData?.destination.slice(0, 20).trim().split("").join("") +
                   "..."}
               </span>
@@ -192,28 +201,37 @@ const ShipmentHistory = ({ selectedStatus }) => {
       </div>
     );
   };
-  const [sortOrder, setSortOrder] = useState(null);
 
-  const onSort = (field, order) => {
-    console.log("sorting field", field);
-    let sortedData = [...filteredData];
-  
-    sortedData.sort((a, b) => {
-      return order === 1
-        ? a[field] > b[field]
-          ? 1
-          : -1
-        : a[field] < b[field]
-        ? 1
-        : -1;
+  const handleSort = (field, order) => {
+    const newSortOrder = sortField === field && sortOrder === 1 ? -1 : 1;
+    const sortedData = [...filteredData].sort((a, b) => {
+      if (order === 1) {
+        return a[field] > b[field] ? 1 : -1;
+      } else {
+        return a[field] < b[field] ? 1 : -1;
+      }
     });
-  
     setFilteredData(sortedData);
+    setSortField(field);
+    setSortOrder(newSortOrder);
   };
-  
+  const handleSortDown=(field, order)=>{
+    const newSortOrder1 = sortField === field && sortOrder === 1 ? -1 : 1;
+
+    const sortedData = [...filteredData].sort((a, b) => {
+      if (order === 1) {
+        return a[field] < b[field] ? 1 : -1;
+      } else {
+        return a[field] > b[field] ? 1 : -1;
+      }
+    });
+    setFilteredData(sortedData);
+    setSortField(field);
+    setSortOrder(newSortOrder1);
+  }
 
   const handleUpcomingDep = () => {
-    setSelectedButton("Upcoming Departures")
+    setSelectedButton("Upcoming Departures");
     const filteredData1 = filteredData.filter((item) => item["etd/atd"]);
 
     // Sort the data by ETD/ATD in ascending order
@@ -230,7 +248,7 @@ const ShipmentHistory = ({ selectedStatus }) => {
   };
 
   const handleUpcomingArr = () => {
-    setSelectedButton("Upcoming Arrivals")
+    setSelectedButton("Upcoming Arrivals");
     const filteredData1 = filteredData.filter((item) => item["eta/ata"]);
 
     // Sort the data by ETD/ATD in ascending order
@@ -249,13 +267,13 @@ const ShipmentHistory = ({ selectedStatus }) => {
     const filteredData1 = filteredData.filter((item) => item["booked_on"]);
 
     const sortedData = [...filteredData1].sort((a, b) => {
-        const dateA = parseDate(a["booked_on"]);
-        const dateB = parseDate(b["booked_on"]);
-        return dateA - dateB;
+      const dateA = parseDate(a["booked_on"]);
+      const dateB = parseDate(b["booked_on"]);
+      return dateA - dateB;
     });
 
     setFilteredData(sortedData);
-};
+  };
 
   const parseDate = (dateString) => {
     const parts = dateString.split("-"); // Split the date string by hyphen
@@ -288,15 +306,17 @@ const ShipmentHistory = ({ selectedStatus }) => {
         <>
           <div className="d-flex mb-2 justify-content-end ">
             <button
-              className={`${selectedButton === "Upcoming Departures" ? "selected" : ""
-                } upcoming-dep me-2 `}
+              className={`${
+                selectedButton === "Upcoming Departures" ? "selected" : ""
+              } upcoming-dep me-2 `}
               onClick={handleUpcomingDep}
             >
               Upcoming Departures
             </button>
             <button
-              className={`${selectedButton === "Upcoming Arrivals" ? "  selected" : ""
-                } upcoming-dep me-2`}
+              className={`${
+                selectedButton === "Upcoming Arrivals" ? "  selected" : ""
+              } upcoming-dep me-2`}
               onClick={handleUpcomingArr}
             >
               Upcoming Arrivals
@@ -307,125 +327,235 @@ const ShipmentHistory = ({ selectedStatus }) => {
               onClick={handleToggleTable}
             />
           </div>
+          <div style={{ width: "100%", borderRadius: "8px" }}>
+            <div className="shadow">
+              <DataTable
+                value={currentPageData}
+                dataKey="shipmentId"
+                paginator={false}
+                rows={10}
+                // rowsPerPageOption
+                s={[5, 10, 25]}
+                // currentPageReportTemplate="{first} to {last} out of {totalRecords} "
+                // removableSort
+                rowClassName={rowClassName}
+                handleSort={handleSort}
+              >
+                <Column
+                  field="id"
+                  header={
+                    <span
+                      onClick={() => handleSort("id")}
+                      style={{
+                        fontFamily: "Roboto",
+                        cursor: "pointer",
+                      }}
+                      className="d-flex"
+                    >
+                      Shipment ID
+                      {/* <img src={sort} alt="Sort Icon" className="px-1" /> */}
+                      <div
+                        className="d-flex sorticon"
+                        style={{ flexDirection: "column" }}
+                      >
+                        <IconButton onClick={()=>{handleSort("id")}} className="p-0">
+                          <ExpandLessIcon className="sortup" />
+                        </IconButton>
+                        <IconButton onClick={()=>{handleSortDown("id")}} className="p-0">
+                          <ExpandMoreIcon className="sortdown" />
+                        </IconButton>
+                      </div>
+                    </span>
+                  }
+                  headerClassName="p-4"
+                  body={shipmentTemplate}
+                ></Column>
+                <Column
+                  field="origin"
+                  header={
+                    <span
+                      onClick={() =>
+                        handleSort("origin", sortOrder === 1 ? -1 : 1)
+                      }
+                      style={{ cursor: "pointer" }}
+                      className="d-flex"
+                    >
+                      Origin
+                      {/* <img src={sort} alt="Sort Icon" className="px-1" /> */}
+                      <div
+                        className="d-flex sorticon"
+                        style={{ flexDirection: "column" }}
+                      >
+                        <IconButton onClick={()=>{handleSort("origin")}} className="p-0">
+                          <ExpandLessIcon className="sortup" />
+                        </IconButton>
+                        <IconButton onClick={()=>{handleSort("origin")}} className="p-0">
+                          <ExpandMoreIcon className="sortdown" />
+                        </IconButton>
+                      </div>
+                    </span>
+                  }
+                  body={originBodyTemplate}
+                  headerClassName="custom-header "
+                  style={{ width: "200px" }}
+                ></Column>
+                <Column
+                  field="destination"
+                  header={
+                    <span
+                      onClick={() =>
+                        handleSort("destination", sortOrder === 1 ? -1 : 1)
+                      }
+                      style={{ cursor: "pointer", width: "150px" }}
+                      className="d-flex"
+                    >
+                      Destination
+                      {/* <img src={sort} alt="Sort Icon" className="px-1" /> */}
+                      <div
+                        className="d-flex sorticon"
+                        style={{ flexDirection: "column" }}
+                      >
+                        <IconButton onClick={()=>{handleSort("destination")}} className="p-0">
+                          <ExpandLessIcon className="sortup" />
+                        </IconButton>
+                        <IconButton onClick={()=>{handleSort("destination")}} className="p-0">
+                          <ExpandMoreIcon className="sortdown" />
+                        </IconButton>
+                      </div>
+                    </span>
+                  }
+                  body={destinationBodyTemplate}
+                  headerClassName="custom-header "
+                  style={{ width: "200px" }}
+                ></Column>
+                <Column
+                  field="booked_on"
+                  header={
+                    <span className="d-flex" tyle={{ cursor: "pointer" }}>
+                      Booked On
+                      {/* <img
+                        src={sort}
+                        alt="Sort Icon"
+                        className="px-1"
+                        onClick={handleBookedOn}
+                        style={{ cursor: "pointer" }}
+                      /> */}
+                      <div
+                        className="d-flex sorticon"
+                        style={{ flexDirection: "column" }}
+                      >
+                        <IconButton onClick={()=>{handleSort("booked_on")}} className="p-0">
+                          <ExpandLessIcon className="sortup" />
+                        </IconButton>
+                        <IconButton onClick={()=>{handleSort("booked_on")}} className="p-0">
+                          <ExpandMoreIcon className="sortdown" />
+                        </IconButton>
+                      </div>
+                    </span>
+                  }
+                  bodyClassName="custom-cell"
+                ></Column>
+                <Column
+                  field="etd/atd"
+                  header={
+                    <span className="d-flex">
+                      ETD/ATD
+                      {/* <img
+                        src={sort}
+                        alt="Sort Icon"
+                        className="px-1"
+                        onClick={handleUpcomingDep}
+                        style={{ cursor: "pointer" }}
+                      /> */}
+                      <div
+                        className="d-flex sorticon"
+                        style={{ flexDirection: "column" }}
+                      >
+                        <IconButton onClick={()=>{handleUpcomingDep("etd/atd")}} className="p-0">
+                          <ExpandLessIcon className="sortup" />
+                        </IconButton>
+                        <IconButton onClick={()=>{handleUpcomingDep("etd/atd")}} className="p-0">
+                          <ExpandMoreIcon className="sortdown" />
+                        </IconButton>
+                      </div>
+                    </span>
+                  }
+                  bodyClassName="custom-cell"
+                ></Column>
+                <Column
+                  field="eta/ata"
+                  header={
+                    <span className="d-flex">
+                      ETA/ATA
+                      {/* <img
+                        src={sort}
+                        alt="Sort Icon"
+                        className="px-1"
+                        onClick={handleUpcomingArr}
+                        style={{ cursor: "pointer" }}
+                      /> */}
+                      <div
+                        className="d-flex sorticon"
+                        style={{ flexDirection: "column" }}
+                      >
+                        <IconButton onClick={()=>handleUpcomingArr("eta/ata")} className="p-0">
+                          <ExpandLessIcon className="sortup" />
+                        </IconButton>
+                        <IconButton onClick={()=>handleUpcomingArr("eta/ata")} className="p-0">
+                          <ExpandMoreIcon className="sortdown" />
+                        </IconButton>
+                      </div>
+                    </span>
+                  }
+                  bodyClassName="custom-cell"
+                ></Column>
+                <Column
+                  field="status"
+                  header={
+                    <span className="d-flex">
+                      Status
+                      <div
+                        className="d-flex sorticon"
+                        style={{ flexDirection: "column" }}
+                      >
+                        <IconButton onClick={()=>{handleSort("status")}} className="p-0">
+                          <ExpandLessIcon className="sortup" />
+                        </IconButton>
+                        <IconButton onClick={()=>{handleSort("status")}} className="p-0">
+                          <ExpandMoreIcon className="sortdown" />
+                        </IconButton>
+                      </div>
+                    </span>
+                  }
+                  bodyClassName={(rowData) =>
+                    rowData?.status === "BookingInProgress"
+                      ? "booking-progress-cell"
+                      : "booked-cell "
+                  }
+                  className="pe-2 my-3 "
+                ></Column>
+                <Column
+                  field="action"
+                  body={actionBodyTemplate}
+                  header={<span className="">Action</span>}
+                  className=""
+                ></Column>
+              </DataTable>
 
-          <div className="shadow">
-            <DataTable
-              value={currentPageData}
-              dataKey="shipmentId"
-              paginator={false}
-              rows={10}
-           
-              // rowsPerPageOption
-              s={[5, 10, 25]}
-              // currentPageReportTemplate="{first} to {last} out of {totalRecords} "
-              // removableSort
-              rowClassName={rowClassName}
-              onSort={onSort}
-            >
-              <Column
-                field="id"
-                header={
-                  <span
-                    onClick={() => onSort("id", sortOrder === 1 ? -1 : 1)}
-                    style={{ fontFamily: "Roboto", cursor: "pointer", width: "150px" }}
-                 
-                  >
-                    Shipment ID
-                    <img src={sort} alt="Sort Icon" className="px-1" />
-                  </span>
-                }
-                headerClassName="p-4"
-                body={shipmentTemplate}
-                style={{width:'150px'}}
-              
-              ></Column>
-              <Column
-                field="origin"
-                header={
-                  <span onClick={() => onSort("origin", sortOrder === 1 ? -1 : 1)} style={{ cursor: 'pointer',width:'150px' }}>
-                    Origin
-                    <img src={sort} alt="Sort Icon" className="px-1" />
-                  </span>
-                }
-                body={originBodyTemplate}
-                headerClassName="custom-header "
-                style={{width:'150px'}}
-              ></Column>
-              <Column
-                field="destination"
-                header={
-                  <span onClick={() => onSort("destination", sortOrder === 1 ? -1 : 1)} style={{ cursor: 'pointer', width:'150px' }} >
-                    Destination
-                    <img src={sort} alt="Sort Icon" className="px-1" />
-                  </span>
-                }
-                body={destinationBodyTemplate}
-                headerClassName="custom-header "
-                style={{width:'15%'}}
-              ></Column>
-              <Column
-                field="booked_on"
-                header={
-                  <span className="" tyle={{ cursor: 'pointer', width:'150px' }}>
-                    Booked On
-                    <img src={sort} alt="Sort Icon" className="px-1" onClick={handleBookedOn} style={{cursor:'pointer'}} />
-                  </span>
-                }
-                bodyClassName="custom-cell"
-                style={{width:'10%'}}
-              ></Column>
-              <Column
-                field="etd/atd"
-                header={
-                  <span className="" style={{ width: "150px" }}>
-                    ETD/ATD
-                    <img src={sort} alt="Sort Icon" className="px-1" onClick={handleUpcomingDep} style={{cursor:'pointer'}}  />
-                  </span>
-                }
-                bodyClassName="custom-cell"
-                style={{width:'10%'}}
-              ></Column>
-              <Column
-                field="eta/ata"
-                header={
-                  <span className=""    style={{ width: "150px" }}>
-                    ETA/ATA
-                    <img src={sort} alt="Sort Icon" className="px-1" onClick={handleUpcomingArr} style={{cursor:'pointer'}}/>
-                  </span>
-                }
-                bodyClassName="custom-cell"
-                style={{width:'120px'}}
-              ></Column>
-              <Column
-                field="status"
-                header={<span className="">Status</span>}
-                bodyClassName={(rowData) =>
-                  rowData?.status === "BookingInProgress"
-                    ? "booking-progress-cell"
-                    : "booked-cell "
-                }
-                className="pe-2 my-3 "
-              
-                //  style={{width:'130px'}}
-              ></Column>
-              <Column
-                field="action"
-                body={actionBodyTemplate}
-                header={<span className="">Action</span>}
-                className=""
-                style={{width:'15%'}}
-              ></Column>
-            </DataTable>
-
-            <Pagination
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-              totalItems={filteredData?.length}
-            />
+              <Pagination
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                totalItems={filteredData?.length}
+              />
+            </div>
           </div>
         </>
       )}
-       <Steppertrack isModalOpen={isModalOpen} handleCancel={handleCancel} rowData={modalRowData}/>
+      <Steppertrack
+        isModalOpen={isModalOpen}
+        handleCancel={handleCancel}
+        rowData={modalRowData}
+      />
     </div>
   );
 };
