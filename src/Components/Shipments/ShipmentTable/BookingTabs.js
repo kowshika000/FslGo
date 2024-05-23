@@ -36,38 +36,6 @@ function BookingTabs() {
     schedule = tabCount[0];
   } else {
   }
-  const TabItems = [
-    {
-      key: "1",
-      label: `All Bookings (${schedule?.all})`,
-      children: <AllBookings/>
-    },
-    {
-      key: "2",
-      label: `Pending Action (${schedule?.pending})`,
-      children: <PendingActions />
-    },
-    {
-      key: "3",
-      label: `Booked (${schedule?.booked})`,
-      children: <BookedTab />
-    },
-    {
-      key: "4",
-      label: `In-Transit (${schedule?.in_transit})`,
-      children: <InTransitTab />
-    },
-    {
-      key: "5",
-      label: `Delivered (${schedule?.arrived})`,
-      children: <DeliveredTab />
-    },
-    {
-      key: "6",
-      label: `Cancelled (${schedule?.cancelled})`,
-      children: <CancelTab />
-    },
-  ];
 
 
   useEffect(() => {
@@ -109,6 +77,39 @@ function BookingTabs() {
 
     return filteredData;
   };
+
+  const TabItems = [
+    {
+      key: "1",
+      label: `All Bookings (${schedule?.all})`,
+      children: <AllBookings filterData={filterData}/>
+    },
+    {
+      key: "2",
+      label: `Pending Action (${schedule?.pending})`,
+      children: <PendingActions />
+    },
+    {
+      key: "3",
+      label: `Booked (${schedule?.booked})`,
+      children: <BookedTab />
+    },
+    {
+      key: "4",
+      label: `In-Transit (${schedule?.in_transit})`,
+      children: <InTransitTab />
+    },
+    {
+      key: "5",
+      label: `Delivered (${schedule?.arrived})`,
+      children: <DeliveredTab />
+    },
+    {
+      key: "6",
+      label: `Cancelled (${schedule?.cancelled})`,
+      children: <CancelTab />
+    },
+  ];
 
   // useEffect(() => {
   //   setData(filterData(bookingData?.data));
@@ -172,7 +173,6 @@ function BookingTabs() {
                   defaultActiveKey="1"
                   items={TabItems}
                   onChange={onChange}
-                  style={{ padding: "3px 6px 3px 4px" }}
                 />
               ) : (
                 <div style={{ padding: "3px 6px 3px 4px", marginTop: "15px" }}>
@@ -183,7 +183,7 @@ function BookingTabs() {
             <Col
               span={4}
               className="viewtab-col"
-              style={{ borderBottom: "1px solid #e7eaf0" }}
+              style={{ borderBottom: "1px solid #e7eaf0",height:"57px" }}
             >
               <div className="viewtab-outer">
                 <div className="ant-img d-flex">

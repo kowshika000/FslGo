@@ -2,10 +2,7 @@ import React, { useState, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
-import CloseIcon from "@mui/icons-material/Close";
 import sort from "../../../assets/sort.png";
-import { ReactComponent as India } from "../../../assets/in.svg";
-import { ReactComponent as AE } from "../../../assets/ae.svg";
 import Pagination from "../../Core-Components/Pagination";
 import { useDispatch, useSelector } from "react-redux";
 import { bookingRequest } from "../../../Redux/Actions/BookingAction";
@@ -16,26 +13,33 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import { FilterMatchMode } from "primereact/api";
-import { InputText } from "primereact/inputtext";
-import { IconField } from "primereact/iconfield";
-import { InputIcon } from "primereact/inputicon";
 import "./Booking.css";
 // import search from "../../../assets/Searchicon.png";
-import { Tabs, Row, Col, Input, Select, Table, Image } from "antd";
+import { Row, Col, Input, Image } from "antd";
 import { SearchOutlined, CaretDownFilled } from "@ant-design/icons";
 import FilterDrawer from "./Filter";
 import filter from "../../../assets/Filter 2.png";
 import calendar from "../../../assets/calendar.png";
 import { Dropdown, Space, Menu } from "antd";
-
+import { InputText } from "primereact/inputtext";
 
 const AllBookings = ({ filterData }) => {
+  const [filters, setFilters] = useState({
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+    id: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    origin: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    destination: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    booked_on: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    // etd/atd: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    // eta/ata: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+    status: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+  });
+  const [globalFilterValue, setGlobalFilterValue] = useState("");
+
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5; // Number of items per page
-  const [selectedButton, setSelectedButton] = useState(null);
   const dispatch = useDispatch();
   const ShipmentData = useSelector((state) => state.Booking);
-  console.log("shipmentData-All booking",ShipmentData);
+  console.log("shipmentData-All booking", ShipmentData);
 
   const bookingData = ShipmentData?.booking;
   const data = bookingData?.data;
@@ -60,7 +64,7 @@ const AllBookings = ({ filterData }) => {
     dispatch(bookingRequest({ payload }));
   }, [currentPage]);
 
-  // const filteredData = filterData(data);
+  const filteredData = filterData(data);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalRowData, setModalRowData] = useState(null);
@@ -190,15 +194,6 @@ const AllBookings = ({ filterData }) => {
     return new Date(parts[2], parts[1] - 1, parts[0]);
   };
 
-  const [globalFilterValue, setGlobalFilterValue] = useState("");
-  const [filters, setFilters] = useState({
-    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    username: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    mobile: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    email: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    password: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    gender: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-  });
   const [visible, setVisible] = useState(false);
   const [selectedDropdownItem, setSelectedDropdownItem] = useState(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -231,121 +226,6 @@ const AllBookings = ({ filterData }) => {
     setSelectedDropdownItem(item);
     console.log("Selected item:", item);
   };
-  const renderHeader = () => {
-    return (
-      <Row
-      justify="space-between"
-      className="w-full"
-      style={{ padding: "10px 20px" ,backgroundColor:"white"}}
-    >
-      <Col>
-        <Input
-          placeholder="Search booking id , origin, destination... "
-          prefix={<SearchOutlined style={{ color: "#94A2B2" }} />}
-          style={{
-            width: "368.13px",
-            padding: "4px 11px",
-            borderRadius: "4px",
-          }}
-          onChange={handleSearch}
-        />
-      </Col>
-      <Col className="d-flex ">
-        <div
-          style={{ border: "1px solid #E7EAF0", borderRadius: "8px" }}
-          className="px-1 d-flex me-2"
-        >
-          <Image
-            src={calendar}
-            width="16px"
-            height="12px"
-            className="mt-2 pe-1"
-          />
-
-          <div
-            style={{
-              alignContent: "center",
-              border: "none ",
-              outline: "none ",
-            }}
-          >
-            <Dropdown
-              overlayStyle={{ minWidth: '200px' }} // Adjust the width as needed
-              overlay={
-                <Menu>
-                  {items.map(item => (
-                    <Menu.Item key={item.key} onClick={() => onClick(item)}>
-                      {item.label}
-                    </Menu.Item>
-                  ))}
-                </Menu>
-              }
-              trigger={['click']}
-            >
-              <a
-                onClick={(e) => e.preventDefault()}
-                style={{ color: "rgba(73, 90, 110, 1)" }}
-              >
-                <Space>
-                  <span
-                    style={{
-                      maxWidth: "160px",
-                      overflow: "hidden",
-                      textOverflow: "ellipsis",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    {selectedDropdownItem
-                      ? selectedDropdownItem.label
-                      : "Past 30 days"}
-                  </span>
-                  <CaretDownFilled style={{ marginLeft: "4px" }} />
-                </Space>
-              </a>
-            </Dropdown>
-          </div>
-        </div>
-        <div className="filter d-flex py-1 px-2" style={{border:'1px solid rgb(231,234,240', borderRadius:'8px'}}>
-          <div className="ant-image cursor-pointer" onClick={showDrawer}>
-            <img
-              src={filter}
-              className="ant-image-img me-1 my-1"
-              style={{
-                verticalAlign: "center",
-                marginTop: "2px",
-                cursor: "pointer",
-              }}
-            />
-          </div>
-          <span className="align-items-center text-dark">Filters</span>
-        </div>
-
-        <FilterDrawer visible={visible} onClose={onClose} />
-      </Col>
-    </Row>
-      // <div
-      //   className="d-flex justify-content-between pb-4"
-      //   style={{ background: "white" }}
-      // >
-      //   <IconField iconPosition="left">
-      //     <InputIcon className="pi pi-search" />
-      //     <InputText
-      //       value={globalFilterValue}
-      //       onChange={onGlobalFilterChange}
-      //       // prefix={search}
-      //       placeholder="Search booking id, origin, destination..."
-      //       style={{
-      //         width: "349px",
-      //         height: "36px",
-      //         borderRadius: "6px",
-      //         border: "1px solid #E7EAF0",
-      //         padding: "9px 11px 9px 11px",
-      //       }}
-      //     />
-      //   </IconField>
-      // </div>
-    );
-  };
   const onGlobalFilterChange = (e) => {
     const value = e.target.value;
     let _filters = { ...filters };
@@ -355,6 +235,107 @@ const AllBookings = ({ filterData }) => {
     setFilters(_filters);
     setGlobalFilterValue(value);
   };
+  const renderHeader = () => {
+    return (
+      <Row
+        justify="space-between"
+        className="w-full"
+        style={{ padding: "10px 5px", backgroundColor: "white" }}
+      >
+        <Col>
+          <Input
+            value={globalFilterValue}
+            onChange={onGlobalFilterChange}
+            placeholder="Search booking id , origin, destination... "
+            prefix={<SearchOutlined style={{ color: "#94A2B2" }} />}
+            style={{
+              width: "349px",
+              height: "36px",
+              borderRadius: "6px",
+              border: "1px solid #E7EAF0",
+              padding: "9px 11px 9px 11px",
+            }}
+          />
+        </Col>
+
+        <Col className="d-flex ">
+          <div
+            style={{ border: "1px solid #E7EAF0", borderRadius: "8px" }}
+            className="px-1 d-flex me-2"
+          >
+            <Image
+              src={calendar}
+              width="16px"
+              height="12px"
+              className="mt-2 pe-1"
+            />
+
+            <div
+              style={{
+                alignContent: "center",
+                border: "none ",
+                outline: "none ",
+              }}
+            >
+              <Dropdown
+                overlayStyle={{ minWidth: "200px" }} // Adjust the width as needed
+                overlay={
+                  <Menu>
+                    {items.map((item) => (
+                      <Menu.Item key={item.key} onClick={() => onClick(item)}>
+                        {item.label}
+                      </Menu.Item>
+                    ))}
+                  </Menu>
+                }
+                trigger={["click"]}
+              >
+                <a
+                  onClick={(e) => e.preventDefault()}
+                  style={{ color: "rgba(73, 90, 110, 1)" }}
+                >
+                  <Space>
+                    <span
+                      style={{
+                        maxWidth: "160px",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      {selectedDropdownItem
+                        ? selectedDropdownItem.label
+                        : "Past 30 days"}
+                    </span>
+                    <CaretDownFilled style={{ marginLeft: "4px" }} />
+                  </Space>
+                </a>
+              </Dropdown>
+            </div>
+          </div>
+          <div
+            className="filter d-flex py-1 px-2"
+            style={{ border: "1px solid rgb(231,234,240", borderRadius: "8px" }}
+          >
+            <div className="ant-image cursor-pointer" onClick={showDrawer}>
+              <img
+                src={filter}
+                className="ant-image-img me-1 my-1"
+                style={{
+                  verticalAlign: "center",
+                  marginTop: "2px",
+                  cursor: "pointer",
+                }}
+              />
+            </div>
+            <span className="align-items-center text-dark">Filters</span>
+          </div>
+
+          <FilterDrawer visible={visible} onClose={onClose} />
+        </Col>
+      </Row>
+    );
+  };
   const header = renderHeader();
 
   return (
@@ -363,131 +344,132 @@ const AllBookings = ({ filterData }) => {
         backgroundColor: "white",
       }}
     >
-       <DataTable
-          value={data}
-          dataKey="shipmentId"
-          paginator={false}
-          rows={10}
-          rowsPerPageOptions={[5, 10, 25]}
-          currentPageReportTemplate="{first} to {last} out of {totalRecords} "
-          // paginatorTemplate=" PrevPageLink PageLinks NextPageLink  CurrentPageReport "
-          removableSort
-          header={header}
-          globalFilterFields={[
-            "id",
-            "origin",
-            "destination",
-            "booked_on",
-            "etd/atd",
-            "eta/ata",
-            "status",
-          ]}
-          rowClassName={rowClassName}
-        >
-          <Column
-            field="id"
-            header={
-              <span
-                onClick={() => onSort("id", sortOrder === 1 ? -1 : 1)}
-                style={{ fontFamily: "Roboto", cursor: "pointer" }}
-                className="px-4"
-              >
-                Shipment ID
-                <img src={sort} alt="Sort Icon" className="ps-1" />
-              </span>
-            }
-            body={shipmentTemplate}
-          ></Column>
+      <DataTable
+        value={data}
+        dataKey="shipmentId"
+        paginator={false}
+        rows={10}
+        rowsPerPageOptions={[5, 10, 25]}
+        currentPageReportTemplate="{first} to {last} out of {totalRecords} "
+        // paginatorTemplate=" PrevPageLink PageLinks NextPageLink  CurrentPageReport "
+        removableSort
+        header={header}
+        filters={filters}
+        globalFilterFields={[
+          "id",
+          "origin",
+          "destination",
+          "booked_on",
+          "etd/atd",
+          "eta/ata",
+          "status",
+        ]}
+        rowClassName={rowClassName}
+      >
+        <Column
+          field="id"
+          header={
+            <span
+              onClick={() => onSort("id", sortOrder === 1 ? -1 : 1)}
+              style={{ fontFamily: "Roboto", cursor: "pointer" }}
+              className="px-4"
+            >
+              Shipment ID
+              <img src={sort} alt="Sort Icon" className="ps-1" />
+            </span>
+          }
+          body={shipmentTemplate}
+        ></Column>
 
-          <Column
-            field="origin"
-            header={
-              <span
-                onClick={() => onSort("origin", sortOrder === 1 ? -1 : 1)}
-                style={{ fontFamily: "Roboto", cursor: "pointer" }}
-              >
-                Origin
-                <img src={sort} alt="Sort Icon" className="ps-1" />
-              </span>
-            }
-            body={originBodyTemplate}
-            headerClassName="custom-header p-3"
-            className="p-3"
-            style={{ width: "200px" }}
-          ></Column>
-          <Column
-            field="destination"
-            header={
-              <span
-                className="p-3"
-                onClick={() => onSort("destination", sortOrder === 1 ? -1 : 1)}
-                style={{ fontFamily: "Roboto", cursor: "pointer" }}
-              >
-                Destination
-                <img src={sort} alt="Sort Icon" className="ps-1" />
-              </span>
-            }
-            body={destinationBodyTemplate}
-            className="p-3"
-            style={{ width: "200px" }}
-          ></Column>
-          <Column
-            field="booked_on"
-            header={
-              <span className="p-3">
-                Booked on
-                <img src={sort} alt="Sort Icon" className="ps-1" />
-              </span>
-            }
-            bodyClassName="custom-cell"
-            className="p-3"
-          ></Column>
-          <Column
-            field="etd/atd"
-            header={
-              <span className="p-3">
-                ETD/ATD
-                <img src={sort} alt="Sort Icon" className="ps-1" />
-              </span>
-            }
-            bodyClassName="custom-cell"
-            className="p-3"
-          ></Column>
-          <Column
-            field="eta/ata"
-            header={
-              <span className="p-3">
-                ETA/ATA
-                <img src={sort} alt="Sort Icon" className="ps-1" />
-              </span>
-            }
-            bodyClassName="custom-cell"
-            className="p-3"
-          ></Column>
-          <Column
-            field="status"
-            header={<span className="p-3">Status</span>}
-            bodyClassName={(rowData) =>
-              rowData.status === "Booking In Progress"
-                ? "booking-progress-cell"
-                : "booked-cell "
-            }
-            className=" m-3 px-2"
-          ></Column>
-          <Column
-            field="action"
-            body={actionBodyTemplate}
-            header={<span className="p-3">Action</span>}
-            className="p-3"
-          ></Column>
-        </DataTable>
+        <Column
+          field="origin"
+          header={
+            <span
+              onClick={() => onSort("origin", sortOrder === 1 ? -1 : 1)}
+              style={{ fontFamily: "Roboto", cursor: "pointer" }}
+            >
+              Origin
+              <img src={sort} alt="Sort Icon" className="ps-1" />
+            </span>
+          }
+          body={originBodyTemplate}
+          headerClassName="custom-header p-3"
+          className="p-3"
+          style={{ width: "200px" }}
+        ></Column>
+        <Column
+          field="destination"
+          header={
+            <span
+              className="p-3"
+              onClick={() => onSort("destination", sortOrder === 1 ? -1 : 1)}
+              style={{ fontFamily: "Roboto", cursor: "pointer" }}
+            >
+              Destination
+              <img src={sort} alt="Sort Icon" className="ps-1" />
+            </span>
+          }
+          body={destinationBodyTemplate}
+          className="p-3"
+          style={{ width: "200px" }}
+        ></Column>
+        <Column
+          field="booked_on"
+          header={
+            <span className="p-3">
+              Booked on
+              <img src={sort} alt="Sort Icon" className="ps-1" />
+            </span>
+          }
+          bodyClassName="custom-cell"
+          className="p-3"
+        ></Column>
+        <Column
+          field="etd/atd"
+          header={
+            <span className="p-3">
+              ETD/ATD
+              <img src={sort} alt="Sort Icon" className="ps-1" />
+            </span>
+          }
+          bodyClassName="custom-cell"
+          className="p-3"
+        ></Column>
+        <Column
+          field="eta/ata"
+          header={
+            <span className="p-3">
+              ETA/ATA
+              <img src={sort} alt="Sort Icon" className="ps-1" />
+            </span>
+          }
+          bodyClassName="custom-cell"
+          className="p-3"
+        ></Column>
+        <Column
+          field="status"
+          header={<span className="p-3">Status</span>}
+          bodyClassName={(rowData) =>
+            rowData.status === "Booking In Progress"
+              ? "booking-progress-cell"
+              : "booked-cell "
+          }
+          className=" m-3 px-2"
+        ></Column>
+        <Column
+          field="action"
+          body={actionBodyTemplate}
+          header={<span className="p-3">Action</span>}
+          className="p-3"
+        ></Column>
+      </DataTable>
 
-        <Pagination
-          currentPage={currentPage}
-          setCurrentPage={setCurrentPage}
-          totalItems={bookingData?.lastPage}
-          itemsPerPage={bookingData?.perPage}
-        />
+      <Pagination
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        totalItems={bookingData?.lastPage}
+        itemsPerPage={bookingData?.perPage}
+      />
       <Steppertrack
         isModalOpen={isModalOpen}
         handleCancel={handleCancel}
