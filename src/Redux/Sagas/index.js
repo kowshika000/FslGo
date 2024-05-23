@@ -7,6 +7,8 @@ import watchInboxCount from "./InboxCountSaga";
 import watchPort from "./PortSaga";
 import watchLogin from "./LoginSaga";
 import watchOpenSailing from "./OpenSailingSaga";
+import watchMap from "./MapSaga";
+
 export default function* rootSaga() {
   yield all([
     watchShipmentCount(),
@@ -17,5 +19,6 @@ export default function* rootSaga() {
     watchPort(),
     watchLogin(),
     watchOpenSailing(),
+    watchMap(),
   ]);
 }

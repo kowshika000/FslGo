@@ -8,12 +8,12 @@ import "./Port.css";
 import CountryFlag from "../../Core-Components/CountryFlag";
 import { Col, Row } from "antd";
 import anchor from "../../../assets/anch.jpeg";
-import {opensailingRequest} from '../../../Redux/Actions/OpneSailingAction'
+import { opensailingRequest } from "../../../Redux/Actions/OpneSailingAction";
 
 export const Port = () => {
   const [searchOriginPort, setSearchOriginPort] = useState("");
-  const [orgPortCode, setOrgPortCode]= useState("");
-  const [desPortCode, setDesPortCode]= useState("");
+  const [orgPortCode, setOrgPortCode] = useState("");
+  const [desPortCode, setDesPortCode] = useState("");
   const [searchDestPort, setSearchDestPort] = useState("");
   // const [originPortValue, setOriginPortValue] = useState("");
   // const [destPortValue, setDestPortValue] = useState("");
@@ -25,6 +25,7 @@ export const Port = () => {
 
   const originPortData = useSelector((state) => state.Port);
   const originPortDataValue = originPortData?.portData?.Data;
+  console.log("originPortvalue", originPortDataValue);
 
   const dispatch = useDispatch();
 
@@ -36,9 +37,8 @@ export const Port = () => {
     }
     setOriginPortOptionsVisible(true);
     if (value === "") {
-      setOriginPort(null);  
+      setOriginPort(null);
     }
-
   };
 
   const handleDestPortChange = (event) => {
@@ -49,24 +49,23 @@ export const Port = () => {
     }
     setDestPortOptionsVisible(true);
     if (value === "") {
-      setDestPort(null);  
+      setDestPort(null);
     }
-  
   };
 
   const handleOriginPortSelect = (port) => {
     console.log("Port selected:", port);
     // setOriginPortValue(port?.port_name);
     setSearchOriginPort(port?.port_name);
-    setOrgPortCode(port?.port_code)
+    setOrgPortCode(port?.port_code);
     setOriginPortOptionsVisible(false);
     setOriginPort(port);
   };
   const handleDestPortSelect = (port) => {
-    console.log("Port selected:", port);
+    console.log("Dest selected:", port);
     // setDestPortValue(port?.port_name);
     setSearchDestPort(port?.port_name);
-    setDesPortCode(port?.port_code)
+    setDesPortCode(port?.port_code);
     setDestPortOptionsVisible(false);
     setDestPort(port);
   };
@@ -78,16 +77,15 @@ export const Port = () => {
         orgPortCode,
         desPortCode
       );
-      
-      const sent_ = {
-        orign: orgPortCode,
-        destination: desPortCode,
-      };
-      
-      dispatch(opensailingRequest({ sent_ }));
+
+      const orign = orgPortCode;
+      const destination = desPortCode;
+
+      dispatch(opensailingRequest({ orign, destination }));
     }
   }, [orgPortCode, desPortCode]);
-  
+  // const openSailingData1 = useSelector((state) => state.openSailingData);
+  // console.log("pppppp", openSailingData1);
 
   return (
     <div
@@ -120,7 +118,7 @@ export const Port = () => {
             justifyContent: "space-between",
             background: "white",
             position: "relative",
-           
+            width:"300px"
           }}
         >
           <Location className="pt-1" style={{ width: "22px" }} />
@@ -134,7 +132,12 @@ export const Port = () => {
           >
             Origin:{" "}
           </Typography>
-          {originPort && <CountryFlag countryCode={originPort.port_country} className="port-flag input-port-flag" />}
+          {originPort && (
+            <CountryFlag
+              countryCode={originPort.port_country}
+              className="port-flag input-port-flag"
+            />
+          )}
           <input
             type="text"
             style={{
@@ -218,6 +221,7 @@ export const Port = () => {
             justifyContent: "space-between",
             background: "white",
             position: "relative",
+            width:"330px"
           }}
         >
           <Location className="pt-1" style={{ width: "22px" }} />
@@ -231,7 +235,12 @@ export const Port = () => {
           >
             Destination:{" "}
           </Typography>
-          {destPort && <CountryFlag countryCode={destPort.port_country} className="port-flag input-port-flag" />}
+          {destPort && (
+            <CountryFlag
+              countryCode={destPort.port_country}
+              className="port-flag input-port-flag"
+            />
+          )}
           <input
             type="text"
             style={{

@@ -7,6 +7,7 @@ import bookingReducer from './BookingReducer';
 import portReducer from './PortReducer';
 import loginReducer from './LoginReducer';
 import openSailingReducer from './OpenSailingReducer';
+import MapReducer from './MapReducer';
 
 
 const rootReducer = combineReducers({
@@ -18,6 +19,7 @@ const rootReducer = combineReducers({
     Port: portReducer,
     Login: loginReducer,
     OpenSailing: openSailingReducer,
+    Map: MapReducer,
 });
 
 export default rootReducer;
