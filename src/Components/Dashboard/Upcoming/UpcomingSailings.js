@@ -95,7 +95,7 @@ const UpcomingSailings = () => {
                           className="fw-bold"
                           sx={{ fontSize: "15px", lineHeight: "22px" }}
                         >
-                          {sailingData?.ETD}{" "}
+                          {sailingData?.origin_date}{" "}
                         </Typography>
                         <div className="d-flex ">
                           <CountryFlag
@@ -111,7 +111,7 @@ const UpcomingSailings = () => {
                               color: "#495A6E",
                             }}
                           >
-                            {sailingData?.origin_name}
+                            {sailingData?.origin}
                           </Typography>
                         </div>
                       </div>
@@ -127,7 +127,7 @@ const UpcomingSailings = () => {
                               sx={{ opacity: "0.7", fontSize: "14px" }}
                               className="fw-bold "
                             >
-                              T/T : {sailingData?.ttlrd} days
+                              T/T : {sailingData?.transit_days} days
                             </Typography>
                           </div>
                           <div>
@@ -140,7 +140,7 @@ const UpcomingSailings = () => {
                           className="fw-bold"
                           sx={{ fontSize: "15px", lineHeight: "22px" }}
                         >
-                          {sailingData?.ETA}
+                          {sailingData?.destination_date}
                         </Typography>
                         <div className="d-flex">
                           <CountryFlag
@@ -156,7 +156,7 @@ const UpcomingSailings = () => {
                               color: "rgba(73, 90, 110, 1)",
                             }}
                           >
-                            {sailingData?.fdc_name}
+                            {sailingData?.destination}
                           </Typography>
                         </div>
                       </div>
@@ -187,7 +187,7 @@ const UpcomingSailings = () => {
                           className="fw-bolder"
                           sx={{ fontSize: "13px" }}
                         >
-                          {sailingData?.vessel_name}
+                          {sailingData?.vessel}
                         </Typography>
                       </div>
 
@@ -199,7 +199,7 @@ const UpcomingSailings = () => {
                           className="fw-bolder"
                           sx={{ fontSize: "13px" }}
                         >
-                          {sailingData?.voyage_no}
+                          {sailingData?.voyage}
                         </Typography>
                       </div>
                       <div className="d-flex justify-content-between p-2 ">
@@ -210,7 +210,7 @@ const UpcomingSailings = () => {
                           className="fw-bolder"
                           sx={{ fontSize: "13px" }}
                         >
-                          {sailingData?.ttport}
+                          {sailingData?.transit_ptp}
                         </Typography>
                       </div>
                     </div>
@@ -226,7 +226,7 @@ const UpcomingSailings = () => {
                           className="fw-bolder"
                           sx={{ fontSize: "13px" }}
                         >
-                          {sailingData?.cutoff_date}
+                          {sailingData?.cut_off_date}
                         </Typography>
                       </div>
                       <div className="d-flex justify-content-between p-2 border-bottom border-2">
@@ -237,7 +237,7 @@ const UpcomingSailings = () => {
                           className="fw-bolder"
                           sx={{ fontSize: "13px" }}
                         >
-                          {sailingData?.ETD}
+                          {sailingData?.origin_date}
                         </Typography>
                       </div>
                       <div className="d-flex justify-content-between p-2 ">
@@ -248,7 +248,7 @@ const UpcomingSailings = () => {
                           className="fw-bolder"
                           sx={{ fontSize: "13px" }}
                         >
-                          {sailingData?.ETA}
+                          {sailingData?.destination_date}
                         </Typography>
                       </div>
                     </div>

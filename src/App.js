@@ -14,51 +14,51 @@ import { LoginRequest } from "./Redux/Actions/LoginAction";
 import Cookies from "js-cookie";
 
 function App() {
-  // const dispatch = useDispatch();
-  // const jwtToken = useSelector((state) => state.Login?.booking?.Token);
-  // const [loading, setLoading] = useState(true);
-  // let isTokenReceived = false;
+  const dispatch = useDispatch();
+  const jwtToken = useSelector((state) => state.Login?.booking?.Token);
+  const [loading, setLoading] = useState(true);
+  let isTokenReceived = false;
 
-  // useEffect(() => {
-  //   const currentUrl = window.location.href;
-  //   const queryString = currentUrl?.split("?")[1];
-  //   const paramsArray = queryString?.split("&");
-  //   const params = {};
+  useEffect(() => {
+    const currentUrl = window.location.href;
+    const queryString = currentUrl?.split("?")[1];
+    const paramsArray = queryString?.split("&");
+    const params = {};
   
-  //   if (paramsArray) {
-  //     paramsArray.forEach((param) => {
-  //       const [key, value] = param?.split("=");
-  //       params[key] = value;
-  //     });
-  //   }
+    if (paramsArray) {
+      paramsArray.forEach((param) => {
+        const [key, value] = param?.split("=");
+        params[key] = value;
+      });
+    }
   
-  //   const id = params["id"];
-  //   const token = params["token"];
-  //   console.log(token);
+    const id = params["id"];
+    const token = params["token"];
+    console.log(token);
   
-  //   dispatch(LoginRequest({ sUsername: id, spassword: token }));
+    dispatch(LoginRequest({ sUsername: id, spassword: token }));
   
-  //   if (jwtToken) {
-  //     setLoading(false);
-  //   }
+    if (jwtToken) {
+      setLoading(false);
+    }
   
-  //   const timeout = setTimeout(() => {
-  //     if (!jwtToken) {
-  //       window.location.href = "http://www.freightsystems.com";
-  //     }
-  //   }, 5000);
+    const timeout = setTimeout(() => {
+      if (!jwtToken) {
+        window.location.href = "http://www.freightsystems.com";
+      }
+    }, 5000);
   
-  //   return () => clearTimeout(timeout); 
-  // }, [dispatch, jwtToken]);
+    return () => clearTimeout(timeout); 
+  }, [dispatch, jwtToken]);
   
 
-  // if (loading) {
-  //   return <div>Loading...</div>;
-  // }
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
-  // if (jwtToken) {
-  //   Cookies.set("jwtToken", jwtToken, { expires: 7 });
-  // }
+  if (jwtToken) {
+    Cookies.set("jwtToken", jwtToken, { expires: 7 });
+  }
 
   return (
     <BrowserRouter>
