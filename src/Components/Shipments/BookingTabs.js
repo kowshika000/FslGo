@@ -163,7 +163,7 @@ function BookingTabs() {
     >
      <Row className="border" style={{ borderRadius: "8px",backgroundColor:"#F8FAFC" ,height:"600px" }}>
         <Col span={24} style={{ height: "57px" }}>
-          <Row justify="space-between" style={{ height: "57px" }}>
+          <Row justify="space-between" style={{ borderBottom: "1px solid #e7eaf0",height: "57px" }}>
             <Col span={20}>
               {!showText ? (
                 <Tabs
@@ -172,7 +172,7 @@ function BookingTabs() {
                   onChange={onChange}
                 />
               ) : (
-                <div style={{ padding: "3px 6px 3px 4px", marginTop: "15px" }}>
+                <div style={{ marginTop: "15px" }}>
                   <h6 className="px-4">Customized Daily Reports</h6>
                 </div>
               )}
@@ -180,7 +180,7 @@ function BookingTabs() {
             <Col
               span={4}
               className="viewtab-col"
-              style={{ borderBottom: "1px solid #e7eaf0", height: "57px" }}
+              style={{ height: "57px" }}
             >
               <div className="viewtab-outer">
                 <div className="ant-img d-flex">

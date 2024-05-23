@@ -1,4 +1,3 @@
-
 .custom-row {
   width: 1222px;
   height: 20px !important;
@@ -6,8 +5,8 @@
   justify-content: space-between;
   opacity: 1;
 }
-.custom-cell{
-  color:rgba(73, 90, 110, 1) !important;
+.custom-cell {
+  color: rgba(73, 90, 110, 1) !important;
 }
 .p-datatable .p-datatable-tbody > tr {
   text-align: center;
@@ -22,7 +21,6 @@
   font-weight: 400;
   color: rgba(24, 30, 37, 1);
   align-items: center;
-  
 }
 .upcoming-dep {
   width: 152px;
@@ -36,12 +34,12 @@
   line-height: 14.06px;
   text-align: center;
 }
-.upcoming-dep:hover{
-  box-shadow:0px 0px 8px #384656 inset; 
+.upcoming-dep:hover {
+  box-shadow: 0px 0px 8px #384656 inset;
 }
 .selected {
   background-color: #384656 !important;
-  color:white !important;
+  color: white !important;
 }
 .booked-cell {
   border-left: 1px solid #008000;
@@ -51,10 +49,9 @@
   padding-left: 4px;
   background-color: rgba(0, 128, 0, 0.1);
   display: inline-block;
-  height:27px;
+  height: 27px;
   align-content: center !important;
-  align-self: center!important;
-
+  align-self: center !important;
 }
 .booking-progress-cell {
   background-color: #fcf0cc;
@@ -64,14 +61,28 @@
   justify-content: start;
   padding-left: 4px;
   float: left;
-  height:27px;
+  height: 27px;
   align-content: center !important;
   align-self: center !important;
 }
-.cargo-picked-up{
+.cargo-picked-up {
   background-color: #008000 !important;
 }
 .custom-row:hover {
   background-color: rgba(247, 252, 255, 1);
   border-bottom: 1px solid #acacac;
+}
+.sorticon {
+
+  margin-left: 3px;
+}
+.sortup {
+  font-size: small !important;
+  opacity: 50%;
+}
+.sortdown {
+  font-size: small !important;
+  margin-top: -6px !important;
+  opacity: 50%;
+
 }

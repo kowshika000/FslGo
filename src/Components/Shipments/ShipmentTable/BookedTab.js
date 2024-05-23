@@ -34,11 +34,8 @@ const BookedTab = () => {
   const dispatch = useDispatch();
   const ShipmentData = useSelector((state) => state.Booking);
   console.log("booked", ShipmentData);
-
   const bookingData = ShipmentData?.booking;
   const data = bookingData?.data;
-  console.log(data);
-
   const BookedData = data.filter((item) => item.status === "Booked");
   console.log("BookedData", BookedData);
 
