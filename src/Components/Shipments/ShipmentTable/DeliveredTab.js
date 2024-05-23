@@ -37,21 +37,21 @@ const DeliveredTab = () => {
   const bookingData = ShipmentData?.booking;
   const data = bookingData?.data;
   const DeliveredData = data.filter((item) => item.status === "Delivered");
-  console.log(DeliveredData)
+  console.log(DeliveredData);
 
   const payload = {
     filter_month: "",
     booking_type: "",
     status: "",
-    spagesize: currentPage,
-    sperpage: "5",
+    spagesize: "",
+    sperpage: "",
     booking_number: "",
     origin: "",
     destination: "",
     mode: "",
     etd: "",
     eta: "",
-    filter_days: "",
+    filter_days: "15",
   };
 
   useEffect(() => {
@@ -59,6 +59,11 @@ const DeliveredTab = () => {
   }, [currentPage]);
 
   // const filteredData = filterData(data);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, DeliveredData?.length);
+
+  // Extract the data for the current page
+  const currentPageData = DeliveredData?.slice(startIndex, endIndex);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalRowData, setModalRowData] = useState(null);
@@ -347,7 +352,7 @@ const DeliveredTab = () => {
       }}
     >
       <DataTable
-        value={DeliveredData}
+        value={currentPageData}
         dataKey="shipmentId"
         paginator={false}
         rows={10}
@@ -468,8 +473,7 @@ const DeliveredTab = () => {
       <Pagination
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
-        totalItems={bookingData?.lastPage}
-        itemsPerPage={bookingData?.perPage}
+        totalItems={DeliveredData?.length}
       />
       <Steppertrack
         isModalOpen={isModalOpen}

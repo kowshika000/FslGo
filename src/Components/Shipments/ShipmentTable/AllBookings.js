@@ -37,6 +37,7 @@ const AllBookings = ({ filterData }) => {
   const [globalFilterValue, setGlobalFilterValue] = useState("");
 
   const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5; // Number of items per page
   const dispatch = useDispatch();
   const ShipmentData = useSelector((state) => state.Booking);
   console.log("shipmentData-All booking", ShipmentData);
@@ -49,15 +50,15 @@ const AllBookings = ({ filterData }) => {
     filter_month: "",
     booking_type: "",
     status: "",
-    spagesize: currentPage,
-    sperpage: "5",
+    spagesize: "",
+    sperpage: "",
     booking_number: "",
     origin: "",
     destination: "",
     mode: "",
     etd: "",
     eta: "",
-    filter_days: "",
+    filter_days: "15",
   };
 
   useEffect(() => {
@@ -65,6 +66,12 @@ const AllBookings = ({ filterData }) => {
   }, [currentPage]);
 
   const filteredData = filterData(data);
+    //   const filteredData = filterData(data);
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = Math.min(startIndex + itemsPerPage, filteredData?.length);
+  
+    // Extract the data for the current page
+    const currentPageData = filteredData?.slice(startIndex, endIndex);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalRowData, setModalRowData] = useState(null);
@@ -345,7 +352,7 @@ const AllBookings = ({ filterData }) => {
       }}
     >
       <DataTable
-        value={data}
+        value={currentPageData}
         dataKey="shipmentId"
         paginator={false}
         rows={10}
@@ -467,8 +474,7 @@ const AllBookings = ({ filterData }) => {
       <Pagination
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
-        totalItems={bookingData?.lastPage}
-        itemsPerPage={bookingData?.perPage}
+        totalItems={filteredData?.length}
       />
       <Steppertrack
         isModalOpen={isModalOpen}
@@ -480,19 +486,3 @@ const AllBookings = ({ filterData }) => {
 };
 
 export default AllBookings;
-{
-  /* <i className="pi pi-search" />
-          <InputText
-            value={globalFilterValue}
-            onChange={onGlobalFilterChange}
-            prefix={search}
-            placeholder="Search booking id, origin, destination..."
-            style={{
-              width: "349px",
-              height: "36px",
-              borderRadius: "6px",
-              border: "1px solid #E7EAF0",
-              padding: "9px 11px 9px 11px",
-            }}
-          /> */
-}
