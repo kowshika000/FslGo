@@ -45,15 +45,15 @@ const InTransitTab = () => {
     filter_month: "",
     booking_type: "",
     status: "",
-    spagesize: currentPage,
-    sperpage: "5",
+    spagesize: "",
+    sperpage: "",
     booking_number: "",
     origin: "",
     destination: "",
     mode: "",
     etd: "",
     eta: "",
-    filter_days: "",
+    filter_days: "15",
   };
 
   useEffect(() => {
@@ -61,6 +61,11 @@ const InTransitTab = () => {
   }, [currentPage]);
 
   //   const filteredData = filterData(data);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, InTransitData?.length);
+
+  // Extract the data for the current page
+  const currentPageData = InTransitData?.slice(startIndex, endIndex);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalRowData, setModalRowData] = useState(null);
@@ -349,7 +354,7 @@ const InTransitTab = () => {
       }}
     >
       <DataTable
-        value={InTransitData}
+        value={currentPageData}
         dataKey="shipmentId"
         paginator={false}
         rows={10}
@@ -468,11 +473,10 @@ const InTransitTab = () => {
       </DataTable>
 
       <Pagination
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        totalItems={bookingData?.lastPage}
-        itemsPerPage={bookingData?.perPage}
-      />
+                currentPage={currentPage}
+                setCurrentPage={setCurrentPage}
+                totalItems={InTransitData?.length}
+              />
       <Steppertrack
         isModalOpen={isModalOpen}
         handleCancel={handleCancel}
