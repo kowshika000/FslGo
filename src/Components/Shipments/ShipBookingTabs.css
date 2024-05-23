@@ -172,3 +172,15 @@
 .viewtab-outer {
   margin-left: 100px;
 }
+.ant-modal-content{
+  width:100%;
+  top:150px;
+  padding: 0 !important;;
+  height: auto;
+  margin-left: 180px;
+}
+.custom-header1{
+  background-color: rgb(25, 25, 101);
+  color: white;
+  
+}

@@ -28,7 +28,7 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
     }
   };
   return (
-    <Modal open={isModalOpen} onCancel={handleCancel} width="80%">
+    <Modal open={isModalOpen} onCancel={handleCancel} width="80%" className="mx-auto d-block">
       <div className="tracker">
         <div
           className="tracker-body "
@@ -109,7 +109,11 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
               </div>
             )}
             <div>
-             
+              {/* {rowData?.status === "In Transit" ? (
+                <button className="Booked me-3">Booked</button>
+              ) : (
+                <button className="cancel me-3">Cancellation Requested</button>
+              )}  */}
               {handleStatusLabel()}
               <span
                 style={{
@@ -132,8 +136,8 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
               padding: "20px 0px 20px 0px",
               backgroundColor: "#F3F5F7",
               borderRadius: "8px",
-              overflowX: "auto",
-              overflowY: "hidden",
+              // overflowX: "auto",
+              // overflowY: "hidden",
             }}
           >
             <Stepper data={rowData} />
