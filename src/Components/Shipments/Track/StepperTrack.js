@@ -11,8 +11,26 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
   const mileStoneData = useSelector((state) => state.Booking);
   const bookingData = mileStoneData?.booking;
   const data = bookingData?.data;
+  console.log(data);
+  const handleStatusLabel = () => {
+    if (rowData?.status === "Arrived") {
+      return <button className="Booked me-3">Arrived</button>;
+    } else if (rowData?.status === "Delivered") {
+      return <button className="Booked me-3">Delivered</button>;
+    } else if (rowData?.status === "Departed") {
+      return <button className="Booked me-3">Departed</button>;
+    } else if (rowData?.status === "Received") {
+      return <button className="Booked me-3">Received</button>;
+    } else if (rowData?.status === "Booked") {
+      return <button className="Booked me-3">Booked</button>;
+    } else if (rowData?.status === "Booking In Progress") {
+      return <button className="cancel me-3">Booking In Progress</button>;
+    } else if (rowData?.status === "In Transit") {
+      return <button className="Booked me-3">In Transit</button>;
+    }
+  };
   return (
-    <Modal open={isModalOpen} onCancel={handleCancel} width="80%">
+    <Modal open={isModalOpen} onCancel={handleCancel} width="1146px">
       <div className="tracker">
         <div
           className="tracker-body "
@@ -91,11 +109,7 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
               </p>
             </div>
             <div>
-            {rowData?.status === "Departed" ? (
-                <button className="Booked me-3">Booked</button>
-              ) : (
-                <button className="cancel me-3">Cancellation Requested</button>
-              )}
+            {handleStatusLabel()}
               <span
                 style={{
                   backgroundColor: "#F2F4F8",

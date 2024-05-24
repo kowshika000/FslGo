@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 import Stepper from "./Stepper";
 import { Modal } from "antd";
 import CountryFlag from "../../../Core-Components/CountryFlag";
@@ -27,11 +27,12 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
       return <button className="cancel me-3">Booking In Progress</button>;
     }
   };
+  
   return (
-    <Modal open={isModalOpen} onCancel={handleCancel} width="80%" className="mx-auto d-block">
+    <Modal open={isModalOpen} onCancel={handleCancel} width="1146px" >
       <div className="tracker">
         <div
-          className="tracker-body "
+          className="tracker-header "
           style={{ height: "199px", padding: "20px" }}
         >
           <div className="d-flex justify-content-between">
@@ -129,18 +130,22 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
             </div>
           </div>
           <div
-            className="mt-2"
+            className="mt-2 tracker-body"
             style={{
-              width: "1106px",
+              width:"100%",
+              // minWidth: "1585px",
               height: "107px",
               padding: "20px 0px 20px 0px",
               backgroundColor: "#F3F5F7",
               borderRadius: "8px",
-              // overflowX: "auto",
-              // overflowY: "hidden",
+              overflowX: "auto",
+              overflowY: "hidden",
+
+             
             }}
           >
             <Stepper data={rowData} />
+            
           </div>
         </div>
         <div

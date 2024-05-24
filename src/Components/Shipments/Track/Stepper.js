@@ -14,7 +14,9 @@ const Stepper = ({ data }) => {
     }));
 
   return (
-    <div className='stepper d-flex justify-content-between' >
+    <div className="stepper-container" style={{ overflowX: "auto" }}>
+    
+    <div className='stepper d-flex justify-content-between' style={{minWidth:"1585px",width:"100%"}}>
         {
             steps?.map((step,i)=>(
                 <div key={i}  className={`step-item ${step?.milestonestatus==="INPROGRESS" ? "active_yellow":""} ${
@@ -36,7 +38,7 @@ const Stepper = ({ data }) => {
                 </div>
             ))
         }
-    </div>
+    </div></div>
   )
 }
 
