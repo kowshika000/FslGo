@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -14,16 +15,17 @@ import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 import { FilterMatchMode } from "primereact/api";
 import "./Booking.css";
-// import search from "../../../assets/Searchicon.png";
 import { Row, Col, Input, Image } from "antd";
 import { SearchOutlined, CaretDownFilled } from "@ant-design/icons";
 import FilterDrawer from "./Filter";
 import filter from "../../../assets/Filter 2.png";
 import calendar from "../../../assets/calendar.png";
-import { Dropdown, Space, Menu } from "antd";
-import { InputText } from "primereact/inputtext";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { IconButton } from "@mui/material";
+import { Dropdown } from "primereact/dropdown";
 
-const AllBookings = ({ filterData }) => {
+const AllBookings = ({ filterData, selectedStatus }) => {
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     id: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
@@ -35,16 +37,11 @@ const AllBookings = ({ filterData }) => {
     status: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
   });
   const [globalFilterValue, setGlobalFilterValue] = useState("");
+  const [filterValue, setFilterValue] = useState(15);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5; // Number of items per page
   const dispatch = useDispatch();
-  const ShipmentData = useSelector((state) => state.Booking);
-  console.log("shipmentData-All booking", ShipmentData);
-
-  const bookingData = ShipmentData?.booking;
-  const data = bookingData?.data;
-  console.log(data);
 
   const payload = {
     filter_month: "",
@@ -58,20 +55,25 @@ const AllBookings = ({ filterData }) => {
     mode: "",
     etd: "",
     eta: "",
-    filter_days: "15",
+    filter_days: filterValue,
   };
 
   useEffect(() => {
     dispatch(bookingRequest({ payload }));
-  }, [currentPage]);
+  }, [filterValue]);
 
-  const filteredData = filterData(data);
-    //   const filteredData = filterData(data);
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = Math.min(startIndex + itemsPerPage, filteredData?.length);
+  const [filteredData, setFilteredData] = useState([]);
+
+  useEffect(() => {
+    setFilteredData(filterData);
+  }, [selectedStatus]);
+  console.log("booking", filteredData);
   
-    // Extract the data for the current page
-    const currentPageData = filteredData?.slice(startIndex, endIndex);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, filteredData?.length);
+
+  // Extract the data for the current page
+  const currentPageData = filteredData?.slice(startIndex, endIndex);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalRowData, setModalRowData] = useState(null);
@@ -119,11 +121,15 @@ const AllBookings = ({ filterData }) => {
   };
   const shipmentTemplate = (rowData) => {
     return (
-      <div>
+      <div style={{ textAlign: "start" }}>
         <span className="bold px-4">{rowData?.id}</span>
         <div
-          style={{ color: "rgba(103, 120, 142, 1)", fontSize: "13px" }}
-          className="px-4 mt-1"
+          style={{
+            color: "rgba(103, 120, 142, 1)",
+            fontSize: "13px",
+            textAlign: "start",
+          }}
+          className="mt-1 px-4"
         >
           LCL
         </div>
@@ -140,6 +146,7 @@ const AllBookings = ({ filterData }) => {
             fontWeight: "400",
             width: "50px",
             textWrap: "wrap",
+            textAlign: "start",
           }}
         >
           {rowData?.origin.length <= 20 ? (
@@ -174,24 +181,54 @@ const AllBookings = ({ filterData }) => {
       </div>
     );
   };
-  const [sortField, setSortField] = useState(null);
-  const [sortOrder, setSortOrder] = useState(null);
-
-  const onSort = (field, order) => {
-    console.log("sorting field", field);
-    let sortedData = [...data];
-
-    sortedData.sort((a, b) => {
-      return order === 1
-        ? a[field] > b[field]
-          ? 1
-          : -1
-        : a[field] < b[field]
-        ? 1
-        : -1;
+  const handleSort = (col) => {
+    console.log("Ascending");
+    const sorted = [...filteredData].sort((a, b) => {
+      const valA = a[col];
+      const valB = b[col];
+      if (!isNaN(valA) && !isNaN(valB)) {
+        return valA - valB;
+      }
+      if (col === "etd/atd" || col === "eta/ata") {
+        const dateA = parseDate1(valA);
+        const dateB = parseDate1(valB);
+        return dateA - dateB;
+      }
+      return valA > valB ? 1 : -1;
     });
+    setFilteredData(sorted);
+  };
+  const parseDate1 = (dateString) => {
+    const parts = dateString.split("/");
+    return new Date(parts[2], parts[1] - 1, parts[0]);
+  };
+  const parseDate2 = (dateString) => {
+    const parts = dateString.split("/");
+    return new Date(parts[2], parts[1] - 1, parts[0]);
+  };
 
-    filterData(sortedData);
+  const handleSortDown = (col) => {
+    console.log("Descending");
+    const sorted = [...filteredData].sort((a, b) => {
+      const valA = a[col];
+      const valB = b[col];
+
+      // Check if the values are numbers
+      if (!isNaN(valA) && !isNaN(valB)) {
+        return valB - valA;
+      }
+
+      // Handle date strings
+      if (col === "etd/atd" || col === "eta/ata") {
+        const dateA = parseDate2(valA);
+        const dateB = parseDate2(valB);
+        return dateB - dateA;
+      }
+
+      // Default string comparison
+      return valA < valB ? 1 : -1;
+    });
+    setFilteredData(sorted);
   };
 
   // Function to parse dates in the "dd/mm/yyyy" format
@@ -202,22 +239,6 @@ const AllBookings = ({ filterData }) => {
   };
 
   const [visible, setVisible] = useState(false);
-  const [selectedDropdownItem, setSelectedDropdownItem] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("");
-  const items = [
-    {
-      label: "Past 30 Days",
-      key: "1",
-    },
-    {
-      label: "Past 15 days",
-      key: "2",
-    },
-    {
-      label: "Past 60 days",
-      key: "3",
-    },
-  ];
 
   const showDrawer = () => {
     setVisible(true);
@@ -225,13 +246,6 @@ const AllBookings = ({ filterData }) => {
 
   const onClose = () => {
     setVisible(false);
-  };
-  const handleSearch = (e) => {
-    setSearchQuery(e.target.value);
-  };
-  const onClick = (item) => {
-    setSelectedDropdownItem(item);
-    console.log("Selected item:", item);
   };
   const onGlobalFilterChange = (e) => {
     const value = e.target.value;
@@ -242,29 +256,43 @@ const AllBookings = ({ filterData }) => {
     setFilters(_filters);
     setGlobalFilterValue(value);
   };
+
+  const [selectedDropdownItem, setSelectedDropdownItem] =
+    useState("Past 15 Days");
+
+  const items = ["Past 15 Days", "Past 30 Days", "Past 60 Days"];
+  useEffect(() => {
+    if (selectedDropdownItem === "Past 15 Days") {
+      setFilterValue(15);
+    } else if (selectedDropdownItem === "Past 30 Days") {
+      setFilterValue(30);
+    } else if (selectedDropdownItem === "Past 60 Days") {
+      setFilterValue(60);
+    }
+  }, [selectedDropdownItem]);
+
+  console.log("tab FilterValue", filterValue);
+
   const renderHeader = () => {
     return (
       <Row
         justify="space-between"
         className="w-full"
-        style={{ padding: "10px 5px", backgroundColor: "white" }}
+        style={{ padding: "0px 0px 20px 0px",backgroundColor:"white" }}
       >
         <Col>
           <Input
-            value={globalFilterValue}
-            onChange={onGlobalFilterChange}
             placeholder="Search booking id , origin, destination... "
             prefix={<SearchOutlined style={{ color: "#94A2B2" }} />}
             style={{
-              width: "349px",
-              height: "36px",
-              borderRadius: "6px",
-              border: "1px solid #E7EAF0",
-              padding: "9px 11px 9px 11px",
+              width: "368.13px",
+              padding: "4px 11px",
+              borderRadius: "4px",
             }}
+            value={globalFilterValue}
+            onChange={onGlobalFilterChange}
           />
         </Col>
-
         <Col className="d-flex ">
           <div
             style={{ border: "1px solid #E7EAF0", borderRadius: "8px" }}
@@ -285,44 +313,24 @@ const AllBookings = ({ filterData }) => {
               }}
             >
               <Dropdown
-                overlayStyle={{ minWidth: "200px" }} // Adjust the width as needed
-                overlay={
-                  <Menu>
-                    {items.map((item) => (
-                      <Menu.Item key={item.key} onClick={() => onClick(item)}>
-                        {item.label}
-                      </Menu.Item>
-                    ))}
-                  </Menu>
-                }
-                trigger={["click"]}
-              >
-                <a
-                  onClick={(e) => e.preventDefault()}
-                  style={{ color: "rgba(73, 90, 110, 1)" }}
-                >
-                  <Space>
-                    <span
-                      style={{
-                        maxWidth: "160px",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      {selectedDropdownItem
-                        ? selectedDropdownItem.label
-                        : "Past 30 days"}
-                    </span>
-                    <CaretDownFilled style={{ marginLeft: "4px" }} />
-                  </Space>
-                </a>
-              </Dropdown>
+                value={selectedDropdownItem}
+                onChange={(e) => {
+                  console.log("Selected item:", e.value); // Add logging statement
+                  setSelectedDropdownItem(e.value);
+                }}
+                options={items}
+                placeholder="Past 15 Days"
+                className="w-full md:w-14rem"
+                style={{ border: "none" }}
+              />
             </div>
           </div>
           <div
             className="filter d-flex py-1 px-2"
-            style={{ border: "1px solid rgb(231,234,240", borderRadius: "8px" }}
+            style={{
+              border: "1px solid rgb(231,234,240",
+              borderRadius: "8px",
+            }}
           >
             <div className="ant-image cursor-pointer" onClick={showDrawer}>
               <img
@@ -335,7 +343,7 @@ const AllBookings = ({ filterData }) => {
                 }}
               />
             </div>
-            <span className="align-items-center text-dark">Filters</span>
+            <span className="align-items-center">Filters</span>
           </div>
 
           <FilterDrawer visible={visible} onClose={onClose} />
@@ -348,7 +356,7 @@ const AllBookings = ({ filterData }) => {
   return (
     <div
       style={{
-        backgroundColor: "white",
+        backgroundColor: "white"
       }}
     >
       <DataTable
@@ -375,14 +383,34 @@ const AllBookings = ({ filterData }) => {
       >
         <Column
           field="id"
+          style={{width:"153px"}}
           header={
             <span
-              onClick={() => onSort("id", sortOrder === 1 ? -1 : 1)}
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
-              className="px-4"
+              className="px-4 d-flex"
             >
               Shipment ID
-              <img src={sort} alt="Sort Icon" className="ps-1" />
+              <div
+                className="d-flex sorticon"
+                style={{ flexDirection: "column" }}
+              >
+                <IconButton
+                  onClick={() => {
+                    handleSort("id");
+                  }}
+                  className="p-0"
+                >
+                  <ExpandLessIcon className="sortup" />
+                </IconButton>
+                <IconButton
+                  onClick={() => {
+                    handleSortDown("id");
+                  }}
+                  className="p-0"
+                >
+                  <ExpandMoreIcon className="sortdown" />
+                </IconButton>
+              </div>
             </span>
           }
           body={shipmentTemplate}
@@ -390,42 +418,102 @@ const AllBookings = ({ filterData }) => {
 
         <Column
           field="origin"
+          style={{width:"200px"}}
           header={
             <span
-              onClick={() => onSort("origin", sortOrder === 1 ? -1 : 1)}
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
+              className="d-flex"
             >
               Origin
-              <img src={sort} alt="Sort Icon" className="ps-1" />
+              <div
+                className="d-flex sorticon"
+                style={{ flexDirection: "column" }}
+              >
+                <IconButton
+                  onClick={() => {
+                    handleSort("origin");
+                  }}
+                  className="p-0"
+                >
+                  <ExpandLessIcon className="sortup" />
+                </IconButton>
+                <IconButton
+                  onClick={() => {
+                    handleSortDown("origin");
+                  }}
+                  className="p-0"
+                >
+                  <ExpandMoreIcon className="sortdown" />
+                </IconButton>
+              </div>
             </span>
           }
           body={originBodyTemplate}
           headerClassName="custom-header p-3"
           className="p-3"
-          style={{ width: "200px" }}
         ></Column>
         <Column
           field="destination"
+          style={{width:"200px"}}
           header={
             <span
-              className="p-3"
-              onClick={() => onSort("destination", sortOrder === 1 ? -1 : 1)}
+              className="p-3 d-flex"
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
             >
               Destination
-              <img src={sort} alt="Sort Icon" className="ps-1" />
+              <div
+                className="d-flex sorticon"
+                style={{ flexDirection: "column" }}
+              >
+                <IconButton
+                  onClick={() => {
+                    handleSort("destination");
+                  }}
+                  className="p-0"
+                >
+                  <ExpandLessIcon className="sortup" />
+                </IconButton>
+                <IconButton
+                  onClick={() => {
+                    handleSortDown("destination");
+                  }}
+                  className="p-0"
+                >
+                  <ExpandMoreIcon className="sortdown" />
+                </IconButton>
+              </div>
             </span>
           }
           body={destinationBodyTemplate}
           className="p-3"
-          style={{ width: "200px" }}
         ></Column>
         <Column
           field="booked_on"
+          style={{width:"121px"}}
           header={
-            <span className="p-3">
+            <span className="p-3 d-flex">
               Booked on
-              <img src={sort} alt="Sort Icon" className="ps-1" />
+              <div
+                className="d-flex sorticon"
+                style={{ flexDirection: "column" }}
+              >
+                <IconButton
+                  onClick={() => {
+                    handleSort("booked_on");
+                  }}
+                  className="p-0"
+                >
+                  <ExpandLessIcon className="sortup" />
+                </IconButton>
+                <IconButton
+                  onClick={() => {
+                    handleSortDown("booked_on");
+                  }}
+                  className="p-0"
+                >
+                  <ExpandMoreIcon className="sortdown" />
+                </IconButton>
+              </div>
             </span>
           }
           bodyClassName="custom-cell"
@@ -433,10 +521,31 @@ const AllBookings = ({ filterData }) => {
         ></Column>
         <Column
           field="etd/atd"
+          style={{width:"100px"}}
           header={
-            <span className="p-3">
+            <span className="p-3 d-flex">
               ETD/ATD
-              <img src={sort} alt="Sort Icon" className="ps-1" />
+              <div
+                className="d-flex sorticon"
+                style={{ flexDirection: "column" }}
+              >
+                <IconButton
+                  onClick={() => {
+                    handleSort("etd/atd");
+                  }}
+                  className="p-0"
+                >
+                  <ExpandLessIcon className="sortup" />
+                </IconButton>
+                <IconButton
+                  onClick={() => {
+                    handleSortDown("etd/atd");
+                  }}
+                  className="p-0"
+                >
+                  <ExpandMoreIcon className="sortdown" />
+                </IconButton>
+              </div>
             </span>
           }
           bodyClassName="custom-cell"
@@ -444,10 +553,31 @@ const AllBookings = ({ filterData }) => {
         ></Column>
         <Column
           field="eta/ata"
+          style={{width:"100px"}}
           header={
-            <span className="p-3">
+            <span className="p-3 d-flex">
               ETA/ATA
-              <img src={sort} alt="Sort Icon" className="ps-1" />
+              <div
+                className="d-flex sorticon"
+                style={{ flexDirection: "column" }}
+              >
+                <IconButton
+                  onClick={() => {
+                    handleSort("eta/ata");
+                  }}
+                  className="p-0"
+                >
+                  <ExpandLessIcon className="sortup" />
+                </IconButton>
+                <IconButton
+                  onClick={() => {
+                    handleSortDown("eta/ata");
+                  }}
+                  className="p-0"
+                >
+                  <ExpandMoreIcon className="sortdown" />
+                </IconButton>
+              </div>
             </span>
           }
           bodyClassName="custom-cell"
@@ -455,6 +585,7 @@ const AllBookings = ({ filterData }) => {
         ></Column>
         <Column
           field="status"
+          style={{width:"115px"}}
           header={<span className="p-3">Status</span>}
           bodyClassName={(rowData) =>
             rowData.status === "Booking In Progress"

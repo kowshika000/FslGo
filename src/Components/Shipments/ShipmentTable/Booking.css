@@ -17,11 +17,27 @@
 
   .ant-tabs-content-holder{
     width: 1240px !important;
-    height:522px !important;
+    /* height:522px !important; */
+
     padding: 0 5px 10px 10px;
     background-color: white;
   }
 
   .ant-tabs-nav-more{
    display: none !important;
+  }
+
+  .p-dropdown:not(.p-disabled).p-focus{
+   box-shadow: none !important;
+  }
+
+  .ant-image-mask:hover{
+   display: none !important;
+  }
+
+  .origin-cell{
+   text-align: start !important;
+  }
+  .bodycell{
+   text-align: start !important;
   }

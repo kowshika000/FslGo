@@ -4,8 +4,8 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 
 const Pagination = ({ currentPage, setCurrentPage, totalItems }) => {
-  console.log(currentPage)
-  console.log(totalItems)
+  // console.log(currentPage)
+  // console.log(totalItems)
   const itemsPerPage =5;
   const startItem = (currentPage - 1) * itemsPerPage + 1;
   const endItem = Math.min(currentPage * itemsPerPage, totalItems);

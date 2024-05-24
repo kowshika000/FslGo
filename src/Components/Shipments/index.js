@@ -1,10 +1,10 @@
 import React from 'react'
-import Map from './Map';
+import Map from './Map/Map';
 import BookingTabs from './ShipmentTable/BookingTabs';
 import { Typography } from '@mui/material';
 import Navbar from '../Layout/Navbar';
 import './ShipBookingTabs.css'
-import MapboxMap from './MapBox';
+import MapboxMap from './Map/MapBox';
 
 
 const ShipmentsHome = () => {

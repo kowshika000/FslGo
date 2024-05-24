@@ -2,16 +2,12 @@ import React from "react";
 import Stepper from "./Stepper";
 import { Modal } from "antd";
 import CountryFlag from "../../Core-Components/CountryFlag";
-import { useSelector } from "react-redux";
 import arrow1 from "../../../assets/arrow1.png";
 import Union from "../../../assets/Union.png";
 import menu from "../../../assets/menustepper.png";
 
 function Steppertrack({ isModalOpen, handleCancel, rowData }) {
-  const mileStoneData = useSelector((state) => state.Booking);
-  const bookingData = mileStoneData?.booking;
-  const data = bookingData?.data;
-  console.log(data);
+
   const handleStatusLabel = () => {
     if (rowData?.status === "Arrived") {
       return <button className="Booked me-3">Arrived</button>;
@@ -40,7 +36,7 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
             <div className="d-flex">
               <div>
                 <CountryFlag
-                  countryCode="AE"
+                  countryCode={rowData?.origin_countrycode}
                   style={{ width: "18.67px", height: "14px" }}
                 />
               </div>
@@ -54,7 +50,7 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
                   textAlign: "center",
                 }}
               >
-                Jebel Ali(AEJEA)
+                {rowData?.origin}
               </p>
               <img
                 src={arrow1}
@@ -69,7 +65,7 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
                   paddingRight: "5px",
                 }}
               >
-                <CountryFlag countryCode="IN" />
+                <CountryFlag countryCode={rowData?.destination_countrycode} />
               </div>
               <p
                 className="ms-2"
@@ -80,7 +76,7 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
                   letterSpacing: "1%",
                 }}
               >
-                Nhava Sheva(INNSA)
+               {rowData?.destination}
               </p>
               <p className="mx-3">|</p>
 
