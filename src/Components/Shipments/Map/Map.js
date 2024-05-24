@@ -5,16 +5,11 @@ import L from "leaflet";
 import MapMarker from "./MapMarker";
 import { useDispatch, useSelector } from "react-redux";
 import { mapRequest } from "../../../Redux/Actions/MapAction";
+import { CountryData } from "./CountryData";
 
 // Define the position and coordinates
 const position = [10.586958, -34.623453];
 
-const arrCoordinates1 = [
-  [40.715051, -73.586857], // New York
-  [41.986704, -87.799812], // Chicago
-];
-
-// Create custom icons
 const icon1 = L.icon({
   iconSize: [20, 20],
   iconAnchor: [10, 41],
@@ -39,6 +34,21 @@ export default function Americas() {
 
   const MapDatas = useSelector((state) => state.Map?.MapData?.countries);
   console.log("map....", MapDatas);
+
+  const filteredCountryData = MapDatas
+    ? CountryData.filter((country) =>
+        MapDatas.some((data) => data.country_code === country.countryCode)
+      )
+    : [];
+
+  // const filteredCountryData = MapDatas
+  // ? MapDatas.filter((data) =>
+  //     CountryData.some((country) => country.countryCode === data.country_code)
+  //   )
+  // : [];
+ console.log("filter",filteredCountryData);
+  const markernumber = MapDatas?.map((data) => data.no_of_shipments);
+
   return (
     <div>
       <MapContainer
@@ -49,24 +59,25 @@ export default function Americas() {
       >
         <TileLayer url="https://tile.openstreetmap.de/{z}/{x}/{y}.png" />
         {/* Markers with icon 1 */}
-        {arrCoordinates1.map((coordinate, index) => (
-          <Marker
-            key={index}
-            position={coordinate}
-            icon={icon1}
-            eventHandlers={{
-              click: () => handleMarkerClick(),
-            }}
-          >
-            {/* <Tooltip direction="top" offset={[0, -30]}>
-              <div>
-                <strong>New York</strong>
-                <br />
-                Freight Systems Inc., 626 RXR Plaza Uniondale, NY 11556
-              </div>
-            </Tooltip> */}
-          </Marker>
-        ))}
+        {filteredCountryData.map((location, index) => {
+          return (
+            <Marker
+              key={index}
+              position={[location.latitude, location.longitude]}
+              icon={icon1}
+              eventHandlers={{
+                click: () => handleMarkerClick(),
+              }}
+            >
+              {/* {MapDatas.map((data,index) => (
+                <Tooltip direction="top" offset={[0, -30]} key={index}>
+                  {data.no_of_shipments}
+                  {console.log("no",data.no_of_shipments)}
+                </Tooltip>
+              ))} */}
+            </Marker>
+          );
+        })}
       </MapContainer>
       <MapMarker showModal={showModal} onClose={handleModalClose} />
     </div>
