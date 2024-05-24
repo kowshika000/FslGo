@@ -6,6 +6,7 @@ import {
   Select,
   FormControl,
   InputLabel,
+  CircularProgress
 } from "@mui/material";
 import { Dropdown } from 'primereact/dropdown';
 import { useDispatch, useSelector } from "react-redux";
@@ -27,6 +28,7 @@ const Inbox = () => {
    dispatch(inboxCountRequest({filter:filterValue}))
   },[])
   const inboxcount = useSelector((state)=>state.InboxCount);
+  const {loading,error} = useSelector((state)=>state.InboxCount);
   console.log(inboxcount)
   const inboxDetails = inboxcount ? inboxcount.inboxCount.notificationwise_count : "null";
 console.log(inboxDetails);
@@ -36,8 +38,21 @@ console.log(inboxDetails);
   
   return (
     <div className="layout shadow p-3">
+      {loading ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "200px",
+                }}
+              >
+                <CircularProgress style={{color:"red"}}/>
+              </Box>
+            ) : (
       <div className="">
         <div className="row ">
+          
           <div className="col ">
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
               <Box sx={{ display: "flex", padding: "8px" }}>
@@ -178,6 +193,7 @@ console.log(inboxDetails);
           </div>
         </div>
       </div>
+            )}
     </div>
   );
 };
