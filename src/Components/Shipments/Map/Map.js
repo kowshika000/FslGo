@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { MapContainer, Marker, TileLayer, Tooltip } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-import MapMarker from "./ShipmentTable/MapMarker";
+import MapMarker from "./MapMarker";
+import { useDispatch, useSelector } from "react-redux";
+import { mapRequest } from "../../../Redux/Actions/MapAction";
 
 // Define the position and coordinates
 const position = [10.586958, -34.623453];
@@ -23,7 +25,7 @@ const icon1 = L.icon({
 // Define the component
 export default function Americas() {
   const [showModal, setShowModal] = useState(false);
-
+  const dispatch = useDispatch();
   const handleMarkerClick = () => {
     setShowModal(true);
   };
@@ -31,14 +33,19 @@ export default function Americas() {
   const handleModalClose = () => {
     setShowModal(false);
   };
+  useEffect(() => {
+    dispatch(mapRequest());
+  }, [dispatch]);
 
+  const MapDatas = useSelector((state) => state.Map?.MapData?.countries);
+  console.log("map....", MapDatas);
   return (
     <div>
       <MapContainer
         center={position}
         zoom={1.5}
         minZoom={1.5}
-        style={{ height: "300px",position:"relative" }}
+        style={{ height: "300px", position: "relative" }}
       >
         <TileLayer url="https://tile.openstreetmap.de/{z}/{x}/{y}.png" />
         {/* Markers with icon 1 */}

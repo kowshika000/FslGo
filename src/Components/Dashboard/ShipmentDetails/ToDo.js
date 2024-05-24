@@ -1,21 +1,22 @@
-import React, { useState ,useEffect } from "react";
-import { Typography } from "@mui/material";
-import './ToDo.css';
-import './shipmentDetails.css'
-import { useDispatch,useSelector } from "react-redux";
+import React, { useState, useEffect } from "react";
+import { Typography, CircularProgress,Box } from "@mui/material";
+import "./ToDo.css";
+import "./shipmentDetails.css";
+import { useDispatch, useSelector } from "react-redux";
 import { todoRequest } from "../../../Redux/Actions/ShipmentAction";
 
 const ToDo = () => {
-  const dispatch = useDispatch()
-  const todo = useSelector((state)=>state.Todo)
-  console.log("todo",todo);
+  const dispatch = useDispatch();
+  const todo = useSelector((state) => state.Todo);
+  const { loading, error } = useSelector((state) => state.Todo);
+  console.log("todo", todo);
   const [isHovered, setIsHovered] = useState(false);
 
   const handleHover = () => {
     setIsHovered(!isHovered);
   };
-const todoDetails = todo?.todos?.todo_list?.cost;
-console.log(todoDetails)
+  const todoDetails = todo?.todos?.todo_list?.cost;
+  console.log(todoDetails);
 
   const todoData = [
     {
@@ -51,124 +52,141 @@ console.log(todoDetails)
       daysLeft: "3 Days Left",
     },
   ];
-   useEffect(()=>{
+  useEffect(() => {
     dispatch(todoRequest());
-   },[])
+  }, []);
   return (
-    <div
-      className="layout shadow p-2"
-      
-    >
-      <div
-        style={{
-         
-          paddingLeft: "30px",
-          
-        }}
-        className="pt-3 pb-4"
-      >
-        <Typography
+    <div className="layout shadow p-2">
+      {loading ? (
+        <Box
           sx={{
-            fontSize: "20px",
-            fontWeight: 700,
-            lineHeight: "23.44px",
-            textAlign: "left",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            height: "200px",
           }}
         >
-          Your to-Do list <span style={{color:"#B3B2BA"}}>({todo?.todos?.todo_list?.overall_count})</span>
-        </Typography>
-      </div>
-      <div className="scroll d-flex mt-2">
-        <div
-       
-          style={{ overflowY: "auto", height: "295px", overflowX: "hidden" }}
-        >
-          {todoDetails?.map((item) => (
-            <div
-              key={item.shipment_id}
-              className="row card-row m-0 todo-row"
-              style={{
-                height: "99px",
-                alignContent: "center",
-                width: "390px",
-                paddingLeft: "18px",
-                paddingRight:"20px"
+          <CircularProgress style={{ color: "red" }} />
+        </Box>
+        ) : (
+        <>
+          <div
+            style={{
+              paddingLeft: "30px",
+            }}
+            className="pt-3 pb-4"
+          >
+            <Typography
+              sx={{
+                fontSize: "20px",
+                fontWeight: 700,
+                lineHeight: "23.44px",
+                textAlign: "left",
               }}
             >
-              <div
-                style={{
-                  height: "81px",
-                }}
-              >
-                <div className="d-flex justify-content-between">
+              Your to-Do list{" "}
+              <span style={{ color: "#B3B2BA" }}>
+                ({todo?.todos?.todo_list?.overall_count})
+              </span>
+            </Typography>
+          </div>
+          <div className="scroll d-flex mt-2">
+            <div
+              style={{
+                overflowY: "auto",
+                height: "295px",
+                overflowX: "hidden",
+              }}
+            >
+              {todoDetails?.map((item) => (
+                <div
+                  key={item.shipment_id}
+                  className="row card-row m-0 todo-row"
+                  style={{
+                    height: "99px",
+                    alignContent: "center",
+                    width: "390px",
+                    paddingLeft: "18px",
+                    paddingRight: "20px",
+                  }}
+                >
                   <div
                     style={{
-                      fontWeight: 600,
-                      fontSize: "15px",
-                      lineHeight: "19px",
-                      color: "#29333D",
-                      height: "24.53px",
+                      height: "81px",
                     }}
                   >
-                    {item.shipment_id}
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "12px",
-                      lineHeight: "14.68px",
-                      fontWeight: "600",
-                      color: "#000000",
-                      textAlign: "right",
-                    }}
-                    className="text-end"
-                  >
-                    {item.pending_status}
+                    <div className="d-flex justify-content-between">
+                      <div
+                        style={{
+                          fontWeight: 600,
+                          fontSize: "15px",
+                          lineHeight: "19px",
+                          color: "#29333D",
+                          height: "24.53px",
+                        }}
+                      >
+                        {item.shipment_id}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "12px",
+                          lineHeight: "14.68px",
+                          fontWeight: "600",
+                          color: "#000000",
+                          textAlign: "right",
+                        }}
+                        className="text-end"
+                      >
+                        {item.pending_status}
+                      </div>
+                    </div>
+                    <div className="d-flex justify-content-between">
+                      <div
+                        style={{
+                          width: "198px",
+                          height: "50px",
+                          color: "#33343D",
+                        }}
+                      >
+                        <div
+                          style={{
+                            fontWeight: "500",
+                            fontSize: "16px",
+                            lineHeight: "18.75px",
+                          }}
+                        >
+                          {item.origin} - {item.destination}
+                        </div>
+                        <div
+                          style={{
+                            fontSize: "14px",
+                            fontWeight: "400",
+                            lineHeight: "16.41px",
+                          }}
+                        >
+                          Due Date {item.due_date}
+                        </div>
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "12px",
+                          fontWeight: "500",
+                          lineHeight: "14.06px",
+                          color: "#33343D",
+                          alignSelf: "center",
+                        }}
+                      >
+                        {item.pending_days} Days Left
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="d-flex justify-content-between">
-                  <div
-                    style={{
-                      width: "198px",
-                      height: "50px",
-                      color: "#33343D",
-                    }}
-                  >
-                    <div
-                      style={{
-                        fontWeight: "500",
-                        fontSize: "16px",
-                        lineHeight: "18.75px",
-                      }}
-                    >
-                      {item.origin} - {item.destination}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: "14px",
-                        fontWeight: "400",
-                        lineHeight: "16.41px",
-                      }}
-                    >
-                      Due Date {item.due_date}
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "12px",
-                      fontWeight: "500",
-                      lineHeight: "14.06px",
-                      color: "#33343D",
-                      alignSelf: "center",
-                    }}
-                  >
-                    {item.pending_days} Days Left
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
+          
+          </div>
+        </>
+      )}
     </div>
   );
 };
