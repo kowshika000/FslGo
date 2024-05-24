@@ -21,9 +21,12 @@ import FilterDrawer from "./Filter";
 import filter from "../../../assets/Filter 2.png";
 import calendar from "../../../assets/calendar.png";
 import { Dropdown, Space, Menu } from "antd";
-import { InputText } from "primereact/inputtext";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import { IconButton } from "@mui/material";
 
-const AllBookings = ({ filterData }) => {
+const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
+  console.log("filterValue",filterValue);
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     id: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
@@ -40,11 +43,11 @@ const AllBookings = ({ filterData }) => {
   const itemsPerPage = 5; // Number of items per page
   const dispatch = useDispatch();
   const ShipmentData = useSelector((state) => state.Booking);
-  console.log("shipmentData-All booking", ShipmentData);
+  // console.log("shipmentData-All booking", ShipmentData);
 
   const bookingData = ShipmentData?.booking;
   const data = bookingData?.data;
-  console.log(data);
+  // console.log(data);
 
   const payload = {
     filter_month: "",
@@ -58,20 +61,22 @@ const AllBookings = ({ filterData }) => {
     mode: "",
     etd: "",
     eta: "",
-    filter_days: "15",
+    filter_days: filterValue,
   };
 
   useEffect(() => {
     dispatch(bookingRequest({ payload }));
-  }, [currentPage]);
+  }, [filterValue]);
+  const [filteredData, setFilteredData] = useState([]);
+  useEffect(() => {
+    setFilteredData(filterData);
+  }, [selectedStatus]);
+  console.log("booking", filteredData);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const endIndex = Math.min(startIndex + itemsPerPage, filteredData?.length);
 
-  const filteredData = filterData(data);
-    //   const filteredData = filterData(data);
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = Math.min(startIndex + itemsPerPage, filteredData?.length);
-  
-    // Extract the data for the current page
-    const currentPageData = filteredData?.slice(startIndex, endIndex);
+  // Extract the data for the current page
+  const currentPageData = filteredData?.slice(startIndex, endIndex);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalRowData, setModalRowData] = useState(null);
@@ -174,24 +179,16 @@ const AllBookings = ({ filterData }) => {
       </div>
     );
   };
-  const [sortField, setSortField] = useState(null);
   const [sortOrder, setSortOrder] = useState(null);
-
-  const onSort = (field, order) => {
-    console.log("sorting field", field);
-    let sortedData = [...data];
-
-    sortedData.sort((a, b) => {
-      return order === 1
-        ? a[field] > b[field]
-          ? 1
-          : -1
-        : a[field] < b[field]
-        ? 1
-        : -1;
-    });
-
-    filterData(sortedData);
+  const handleSort = (col) => {
+    console.log("Ascending");
+    const sorted = [...filteredData].sort((a, b) => (a[col] > b[col] ? 1 : -1));
+    setFilteredData(sorted);
+  };
+  const handleSortDown = (col) => {
+    console.log("Descending");
+    const sorted = [...filteredData].sort((a, b) => (a[col] < b[col] ? 1 : -1));
+    setFilteredData(sorted);
   };
 
   // Function to parse dates in the "dd/mm/yyyy" format
@@ -360,29 +357,48 @@ const AllBookings = ({ filterData }) => {
         currentPageReportTemplate="{first} to {last} out of {totalRecords} "
         // paginatorTemplate=" PrevPageLink PageLinks NextPageLink  CurrentPageReport "
         removableSort
-        header={header}
-        filters={filters}
-        globalFilterFields={[
-          "id",
-          "origin",
-          "destination",
-          "booked_on",
-          "etd/atd",
-          "eta/ata",
-          "status",
-        ]}
+        // header={header}
+        // filters={filters}
+        // globalFilterFields={[
+        //   "id",
+        //   "origin",
+        //   "destination",
+        //   "booked_on",
+        //   "etd/atd",
+        //   "eta/ata",
+        //   "status",
+        // ]}
         rowClassName={rowClassName}
       >
         <Column
           field="id"
           header={
             <span
-              onClick={() => onSort("id", sortOrder === 1 ? -1 : 1)}
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
-              className="px-4"
+              className="px-4 d-flex"
             >
               Shipment ID
-              <img src={sort} alt="Sort Icon" className="ps-1" />
+              <div
+                className="d-flex sorticon"
+                style={{ flexDirection: "column" }}
+              >
+                <IconButton
+                  onClick={() => {
+                    handleSort("origin");
+                  }}
+                  className="p-0"
+                >
+                  <ExpandLessIcon className="sortup" />
+                </IconButton>
+                <IconButton
+                  onClick={() => {
+                    handleSortDown("origin");
+                  }}
+                  className="p-0"
+                >
+                  <ExpandMoreIcon className="sortdown" />
+                </IconButton>
+              </div>
             </span>
           }
           body={shipmentTemplate}
@@ -392,11 +408,31 @@ const AllBookings = ({ filterData }) => {
           field="origin"
           header={
             <span
-              onClick={() => onSort("origin", sortOrder === 1 ? -1 : 1)}
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
+              className="d-flex"
             >
               Origin
-              <img src={sort} alt="Sort Icon" className="ps-1" />
+              <div
+                className="d-flex sorticon"
+                style={{ flexDirection: "column" }}
+              >
+                <IconButton
+                  onClick={() => {
+                    handleSort("origin");
+                  }}
+                  className="p-0"
+                >
+                  <ExpandLessIcon className="sortup" />
+                </IconButton>
+                <IconButton
+                  onClick={() => {
+                    handleSortDown("origin");
+                  }}
+                  className="p-0"
+                >
+                  <ExpandMoreIcon className="sortdown" />
+                </IconButton>
+              </div>
             </span>
           }
           body={originBodyTemplate}
@@ -408,12 +444,31 @@ const AllBookings = ({ filterData }) => {
           field="destination"
           header={
             <span
-              className="p-3"
-              onClick={() => onSort("destination", sortOrder === 1 ? -1 : 1)}
+              className="p-3 d-flex"
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
             >
               Destination
-              <img src={sort} alt="Sort Icon" className="ps-1" />
+              <div
+                className="d-flex sorticon"
+                style={{ flexDirection: "column" }}
+              >
+                <IconButton
+                  onClick={() => {
+                    handleSort("origin");
+                  }}
+                  className="p-0"
+                >
+                  <ExpandLessIcon className="sortup" />
+                </IconButton>
+                <IconButton
+                  onClick={() => {
+                    handleSortDown("origin");
+                  }}
+                  className="p-0"
+                >
+                  <ExpandMoreIcon className="sortdown" />
+                </IconButton>
+              </div>
             </span>
           }
           body={destinationBodyTemplate}
@@ -423,9 +478,29 @@ const AllBookings = ({ filterData }) => {
         <Column
           field="booked_on"
           header={
-            <span className="p-3">
+            <span className="p-3 d-flex">
               Booked on
-              <img src={sort} alt="Sort Icon" className="ps-1" />
+              <div
+                className="d-flex sorticon"
+                style={{ flexDirection: "column" }}
+              >
+                <IconButton
+                  onClick={() => {
+                    handleSort("origin");
+                  }}
+                  className="p-0"
+                >
+                  <ExpandLessIcon className="sortup" />
+                </IconButton>
+                <IconButton
+                  onClick={() => {
+                    handleSortDown("origin");
+                  }}
+                  className="p-0"
+                >
+                  <ExpandMoreIcon className="sortdown" />
+                </IconButton>
+              </div>
             </span>
           }
           bodyClassName="custom-cell"
