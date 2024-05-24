@@ -252,7 +252,7 @@ function BookingTabs() {
                   <div
                     className="ant-image cursor-pointer"
                     onClick={showDrawer}
-                  >
+                  > 
                     <img
                       src={filter}
                       className="ant-image-img me-1 my-1"
@@ -262,6 +262,8 @@ function BookingTabs() {
                         cursor: "pointer",
                       }}
                     />
+
+
                   </div>
                   <span className="align-items-center">Filters</span>
                 </div>
