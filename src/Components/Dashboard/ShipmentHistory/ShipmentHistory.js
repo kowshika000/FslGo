@@ -56,8 +56,7 @@ const ShipmentHistory = ({ selectedStatus, filterDays, setSelectedStatus }) => {
   };
   console.log(selectedStatus);
   const [filteredData, setFilteredData] = useState([]);
-  const [filteredDataDep, setFilteredDataDep] = useState([]);
-
+ 
   useEffect(() => {
     // Filter data based on selected status
     let filteredData = [];
@@ -89,7 +88,7 @@ const ShipmentHistory = ({ selectedStatus, filterDays, setSelectedStatus }) => {
     }
     setFilteredData(filteredData);
     setCurrentPage(1);
-    setSelectedButton(false);
+    setSelectedButton(null);
   }, [selectedStatus, data]);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -203,8 +202,7 @@ const ShipmentHistory = ({ selectedStatus, filterDays, setSelectedStatus }) => {
       </div>
     );
   };
-  const [sortField, setSortField] = useState(null);
-  const [sortOrder, setSortOrder] = useState(null);
+
   
   const handleSort = (col) => {
     console.log("Ascending");
@@ -260,41 +258,38 @@ const parseDate2 = (dateString) => {
 
   const handleUpcomingDep = () => {
     setSelectedButton("Upcoming Departures");
-    const filteredDataDep = data?.filter(
+    const filteredData = data?.filter(
       (item) =>
         item.status === "Booking In Progress" ||
         item.status === "Booked" ||
         item.status === "Cargo Received" ||
         item.status === "Cargo Picked Up"
     );
-    const sortedData = [...filteredDataDep].sort((a, b) => {
+    const sortedData = [...filteredData].sort((a, b) => {
       const dateA = new Date(a["etd/atd"]);
       const dateB = new Date(b["etd/atd"]);
       return isAscending ? dateA - dateB : dateB - dateA;
     });
-
     setFilteredData(sortedData);
     setIsAscending(!isAscending); 
     setCurrentPage(1);
-    setSelectedStatus(false)
+    setSelectedStatus(null)
 
   };
 
   const handleUpcomingArr = () => {
     setSelectedButton("Upcoming Arrivals");
-    const filteredDataArr = data?.filter((item) => item.status === "In Transit" || item.status === "Departed");
+    const filteredData = data?.filter((item) => item.status === "In Transit" || item.status === "Departed");
 
-    const sortedData = [...filteredDataArr].sort((a, b) => {
+    const sortedData = [...filteredData].sort((a, b) => {
       const dateA = new Date(a["eta/ata"]);
       const dateB = new Date(b["eta/ata"]);
       return isAscending ? dateA - dateB : dateB - dateA;
     });
-    setSelectedStatus(false)
-
     setFilteredData(sortedData);
     setIsAscending(!isAscending); 
     setCurrentPage(1); 
-    setSelectedStatus(false);
+    setSelectedStatus(null);
   };
 
   // const handleBookedOn = () => {
