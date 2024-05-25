@@ -8,7 +8,6 @@ import Union from "../../../../assets/Union.png";
 import menu from "../../../../assets/menustepper.png";
 
 function Steppertrack({ isModalOpen, handleCancel, rowData }) {
-  console.log("dfghj", rowData);
   const mileStoneData = useSelector((state) => state.Booking);
   const bookingData = mileStoneData?.booking;
   const data = bookingData?.data;
