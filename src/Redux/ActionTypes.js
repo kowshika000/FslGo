@@ -39,3 +39,4 @@ export const OPENSAILING_FAILURE = 'OPENSAILING_FAILURE';
 export const MAP_REQUEST = 'MAP_REQUEST';
 export const MAP_SUCCESS = 'MAP_SUCCESS';
 export const MAP_FAILURE = 'MAP_FAILURE';
+
