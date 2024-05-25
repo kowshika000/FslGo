@@ -39,3 +39,6 @@
   .bodycell{
    text-align: start !important;
   }
+  .leaflet-top, .leaflet-bottom{
+   z-index: auto;
+  }
