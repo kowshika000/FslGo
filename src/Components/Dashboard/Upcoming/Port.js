@@ -38,7 +38,8 @@ export const Port = () => {
       dispatch(portRequest({ search_key: value, limits: "4" }));
     }
     setOriginPortOptionsVisible(true);
-    if (value === "") {
+    setDestPortOptionsVisible(false);
+    if (value.length > -1) {
       setOriginPort(null);
     }
   };
@@ -50,7 +51,9 @@ export const Port = () => {
       dispatch(portRequest({ search_key: value, limits: "4" }));
     }
     setDestPortOptionsVisible(true);
-    if (value === "") {
+    setOriginPortOptionsVisible(false);
+
+    if (value.length > -1) {
       setDestPort(null);
     }
   };
@@ -154,6 +157,10 @@ export const Port = () => {
             className="placeholder-color"
             onChange={handleOriginPortChange}
             value={searchOriginPort}
+            onFocus={() => setOriginPortOptionsVisible(true)}  // Show options on focus
+            onBlur={() => {
+              setTimeout(() => setOriginPortOptionsVisible(false), 100); // Hide options on blur with a delay to allow click
+            }}
           />
           <ArrowDropDownIcon />
      
@@ -166,7 +173,7 @@ export const Port = () => {
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",
-                  height: "200px",
+                  height: "100%",
                 }}
               >
                 <CircularProgress style={{color:"red"}}/>
@@ -272,6 +279,10 @@ export const Port = () => {
             className="placeholder-color"
             onChange={handleDestPortChange}
             value={searchDestPort}
+            onFocus={() => setDestPortOptionsVisible(true)}  // Show options on focus
+            onBlur={() => {
+              setTimeout(() => setDestPortOptionsVisible(false), 100); // Hide options on blur with a delay to allow click
+            }}
           />
           <ArrowDropDownIcon />
           {destPortOptionsVisible && (

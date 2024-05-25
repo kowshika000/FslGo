@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -277,7 +276,7 @@ const AllBookings = ({ filterData, selectedStatus }) => {
       <Row
         justify="space-between"
         className="w-full mb-3"
-        style={{backgroundColor:"white"}}
+        style={{ backgroundColor: "white" }}
       >
         <Col>
           <Input
@@ -301,10 +300,8 @@ const AllBookings = ({ filterData, selectedStatus }) => {
               src={calendar}
               width="16px"
               height="12px"
-              className="mt-2 pe-1"  
+              className="mt-2 pe-1"
             />
-
-
 
             <div
               style={{
@@ -326,25 +323,31 @@ const AllBookings = ({ filterData, selectedStatus }) => {
               />
             </div>
           </div>
-          <div
-            className="filter d-flex py-1 px-2"
-            style={{
-              border: "1px solid rgb(231,234,240",
-              borderRadius: "8px",
-            }}
-          >
+
+          <div className="filter d-flex">
             <div className="ant-image cursor-pointer" onClick={showDrawer}>
               <img
                 src={filter}
                 className="ant-image-img me-1 my-1"
                 style={{
-                  verticalAlign: "center",
                   marginTop: "2px",
                   cursor: "pointer",
                 }}
               />
+              <span
+                style={{
+                  cursor: "pointer",
+                  color: "#495A6E",
+                  textAlign: "center",
+                  fontWeight: "400",
+                  fontSize: "13px",
+                  letterSpacing: "1%",
+                  
+                }}
+              >
+                Filters
+              </span>
             </div>
-            <span className="align-items-center">Filters</span>
           </div>
 
           <FilterDrawer visible={visible} onClose={onClose} />
@@ -357,7 +360,7 @@ const AllBookings = ({ filterData, selectedStatus }) => {
   return (
     <div
       style={{
-        backgroundColor: "white"
+        backgroundColor: "white",
       }}
     >
       <DataTable
@@ -581,7 +584,7 @@ const AllBookings = ({ filterData, selectedStatus }) => {
         <Column
           field="status"
           header={
-            <span className="p-3 d-flex" >
+            <span className="p-3 d-flex">
               Status
               <div
                 className="d-flex sorticon"

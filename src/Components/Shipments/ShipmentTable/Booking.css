@@ -15,12 +15,6 @@
     font-size: 5px !important; 
   }
 
-  .ant-tabs-content-holder{
-    width: 1240px !important;
-    padding: 0 5px 10px 10px;
-    background-color: white;
-  }
-
   .ant-tabs-nav-more{
    display: none !important;
   }
@@ -42,3 +36,10 @@
   .leaflet-top, .leaflet-bottom{
    z-index: auto;
   }
+  .filter{
+   border:1px solid #e7eaf0 !important;
+   padding: 5px 20px 0 20px !important;
+   margin-left: 10px !important;
+   border-radius: 4px !important;
+   height:36px !important;
+ }
