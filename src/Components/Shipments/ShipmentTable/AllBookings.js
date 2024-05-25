@@ -276,10 +276,12 @@ const AllBookings = ({ filterData, selectedStatus }) => {
     return (
       <Row
         justify="space-between"
-        className="w-full"
+        className="w-full mb-3"
+        style={{backgroundColor:"white"}}
       >
         <Col>
-          <Input
+        <Input/>
+          {/* <Input
             placeholder="Search booking id , origin, destination... "
             prefix={<SearchOutlined style={{ color: "#94A2B2" }} />}
             style={{
@@ -289,7 +291,7 @@ const AllBookings = ({ filterData, selectedStatus }) => {
             }}
             value={globalFilterValue}
             onChange={onGlobalFilterChange}
-          />
+          /> */}
         </Col>
         <Col className="d-flex ">
           <div
@@ -300,8 +302,10 @@ const AllBookings = ({ filterData, selectedStatus }) => {
               src={calendar}
               width="16px"
               height="12px"
-              className="mt-2 pe-1"
+              className="mt-2 pe-1"  
             />
+
+
 
             <div
               style={{
