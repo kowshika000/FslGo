@@ -68,7 +68,6 @@ const AllBookings = ({ filterData, selectedStatus }) => {
     setFilteredData(filterData);
   }, [selectedStatus]);
   console.log("booking", filteredData);
-  
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, filteredData?.length);
 
@@ -138,7 +137,7 @@ const AllBookings = ({ filterData, selectedStatus }) => {
   };
   const originBodyTemplate = (rowData) => {
     return (
-      <div className="origin-cell">
+      <div className="origin-cell" style={{ textAlign: "start" }}>
         <CountryFlag countryCode={rowData?.origin_countrycode} />
         <span
           style={{
@@ -164,7 +163,7 @@ const AllBookings = ({ filterData, selectedStatus }) => {
   };
   const destinationBodyTemplate = (rowData) => {
     return (
-      <div className="origin-cell">
+      <div className="origin-cell" style={{ textAlign: "start" }}>
         <CountryFlag countryCode={rowData?.destination_countrycode} />
         <span style={{ padding: "8px", fontWeight: "400", textWrap: "wrap" }}>
           {rowData?.destination.length <= 20 ? (
@@ -278,7 +277,6 @@ const AllBookings = ({ filterData, selectedStatus }) => {
       <Row
         justify="space-between"
         className="w-full"
-        style={{ padding: "0px 0px 20px 0px",backgroundColor:"white" }}
       >
         <Col>
           <Input
@@ -383,7 +381,6 @@ const AllBookings = ({ filterData, selectedStatus }) => {
       >
         <Column
           field="id"
-          style={{width:"153px"}}
           header={
             <span
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
@@ -418,7 +415,6 @@ const AllBookings = ({ filterData, selectedStatus }) => {
 
         <Column
           field="origin"
-          style={{width:"200px"}}
           header={
             <span
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
@@ -454,7 +450,6 @@ const AllBookings = ({ filterData, selectedStatus }) => {
         ></Column>
         <Column
           field="destination"
-          style={{width:"200px"}}
           header={
             <span
               className="p-3 d-flex"
@@ -489,7 +484,6 @@ const AllBookings = ({ filterData, selectedStatus }) => {
         ></Column>
         <Column
           field="booked_on"
-          style={{width:"121px"}}
           header={
             <span className="p-3 d-flex">
               Booked on
@@ -521,7 +515,6 @@ const AllBookings = ({ filterData, selectedStatus }) => {
         ></Column>
         <Column
           field="etd/atd"
-          style={{width:"100px"}}
           header={
             <span className="p-3 d-flex">
               ETD/ATD
@@ -553,7 +546,6 @@ const AllBookings = ({ filterData, selectedStatus }) => {
         ></Column>
         <Column
           field="eta/ata"
-          style={{width:"100px"}}
           header={
             <span className="p-3 d-flex">
               ETA/ATA
@@ -585,8 +577,32 @@ const AllBookings = ({ filterData, selectedStatus }) => {
         ></Column>
         <Column
           field="status"
-          style={{width:"115px"}}
-          header={<span className="p-3">Status</span>}
+          header={
+            <span className="p-3 d-flex" >
+              Status
+              <div
+                className="d-flex sorticon"
+                style={{ flexDirection: "column" }}
+              >
+                <IconButton
+                  onClick={() => {
+                    handleSort("status");
+                  }}
+                  className="p-0"
+                >
+                  <ExpandLessIcon className="sortup" />
+                </IconButton>
+                <IconButton
+                  onClick={() => {
+                    handleSortDown("status");
+                  }}
+                  className="p-0"
+                >
+                  <ExpandMoreIcon className="sortdown" />
+                </IconButton>
+              </div>
+            </span>
+          }
           bodyClassName={(rowData) =>
             rowData.status === "Booking In Progress"
               ? "booking-progress-cell"
@@ -598,10 +614,9 @@ const AllBookings = ({ filterData, selectedStatus }) => {
           field="action"
           body={actionBodyTemplate}
           header={<span className="p-3">Action</span>}
-          className="p-3"
+          className="p-3 text-start"
         ></Column>
       </DataTable>
-
       <Pagination
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}

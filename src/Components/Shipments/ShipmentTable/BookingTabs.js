@@ -86,6 +86,7 @@ function BookingTabs() {
       style={{
         minWidth: "1255px",
         borderRadius: "8px",
+        background: "#F8FAFC"
       }}
     >
       <Row className="border" style={{ borderRadius: "8px" }}>
