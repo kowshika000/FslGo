@@ -133,6 +133,7 @@ const ShipmentHistory = ({ selectedStatus, filterDays, setSelectedStatus }) => {
           height: "30px",
           padding: "",
           gap: "8px",
+         
         }}
         label={buttonLabel}
         onClick={() => showModal(rowData)}
@@ -600,7 +601,7 @@ const parseDate2 = (dateString) => {
                   field="action"
                   body={actionBodyTemplate}
                   header={<span className="">Action</span>}
-                  className=""
+                  className="text-start"
                 ></Column>
               </DataTable>
 
