@@ -12,6 +12,8 @@ import Quotation from "./Components/Quotations/Quotation";
 import { useSelector, useDispatch } from "react-redux";
 import { LoginRequest } from "./Redux/Actions/LoginAction";
 import Cookies from "js-cookie";
+import Inbox from "./Components/Inbox/Inbox";
+import ShipmentBase from "./Components/ShipmentDetails/ShipmentTable/ShipmentBase";
 
 function App() {
   const dispatch = useDispatch();
@@ -68,9 +70,10 @@ function App() {
           <Route path="/" element={<Dashboard />} />
           <Route path="/shipments" element={<ShipmentsHome />} />
           <Route path="/recentBooking" element={<RecentBooking />} />
-          <Route path="/inbox" element={<Home />} />
+          <Route path="/inbox" element={<Inbox />} />
           <Route path="/invoice" element={<Invoice />} />
           <Route path="/quotation" element={<Quotation />} />
+          <Route path="/shipmentdetails" element={<ShipmentBase/>} />
         </Routes>
       </div>
       <Footer />

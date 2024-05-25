@@ -28,7 +28,6 @@ const Shipments = () => {
     ? ShipmentData.shipmentCount.statuswise_count
     : "null";
   console.log(ShipmentData1);
-  const [isShowModal, setIsShowModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState("Last 7 days");
   const items = ["Last 7 days", "Last 15 days", "Last 30 days"];
   const [filterValue, setFilterValue] = useState(7);
@@ -316,3 +315,4 @@ const Shipments = () => {
 };
 
 export default Shipments;
+
