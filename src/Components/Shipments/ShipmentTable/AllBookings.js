@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
@@ -67,7 +68,6 @@ const AllBookings = ({ filterData, selectedStatus }) => {
     setFilteredData(filterData);
   }, [selectedStatus]);
   console.log("booking", filteredData);
-
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, filteredData?.length);
 
@@ -277,7 +277,6 @@ const AllBookings = ({ filterData, selectedStatus }) => {
       <Row
         justify="space-between"
         className="w-full"
-        style={{ padding: "0px 0px 20px 0px", backgroundColor: "white" }}
       >
         <Col>
           <Input
@@ -355,7 +354,7 @@ const AllBookings = ({ filterData, selectedStatus }) => {
   return (
     <div
       style={{
-        backgroundColor: "white",
+        backgroundColor: "white"
       }}
     >
       <DataTable
@@ -382,7 +381,6 @@ const AllBookings = ({ filterData, selectedStatus }) => {
       >
         <Column
           field="id"
-          style={{ width: "153px" }}
           header={
             <span
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
@@ -417,7 +415,6 @@ const AllBookings = ({ filterData, selectedStatus }) => {
 
         <Column
           field="origin"
-          style={{ width: "200px" }}
           header={
             <span
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
@@ -453,7 +450,6 @@ const AllBookings = ({ filterData, selectedStatus }) => {
         ></Column>
         <Column
           field="destination"
-          style={{ width: "200px" }}
           header={
             <span
               className="p-3 d-flex"
@@ -488,7 +484,6 @@ const AllBookings = ({ filterData, selectedStatus }) => {
         ></Column>
         <Column
           field="booked_on"
-          style={{ width: "121px" }}
           header={
             <span className="p-3 d-flex">
               Booked on
@@ -520,7 +515,6 @@ const AllBookings = ({ filterData, selectedStatus }) => {
         ></Column>
         <Column
           field="etd/atd"
-          style={{ width: "100px" }}
           header={
             <span className="p-3 d-flex">
               ETD/ATD
@@ -552,7 +546,6 @@ const AllBookings = ({ filterData, selectedStatus }) => {
         ></Column>
         <Column
           field="eta/ata"
-          style={{ width: "100px" }}
           header={
             <span className="p-3 d-flex">
               ETA/ATA
@@ -584,7 +577,6 @@ const AllBookings = ({ filterData, selectedStatus }) => {
         ></Column>
         <Column
           field="status"
-          // style={{width:"115px"}}
           header={
             <span className="p-3 d-flex" >
               Status
@@ -625,7 +617,6 @@ const AllBookings = ({ filterData, selectedStatus }) => {
           className="p-3 text-start"
         ></Column>
       </DataTable>
-
       <Pagination
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
