@@ -89,7 +89,7 @@ function BookingTabs() {
       }}
     >
       <Row className="border" style={{ borderRadius: "8px" }}>
-        <Col span={24}>
+        <Col span={24} style={{backgroundColor:"#F8FAFC"}}>
           <Row justify="space-between" style={{ height: "57px" }}>
             <Col span={20}>
               {!showText ? (

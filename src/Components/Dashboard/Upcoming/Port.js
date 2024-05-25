@@ -9,6 +9,7 @@ import CountryFlag from "../../Core-Components/CountryFlag";
 import { Col, Row } from "antd";
 import anchor from "../../../assets/anch.jpeg";
 import { opensailingRequest } from "../../../Redux/Actions/OpneSailingAction";
+import {CircularProgress,Box} from "@mui/material"
 
 export const Port = () => {
   const [searchOriginPort, setSearchOriginPort] = useState("");
@@ -24,6 +25,7 @@ export const Port = () => {
   const [destPortOptionsVisible, setDestPortOptionsVisible] = useState(false);
 
   const originPortData = useSelector((state) => state.Port);
+  const {loading,error} = useSelector((state) => state.Port);
   const originPortDataValue = originPortData?.portData?.Data;
   console.log("originPortvalue", originPortDataValue);
 
@@ -154,8 +156,22 @@ export const Port = () => {
             value={searchOriginPort}
           />
           <ArrowDropDownIcon />
+     
+    
           {originPortOptionsVisible && (
             <div className="outer-port">
+                   {loading ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "200px",
+                }}
+              >
+                <CircularProgress style={{color:"red"}}/>
+              </Box>
+            ) : (
               <div className="inner-port">
                 <div>
                   <p
@@ -210,8 +226,10 @@ export const Port = () => {
                   ))}
                 </div>
               </div>
+              )}
             </div>
           )}{" "}
+         
         </div>
         <div
           className="d-flex my-2 rounded-1 "
@@ -258,6 +276,18 @@ export const Port = () => {
           <ArrowDropDownIcon />
           {destPortOptionsVisible && (
             <div className="outer-dest-port">
+           {loading ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "200px",
+                }}
+              >
+                <CircularProgress style={{color:"red"}}/>
+              </Box>
+            ) : (
               <div className="inner-port">
                 <div>
                   <p
@@ -312,6 +342,7 @@ export const Port = () => {
                   ))}
                 </div>
               </div>
+            )}
             </div>
           )}{" "}
         </div>

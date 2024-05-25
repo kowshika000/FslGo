@@ -17,8 +17,6 @@
 
   .ant-tabs-content-holder{
     width: 1240px !important;
-    /* height:522px !important; */
-
     padding: 0 5px 10px 10px;
     background-color: white;
   }
@@ -40,4 +38,7 @@
   }
   .bodycell{
    text-align: start !important;
+  }
+  .leaflet-top, .leaflet-bottom{
+   z-index: auto;
   }

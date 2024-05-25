@@ -6,6 +6,7 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  CircularProgress
 } from "@mui/material";
 import LeftLine from "../../../assets/leftLine.png";
 import RightLine from "../../../assets/rightLine.png";
@@ -24,6 +25,7 @@ const UpcomingSailings = () => {
   const [desPortCode, setDesPortCode] = useState("");
   const dispatch = useDispatch();
   const UpcomingData = useSelector((state) => state.Sailing);
+  const {loading,error} = useSelector((state) => state.Sailing);
   console.log(UpcomingData);
   useEffect(() => {
     dispatch(sailingRequest());
@@ -71,6 +73,19 @@ const UpcomingSailings = () => {
 
       {sailingData ? (
         <>
+         {loading ? (
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              height: "200px",
+            }}
+          >
+            <CircularProgress style={{color:"red"}}/>
+          </Box>
+        ) : (
+          <>
           {sailingData
             .slice(0, displaySailingData)
             .map((sailingData, index) => (
@@ -256,11 +271,25 @@ const UpcomingSailings = () => {
                 </Accordion>
               </div>
             ))}
+            </>
+          )}
         </>
       ) : (
         <>
-          {schedules &&
-            schedules.slice(0, displayedSchedules).map((schedule, index) => (
+         {loading ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  height: "200px",
+                }}
+              >
+                <CircularProgress style={{color:"red"}}/>
+              </Box>
+            ) : (
+              <>
+             {schedules && schedules.slice(0, displayedSchedules).map((schedule, index) => (
               <div key={index}>
                 <Accordion
                   sx={{
@@ -443,6 +472,8 @@ const UpcomingSailings = () => {
                 </Accordion>
               </div>
             ))}
+            </>
+          )}
         </>
       )}
       <div

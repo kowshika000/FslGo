@@ -1,26 +1,27 @@
 import React, { useEffect, useState } from "react";
-import { MapContainer, Marker, TileLayer, Tooltip } from "react-leaflet";
+import {
+  MapContainer,
+  Marker,
+  TileLayer,
+  Tooltip,
+  SVGOverlay,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import MapMarker from "./MapMarker";
 import { useDispatch, useSelector } from "react-redux";
 import { mapRequest } from "../../../Redux/Actions/MapAction";
+import { CountryData } from "./CountryData";
+import "../ShipmentTable/Booking.css"
 
 // Define the position and coordinates
 const position = [10.586958, -34.623453];
 
-const arrCoordinates1 = [
-  [40.715051, -73.586857], // New York
-  [41.986704, -87.799812], // Chicago
-];
-
-// Create custom icons
-const icon1 = L.icon({
-  iconSize: [20, 20],
-  iconAnchor: [10, 41],
-  popupAnchor: [2, -40],
-  iconUrl: "https://image-data.in2.cdn-alpha.com/marker1.svg",
-});
+// const numberIcon = L.divIcon({
+//   html: `<div style="color: red; font-size: 16px; background: white; border-radius: 50%; width: 24px; height: 24px; display: flex; justify-content: center; align-items: center;">${markernumber}</div>`,
+//   className: "",
+//   iconSize: [24, 24],
+// });
 
 // Define the component
 export default function Americas() {
@@ -39,6 +40,21 @@ export default function Americas() {
 
   const MapDatas = useSelector((state) => state.Map?.MapData?.countries);
   console.log("map....", MapDatas);
+
+  const filteredCountryData = MapDatas
+    ? CountryData.filter((country) =>
+        MapDatas.some((data) => data.country_code === country.countryCode)
+      )
+    : [];
+
+  // const filteredCountryData = MapDatas
+  // ? MapDatas.filter((data) =>
+  //     CountryData.some((country) => country.countryCode === data.country_code)
+  //   )
+  // : [];
+  console.log("filter", filteredCountryData);
+  // const markernumber = MapDatas?.map((data) => data.no_of_shipments);
+
   return (
     <div>
       <MapContainer
@@ -49,24 +65,27 @@ export default function Americas() {
       >
         <TileLayer url="https://tile.openstreetmap.de/{z}/{x}/{y}.png" />
         {/* Markers with icon 1 */}
-        {arrCoordinates1.map((coordinate, index) => (
-          <Marker
-            key={index}
-            position={coordinate}
-            icon={icon1}
-            eventHandlers={{
-              click: () => handleMarkerClick(),
-            }}
-          >
-            {/* <Tooltip direction="top" offset={[0, -30]}>
-              <div>
-                <strong>New York</strong>
-                <br />
-                Freight Systems Inc., 626 RXR Plaza Uniondale, NY 11556
-              </div>
-            </Tooltip> */}
-          </Marker>
-        ))}
+        {filteredCountryData.map((location, index) => {
+          const markerNumber =
+            MapDatas.find((data) => data.country_code === location.countryCode)
+              ?.no_of_shipments || 0;
+
+          const numberIcon = L.divIcon({
+            html: `<div style="color: white; font-size: 14px; background: red; border-radius: 50%; width: 24px; height: 24px; display: flex; justify-content: center; align-items: center;">${markerNumber}</div>`,
+            className: "",
+            iconSize: [24, 24],
+          });
+          return (
+            <Marker
+              key={index}
+              position={[location.latitude, location.longitude]}
+              icon={numberIcon}
+              eventHandlers={{
+                click: () => handleMarkerClick(),
+              }}
+            ></Marker>
+          );
+        })}
       </MapContainer>
       <MapMarker showModal={showModal} onClose={handleModalClose} />
     </div>
