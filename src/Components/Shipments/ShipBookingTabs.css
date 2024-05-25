@@ -48,13 +48,13 @@
   gap: 4px !important;
 }
 .filter-heading {
-  color: var(--colors-style-base-base-500, #67788e);
-  font-family: var(--primary-font);
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 24px;
-  letter-spacing: 0.14px;
+  color: var(--colors-style-base-base-500, #67788e) !important;
+  font-family: var(--primary-font) !important;
+  font-size: 14px !important;
+  font-style: normal !important;
+  font-weight: 500 !important;
+  line-height: 24px !important;
+  letter-spacing: 0.14px !important;
 }
 :where(.css-1vr7spz).ant-input-affix-wrapper-lg {
   font-size: 16px;
