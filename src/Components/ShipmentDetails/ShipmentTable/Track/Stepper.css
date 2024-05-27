@@ -60,7 +60,7 @@
     background-color: white !important;
 }
 .Inprogress .step{
-    background-color: #f8ca26;
+    background-color: gray;
     box-shadow: 0px 0px 4px 0px #F1C21B4D;
 }
  .Inprogress .step>div{
