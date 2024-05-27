@@ -25,6 +25,8 @@ export default function MapMarker({ showModal, onClose }) {
         position: "absolute",
         width: "500px",
         height: "300px",
+        marginLeft:"57%",
+        marginTop:"-4%"
       }}
     >
       <div>

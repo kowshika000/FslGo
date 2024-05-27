@@ -152,7 +152,7 @@ function BookingTabs() {
             </Col>
           </Row>
         </Col>
-        <Col span={24} style={{padding:"20px"}}>
+        <Col span={24} style={{padding:"20px",backgroundColor:"white"}}>
           {!showText ? (
             <AllBookings
               filterData={filteredData}
