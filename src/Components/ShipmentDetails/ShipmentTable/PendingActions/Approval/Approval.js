@@ -108,7 +108,10 @@ const Approval = () => {
   return (
    <>
          <div className="approval" style={{paddingTop:"30px"}}>
-            <Table columns={columns} dataSource={data} onChange={onChange}  />
+            {
+              data.length>0 ? <Table columns={columns} dataSource={data} onChange={onChange}  />:
+              <p className='m-0 text-center'>No approvals pending at the moment</p>
+            }
         </div>
         <Modal isOpen={openApproveModal} width={"527px"} height={"471.93px"}>
             <>

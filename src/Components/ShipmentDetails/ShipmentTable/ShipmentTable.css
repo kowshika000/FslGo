@@ -22,9 +22,7 @@
     padding-top: 20px ;
 }
 .shipment_table_section  .ant-card-body .ant-tabs-nav{
-    position: sticky !important;
-    top: 0px;
-    height: 50%;
+    height: 500px;
 }
 .shipment_table_section  .ant-card-body .ant-tabs-tab{
     height: 46.1px; 

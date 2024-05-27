@@ -20,9 +20,8 @@ import Tick from '../../../../../assets/Component 27.svg'
 import CustomCheckBox from '../../Track/CustomCheckBox'
 import { BiSolidDownArrow, BiSolidUpArrow } from 'react-icons/bi'
 
-const ConsigneeDetails = () => {
+const ConsigneeDetails = ({openConsignee,setOpenConsignee,setOpenNotify}) => {
 
-    const [open,setOpen] = useState(false)
     const options = [
         {
           value: 'zhejiang',
@@ -34,6 +33,69 @@ const ConsigneeDetails = () => {
         },
       ];
 
+    // const [view,setView] = useState(true)
+    const [consigneeinputs,setConsigneeinputs] = useState(
+        {
+            name:"",
+            companyname:"",
+            email:"",
+            phonenumber:"",
+            address:"",
+            city:"",
+            zipcode:"",
+            taxid:"",
+            country:""
+        }
+    
+    )
+
+    // This is for AlreadyExist data
+    const [apiData,setApiData] = useState({
+            name:"nk",
+            companyname:"nk",
+            email:"nk",
+            phonenumber:"nk",
+            address:"nk",
+            city:"nk",
+            zipcode:"nk",
+            taxid:"nk",
+            country:"nk"
+    })
+
+    const obj = Object.entries(apiData)
+    let isNotViewable = false
+    let isReadOnly = false
+
+
+    for(const [key] of obj){
+        if(apiData[key]==="")
+            isNotViewable = true
+        else{
+            isReadOnly=true
+        }
+   }
+
+    const handleChange =(e)=>{
+        setConsigneeinputs((prev)=>{
+            return {
+                ...prev,[e.target.name]:e.target.value
+            }
+        })
+    }
+
+    const handleSubmit = (e) =>{
+        e.preventDefault()
+        console.log(consigneeinputs)
+        setOpenConsignee(false)
+        setOpenNotify(true)
+    }
+
+    //Function to trigger an Next Logic
+    const handleNext = () =>{
+        setOpenConsignee(false)
+        setOpenNotify(true)
+    }
+
   return (
     <div className='consignee_section' >
         <div className="row consignee_details_row mx-1">
@@ -41,21 +103,33 @@ const ConsigneeDetails = () => {
                 <div className="left_details d-flex align-items-start">
                     <span className='me-2'>2</span>
                     <div className="Shipper_title">
-                        <p className='m-0 mb-2'>Consignee Details</p>
-                        <p className='m-0'>Enter consignee contact details</p>
+                        <p className='m-0 mb-2'>Consignee Details</p>    
+                        {/* This is for Change the description according to input values */}
+                        {
+                            isNotViewable && <p className='m-0'>Enter consignee contact details</p>
+                        }
                     </div>
                 </div>
                 <div className="right_details me-4">
                         <img className='me-2' src={Tick} alt="complete" />
-                        {/* <img src={Edit} alt="edit" onClick={()=>setOpen((prev)=>!prev)} style={{cursor:"pointer"}}  /> */}
+                        {/* <img src={Edit} alt="edit" onClick={()=>setOpenConsignee((prev)=>!prev)} style={{cursor:"pointer"}}  /> */}
+                        {/* {
+                            !openconsignee ? <BiSolidDownArrow onClick={()=>setOpenConsignee((prev)=>!prev)} style={{cursor:"pointer"}} />:
+                            <BiSolidUpArrow onClick={()=>setOpenConsignee((prev)=>!prev)} style={{cursor:"pointer"}} />
+                        } */}
+
+                         {/* This is for Changing the Icon According to Input values*/}
                         {
-                            !open ? <BiSolidDownArrow onClick={()=>setOpen((prev)=>!prev)} style={{cursor:"pointer"}} />:
-                            <BiSolidUpArrow onClick={()=>setOpen((prev)=>!prev)} style={{cursor:"pointer"}} />
-                        }
+                        !isNotViewable?
+                            !openConsignee ? <BiSolidDownArrow size={16} onClick={()=>setOpenConsignee((prev)=>!prev)} style={{cursor:"pointer"}} />:
+                            <BiSolidUpArrow size={16} onClick={()=>setOpenConsignee((prev)=>!prev)} style={{cursor:"pointer"}} />
+                        :
+                         <img src={Edit} alt="edit"  onClick={()=>setOpenConsignee((prev)=>!prev)} style={{cursor:"pointer"}} />
+                       }
                 </div>
             </div>
             {
-                open && 
+                openConsignee && 
                 <>
                     <div className="row" style={{padding:"0px 18px"}}>
                         {/* <div className="row w-100 mb-3">
@@ -78,7 +152,7 @@ const ConsigneeDetails = () => {
                                         required: true,
                                         },]}
                                     >
-                                    <Input size="large" placeholder="Type here" prefix={<img src={user}></img>} />
+                                    <Input size="large" placeholder="Type here" prefix={<img src={user}></img>} name="name" disabled={isReadOnly} defaultValue={apiData?.name} value={consigneeinputs.name} onChange={handleChange} />
                                 </Form.Item>
                             </Form>
                             </div>
@@ -93,7 +167,7 @@ const ConsigneeDetails = () => {
                                         required: true,
                                         },]}
                                     >
-                                    <Input size="large" placeholder="Type here" prefix={<img src={office}></img>} />
+                                    <Input size="large" placeholder="Type here" prefix={<img src={office}></img>} name="companyname" disabled={isReadOnly} defaultValue={apiData?.companyname} value={consigneeinputs.companyname} onChange={handleChange} />
                                 </Form.Item>
                             </Form>
                             </div>
@@ -110,7 +184,7 @@ const ConsigneeDetails = () => {
                                         required: true,
                                         },]}
                                     >
-                                    <Input size="large" placeholder="Johndee@gmail.com" prefix={<img src={email}></img>} />
+                                    <Input size="large" placeholder="Johndee@gmail.com" prefix={<img src={email}></img>} name="email" disabled={isReadOnly} defaultValue={apiData?.email} value={consigneeinputs.email} onChange={handleChange} />
                                 </Form.Item>
                                 </Form>
                             </div>
@@ -125,7 +199,7 @@ const ConsigneeDetails = () => {
                                         required: true,
                                         },]}
                                         >
-                                        <Input size="large" placeholder="Mobile Number" prefix={<img src={phone}></img>}
+                                        <Input size="large" placeholder="Mobile Number" prefix={<img src={phone}></img>} name="phonenumber" disabled={isReadOnly} defaultValue={apiData?.phonenumber} value={consigneeinputs.phonenumber} onChange={handleChange}
                                         />
                                     </Form.Item>
 
@@ -144,7 +218,7 @@ const ConsigneeDetails = () => {
                                         required: true,
                                         },]}
                                         >
-                                        <Input size="large" placeholder="Lorem Ipsum" prefix={<img src={address}></img>} />
+                                        <Input size="large" placeholder="Lorem Ipsum" prefix={<img src={address}></img>} name="address" disabled={isReadOnly} defaultValue={apiData?.address} value={consigneeinputs.address} onChange={handleChange} />
                                     </Form.Item>
                                 </Form>
                             </div>
@@ -161,7 +235,7 @@ const ConsigneeDetails = () => {
                                         },
                                     ]}
                                     >
-                                    <Input size="large" placeholder="Type here" prefix={<img src={city}></img>} />
+                                    <Input size="large" placeholder="Type here" prefix={<img src={city}></img>} name="city" disabled={isReadOnly} defaultValue={apiData?.city} value={consigneeinputs.city} onChange={handleChange} />
                                 </Form.Item>
                             </Form>
                             </div>
@@ -178,7 +252,7 @@ const ConsigneeDetails = () => {
                                         required: true,
                                         },]}
                                         >
-                                        <Input size="large" placeholder="Type here" prefix={<img src={zipcode}></img>} />
+                                        <Input size="large" placeholder="Type here" prefix={<img src={zipcode}></img>} name="zipcode" disabled={isReadOnly} defaultValue={apiData?.zipcode} value={consigneeinputs.zipcode} onChange={handleChange} />
                                     </Form.Item>
                                 </Form>
                             </div>
@@ -193,7 +267,7 @@ const ConsigneeDetails = () => {
                                         required: true,
                                         },]}
                                     >
-                                    <Input size="large" placeholder="Type here" prefix={<img src={taxid}></img>} />
+                                    <Input size="large" placeholder="Type here" prefix={<img src={taxid}></img>} name="taxid" disabled={isReadOnly} defaultValue={apiData?.taxid} value={consigneeinputs.taxid} onChange={handleChange} />
                                 </Form.Item>
                             </Form>
                             </div>
@@ -210,7 +284,7 @@ const ConsigneeDetails = () => {
                                         required: true,
                                         },]}
                                     >
-                                    <Input size="large" placeholder="Type here" prefix={<img src={country}></img>} />
+                                    <Input size="large" placeholder="Type here" prefix={<img src={country}></img>} name="country" disabled={isReadOnly} defaultValue={apiData?.country} value={consigneeinputs.country} onChange={handleChange} />
                                 </Form.Item>
                             </Form>
                             </div>
@@ -220,7 +294,13 @@ const ConsigneeDetails = () => {
                     </div>
                     <div className="row" style={{padding:"0px 41px"}}>
                         <div className="btn_save_group d-flex align-items-center">
-                            <Link className='btn_save ms-auto'>Next<span className='ms-2'><HiArrowRightCircle size={22} color='white' /></span></Link>
+                            {/*This is for Change Button Behaviour according to input values */}
+                            {
+                                !isNotViewable ?<Link onClick={()=>handleNext()} className='btn_save ms-auto'>Next<span className='ms-2'><HiArrowRightCircle size={22} color='white' /></span></Link>:
+                            
+                            <Link onClick={(e)=>handleSubmit(e)} className='btn_save ms-auto'>Save & Next<span className='ms-2'><HiArrowRightCircle size={22} color='white' /></span></Link>
+                            }
+                            {/* <Link className='btn_save ms-auto'>Next<span className='ms-2'><HiArrowRightCircle size={22} color='white' /></span></Link> */}
                         </div>
                     </div>
                 </>
