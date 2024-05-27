@@ -64,7 +64,7 @@ function App() {
           height: "100vh",
         }}
       >
-        <CircularProgress style={{ color: "red" }} />
+    <CircularProgress style={{ color: "red" }} />
       </Box>
     );
   }
