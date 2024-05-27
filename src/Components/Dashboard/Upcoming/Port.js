@@ -39,7 +39,7 @@ export const Port = () => {
     }
     setOriginPortOptionsVisible(true);
     setDestPortOptionsVisible(false);
-    if (value.length > -1) {
+    if (value=== "") {
       setOriginPort(null);
     }
   };
@@ -53,7 +53,7 @@ export const Port = () => {
     setDestPortOptionsVisible(true);
     setOriginPortOptionsVisible(false);
 
-    if (value.length > -1) {
+    if (value === "") {
       setDestPort(null);
     }
   };
@@ -157,10 +157,7 @@ export const Port = () => {
             className="placeholder-color"
             onChange={handleOriginPortChange}
             value={searchOriginPort}
-            onFocus={() => setOriginPortOptionsVisible(true)}  // Show options on focus
-            onBlur={() => {
-              setTimeout(() => setOriginPortOptionsVisible(false), 100); // Hide options on blur with a delay to allow click
-            }}
+         
           />
           <ArrowDropDownIcon />
      
@@ -279,10 +276,6 @@ export const Port = () => {
             className="placeholder-color"
             onChange={handleDestPortChange}
             value={searchDestPort}
-            onFocus={() => setDestPortOptionsVisible(true)}  // Show options on focus
-            onBlur={() => {
-              setTimeout(() => setDestPortOptionsVisible(false), 100); // Hide options on blur with a delay to allow click
-            }}
           />
           <ArrowDropDownIcon />
           {destPortOptionsVisible && (
