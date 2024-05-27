@@ -1,4 +1,4 @@
-import React, { useState, useEffect ,useRef} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { ReactComponent as Location } from "../../../assets/location.svg";
@@ -15,8 +15,6 @@ export const Port = () => {
   const [orgPortCode, setOrgPortCode] = useState("");
   const [desPortCode, setDesPortCode] = useState("");
   const [searchDestPort, setSearchDestPort] = useState("");
-  // const [originPortValue, setOriginPortValue] = useState("");
-  // const [destPortValue, setDestPortValue] = useState("");
   const [originPort, setOriginPort] = useState(null);
   const [destPort, setDestPort] = useState(null);
   const [originPortOptionsVisible, setOriginPortOptionsVisible] =
@@ -28,7 +26,7 @@ export const Port = () => {
   const { loading, error } = useSelector((state) => state.Port);
   const originPortDataValue = originPortData?.portData?.Data;
   console.log("originPortvalue", originPortDataValue);
-
+  const [prevValue, setPrevValue] = useState("");
   const dispatch = useDispatch();
 
   const handleOriginPortChange = (event) => {
@@ -36,31 +34,38 @@ export const Port = () => {
     setSearchOriginPort(value);
     if (value.length >= 4) {
       dispatch(portRequest({ search_key: value, limits: "4" }));
-    }
-    setOriginPortOptionsVisible(true);
-    setDestPortOptionsVisible(false);
-    if (value=== "") {
+      setOriginPortOptionsVisible(true);
+    } else {
+      setOriginPortOptionsVisible(false);
       setOriginPort(null);
     }
+
+    if (value.length < prevValue.length) {
+      console.log("prevValue.length", prevValue.length);
+      setSearchOriginPort("");
+      setOriginPort(null);
+      setOriginPortOptionsVisible(false);
+    } else {
+      setSearchOriginPort(value);
+    }
+    setDestPortOptionsVisible(false);
   };
 
   const handleDestPortChange = (event) => {
     const { value } = event.target;
     setSearchDestPort(value);
-    if (value?.length >= 4) {
+    if (value.length >= 4) {
       dispatch(portRequest({ search_key: value, limits: "4" }));
-    }
-    setDestPortOptionsVisible(true);
-    setOriginPortOptionsVisible(false);
-
-    if (value === "") {
+      setDestPortOptionsVisible(true);
+    } else {
+      setDestPortOptionsVisible(false);
       setDestPort(null);
     }
+    setOriginPortOptionsVisible(false);
   };
 
   const handleOriginPortSelect = (port) => {
     console.log("Port selected:", port);
-    // setOriginPortValue(port?.port_name);
     setSearchOriginPort(port?.port_name);
     setOrgPortCode(port?.port_code);
     setOriginPortOptionsVisible(false);
@@ -68,7 +73,6 @@ export const Port = () => {
   };
   const handleDestPortSelect = (port) => {
     console.log("Dest selected:", port);
-    // setDestPortValue(port?.port_name);
     setSearchDestPort(port?.port_name);
     setDesPortCode(port?.port_code);
     setDestPortOptionsVisible(false);
@@ -94,16 +98,16 @@ export const Port = () => {
     console.log("clicked");
     if (outerRef.current && !outerRef.current.contains(event.target)) {
       setDestPortOptionsVisible(false);
-      setOriginPortOptionsVisible(false)
+      setOriginPortOptionsVisible(false);
     }
   };
 
   useEffect(() => {
     // Add event listener when the component mounts
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     // Clean up the event listener when the component unmounts
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -173,7 +177,6 @@ export const Port = () => {
             className="placeholder-color"
             onChange={handleOriginPortChange}
             value={searchOriginPort}
-
           />
           <ArrowDropDownIcon />
           {originPortOptionsVisible && (
