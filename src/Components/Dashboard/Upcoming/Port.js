@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect ,useRef} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { ReactComponent as Location } from "../../../assets/location.svg";
@@ -7,9 +7,8 @@ import { portRequest } from "../../../Redux/Actions/PortAction";
 import "./Port.css";
 import CountryFlag from "../../Core-Components/CountryFlag";
 import { Col, Row } from "antd";
-import anchor from "../../../assets/anch.jpeg";
 import { opensailingRequest } from "../../../Redux/Actions/OpneSailingAction";
-import {CircularProgress,Box} from "@mui/material"
+import { CircularProgress, Box } from "@mui/material";
 
 export const Port = () => {
   const [searchOriginPort, setSearchOriginPort] = useState("");
@@ -23,9 +22,10 @@ export const Port = () => {
   const [originPortOptionsVisible, setOriginPortOptionsVisible] =
     useState(false);
   const [destPortOptionsVisible, setDestPortOptionsVisible] = useState(false);
+  const outerRef = useRef(null);
 
   const originPortData = useSelector((state) => state.Port);
-  const {loading,error} = useSelector((state) => state.Port);
+  const { loading, error } = useSelector((state) => state.Port);
   const originPortDataValue = originPortData?.portData?.Data;
   console.log("originPortvalue", originPortDataValue);
 
@@ -89,12 +89,28 @@ export const Port = () => {
       dispatch(opensailingRequest({ orign, destination }));
     }
   }, [orgPortCode, desPortCode]);
-  // const openSailingData1 = useSelector((state) => state.openSailingData);
-  // console.log("pppppp", openSailingData1);
+
+  const handleClickOutside = (event) => {
+    console.log("clicked");
+    if (outerRef.current && !outerRef.current.contains(event.target)) {
+      setDestPortOptionsVisible(false);
+      setOriginPortOptionsVisible(false)
+    }
+  };
+
+  useEffect(() => {
+    // Add event listener when the component mounts
+    document.addEventListener('mousedown', handleClickOutside);
+    // Clean up the event listener when the component unmounts
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   return (
     <div
-      className=" w-100 d-flex justify-content-between sailing-heading "
+      ref={outerRef}
+      className=" w-100 d-flex justify-content-between sailing-heading"
       style={{
         backgroundColor: "#F8FAFC",
         borderBottom: "1px solid #E7EAF0",
@@ -123,7 +139,7 @@ export const Port = () => {
             justifyContent: "space-between",
             background: "white",
             position: "relative",
-            width:"300px"
+            width: "300px",
           }}
         >
           <Location className="pt-1" style={{ width: "22px" }} />
@@ -157,86 +173,83 @@ export const Port = () => {
             className="placeholder-color"
             onChange={handleOriginPortChange}
             value={searchOriginPort}
-            onFocus={() => setOriginPortOptionsVisible(true)}  // Show options on focus
-            onBlur={() => {
-              setTimeout(() => setOriginPortOptionsVisible(false), 100); // Hide options on blur with a delay to allow click
-            }}
+            // onFocus={() => setOriginPortOptionsVisible(true)} // Show options on focus
+            // onBlur={() => {
+            //   setTimeout(() => setOriginPortOptionsVisible(false), 100); // Hide options on blur with a delay to allow click
+            // }}
           />
           <ArrowDropDownIcon />
-     
-    
           {originPortOptionsVisible && (
             <div className="outer-port">
-                   {loading ? (
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  height: "100%",
-                }}
-              >
-                <CircularProgress style={{color:"red"}}/>
-              </Box>
-            ) : (
-              <div className="inner-port">
-                <div>
-                  <p
-                    style={{
-                      marginBottom: 0,
-                      padding: "12px 0 8px 0",
-                      color: "#181e25",
-                      fontSize: "15px",
-                      fontWeight: 500,
-                    }}
-                  >
-                    Sea Port
-                  </p>
-                </div>
-                <div>
-                  {originPortDataValue?.map((port, index) => (
-                    <div
-                      key={index}
-                      onClick={() => handleOriginPortSelect(port)}
-                      className=""
+              {loading ? (
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "100%",
+                  }}
+                >
+                  <CircularProgress style={{ color: "red" }} />
+                </Box>
+              ) : (
+                <div className="inner-port">
+                  <div>
+                    <p
+                      style={{
+                        marginBottom: 0,
+                        padding: "12px 0 8px 0",
+                        color: "#181e25",
+                        fontSize: "15px",
+                        fontWeight: 500,
+                      }}
                     >
-                      <Row className="justify-content-between p-2 port-content">
-                        <Col className="d-flex">
-                          <Row className="gap-2">
-                            <div className="mt-1 p-1">
-                              <CountryFlag
-                                countryCode={port?.port_country}
-                                className="port-flag"
-                              />{" "}
-                            </div>
-                            <div>
-                              <p className="portnamecode ">
-                                {port?.port_name}-{port?.air_port_code}
-                              </p>
-                              <p className="portCountry">
-                                {port?.port_country}
-                              </p>
-                            </div>
-                          </Row>
-                        </Col>
-                        <Col style={{ marginRight: "20px" }}>
-                          <img
-                            src="https://www.fslgo.com/_next/static/media/anchor.20b5ab46.svg"
-                            style={{
-                              width: "24px",
-                              height: "24px",
-                            }}
-                          />
-                        </Col>
-                      </Row>
-                    </div>
-                  ))}
+                      Sea Port
+                    </p>
+                  </div>
+                  <div>
+                    {originPortDataValue?.map((port, index) => (
+                      <div
+                        key={index}
+                        onClick={() => handleOriginPortSelect(port)}
+                        className=""
+                      >
+                        <Row className="justify-content-between p-2 port-content">
+                          <Col className="d-flex">
+                            <Row className="gap-2">
+                              <div className="mt-1 p-1">
+                                <CountryFlag
+                                  countryCode={port?.port_country}
+                                  className="port-flag"
+                                />{" "}
+                              </div>
+                              <div>
+                                <p className="portnamecode ">
+                                  {port?.port_name}-{port?.air_port_code}
+                                </p>
+                                <p className="portCountry">
+                                  {port?.port_country}
+                                </p>
+                              </div>
+                            </Row>
+                          </Col>
+                          <Col style={{ marginRight: "20px" }}>
+                            <img
+                              src="https://www.fslgo.com/_next/static/media/anchor.20b5ab46.svg"
+                              style={{
+                                width: "24px",
+                                height: "24px",
+                              }}
+                            />
+                          </Col>
+                        </Row>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
               )}
             </div>
           )}{" "}
-         
         </div>
         <div
           className="d-flex my-2 rounded-1 "
@@ -246,7 +259,7 @@ export const Port = () => {
             justifyContent: "space-between",
             background: "white",
             position: "relative",
-            width:"330px"
+            width: "330px",
           }}
         >
           <Location className="pt-1" style={{ width: "22px" }} />
@@ -279,81 +292,81 @@ export const Port = () => {
             className="placeholder-color"
             onChange={handleDestPortChange}
             value={searchDestPort}
-            onFocus={() => setDestPortOptionsVisible(true)}  // Show options on focus
-            onBlur={() => {
-              setTimeout(() => setDestPortOptionsVisible(false), 100); // Hide options on blur with a delay to allow click
-            }}
+            // onFocus={() => setDestPortOptionsVisible(true)} // Show options on focus
+            // onBlur={() => {
+            //   setTimeout(() => setDestPortOptionsVisible(false), 100); // Hide options on blur with a delay to allow click
+            // }}
           />
           <ArrowDropDownIcon />
           {destPortOptionsVisible && (
             <div className="outer-dest-port">
-           {loading ? (
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  height: "200px",
-                }}
-              >
-                <CircularProgress style={{color:"red"}}/>
-              </Box>
-            ) : (
-              <div className="inner-port">
-                <div>
-                  <p
-                    style={{
-                      marginBottom: 0,
-                      padding: "12px 0 8px 0",
-                      color: "#181e25",
-                      fontSize: "15px",
-                      fontWeight: 500,
-                    }}
-                  >
-                    Sea Port
-                  </p>
-                </div>
-                <div>
-                  {originPortDataValue?.map((port, index) => (
-                    <div
-                      key={index}
-                      onClick={() => handleDestPortSelect(port)}
-                      className=""
+              {loading ? (
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "200px",
+                  }}
+                >
+                  <CircularProgress style={{ color: "red" }} />
+                </Box>
+              ) : (
+                <div className="inner-port">
+                  <div>
+                    <p
+                      style={{
+                        marginBottom: 0,
+                        padding: "12px 0 8px 0",
+                        color: "#181e25",
+                        fontSize: "15px",
+                        fontWeight: 500,
+                      }}
                     >
-                      <Row className="justify-content-between p-2 port-content">
-                        <Col className="d-flex">
-                          <Row className=" gap-2">
-                            <div className="mt-1 p-1">
-                              <CountryFlag
-                                countryCode={port?.port_country}
-                                className="port-flag"
-                              />{" "}
-                            </div>
-                            <div>
-                              <p className="portnamecode ">
-                                {port?.list_value}
-                              </p>
-                              <p className="portCountry">
-                                {port?.port_country}
-                              </p>
-                            </div>
-                          </Row>
-                        </Col>
-                        <Col style={{ marginRight: "20px" }}>
-                          <img
-                            src="https://www.fslgo.com/_next/static/media/anchor.20b5ab46.svg"
-                            style={{
-                              width: "24px",
-                              height: "24px",
-                            }}
-                          />
-                        </Col>
-                      </Row>
-                    </div>
-                  ))}
+                      Sea Port
+                    </p>
+                  </div>
+                  <div>
+                    {originPortDataValue?.map((port, index) => (
+                      <div
+                        key={index}
+                        onClick={() => handleDestPortSelect(port)}
+                        className=""
+                      >
+                        <Row className="justify-content-between p-2 port-content">
+                          <Col className="d-flex">
+                            <Row className=" gap-2">
+                              <div className="mt-1 p-1">
+                                <CountryFlag
+                                  countryCode={port?.port_country}
+                                  className="port-flag"
+                                />{" "}
+                              </div>
+                              <div>
+                                <p className="portnamecode ">
+                                  {port?.list_value}
+                                </p>
+                                <p className="portCountry">
+                                  {port?.port_country}
+                                </p>
+                              </div>
+                            </Row>
+                          </Col>
+                          <Col style={{ marginRight: "20px" }}>
+                            <img
+                              src="https://www.fslgo.com/_next/static/media/anchor.20b5ab46.svg"
+                              style={{
+                                width: "24px",
+                                height: "24px",
+                              }}
+                            />
+                          </Col>
+                        </Row>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
             </div>
           )}{" "}
         </div>
