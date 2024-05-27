@@ -56,15 +56,13 @@ const Stepper = () => {
         {
             steps?.map((step,i)=>{
                 return(
-                    <>
-                            <div key={i} className={`step-item step-item-${i+1} ${step.processing && "Inprogress"} ${step.completed && 'Complete'}`}>
+                            <div key={i+1} className={`step-item step-item-${i+1} ${step.processing && "Inprogress"} ${step.completed && 'Complete'}`}>
                                 <p className='m-0 step mb-1'>
                                     <div style={{backgroundColor:"#ACB8C4",borderRadius:"50%",width:"10px",height:"10px"}}></div>
                                 </p>
                                 <p className='m-0 ' style={{color:"#181E25"}}>{step.step}</p>
                                 <p className='m-0' >{step.body}</p>
                             </div>
-                    </>
                 )
             }         
         )

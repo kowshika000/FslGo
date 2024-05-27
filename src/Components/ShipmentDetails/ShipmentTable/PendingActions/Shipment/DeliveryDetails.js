@@ -20,32 +20,103 @@ import Tick from '../../../../../assets/Component 27.svg'
 import CustomCheckBox from '../../Track/CustomCheckBox'
 import { BiSolidDownArrow, BiSolidUpArrow } from 'react-icons/bi'
 
-const DeliveryDetails = () => {
+const DeliveryDetails = ({openDelivery,setOpenDelivery}) => {
 
-    const [open,setOpen] = useState(false)
+    // const [view,setView] = useState(true)
+    const [deliveryinputs,setDeliveryinputs] = useState(
+        {
+            name:"",
+            companyname:"",
+            email:"",
+            phonenumber:"",
+            address:"",
+            city:"",
+            zipcode:"",
+            taxid:"",
+            country:""
+        }
+    
+    )
+
+    // This is for AlreadyExist data
+    const [apiData,setApiData] = useState({
+            name:"nk",
+            companyname:"nk",
+            email:"nk",
+            phonenumber:"nk",
+            address:"nk",
+            city:"nk",
+            zipcode:"nk",
+            taxid:"nk",
+            country:"nk"
+    })
+
+    const obj = Object.entries(apiData)
+    let isNotViewable = false
+    let isReadOnly = false
+
+
+    for(const [key] of obj){
+        if(apiData[key]==="")
+            isNotViewable = true
+        else{
+            isReadOnly=true
+        }
+   }
+
+    const handleChange =(e)=>{
+        setDeliveryinputs((prev)=>{
+            return {
+                ...prev,[e.target.name]:e.target.value
+            }
+        })
+    }
+
+    const handleSubmit = (e) =>{
+        e.preventDefault()
+        console.log(deliveryinputs)
+        setOpenDelivery(false)
+    }
+
+    //Function to trigger an Next Logic
+    const handleNext = () =>{
+        setOpenDelivery(false)
+    }
 
   return (
     <div className='delivery_section' >
         <div className="row delivery_section_row mx-1">
             <div className="col-12 p-0 d-flex justify-content-between align-items-center mb-2">
                 <div className="left_details d-flex align-items-start">
-                    <span className='me-2'>4</span>
+                    <span className='me-2'>5</span>
                     <div className="Shipper_title">
-                        <p className='m-0 mb-2'>Delivery Details</p>
-                        <p className='m-0'>Please check and confirm Additional Services that we recommend</p>
+                        <p className='m-0 mb-2'>Delivery Details</p>              
+                        {/* This is for Change the description according to input values */}
+                        {
+                            isNotViewable && <p className='m-0'>Please check and confirm Additional Services that we recommend</p>
+                        }
                     </div>
                 </div>
                 <div className="right_details me-4">
                         <img className='me-2' src={Tick} alt="complete" />
-                        {/* <img src={Edit} alt="edit"  onClick={()=>setOpen((prev)=>!prev)} style={{cursor:"pointer"}} /> */}
+                        {/* <img src={Edit} alt="edit"  onClick={()=>setOpenDelivery((prev)=>!prev)} style={{cursor:"pointer"}} /> */}
+                        {/* {
+                            !open ? <BiSolidDownArrow onClick={()=>setOpenDelivery((prev)=>!prev)} style={{cursor:"pointer"}} />:
+                            <BiSolidUpArrow onClick={()=>setOpenDelivery((prev)=>!prev)} style={{cursor:"pointer"}} />
+                        } */}
+                        
+                        {/* This is for Changing the Icon According to Input values*/}
                         {
-                            !open ? <BiSolidDownArrow onClick={()=>setOpen((prev)=>!prev)} style={{cursor:"pointer"}} />:
-                            <BiSolidUpArrow onClick={()=>setOpen((prev)=>!prev)} style={{cursor:"pointer"}} />
-                        }
+                        !isNotViewable?
+                            !openDelivery ? <BiSolidDownArrow size={16} onClick={()=>setOpenDelivery((prev)=>!prev)} style={{cursor:"pointer"}} />:
+                            <BiSolidUpArrow size={16} onClick={()=>setOpenDelivery((prev)=>!prev)} style={{cursor:"pointer"}} />
+                        :
+                         <img src={Edit} alt="edit"  onClick={()=>setOpenDelivery((prev)=>!prev)} style={{cursor:"pointer"}} />
+                       }
                 </div>
             </div>
             {
-                open && 
+                openDelivery && 
                 <>        
                     <div className="row" style={{padding:"0px 18px"}}>
                         {/* <div className="row w-100 mb-3">
@@ -68,7 +139,7 @@ const DeliveryDetails = () => {
                                         required: true,
                                         },]}
                                     >
-                                    <Input size="large" placeholder="Type here" prefix={<img src={user}></img>} />
+                                    <Input size="large" placeholder="Type here" prefix={<img src={user}></img>} name="name" disabled={isReadOnly} defaultValue={apiData?.name} value={deliveryinputs.name} onChange={handleChange} />
                                 </Form.Item>
                             </Form>
                             </div>
@@ -83,7 +154,7 @@ const DeliveryDetails = () => {
                                         required: true,
                                         },]}
                                     >
-                                    <Input size="large" placeholder="Type here" prefix={<img src={office}></img>} />
+                                    <Input size="large" placeholder="Type here" prefix={<img src={office}></img>} name="companyname" disabled={isReadOnly} defaultValue={apiData?.companyname} value={deliveryinputs.companyname} onChange={handleChange} />
                                 </Form.Item>
                             </Form>
                             </div>
@@ -100,7 +171,7 @@ const DeliveryDetails = () => {
                                         required: true,
                                         },]}
                                     >
-                                    <Input size="large" placeholder="Johndee@gmail.com" prefix={<img src={email}></img>} />
+                                    <Input size="large" placeholder="Johndee@gmail.com" prefix={<img src={email}></img>} name="email" disabled={isReadOnly} defaultValue={apiData?.email} value={deliveryinputs.email} onChange={handleChange} />
                                 </Form.Item>
                                 </Form>
                             </div>
@@ -115,7 +186,7 @@ const DeliveryDetails = () => {
                                         required: true,
                                         },]}
                                         >
-                                        <Input size="large" placeholder="Mobile Number" prefix={<img src={phone}></img>} />
+                                        <Input size="large" placeholder="Mobile Number" prefix={<img src={phone}></img>} name="phonenumber" disabled={isReadOnly} defaultValue={apiData?.phonenumber} value={deliveryinputs.phonenumber} onChange={handleChange} />
                                     </Form.Item>
                                 </Form>
                             </div>
@@ -132,7 +203,7 @@ const DeliveryDetails = () => {
                                         required: true,
                                         },]}
                                         >
-                                        <Input size="large" placeholder="Lorem Ipsum" prefix={<img src={address}></img>} />
+                                        <Input size="large" placeholder="Lorem Ipsum" prefix={<img src={address}></img>} name="address" disabled={isReadOnly} defaultValue={apiData?.address} value={deliveryinputs.address} onChange={handleChange} />
                                     </Form.Item>
                                 </Form>
                             </div>
@@ -149,7 +220,7 @@ const DeliveryDetails = () => {
                                         },
                                     ]}
                                     >
-                                    <Input size="large" placeholder="Type here" prefix={<img src={city}></img>} />
+                                    <Input size="large" placeholder="Type here" prefix={<img src={city}></img>} name="city" disabled={isReadOnly} defaultValue={apiData?.city} value={deliveryinputs.city} onChange={handleChange} />
                                 </Form.Item>
                             </Form>
                             </div>
@@ -166,7 +237,7 @@ const DeliveryDetails = () => {
                                         required: true,
                                         },]}
                                         >
-                                        <Input size="large" placeholder="Type here" prefix={<img src={zipcode}></img>} />
+                                        <Input size="large" placeholder="Type here" prefix={<img src={zipcode}></img>} name="zipcode" disabled={isReadOnly} defaultValue={apiData?.zipcode} value={deliveryinputs.zipcode} onChange={handleChange} />
                                     </Form.Item>
                                 </Form>
                             </div>
@@ -181,7 +252,7 @@ const DeliveryDetails = () => {
                                         required: true,
                                         },]}
                                     >
-                                    <Input size="large" placeholder="Type here" prefix={<img src={taxid}></img>} />
+                                    <Input size="large" placeholder="Type here" prefix={<img src={taxid}></img>} name="taxid" disabled={isReadOnly} defaultValue={apiData?.taxid} value={deliveryinputs.taxid} onChange={handleChange} />
                                 </Form.Item>
                             </Form>
                             </div>
@@ -198,7 +269,7 @@ const DeliveryDetails = () => {
                                         required: true,
                                         },]}
                                     >
-                                    <Input size="large" placeholder="Type here" prefix={<img src={country}></img>} />
+                                    <Input size="large" placeholder="Type here" prefix={<img src={country}></img>} name="country" disabled={isReadOnly} defaultValue={apiData?.country} value={deliveryinputs.country} onChange={handleChange} />
                                 </Form.Item>
                             </Form>
                             </div>
@@ -208,7 +279,13 @@ const DeliveryDetails = () => {
                     </div>
                     <div className="row" style={{padding:"0px 41px"}}>
                         <div className="btn_save_group d-flex align-items-center">
-                            <Link className='btn_save ms-auto'>Next<span className='ms-2'><HiArrowRightCircle size={22} color='white' /></span></Link>
+                        {/*This is for Change Button Behaviour according to input values */}
+                        {
+                                !isNotViewable ?<Link onClick={()=>handleNext()} className='btn_save ms-auto'>Next<span className='ms-2'><HiArrowRightCircle size={22} color='white' /></span></Link>:
+                            
+                            <Link onClick={(e)=>handleSubmit(e)} className='btn_save ms-auto'>Save & Next<span className='ms-2'><HiArrowRightCircle size={22} color='white' /></span></Link>
+                            }
+                            {/* <Link className='btn_save ms-auto'>Next<span className='ms-2'><HiArrowRightCircle size={22} color='white' /></span></Link> */}
                         </div>
                     </div>
                 </>

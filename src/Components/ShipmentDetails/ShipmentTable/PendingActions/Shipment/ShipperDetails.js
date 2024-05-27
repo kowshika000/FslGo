@@ -18,13 +18,11 @@ import CustomCheckBox from '../../Track/CustomCheckBox'
 import { DownCircleOutlined, DownOutlined } from '@ant-design/icons'
 import { BiSolidDownArrow, BiSolidUpArrow } from 'react-icons/bi'
 
-const ShipperDetails = () => {
+const ShipperDetails = ({setOpenShipper,openShipper,setOpenConsignee}) => {
 
-    const [open,setOpen] = useState(false)
-    // const [view,setView] = useState(true)
     const [shipperinputs,setShipperinputs] = useState(
-        [{
-            name:"kjkj",
+        {
+            name:"",
             companyname:"",
             email:"",
             phonenumber:"",
@@ -34,16 +32,34 @@ const ShipperDetails = () => {
             taxid:"",
             country:""
         }
-    ]
+    
     )
 
-    // const obj = Object.entries(shipperinputs)
-    let isViewable = false
+    // This is for AlreadyExist data
+    const [apiData,setApiData] = useState({
+            name:"nk",
+            companyname:"nk",
+            email:"nk",
+            phonenumber:"nk",
+            address:"nk",
+            city:"nk",
+            zipcode:"nk",
+            taxid:"nk",
+            country:"nk"
+    })
 
-    for(const item in shipperinputs){
-        if(shipperinputs[item]==="")
-            isViewable = true
-    }
+    const obj = Object.entries(apiData)
+    let isNotViewable = false
+    let isReadOnly = false
+
+
+    for(const [key] of obj){
+        if(apiData[key]==="")
+            isNotViewable = true
+        else{
+            isReadOnly=true
+        }
+   }
 
     const handleChange =(e)=>{
         setShipperinputs((prev)=>{
@@ -53,9 +69,18 @@ const ShipperDetails = () => {
         })
     }
 
+    //Function to trigger submit and get Values
     const handleSubmit = (e) =>{
         e.preventDefault()
-        console.log(shipperinputs.name)
+        console.log(shipperinputs)
+        setOpenShipper(false)
+        setOpenConsignee(true)
+    }
+
+    //Function to trigger an Next Logic
+    const handleNext = () =>{
+        setOpenShipper(false)
+        setOpenConsignee(true)
     }
 
     
@@ -68,23 +93,28 @@ const ShipperDetails = () => {
                     <span className='me-2'>1</span>
                     <div className="Shipper_title">
                         <p className='m-0 mb-2'>Shipper Details</p>
-                        <p className='m-0'>Enter shipper contact details</p>
+                        {/* This is for Change the description according to input values */}
+                        {
+                            isNotViewable && <p className='m-0'>Enter shipper contact details</p>
+                        }
                     </div>
                 </div>
                 <div className="right_details me-4">
                         <img className='me-2' src={Tick} alt="complete" />
-                        {/* <img src={Edit} alt="edit"  onClick={()=>setOpen((prev)=>!prev)} style={{cursor:"pointer"}} /> */}
+                        {/* <img src={Edit} alt="edit"  onClick={()=>setOpenShipper((prev)=>!prev)} style={{cursor:"pointer"}} /> */}
+
+                         {/* This is for Changing the Icon According to Input values*/}
                        {
-                        isViewable?
-                            !open ? <BiSolidDownArrow onClick={()=>setOpen((prev)=>!prev)} style={{cursor:"pointer"}} />:
-                            <BiSolidUpArrow onClick={()=>setOpen((prev)=>!prev)} style={{cursor:"pointer"}} />
+                        !isNotViewable?
+                            !openShipper ? <BiSolidDownArrow size={16} onClick={()=>setOpenShipper((prev)=>!prev)} style={{cursor:"pointer"}} />:
+                            <BiSolidUpArrow size={16} onClick={()=>setOpenShipper((prev)=>!prev)} style={{cursor:"pointer"}} />
                         :
-                         <img src={Edit} alt="edit"  onClick={()=>setOpen((prev)=>!prev)} style={{cursor:"pointer"}} />
+                         <img src={Edit} alt="edit"  onClick={()=>setOpenShipper((prev)=>!prev)} style={{cursor:"pointer"}} />
                        }
                 </div>
             </div>
             {
-                open && 
+                openShipper && 
                 <>
                     <div className="row" style={{padding:"0px 18px"}}>
                         {/* <div className="row w-100 mb-3">
@@ -108,7 +138,7 @@ const ShipperDetails = () => {
                                         required: true,
                                         },]}
                                     >
-                                    <Input size="large" placeholder="Type here" prefix={<img src={user}></img>} name="name" value={shipperinputs.name} onChange={handleChange} />
+                                    <Input size="large" placeholder="Type here" prefix={<img src={user}></img>} name="name" disabled={isReadOnly} defaultValue={apiData?.name} value={shipperinputs.name} onChange={handleChange} />
                                 </Form.Item>
                             </Form>
                             </div>
@@ -123,7 +153,7 @@ const ShipperDetails = () => {
                                         required: true,
                                         },]}
                                     >
-                                    <Input size="large" placeholder="Type here" prefix={<img src={office}></img>} name="companyname" value={shipperinputs.companyname} onChange={handleChange}  />
+                                    <Input size="large" placeholder="Type here" prefix={<img src={office}></img>} name="companyname" disabled={isReadOnly} defaultValue={apiData?.companyname} value={shipperinputs.companyname} onChange={handleChange}  />
                                 </Form.Item>
                             </Form>
                             </div>
@@ -140,7 +170,7 @@ const ShipperDetails = () => {
                                         required: true,
                                         },]}
                                     >
-                                    <Input size="large" placeholder="Johndee@gmail.com" prefix={<img src={email}></img>} name="email" value={shipperinputs.email}  onChange={handleChange}  />
+                                    <Input size="large" placeholder="Johndee@gmail.com" prefix={<img src={email}></img>} name="email" disabled={isReadOnly} defaultValue={apiData?.email} value={shipperinputs.email}  onChange={handleChange}  />
                                 </Form.Item>
                                 </Form>
                             </div>
@@ -155,7 +185,7 @@ const ShipperDetails = () => {
                                         required: true,
                                         },]}
                                         >
-                                        <Input size="large" placeholder="Mobile Number" prefix={<img src={phone}></img>} name="phonenumber" value={shipperinputs.phonenumber} onChange={handleChange}   />
+                                        <Input size="large" placeholder="Mobile Number" prefix={<img src={phone}></img>} name="phonenumber" disabled={isReadOnly} defaultValue={apiData?.phonenumber} value={shipperinputs.phonenumber} onChange={handleChange}   />
                                     </Form.Item>
                                 </Form>
                             </div>
@@ -172,7 +202,7 @@ const ShipperDetails = () => {
                                         required: true,
                                         },]}
                                         >
-                                        <Input size="large" placeholder="Lorem Ipsum" prefix={<img src={address}></img>} name="address" value={shipperinputs.address}  onChange={handleChange} />
+                                        <Input size="large" placeholder="Lorem Ipsum" prefix={<img src={address}></img>} name="address" disabled={isReadOnly} defaultValue={apiData?.address} value={shipperinputs.address}  onChange={handleChange} />
                                     </Form.Item>
                                 </Form>
                             </div>
@@ -189,7 +219,7 @@ const ShipperDetails = () => {
                                         },
                                     ]}
                                     >
-                                    <Input size="large" placeholder="Type here" prefix={<img src={city}></img>} name="city" value={shipperinputs.city} onChange={handleChange}   />
+                                    <Input size="large" placeholder="Type here" prefix={<img src={city}></img>} name="city" disabled={isReadOnly} defaultValue={apiData?.city} value={shipperinputs.city} onChange={handleChange}   />
                                 </Form.Item>
                             </Form>
                             </div>
@@ -206,7 +236,7 @@ const ShipperDetails = () => {
                                         required: true,
                                         },]}
                                         >
-                                        <Input size="large" placeholder="Type here" prefix={<img src={zipcode}></img>} name="zipcode" value={shipperinputs.zipcode} onChange={handleChange}  />
+                                        <Input size="large" placeholder="Type here" prefix={<img src={zipcode}></img>} name="zipcode" disabled={isReadOnly} defaultValue={apiData?.zipcode} value={shipperinputs.zipcode} onChange={handleChange}  />
                                     </Form.Item>
                                 </Form>
                             </div>
@@ -221,7 +251,7 @@ const ShipperDetails = () => {
                                         required: true,
                                         },]}
                                     >
-                                    <Input size="large" placeholder="Type here" prefix={<img src={taxid}></img>} name="taxid" value={shipperinputs.taxid} onChange={handleChange}  />
+                                    <Input size="large" placeholder="Type here" prefix={<img src={taxid}></img>} name="taxid" disabled={isReadOnly} defaultValue={apiData?.taxid} value={shipperinputs.taxid} onChange={handleChange}  />
                                 </Form.Item>
                             </Form>
                             </div>
@@ -238,7 +268,7 @@ const ShipperDetails = () => {
                                         required: true,
                                         },]}
                                     >
-                                    <Input size="large" placeholder="Type here" prefix={<img src={country}></img>} name="country" value={shipperinputs.country} onChange={handleChange}  />
+                                    <Input size="large" placeholder="Type here" prefix={<img src={country}></img>} name="country" disabled={isReadOnly} defaultValue={apiData?.country} value={shipperinputs.country} onChange={handleChange}  />
                                 </Form.Item>
                             </Form>
                             </div>
@@ -248,7 +278,12 @@ const ShipperDetails = () => {
                     </div>
                     <div className="row" style={{padding:"0px 41px"}}>
                         <div className="btn_save_group d-flex align-items-center">
-                            <Link onClick={(e)=>handleSubmit(e)} className='btn_save ms-auto'>Next<span className='ms-2'><HiArrowRightCircle size={22} color='white' /></span></Link>
+                            {/*This is for Change Button Behaviour according to input values */}
+                            {
+                                !isNotViewable ?<Link onClick={()=>handleNext()} className='btn_save ms-auto'>Next<span className='ms-2'><HiArrowRightCircle size={22} color='white' /></span></Link>:
+                            
+                            <Link onClick={(e)=>handleSubmit(e)} className='btn_save ms-auto'>Save & Next<span className='ms-2'><HiArrowRightCircle size={22} color='white' /></span></Link>
+                            }
                         </div>
                     </div>
                 </>

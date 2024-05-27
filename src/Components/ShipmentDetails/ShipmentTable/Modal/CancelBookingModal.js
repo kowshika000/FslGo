@@ -26,7 +26,7 @@ const CancelBookingModal = ({handleCancelClose,handleReqOpen}) => {
             </div>
             <div className="modal_cancelling_buttons mt-4 flex-center-center gap-3">
                     <button className='yes_shipment_btn' onClick={()=>handleOnSubmit()} >Yes, Cancel Shipment</button>
-                    <button className='no_cancel_btn'>No, Do Not Cancel</button>
+                    <button className='no_cancel_btn' onClick={() =>handleCancelClose()} >No, Do Not Cancel</button>
             </div>
         </div>
     </>
