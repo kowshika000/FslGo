@@ -4,9 +4,6 @@ import { Column } from "primereact/column";
 import { Button } from "primereact/button";
 import CloseIcon from "@mui/icons-material/Close";
 import "./ShipmentHistory.css";
-import sort from "../../../assets/sort.png";
-import { ReactComponent as India } from "../../../assets/in.svg";
-import { ReactComponent as AE } from "../../../assets/ae.svg";
 import Pagination from "../../Core-Components/Pagination";
 import { useDispatch, useSelector } from "react-redux";
 import { bookingRequest } from "../../../Redux/Actions/BookingAction";
@@ -21,7 +18,6 @@ const ShipmentHistory = ({ selectedStatus, filterDays, setSelectedStatus }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5; // Number of items per page
   const [selectedButton, setSelectedButton] = useState(null);
-  const [active, setActive] = useState(false);
   const dispatch = useDispatch();
   const ShipmentData = useSelector((state) => state.Booking);
   const bookingData = ShipmentData?.booking;
@@ -46,6 +42,8 @@ const ShipmentHistory = ({ selectedStatus, filterDays, setSelectedStatus }) => {
   useEffect(() => {
     dispatch(bookingRequest({ payload }));
   }, [filterDays]);
+
+
 
   const [tableVisible, setTableVisible] = useState(true); // State to toggle table visibility
 
@@ -253,7 +251,6 @@ const ShipmentHistory = ({ selectedStatus, filterDays, setSelectedStatus }) => {
   };
 
   const handleUpcomingDep = () => {
-    setActive(true)
     console.log("clicked upcoming departure");
     setSelectedButton("Upcoming Departures");
     const filteredDatas = data?.filter(
