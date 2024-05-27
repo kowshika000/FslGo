@@ -173,8 +173,7 @@ export const Port = () => {
             className="placeholder-color"
             onChange={handleOriginPortChange}
             value={searchOriginPort}
-      
-          />
+            />
           <ArrowDropDownIcon />
           {originPortOptionsVisible && (
             <div className="outer-port">
@@ -289,7 +288,6 @@ export const Port = () => {
             className="placeholder-color"
             onChange={handleDestPortChange}
             value={searchDestPort}
-     
           />
           <ArrowDropDownIcon />
           {destPortOptionsVisible && (
