@@ -104,7 +104,7 @@ const UpcomingSailings = () => {
                       color: "#495A6E",
                     }}
                   >
-                    {data.origin || data.origin_name}
+                    {data.origin_name || data.origin}
                   </Typography>
                 </div>
               </div>
