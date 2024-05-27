@@ -21,6 +21,7 @@ const ShipmentHistory = ({ selectedStatus, filterDays, setSelectedStatus }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5; // Number of items per page
   const [selectedButton, setSelectedButton] = useState(null);
+  const [active, setActive] = useState(false);
   const dispatch = useDispatch();
   const ShipmentData = useSelector((state) => state.Booking);
   const bookingData = ShipmentData?.booking;
@@ -51,45 +52,45 @@ const ShipmentHistory = ({ selectedStatus, filterDays, setSelectedStatus }) => {
   const handleToggleTable = () => {
     setTableVisible(false);
   };
+  console.log("selectedStatus", selectedStatus);
+  console.log("selectedButton", selectedButton);
   const [filteredData, setFilteredData] = useState([]);
-  const [shouldUpdateStatus, setShouldUpdateStatus] = useState(true);
 
   useEffect(() => {
-    // Filter data based on selected status
-    if (!shouldUpdateStatus) {
-      setShouldUpdateStatus(true); // Reset the flag for next updates
-      return;
-    }
-    let filteredData = [];
-    if (selectedStatus === "New Requests") {
-      filteredData = data?.filter(
-        (item) => item.status === "Booking In Progress"
-      );
-      setTableVisible(true);
-    } else if (selectedStatus === "Booked") {
-      filteredData = data?.filter((item) => item.status === "Booked");
-      setTableVisible(true);
-    } else if (selectedStatus === "Delivered") {
-      filteredData = data?.filter((item) => item.status === "Delivered");
-      setTableVisible(true);
-    } else if (selectedStatus === "Shipments") {
-      filteredData = data;
-      setTableVisible(true);
-    } else if (selectedStatus === "Arrived") {
-      filteredData = data?.filter((item) => item.status === "Arrived");
-      setTableVisible(true);
-    } else if (selectedStatus === "Received") {
-      filteredData = data?.filter((item) => item.status === "Received");
-      setTableVisible(true);
-    } else if (selectedStatus === "Departed") {
-      filteredData = data?.filter((item) => item.status === "Departed");
-      setTableVisible(true);
+    if (selectedStatus === "null") {
+    return
     } else {
-      filteredData = data;
+      let filteredData = [];
+      if (selectedStatus === "New Requests") {
+        filteredData = data?.filter(
+          (item) => item.status === "Booking In Progress"
+        );
+        setTableVisible(true);
+      } else if (selectedStatus === "Booked") {
+        filteredData = data?.filter((item) => item.status === "Booked");
+        setTableVisible(true);
+      } else if (selectedStatus === "Delivered") {
+        filteredData = data?.filter((item) => item.status === "Delivered");
+        setTableVisible(true);
+      } else if (selectedStatus === "Shipments") {
+        filteredData = data;
+        setTableVisible(true);
+      } else if (selectedStatus === "Arrived") {
+        filteredData = data?.filter((item) => item.status === "Arrived");
+        setTableVisible(true);
+      } else if (selectedStatus === "Received") {
+        filteredData = data?.filter((item) => item.status === "Received");
+        setTableVisible(true);
+      } else if (selectedStatus === "Departed") {
+        filteredData = data?.filter((item) => item.status === "Departed");
+        setTableVisible(true);
+      } else {
+        filteredData = data;
+      }
+      setFilteredData(filteredData);
+      setCurrentPage(1);
+      setSelectedButton(null);
     }
-    setFilteredData(filteredData);
-    setCurrentPage(1);
-    setSelectedButton(null);
   }, [selectedStatus, data]);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -101,10 +102,8 @@ const ShipmentHistory = ({ selectedStatus, filterDays, setSelectedStatus }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalRowData, setModalRowData] = useState(null);
   const showModal = (rowData) => {
-    console.log("shipmentRowData", rowData);
     setModalRowData(rowData);
     setIsModalOpen(true);
-    console.log("shipmentData:", modalRowData);
   };
   const handleCancel = () => {
     setIsModalOpen(false);
@@ -205,7 +204,6 @@ const ShipmentHistory = ({ selectedStatus, filterDays, setSelectedStatus }) => {
   };
 
   const handleSort = (col) => {
-    console.log("Ascending");
     const sorted = [...filteredData].sort((a, b) => {
       const valA = a[col];
       const valB = b[col];
@@ -227,7 +225,6 @@ const ShipmentHistory = ({ selectedStatus, filterDays, setSelectedStatus }) => {
   };
 
   const handleSortDown = (col) => {
-    console.log("Descending");
     const sorted = [...filteredData].sort((a, b) => {
       const valA = a[col];
       const valB = b[col];
@@ -256,9 +253,9 @@ const ShipmentHistory = ({ selectedStatus, filterDays, setSelectedStatus }) => {
   };
 
   const handleUpcomingDep = () => {
+    setActive(true)
     console.log("clicked upcoming departure");
     setSelectedButton("Upcoming Departures");
-    setShouldUpdateStatus(false);
     const filteredDatas = data?.filter(
       (item) =>
         item.status === "Booking In Progress" ||
@@ -274,14 +271,12 @@ const ShipmentHistory = ({ selectedStatus, filterDays, setSelectedStatus }) => {
     setFilteredData(sortedData);
     setIsAscending(!isAscending);
     setCurrentPage(1);
-    setSelectedStatus(null);
+    setSelectedStatus("null");
   };
-  console.log(selectedButton);
 
   const handleUpcomingArr = () => {
     console.log("clicked upcoming departure");
     setSelectedButton("Upcoming Arrivals");
-    setShouldUpdateStatus(false);
     const filteredDatas = data?.filter(
       (item) => item.status === "In Transit" || item.status === "Departed"
     );
@@ -294,7 +289,7 @@ const ShipmentHistory = ({ selectedStatus, filterDays, setSelectedStatus }) => {
     setFilteredData(sortedData);
     setIsAscending(!isAscending);
     setCurrentPage(1);
-    // setSelectedStatus(null);
+    setSelectedStatus("null");
   };
 
   // const handleBookedOn = () => {
