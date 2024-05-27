@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { LoginRequest } from '../../Redux/Actions/LoginAction';
+import React, { useState, useEffect } from "react";
+import { Navigate, useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { LoginRequest } from "../../Redux/Actions/LoginAction";
+import {CircularProgress,Box} from "@mui/material"
 
 const Login = () => {
   const { id, token } = useParams(); // Get id and token from URL params
@@ -19,14 +20,25 @@ const Login = () => {
 
   useEffect(() => {
     if (jwtToken) {
-      localStorage.setItem('token', jwtToken);
+      localStorage.setItem("token", jwtToken);
       setAuthenticated(true);
       setTokenReceived(true);
     }
   }, [jwtToken]);
 
   if (!tokenReceived) {
-    return <p>Loading...</p>;
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "200px",
+        }}
+      >
+        <CircularProgress style={{ color: "red" }} />
+      </Box>
+    );
   }
 
   if (!authenticated) {
