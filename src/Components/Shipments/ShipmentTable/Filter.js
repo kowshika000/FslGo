@@ -16,7 +16,7 @@ const FilterDrawer = ({ visible, onClose }) => {
       closeIcon={<CloseOutlined style={{ fontSize: "16px", color: "#000" }} />}
     >
       <div>
-        <div className="div-colaligned justify-col-between height-full">
+        <div className="div-colaligned justify-content-between height-full">
           <div
             className="ant-row allfilters-container css-1vr7spz "
             style={{ rowGap: "20px" }}
@@ -25,7 +25,7 @@ const FilterDrawer = ({ visible, onClose }) => {
               <div className="div-colaligned gap-4 filter-section">
                 <span className="filter-heading">Booking ID</span>
                 <Input
-                 className={`filter-wrapper ${focused === 'booking' ? 'focused-border' : ''}`}
+                 className={`filter-wrapper ${focused === 'booking' ? 'focused-border' : ''} filter-heading` }
                   size="large"
                   style={{ height: "50px", fontSize: "14px" }}
                   placeholder="Type here"
@@ -59,6 +59,7 @@ const FilterDrawer = ({ visible, onClose }) => {
                     style={{ width: "100%", border: "none" }}
                     placeholder="Select type"
                     prefixCls=""
+                   className="filter-heading"
                     suffixIcon={
                       <CaretDownOutlined
                         style={{ fontSize: "16px", color: "#000" }}
@@ -98,6 +99,7 @@ const FilterDrawer = ({ visible, onClose }) => {
                   <img src="https://www.fslgo.com/_next/static/media/filtercalendar.6dba3ae4.svg" />
                   <DatePicker
                     style={{ width: "100%" }}
+                    className="filter-heading"
                     suffixIcon={
                       <CaretDownOutlined
                         style={{ fontSize: "16px", color: "#000" }}
@@ -126,6 +128,7 @@ const FilterDrawer = ({ visible, onClose }) => {
                   <img src="https://www.fslgo.com/_next/static/media/filtercalendar.6dba3ae4.svg" />
                   <DatePicker
                     style={{ width: "100%" }}
+                    className="filter-heading"
                     suffixIcon={
                       <CaretDownOutlined
                         style={{ fontSize: "16px", color: "#000" }}
@@ -157,6 +160,7 @@ const FilterDrawer = ({ visible, onClose }) => {
                     width="26px"
                   />
                   <Select
+                  className="filter-heading"
                     style={{ width: "100%", border: "none" }}
                     placeholder="Enter Sea/Air port, City or Zip Code"
                     suffixIcon=""
@@ -186,6 +190,7 @@ const FilterDrawer = ({ visible, onClose }) => {
                     width="26px"
                   />
                   <Select
+                  className="filter-heading"
                     style={{ width: "100%", border: "none" }}
                     placeholder="Enter Sea/Air port, City or Zip Code"
                     suffixIcon=""
@@ -203,6 +208,7 @@ const FilterDrawer = ({ visible, onClose }) => {
             display: "flex",
             flexDirection: "row",
             justifyContent: "end",
+            borderTop:"1px solid rgba(5, 5, 5, 0.06)"
           }}
           className="p-3"
         >
