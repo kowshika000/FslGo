@@ -14,6 +14,7 @@ import { LoginRequest } from "./Redux/Actions/LoginAction";
 import Cookies from "js-cookie";
 import Inbox from "./Components/Inbox/Inbox";
 import ShipmentBase from "./Components/ShipmentDetails/ShipmentTable/ShipmentBase";
+import { CircularProgress, Box } from "@mui/material";
 
 function App() {
   const dispatch = useDispatch();
@@ -26,36 +27,46 @@ function App() {
     const queryString = currentUrl?.split("?")[1];
     const paramsArray = queryString?.split("&");
     const params = {};
-  
+
     if (paramsArray) {
       paramsArray.forEach((param) => {
         const [key, value] = param?.split("=");
         params[key] = value;
       });
     }
-  
+
     const id = params["id"];
     const token = params["token"];
     console.log(token);
-  
+
     dispatch(LoginRequest({ sUsername: id, spassword: token }));
-  
+
     if (jwtToken) {
       setLoading(false);
     }
-  
+
     const timeout = setTimeout(() => {
       if (!jwtToken) {
         window.location.href = "http://www.freightsystems.com";
       }
     }, 5000);
-  
-    return () => clearTimeout(timeout); 
+
+    return () => clearTimeout(timeout);
   }, [dispatch, jwtToken]);
-  
 
   if (loading) {
-    return <div>Loading...</div>;
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+    <CircularProgress style={{ color: "red" }} />
+      </Box>
+    );
   }
 
   if (jwtToken) {
@@ -73,7 +84,7 @@ function App() {
           <Route path="/inbox" element={<Inbox />} />
           <Route path="/invoice" element={<Invoice />} />
           <Route path="/quotation" element={<Quotation />} />
-          <Route path="/shipmentdetails" element={<ShipmentBase/>} />
+          <Route path="/shipmentdetails" element={<ShipmentBase />} />
         </Routes>
       </div>
       <Footer />
