@@ -5,13 +5,15 @@ import { token } from "./Token";
 const baseURL = environment.serverURL;
 const authToken = token()
 
-export function UploadDocumentService(request) {
+export function UploadDocumentService({payload}) {
+console.log("r",payload);
     return axios({
-      method: "GET",
+      method: "POST",
       url: baseURL + "upload_document",
-      params:request,
-      headers: {
-        auth_token: authToken 
-      }
+      headers: { 
+        auth_token: authToken
+      },
+      data: payload,
+
     });
   }
