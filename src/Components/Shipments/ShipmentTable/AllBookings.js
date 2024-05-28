@@ -492,7 +492,7 @@ const AllBookings = ({ filterData, selectedStatus }) => {
           field="booked_on"
           header={
             <span className="p-3 d-flex">
-              Booked on
+              Booked On
               <div
                 className="d-flex sorticon"
                 style={{ flexDirection: "column" }}
