@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom'
 import dropIcon from '../../../../../assets/Frame.png'
 import { Button, Tooltip } from 'antd'
 import info from '../../../../../assets/Info.svg'
+import { AiFillMinusCircle } from "react-icons/ai";
 
 const UploadDocuments = () => {
 
@@ -20,6 +21,10 @@ const UploadDocuments = () => {
     //       pointAtCenter: true,
     //     };
     //   }, [arrow]);
+
+    // const handleFileUpload =()=>{
+
+    // }
 
   return (
     <div className='upload_document_section'>
@@ -43,7 +48,13 @@ const UploadDocuments = () => {
                     </div>
                 </div>
                 <div className="right_details">
-                    <Dragger style={{width:"50%"}} >
+                    <Dragger 
+                        multiple
+                        // customRequest={handleFileUpload}
+                        // showUploadList={false}
+                        accept='.jpeg,.png,.word,.pdf'
+                        
+                        style={{width:"50%"}} >
                         <p className="ant-upload-drag-icon">
                         <img src={dropIcon} alt="" />
                         </p>

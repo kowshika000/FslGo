@@ -132,6 +132,12 @@
     border-bottom: 1px solid #E7EAF0;
     margin-left: 1px;
 }
+.upload_document_section .ant-upload-wrapper{
+    display: flex;
+}
+.upload_document_section .ant-upload-wrapper .ant-upload-list{
+    width: 50%;
+}
 
 /* cargo_require_section */
 .cargo_require_section .left_details{
