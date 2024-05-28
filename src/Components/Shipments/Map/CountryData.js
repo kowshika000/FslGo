@@ -398,5 +398,11 @@ export const CountryData = [
     countryCode:"JP",
     latitude: 36.2048,
     longitude:138.2529,
+  },
+  {
+    country:"Turkey",
+    countryCode:"TR",
+    latitude: 38.9637,
+    longitude:35.2433,
   }
 ];

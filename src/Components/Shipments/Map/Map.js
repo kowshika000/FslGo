@@ -26,13 +26,17 @@ const position = [10.586958, -34.623453];
 // Define the component
 export default function Americas() {
   const [showModal, setShowModal] = useState(false);
+  const [selectedMarkerId, setSelectedMarkerId] = useState(null);
   const dispatch = useDispatch();
-  const handleMarkerClick = () => {
+  const handleMarkerClick = (id) => {
     setShowModal(true);
+    setSelectedMarkerId(id)
+    console.log("id.",id);
   };
 
   const handleModalClose = () => {
     setShowModal(false);
+    setSelectedMarkerId(null)
   };
   useEffect(() => {
     dispatch(mapRequest());
@@ -66,9 +70,12 @@ export default function Americas() {
         <TileLayer url="https://tile.openstreetmap.de/{z}/{x}/{y}.png" />
         {/* Markers with icon 1 */}
         {filteredCountryData.map((location, index) => {
-          const markerNumber =
-            MapDatas.find((data) => data.country_code === location.countryCode)
-              ?.no_of_shipments || 0;
+          const mapData = MapDatas.find(
+            (data) => data.country_code === location.countryCode
+          );
+          const markerNumber = mapData?.no_of_shipments || 0;
+          const markerId = mapData.hbl_no;
+          console.log("datamap", markerId);
 
           const numberIcon = L.divIcon({
             html: `<div style="color: white; font-size: 14px; background: red; border-radius: 50%; width: 24px; height: 24px; display: flex; justify-content: center; align-items: center;">${markerNumber}</div>`,
@@ -81,13 +88,13 @@ export default function Americas() {
               position={[location.latitude, location.longitude]}
               icon={numberIcon}
               eventHandlers={{
-                click: () => handleMarkerClick(),
+                click: () => handleMarkerClick(markerId),
               }}
             ></Marker>
           );
         })}
       </MapContainer>
-      <MapMarker showModal={showModal} onClose={handleModalClose} />
+      <MapMarker showModal={showModal} onClose={handleModalClose}  markerId={selectedMarkerId}/>
     </div>
   );
 }
