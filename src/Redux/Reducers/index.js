@@ -8,6 +8,8 @@ import portReducer from './PortReducer';
 import loginReducer from './LoginReducer';
 import openSailingReducer from './OpenSailingReducer';
 import MapReducer from './MapReducer';
+import ViewBookingReducer from "./ViewBookingReducer"
+import UploadDocumentReducer from './UploadDocumentReducer';
 
 
 const rootReducer = combineReducers({
@@ -20,6 +22,8 @@ const rootReducer = combineReducers({
     Login: loginReducer,
     OpenSailing: openSailingReducer,
     Map: MapReducer,
+    ViewBooking: ViewBookingReducer,
+    UploadDocument:UploadDocumentReducer,
 });
 
 export default rootReducer;

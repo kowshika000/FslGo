@@ -8,6 +8,8 @@ import watchPort from "./PortSaga";
 import watchLogin from "./LoginSaga";
 import watchOpenSailing from "./OpenSailingSaga";
 import watchMap from "./MapSaga";
+import watchViewBooking from "./ViewBookingSaga";
+import watchUploadDocument from "./UploadDocumentSaga";
 
 export default function* rootSaga() {
   yield all([
@@ -20,5 +22,7 @@ export default function* rootSaga() {
     watchLogin(),
     watchOpenSailing(),
     watchMap(),
+    watchViewBooking(),
+    watchUploadDocument(),
   ]);
 }

@@ -1,8 +1,16 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import './UploadDocuments.css'
 import TextArea from 'antd/es/input/TextArea'
 
 const CargoRequirements = () => {
+
+    const [textCount,setTextCount] = useState(250)
+    const [textInput,setTextInput] = useState("")
+    useEffect(()=>{
+        const length = Math.abs(textInput.length - 250)
+        setTextCount(length)
+    },[textInput])
+
   return (
     <div className='cargo_require_section' >
         <div className="row cargo_require_row">
@@ -15,11 +23,11 @@ const CargoRequirements = () => {
                     </div>
                 </div>
                 <div className="right_details">
-                    <div className="textarea_description d-flex justify-content-between" style={{width:"50%"}}>
+                    <div className="textarea_description d-flex justify-content-between" style={{width:"50%",paddingBottom:"5px"}}>
                         <p className="m-0" style={{fontWeight:"500",fontSize:"13px",lineHeight:"19px",letterSpacing:"1%",color:"#67788E"}}>if any</p>
-                        <p className='m-0' style={{fontWeight:"500",fontSize:"13px",lineHeight:"19px",letterSpacing:"1%",color:"#67788E"}}>250/250</p>
+                        <p className='m-0' style={{fontWeight:"500",fontSize:"13px",lineHeight:"19px",letterSpacing:"1%",color:"#67788E"}}>{textCount}/250</p>
                     </div>
-                    <TextArea style={{width:"50%"}} placeholder='Type here...' rows={4} />
+                    <TextArea style={{width:"50%"}} placeholder='Type here...' rows={4} maxLength={250} value={textInput} onChange={(e)=>setTextInput(e.target.value)} />
                 </div>
             </div>
         </div>

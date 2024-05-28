@@ -37,15 +37,15 @@ const ShipperDetails = ({setOpenShipper,openShipper,setOpenConsignee}) => {
 
     // This is for AlreadyExist data
     const [apiData,setApiData] = useState({
-            name:"nk",
-            companyname:"nk",
-            email:"nk",
-            phonenumber:"nk",
-            address:"nk",
-            city:"nk",
-            zipcode:"nk",
-            taxid:"nk",
-            country:"nk"
+            name:"",
+            companyname:"",
+            email:"",
+            phonenumber:"",
+            address:"",
+            city:"",
+            zipcode:"",
+            taxid:"",
+            country:""
     })
 
     const obj = Object.entries(apiData)
@@ -100,14 +100,17 @@ const ShipperDetails = ({setOpenShipper,openShipper,setOpenConsignee}) => {
                     </div>
                 </div>
                 <div className="right_details me-4">
-                        <img className='me-2' src={Tick} alt="complete" />
+                        
                         {/* <img src={Edit} alt="edit"  onClick={()=>setOpenShipper((prev)=>!prev)} style={{cursor:"pointer"}} /> */}
 
                          {/* This is for Changing the Icon According to Input values*/}
                        {
                         !isNotViewable?
+                        <>
+                            <img className='me-2' src={Tick} alt="complete" />
                             !openShipper ? <BiSolidDownArrow size={16} onClick={()=>setOpenShipper((prev)=>!prev)} style={{cursor:"pointer"}} />:
                             <BiSolidUpArrow size={16} onClick={()=>setOpenShipper((prev)=>!prev)} style={{cursor:"pointer"}} />
+                        </>
                         :
                          <img src={Edit} alt="edit"  onClick={()=>setOpenShipper((prev)=>!prev)} style={{cursor:"pointer"}} />
                        }

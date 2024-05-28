@@ -16,8 +16,20 @@ import TransactionModal from './Modal/TransactionModal'
 import CancelBookingModal from './Modal/CancelBookingModal'
 import CancelRequestModal from './Modal/CancelRequestModal'
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
+import { useDispatch, useSelector } from 'react-redux'
+import { ViewBookingAction } from '../../../Redux/Actions/ViewBookingAction'
 
 const ShipmentHeader = () => {
+
+  //get ApiData
+  const dispatch = useDispatch()
+  useEffect(()=>{
+    dispatch(ViewBookingAction())
+  },[])
+  const bookingData = useSelector((state)=>state.ViewBooking)
+  console.log("bookingData",bookingData);
+  const ViewBooking = bookingData?.viewBookingData?.customercode
+  console.log("view", ViewBooking);
 
   // for Cancel Booking Dropdown
   const onClick = ({ key }) => {
@@ -31,6 +43,7 @@ const ShipmentHeader = () => {
   ];
 
   //transaction_modal
+  
   const [openTransmodal,setOpenTransModal] = useState(false)
   const handleOpen =()=>{
     setOpenTransModal(true)
@@ -56,12 +69,18 @@ const ShipmentHeader = () => {
    }
 
    const getlastStatus = document.getElementsByClassName('Inprogress')
+   const getlastCompleteStatus = document.getElementsByClassName('Complete')
+
   //  for_ongoing-status_of_focus_milestones
 
    const stepbox = useRef(null)
 
    useEffect(()=>{
-    stepbox.current.scrollLeft = getlastStatus[0]?.offsetLeft
+    if(getlastStatus){
+      stepbox.current.scrollLeft = getlastStatus[0]?.offsetLeft
+    }else if(getlastCompleteStatus){
+      stepbox.current.scrollLeft = getlastCompleteStatus[0]?.offsetLeft
+    }
    },[])
 
    //drag and drop

@@ -11,7 +11,7 @@ import "../../../ShipmentDetails/ShipmentTable/ShipmentHeader.css";
 
 function Steppertrack({ isModalOpen, handleCancel, rowData }) {
   const mileStoneData = useSelector((state) => state.Booking);
-  const bookingData = mileStoneData?.booking;
+  const bookingData = mileStoneData?.booking; 
   const data = bookingData?.data;
   const handleStatusLabel = () => {
     if (rowData?.status === "Arrived") {

@@ -7,7 +7,7 @@ import NotifyDetails from './Shipment/NotifyDetails'
 
 const ShipperTab = () => {
 
-  const [incoterm,setIncoterm] = useState(false)
+  const [incoterm,setIncoterm] = useState(true)
 
   const[openShipper,setOpenShipper] = useState(false)
   const[openConsignee,setOpenConsignee] = useState(false)
