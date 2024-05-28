@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './UploadDocuments.css'
 import TextArea from 'antd/es/input/TextArea'
 
@@ -14,6 +14,14 @@ const DocumentType = () => {
             return {...prev,[e.target.name]:e.target.value}
         })
     }
+
+    //This is for decrease count logic of text area
+    const [textCount,setTextCount] = useState(250)
+    const [textInput,setTextInput] = useState("")
+    useEffect(()=>{
+        const length = Math.abs(textInput.length - 250)
+        setTextCount(length)
+    },[textInput])
 
     
 
@@ -51,9 +59,9 @@ const DocumentType = () => {
                 <div className="other_type" style={{padding:"10px 21px 0px"}}>
                     <div className="textarea_description d-flex justify-content-between" style={{width:"50%"}}>
                         <p className="" style={{fontWeight:"500",fontSize:"13px",lineHeight:"19px",letterSpacing:"1%",color:"#67788E",marginBottom:"5px"}}>Tell us more about your document type</p>
-                        <p className='m-0' style={{fontWeight:"500",fontSize:"13px",lineHeight:"19px",letterSpacing:"1%",color:"#67788E"}}>250/250</p>
+                        <p className='m-0' style={{fontWeight:"500",fontSize:"13px",lineHeight:"19px",letterSpacing:"1%",color:"#67788E"}}>{textCount}/250</p>
                     </div>
-                    <TextArea style={{width:"50%"}} placeholder='Type here...' rows={4} />
+                    <TextArea style={{width:"50%"}} placeholder='Type here...' rows={4} maxLength={250} onChange={(e)=>setTextInput(e.target.value)} />
                 </div>
                 }
             </div>
