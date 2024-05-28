@@ -7,15 +7,15 @@ import { mapRequest } from "../../../Redux/Actions/MapAction";
 import { useDispatch, useSelector } from "react-redux";
 
 export default function MapMarker({ showModal, onClose }) {
-  // const [modal1, setModal1] = useState(false);
-  // const dispatch = useDispatch();
+  const [modal1, setModal1] = useState(false);
+  const dispatch = useDispatch();
   
-  // useEffect(() => {
-  //   dispatch(mapRequest());
-  // }, [dispatch]);
+  useEffect(() => {
+    dispatch(mapRequest());
+  }, [dispatch]);
 
-  // const mapData = useSelector((state) => state.Map);
-  // const mapMarkerData = mapData?.MapData?.countries;
+  const mapData = useSelector((state) => state.Map);
+  const mapMarkerData = mapData?.MapData?.countries;
 
   return (
     <Modal
@@ -25,6 +25,8 @@ export default function MapMarker({ showModal, onClose }) {
         position: "absolute",
         width: "500px",
         height: "300px",
+        marginLeft:"57%",
+        marginTop:"-4%"
       }}
     >
       <div>
@@ -50,6 +52,7 @@ export default function MapMarker({ showModal, onClose }) {
               }
               headerClassName="custom-header1 p-1"
               className="p-1"
+              
             />
             <Column
               field="mode"
