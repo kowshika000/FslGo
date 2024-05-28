@@ -2,6 +2,7 @@ import {UPLOAD_DOCUMENT_FAILURE, UPLOAD_DOCUMENT_REQUEST, UPLOAD_DOCUMENT_SUCCES
 const initialState = {
   error: null,
   loading: false,
+  uploadData:[],
 };
 function UploadDocumentReducer(state = initialState, action) {
   switch (action.type) {
@@ -17,6 +18,7 @@ function UploadDocumentReducer(state = initialState, action) {
         ...state,
         error: null,
         loading: false,
+        uploadData: action.payload
       };
     case UPLOAD_DOCUMENT_FAILURE:
       return {

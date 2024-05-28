@@ -2,7 +2,7 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import * as Types from "../ActionTypes";
 import { UploadDocumentService } from '../../Services/UploadDocumentService';
 
-function* UploadDocumentSaga({ payload }) {
+function* uploadDocumentSaga({ payload }) {
   try {
     console.log('payload',payload)
     const BookingResponse = yield call(UploadDocumentService, payload);
@@ -19,6 +19,6 @@ function* UploadDocumentSaga({ payload }) {
 
 
 function* watchUploadDocument() {
-  yield takeLatest(Types.UPLOAD_DOCUMENT_REQUEST, UploadDocumentSaga);
+  yield takeLatest(Types.UPLOAD_DOCUMENT_REQUEST, uploadDocumentSaga);
 }
 export default watchUploadDocument;
