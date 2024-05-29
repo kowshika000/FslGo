@@ -89,3 +89,10 @@
     font-size: 16px;
     line-height: 24px;
 }
+
+/* This is for container details overflow*/
+.booking_summary .ant-table-wrapper {
+    overflow-y: auto;
+    max-height: 500px;
+    border-radius: 8px;
+}

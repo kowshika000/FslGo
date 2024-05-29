@@ -18,7 +18,7 @@ import CancelRequestModal from './Modal/CancelRequestModal'
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
 import { useDispatch, useSelector } from 'react-redux'
 import { ViewBookingAction } from '../../../Redux/Actions/ViewBookingAction'
-
+ 
 const ShipmentHeader = () => {
 
   //get ApiData
@@ -30,6 +30,7 @@ const ShipmentHeader = () => {
   console.log("bookingData",bookingData);
   const ViewBooking = bookingData?.viewBookingData?.customercode
   console.log("view", ViewBooking);
+
 
   // for Cancel Booking Dropdown
   const onClick = ({ key }) => {

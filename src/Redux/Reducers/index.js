@@ -10,6 +10,7 @@ import openSailingReducer from './OpenSailingReducer';
 import MapReducer from './MapReducer';
 import ViewBookingReducer from "./ViewBookingReducer"
 import UploadDocumentReducer from './UploadDocumentReducer';
+import CancelBookingReducer from './CancelBookingReducer';
 
 
 const rootReducer = combineReducers({
@@ -24,6 +25,7 @@ const rootReducer = combineReducers({
     Map: MapReducer,
     ViewBooking: ViewBookingReducer,
     UploadDocument:UploadDocumentReducer,
+    CancelBooking: CancelBookingReducer
 });
 
 export default rootReducer;

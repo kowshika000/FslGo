@@ -12,7 +12,7 @@ const ContainerDetailsModal = ({children,handleContClose}) => {
       console.log(children)
   return (
     <>
-        <Table columns={columns} dataSource={children} size="middle" /> 
+        <Table columns={columns} dataSource={children} pagination={false} /> 
         <div
             className="modal_cancel_icon flex-center-end"
             style={{
