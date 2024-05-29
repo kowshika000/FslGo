@@ -11,7 +11,8 @@ console.log("r",payload);
       method: "POST",
       url: baseURL + "upload_document",
       headers: { 
-        auth_token: authToken
+        auth_token: authToken,
+        "Access-Control-Allow-Origin": "*"
       },
       data: payload,
 

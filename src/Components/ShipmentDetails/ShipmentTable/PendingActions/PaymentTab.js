@@ -9,7 +9,7 @@ const PaymentTab = () => {
             <div className='payment_section'>
               <PaymentDetailBox setOpen={setOpen} />
               {
-                open && <ViewCredit open={open} />
+                open && <ViewCredit open={open} setOpen={setOpen} />
               }
 
            </div>
