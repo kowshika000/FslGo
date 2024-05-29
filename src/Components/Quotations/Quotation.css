@@ -1,0 +1,62 @@
+.p-datatable-header{
+    border:none;
+ }
+ 
+ .ant-tabs-nav-wrap{
+    height:57px !important;
+ }
+ 
+ .pi-search{
+    display: none !important;
+ }
+ 
+ .custom-input::placeholder {
+    color: #888; 
+    font-size: 5px !important; 
+  }
+
+  .ant-tabs-nav-more{
+   display: none !important;
+  }
+
+  .p-dropdown:not(.p-disabled).p-focus{
+   box-shadow: none !important;
+  }
+
+  .ant-image-mask:hover{
+   display: none !important;
+  }
+
+  .origin-cell{
+   text-align: start !important;
+  }
+  .bodycell{
+   text-align: start !important;
+  }
+  .leaflet-top, .leaflet-bottom{
+   z-index: auto;
+  }
+  .filter{
+   border:1px solid #e7eaf0 !important;
+   padding: 5px 20px 0 20px !important;
+   margin-left: 10px !important;
+   border-radius: 4px !important;
+   height:36px !important;
+ }
+
+ .ant-input {
+   font-family: 'Roboto', sans-serif !important;
+ }
+ .booked {
+    background-color: #008000 !important;
+  }
+  .waringBtn{
+    background-color: #FDDC69 !important;
+    color: black !important;
+    border-color: #FDDC69 !important;
+    font-weight: 500 !important;
+  }
+  .dangerBtn{
+    background-color: #D32D2F;
+
+  }
