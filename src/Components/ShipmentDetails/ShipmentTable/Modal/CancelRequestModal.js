@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./CancelRequestModal.css";
 import { VscClose } from "react-icons/vsc";
 import { Link } from "react-router-dom";
@@ -15,6 +15,14 @@ const CancelRequestModal = ({ handleReqClose }) => {
           return {...prev,[e.target.name]:e.target.value}
       })
   }
+
+  //This is for decrease count logic of text area
+  const [textCount,setTextCount] = useState(250)
+  const [textInput,setTextInput] = useState("")
+  useEffect(()=>{
+      const length = Math.abs(textInput.length - 250)
+      setTextCount(length)
+  },[textInput])
 
   return (
     <div className="cancel_request_modal p-5" style={{ position: "relative" }}>
@@ -95,9 +103,9 @@ const CancelRequestModal = ({ handleReqClose }) => {
                 <div className="other_type w-100" style={{padding:"13px 0px 0px"}}>
                     <div className="textarea_description d-flex justify-content-between" >
                         <p className="" style={{fontWeight:"500",fontSize:"13px",lineHeight:"19px",letterSpacing:"1%",color:"#67788E",marginBottom:"5px"}}>Tell us more about your document type</p>
-                        <p className='m-0' style={{fontWeight:"500",fontSize:"13px",lineHeight:"19px",letterSpacing:"1%",color:"#67788E"}}>250/250</p>
+                        <p className='m-0' style={{fontWeight:"500",fontSize:"13px",lineHeight:"19px",letterSpacing:"1%",color:"#67788E"}}>{textCount}/250</p>
                     </div>
-                    <TextArea placeholder='Type here...' rows={4} />
+                    <TextArea placeholder='Type here...' rows={4} maxLength={250} onChange={(e)=>setTextInput(e.target.value)} />
                 </div>
         }
       <div className="modal_request_button">

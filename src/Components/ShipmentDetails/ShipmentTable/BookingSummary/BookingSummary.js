@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './BookingSummary.css';
 import {Tooltip } from 'antd';
 import Modal from '../Modal/Modal'
 import ContainerDetailsModal from '../Modal/ContainerDetailsModal';
+import TextArea from 'antd/es/input/TextArea';
 
 const BookingSummary = () => {
 
@@ -44,15 +45,35 @@ const BookingSummary = () => {
               },
               {
                 key:6,
-                container:"TRHU3324147 / 25 GP"
+                container:"TRHU3324147 / 26 GP"
               },
               {
                 key:7,
-                container:"TRHU3324147 / 25 GP"
+                container:"TRHU3324147 / 27 GP"
               },
               {
                 key:8,
-                container:"TRHU3324147 / 25 GP"
+                container:"TRHU3324147 / 28 GP"
+              },
+              {
+                key:9,
+                container:"TRHU3324147 / 29 GP"
+              },
+              {
+                key:10,
+                container:"TRHU3324147 / 30 GP"
+              },
+              {
+                key:11,
+                container:"TRHU3324147 / 31 GP"
+              },
+              {
+                key:12,
+                container:"TRHU3324147 / 32 GP"
+              },
+              {
+                key:13,
+                container:"TRHU3324147 / 33 GP"
               },
              
   ]
@@ -71,6 +92,15 @@ const BookingSummary = () => {
    const handleContClose =()=>{
        setOpenContmodal(false)
    }
+
+
+   //This is for decrease count logic of text area
+   const [textCount,setTextCount] = useState(1000)
+   const [textInput,setTextInput] = useState("")
+   useEffect(()=>{
+       const length = Math.abs(textInput.length - 1000)
+       setTextCount(length)
+   },[textInput])
 
   return (
     <div className='container-fluid booking_summary'>
@@ -300,9 +330,19 @@ const BookingSummary = () => {
               <p className='Header'>Special Requirements</p>
             </div>
             <div className='card-body'>
-              {  
-                  <p className='container_para'>{requirementDescription.length>200&&requirementDescription.substring(0,200)}...</p>
-              }
+              {/* {  
+                  <p className='container_para'>{requirementDescription}</p>
+              } */}
+
+              <div className="requirement_section" style={{padding:"0px 13px"}}>
+                <div className="textarea_description d-flex justify-content-between" >
+                    <p className="" style={{fontWeight:"500",fontSize:"13px",lineHeight:"19px",letterSpacing:"1%",color:"#67788E",marginBottom:"5px"}}>Tell us more about your requirements</p>
+                    <p className='m-0' style={{fontWeight:"500",fontSize:"13px",lineHeight:"19px",letterSpacing:"1%",color:"#67788E"}}>{textCount}/1000</p>
+                </div>
+                <TextArea placeholder='Type here...' rows={4} maxLength={1000} onChange={(e)=>setTextInput(e.target.value)} />
+              </div>
+              
+
             </div>
           </div>
         </div>
