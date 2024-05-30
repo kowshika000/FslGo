@@ -15,6 +15,7 @@ import Cookies from "js-cookie";
 import Inbox from "./Components/Inbox/Inbox";
 import ShipmentBase from "./Components/ShipmentDetails/ShipmentTable/ShipmentBase";
 import { CircularProgress, Box } from "@mui/material";
+import ProfileBase from "./Components/Profile/ProfileBase";
 import FindNewRate from "./Components/Quotations/QuotaionTable/QModal/FindNewRate";
 
 function App() {
@@ -87,6 +88,7 @@ function App() {
           <Route path="/quotation" element={<Quotation />} />
           <Route path="/shipmentdetails" element={<ShipmentBase />} />
           <Route path="/findnewrate" element={<FindNewRate/>} />
+          <Route path="/profile" element={<ProfileBase />} />
         </Routes>
       </div>
       <Footer />

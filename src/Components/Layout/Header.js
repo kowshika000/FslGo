@@ -193,17 +193,19 @@ const Header = ({ activePage }) => {
           }}
           className="justify-text-center align-content-center"
         >
-          <Typography
-            sx={{
-              color: "white",
-              fontFamily: "Lato",
-              fontSize: "16px",
-              fontWeight: "400",
-              textAlign: "center",
-            }}
-          >
+          <Link to='/profile' className="text-decoration-none">
+            <Typography
+              sx={{
+                color: "white",
+                fontFamily: "Lato",
+                fontSize: "16px",
+                fontWeight: "400",
+                textAlign: "center",
+              }}
+            >
             G
-          </Typography>
+            </Typography>
+          </Link>
         </div>
       </div>
     </div>
