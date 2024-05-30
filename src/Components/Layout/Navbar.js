@@ -47,12 +47,27 @@ const Navbar = () => {
     Quotations
   </Link>
   )
+
+  const quotationsResultBreadcrumb=(
+    <Link
+        underline="hover"
+        key="3"
+        color="inherit"
+        href="/quotation"
+        onClick={handleClick}
+        style={{fontSize:'14px', color:'#181E25', fontWeight:'400'}}
+      >
+        Quotations Result
+      </Link>
+      )
   const breadcrumbs = [homeBreadcrumb];
 
   if (pathname === '/shipments') {
     breadcrumbs.push(shipmentsBreadcrumb);
   } else if (pathname === '/quotation') {
     breadcrumbs.push(quotationsBreadcrumb);
+  } else if(pathname==="/findnewrate"){
+    breadcrumbs.push(quotationsResultBreadcrumb)
   }
   return (
     <div className="d-flex justify-content-between mx-auto" >
