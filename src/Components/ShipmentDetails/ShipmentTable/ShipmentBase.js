@@ -16,6 +16,7 @@ import { hover } from '@testing-library/user-event/dist/hover';
 import { IoMdChatboxes } from 'react-icons/io';
 import { FaPhoneVolume } from 'react-icons/fa6';
 import { IoMail } from 'react-icons/io5';
+import { Link } from 'react-router-dom';
 
 const ShipmentBase = () => {
 
@@ -113,7 +114,15 @@ const ShipmentBase = () => {
                             separator={<RightOutlined style={{ fontSize: '11px', color: '#ACB8C4' }} />}
                             items={[
                               {
-                                title: 'Home',
+                                title: <Link 
+                                style={{
+                                  color:"#ACB8C4",
+                                  fontWeight:"400",
+                                  fontSize:'14px',
+                                  letterSpacing:'.01em',
+                                  textDecoration:"none"
+                                }} 
+                                to='/'>Home</Link>,
                               },
                               {
                                 title: 'Shipments',

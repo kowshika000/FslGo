@@ -15,6 +15,7 @@ import Cookies from "js-cookie";
 import Inbox from "./Components/Inbox/Inbox";
 import ShipmentBase from "./Components/ShipmentDetails/ShipmentTable/ShipmentBase";
 import { CircularProgress, Box } from "@mui/material";
+import ProfileBase from "./Components/Profile/ProfileBase";
 
 function App() {
   const dispatch = useDispatch();
@@ -85,6 +86,7 @@ function App() {
           <Route path="/invoice" element={<Invoice />} />
           <Route path="/quotation" element={<Quotation />} />
           <Route path="/shipmentdetails" element={<ShipmentBase />} />
+          <Route path="/profile" element={<ProfileBase />} />
         </Routes>
       </div>
       <Footer />
