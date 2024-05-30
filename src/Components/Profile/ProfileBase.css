@@ -5,7 +5,7 @@
     font-family: "Roboto", sans-serif;
 }
 
-.shipment_details_section{
+.profile_section{
     position: relative !important;
     display: flex;
     justify-content: center;
@@ -15,7 +15,7 @@
     width: 100%;
 }
 
-.shipment_details_section .black_box{
+.profile_section .black_box{
     background-color: #181E25 !important;
     border-bottom: 1px solid #E7EAF0;
     gap: 20px;
@@ -24,53 +24,53 @@
     position: absolute;
     top: 0px;
 }
-.shipment_details_section .shipment_container{
+.profile_section .profile_container{
     z-index: 10;
     padding: 0px 110px;
     width: 100%;
 }
-.shipment_details_section .shipment_ID_row .shipment_ID p{
+.profile_section .profile_title_row .profile_title p{
     font-family: Lato;
     font-weight: 700;
-    font-size: 36px;
-    line-height: 43.2px;
-    letter-spacing: -2%;
+    font-size: 28px;
+    line-height: 38px;
+    letter-spacing: .01em;
     color: #FFFFFF;
 
 }
 
-/* .shipment_details_section .breadCrumb ol li:nth-child(1){
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 24px;
-    letter-spacing:.01em !important;
-    color: #ACB8C4 !important;
-} */
-.shipment_details_section .breadCrumb ol li:nth-child(3){
+.profile_section .breadCrumb ol li:nth-child(1){
     font-weight: 400;
     font-size: 14px;
     line-height: 24px;
     letter-spacing:.01em !important;
     color: #ACB8C4 !important;
 }
-.shipment_details_section .breadCrumb ol li:nth-child(5){
+.profile_section .breadCrumb ol li:nth-child(3){
     font-weight: 400;
     font-size: 14px;
     line-height: 24px;
     letter-spacing:.01em !important;
     color: #FFFFFF !important;
 }
-.shipment_details_section .breadCrumb ol li:nth-child(2){
+.profile_section .breadCrumb ol li:nth-child(5){
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
+    letter-spacing:.01em !important;
+    color: #FFFFFF !important;
+}
+.profile_section .breadCrumb ol li:nth-child(2){
     color: #ACB8C4 !important;
 }
-.shipment_details_section .breadCrumb ol li:nth-child(4){
+.profile_section .breadCrumb ol li:nth-child(4){
     /* font-weight: 400;
     font-size: 14px;
     line-height: 24px;
     letter-spacing:.01em !important; */
     color: #ACB8C4 !important;
 }
-.shipment_details_section .breadCrumb p{
+.profile_section .breadCrumb p{
     font-weight: 500;
     font-size: 13px;
     line-height: 19px;
@@ -80,34 +80,32 @@
 }
 
 /* shipment_header */
-.shipment_details_section .shipment_header{
+.profile_section .profile_header{
     padding: 0px 12px 12px 12px;
 }
 
 @media screen and (max-width:366px) {
-    .shipment_details_section{
+    .profile_section{
         min-width: 1443px !important;
     }
 }
 @media screen and (max-width:355px) {
-    .shipment_details_section{
+    .profile_section{
         min-width: 1403px !important;
     }
 }
 @media screen and (max-width:347px) {
-    .shipment_details_section{
+    .profile_section{
         min-width: 1363px !important;
     }
 }
 @media screen and (max-width:332px) {
-    .shipment_details_section{
+    .profile_section{
         min-width: 1330px !important;
     }
 }
 @media screen and (max-width:325px) {
-    .shipment_details_section{
+    .profile_section{
         min-width: 1285px !important;
     }
 }
-
-
