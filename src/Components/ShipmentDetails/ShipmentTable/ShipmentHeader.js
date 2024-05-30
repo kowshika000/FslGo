@@ -147,7 +147,12 @@ const ShipmentHeader = () => {
             <div className="row reference_row">
                   <div className="col-3">
                     <h6 className='me-2 m-0'>HBL Number:</h6>
-                    <h6 className='m-0'>121014000112</h6>
+                    {
+                      ViewBooking.map((item)=>{
+                        return <h6 className='m-0'>121014000112</h6>
+                      }
+                      )
+                    }
                   </div>
                   <div className="col-4">
                     <h6 className='m-0 me-2'>Customer Reference (PO#):</h6>
