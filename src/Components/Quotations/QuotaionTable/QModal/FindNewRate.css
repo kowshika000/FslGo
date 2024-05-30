@@ -1,0 +1,20 @@
+.location-card .ant-card-body {
+  padding: 20px;
+}
+.location-bar p {
+  margin: 0 !important;
+}
+
+.p-label{
+  font-weight: 500;
+  font-size: 13px;
+  color: #495A6E;
+}
+
+.p-value{
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 26px;
+  letter-spacing: 1%;
+  color: #181E25;
+}
