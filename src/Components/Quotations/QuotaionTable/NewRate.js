@@ -1,23 +1,13 @@
 import React from "react";
-import Navbar from "../../../Layout/Navbar";
+import Navbar from "../../Layout/Navbar";
 import { Card } from "antd";
-import "./FindNewRate.css";
-import Location from "../../../../assets/location.svg";
+import "./NewRate.css";
+import Location from "../../../assets/location.svg";
 
-function FindNewRate() {
+function NewRate() {
   return (
-    <>
-      <div
-        style={{ maxWidth: "1255px", position: "relative" }}
-        className="py-5 mx-auto"
-      >
-        {/* <div
-          style={{
-            backgroundColor: "white",
-            position: "absolute",
-            height: "50px",
-          }}
-        ></div> */}
+    <div style={{ maxWidth: "1255px" }} className="py-5 mx-auto">
+      <div style={{ backgroundColor: "white" }}>
         <div className="pb-3">
           <Navbar />
         </div>
@@ -26,7 +16,6 @@ function FindNewRate() {
             style={{
               width: "100%",
             }}
-            className="shadow"
           >
             <div className="row location-bar">
               <div className="col d-flex">
@@ -34,9 +23,27 @@ function FindNewRate() {
                   <img src={Location} alt="loc" />
                 </div>
                 <div>
-                  <p className="p-label">Origin</p>
+                  <p
+                    style={{
+                      fontWeight: "500",
+                      fontSize: "13px",
+                      color: "#495A6E",
+                    }}
+                  >
+                    Origin
+                  </p>
                   {/* <img src="" alt="map" /> */}
-                  <p className="p-value">Nhava Sheva(INNSA)</p>
+                  <p
+                    style={{
+                      fontSize: "16px",
+                      fontWeight: "500",
+                      lineHeight: "26px",
+                      letterSpacing: "1%",
+                      color: "#181E25",
+                    }}
+                  >
+                    Nhava Sheva(INNSA)
+                  </p>
                 </div>
               </div>
               <div className="col d-flex">
@@ -44,9 +51,9 @@ function FindNewRate() {
                   <img src={Location} alt="loc" />
                 </div>
                 <div>
-                  <p className="p-label">Destination</p>
+                  <p>Origin</p>
                   {/* <img src="" alt="map" /> */}
-                  <p className="p-value">Jebel Ali(AEJEA)</p>
+                  <p>Nhava Sheva(INNSA)</p>
                 </div>
               </div>
               <div className="col d-flex">
@@ -54,27 +61,18 @@ function FindNewRate() {
                   <img src={Location} alt="loc" />
                 </div>
                 <div>
-                  <p className="p-label">Cargo</p>
+                  <p>Origin</p>
                   {/* <img src="" alt="map" /> */}
-                  <p className="p-value">LCL, 2 Unit | Total : 100KG, 5CBM</p>
+                  <p>Nhava Sheva(INNSA)</p>
                 </div>
               </div>
             </div>
           </Card>
         </div>
-        <div style={{ backgroundColor: "gray" }}>
-        <div className="row">
-          <div className="col-4">
-            <div className="card service-card">
-              
-            </div>
-          </div>
-          <div className="col-8"></div>
-        </div>
-        </div>
       </div>
-    </>
+      <div style={{ backgroundColor: "gray" }}></div>
+    </div>
   );
 }
 
-export default FindNewRate;
+export default NewRate;
