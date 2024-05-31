@@ -6,8 +6,8 @@ import "./Quotation.css";
 
 const Quotation = () => {
   return (
-    <div >
-        <div style={{maxWidth:'1255px'}} className='shipmentIndex py-5 mx-auto' >
+    <div style={{width:"100%", background: "linear-gradient(to bottom, white 20%,  rgb(248, 250, 252) 15%)",}}>
+      <div style={{maxWidth:'1255px'}} className='shipmentIndex py-5 mx-auto' >
       <Typography style={{fontSize:'28px', fontWeight:'700'}} className='shipments-head'>Quotations</Typography>
      <div>
      <Navbar/>

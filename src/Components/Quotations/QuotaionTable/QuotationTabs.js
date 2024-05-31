@@ -24,7 +24,8 @@ const QuotationTabs = () => {
     } else {
       setFilteredData(data.filter((item) => status.includes(item.status)));
     }
-  };
+  }; 
+
 
   useEffect(() => {
     const newFilteredData = data.filter((item) =>
@@ -37,6 +38,18 @@ const QuotationTabs = () => {
     switch (key) {
       case "1":
         filterData("All");
+        break;
+        case "2":
+        filterData(["Active"]);
+        break;
+      case "3":
+        filterData(["Booked"]);
+        break;
+      case "4":
+        filterData(["Expired"]);
+        break;
+      case "5":
+        filterData(["Requested "]);
         break;
       default:
         filterData("All");
