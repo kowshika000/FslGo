@@ -1,23 +1,19 @@
 import React from "react";
 import Navbar from "../../../Layout/Navbar";
-import { Card } from "antd";
+import { Card, Checkbox  } from "antd";
 import "./FindNewRate.css";
 import Location from "../../../../assets/location.svg";
 
 function FindNewRate() {
+  const onChange = (e) => {
+    console.log(`checked = ${e.target.checked}`);
+  };
   return (
     <>
       <div
         style={{ maxWidth: "1255px", position: "relative" }}
         className="py-5 mx-auto"
       >
-        {/* <div
-          style={{
-            backgroundColor: "white",
-            position: "absolute",
-            height: "50px",
-          }}
-        ></div> */}
         <div className="pb-3">
           <Navbar />
         </div>
@@ -62,15 +58,37 @@ function FindNewRate() {
             </div>
           </Card>
         </div>
-        <div style={{ backgroundColor: "gray" }}>
-        <div className="row">
-          <div className="col-4">
-            <div className="card service-card">
-              
-            </div>
+        <div className="row mt-5">
+          <div className="col-3 Service-Included">
+            <Card title="Service Included">
+              <div className="Service-card">
+                <p className="service-title">Origin</p>
+                <p><Checkbox onChange={onChange}>Origin Charges</Checkbox></p>
+                <p><Checkbox onChange={onChange}>Export Clearance</Checkbox></p>
+                <p><Checkbox onChange={onChange}>Cargo Pickup</Checkbox></p>
+                <p><Checkbox onChange={onChange}>International Freight</Checkbox></p>
+              </div>
+              <hr style={{backgroundColor:"#f0f0f0",borderTop:"none"}}/>
+              <div className="Service-card">
+                <p className="service-title">Destination</p>
+                <p><Checkbox onChange={onChange}>Destination Charges</Checkbox></p>
+                <p><Checkbox onChange={onChange}>Import Clearance</Checkbox></p>
+                <p><Checkbox onChange={onChange}>Cargo Delivery</Checkbox></p>
+              </div>
+              <hr style={{backgroundColor:"#f0f0f0",borderTop:"none"}}/>
+              <div className="Service-card">
+                <p className="service-title">Value Added</p>
+                <p><Checkbox onChange={onChange}>Cargo Insurance</Checkbox></p>
+              </div>
+              <hr style={{backgroundColor:"#f0f0f0",borderTop:"none"}}/>
+              <div className="Service-card">
+                <p className="service-title">Cargo Type</p>
+                <p><Checkbox onChange={onChange}>Stackable Cargo</Checkbox></p>
+                <p><Checkbox onChange={onChange}>Non Harzardous Cargo</Checkbox></p>
+              </div>
+            </Card>
           </div>
-          <div className="col-8"></div>
-        </div>
+          <div className="col-9"></div>
         </div>
       </div>
     </>
