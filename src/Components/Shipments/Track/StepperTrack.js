@@ -220,7 +220,7 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
             borderRadius: "0px 0px 8px 8px",
           }}
         >
-          <button className="viewDetails d-block ms-auto" onClick={()=>navigate("/shipmentdetails")}>
+          <button className="viewDetails d-block ms-auto" onClick={()=>navigate("/shipmentdetails" , { state: { rowData } })}>
             View Detailed Tracking
           </button>
         </div>

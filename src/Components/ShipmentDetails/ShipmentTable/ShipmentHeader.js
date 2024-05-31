@@ -18,18 +18,27 @@ import CancelRequestModal from './Modal/CancelRequestModal'
 import { IoIosArrowBack, IoIosArrowForward } from 'react-icons/io'
 import { useDispatch, useSelector } from 'react-redux'
 import { ViewBookingAction } from '../../../Redux/Actions/ViewBookingAction'
- 
+import { useLocation } from "react-router-dom";
 const ShipmentHeader = () => {
-
+  const location = useLocation();
+  const { rowData } = location.state || {};
+  console.log("shipmentrowData",rowData.id);
+  const booking_id = rowData.id
   //get ApiData
   const dispatch = useDispatch()
   useEffect(()=>{
-    dispatch(ViewBookingAction())
+    dispatch(ViewBookingAction({booking_id}))
   },[])
   const bookingData = useSelector((state)=>state.ViewBooking)
   console.log("bookingData",bookingData);
   const ViewBooking = bookingData?.viewBookingData?.customercode
   console.log("view", ViewBooking);
+
+  //This is for a Booking_header
+  const progress = booking_id //get Id from previous page
+  const ShipmentData = useSelector((state) => state.Booking);
+  const Booking = ShipmentData?.booking?.data
+  const fileteredMilestone = Booking?.filter((item)=>item.id===progress)
 
 
   // for Cancel Booking Dropdown
@@ -147,39 +156,71 @@ const ShipmentHeader = () => {
             <div className="row reference_row">
                   <div className="col-3">
                     <h6 className='me-2 m-0'>HBL Number:</h6>
-                    {
-                      ViewBooking.map((item)=>{
-                        return <h6 className='m-0'>121014000112</h6>
+                    {/* {
+                      ViewBooking?.map((item)=>{
+                        return <h6 className='m-0'>{item.booking_id}</h6>
                       }
                       )
-                    }
+                    } */}
+                    {
+                          fileteredMilestone?.map((item)=>{
+                            return <h6 className='m-0'>{item.id}</h6>
+                          }
+                          )
+                        }
+                    
                   </div>
                   <div className="col-4">
                     <h6 className='m-0 me-2'>Customer Reference (PO#):</h6>
-                    <h6 className='m-0'>ADK-23-1198</h6>
+                    {
+                          fileteredMilestone?.map((item)=>{
+                            return  <h6 className='m-0'>{item.order_no}</h6>
+                          }
+                          )
+                        }
+                   
                   </div>
             </div>
             <div className="row destination_row">
                 <div className="col-10 left_column">
                     <div className="from_box">
                         <img src={uaeFlag} alt="" className="flag_img me-2" />
-                        <p className='m-0'>Jebel Ali (AEJEA)</p>
+                        {
+                          fileteredMilestone?.map((item)=>{
+                            return <h6 className='m-0'>{item.origin}&nbsp;({item.origin_countrycode
+                            })</h6>
+                          }
+                          )
+                        }
                         <img src={rightArrow} alt="" className='mx-3' />
                     </div>
                     <div className="to_box">
                         <img src={indFlag} alt="" className='flag_img me-2' />
-                        <p className='m-0'>Nhava Sheva (INNSA)</p>
-                        <img src={OrImg} alt="" className='mx-3' />
+                        {
+                          fileteredMilestone?.map((item)=>{
+                            return <h6 className='m-0'>{item.destination}&nbsp;({item.destination_countrycode
+
+                            })</h6>
+                          }
+                          )
+                        }
+                        {/* <img src={OrImg} alt="" className='mx-3' /> */}
                     </div>
-                    <div className="estimate_box">
+                    {/* <div className="estimate_box">
                         <img src={ship} alt="" className='me-2' />
                         <p className='m-0'>Est. T/T</p>
                         <p className='mx-2 m-0'>9 Days (5 Days Port to Port)</p>
-                    </div>
+                    </div> */}
                 </div>
                 <div className="col-2 right_column">
                     <div className="bookedButton me-3">
-                       <Link>Booked</Link>
+                    {
+                          fileteredMilestone?.map((item)=>{
+                            return <Link>{item.status}</Link>
+                          }
+                          )
+                        }
+                       
                     </div>
                     <div className="menu_icon">
                     <Dropdown
@@ -202,27 +243,61 @@ const ShipmentHeader = () => {
             <div className="booking_row" >
                 <div className="booking_content">
                   <p className='m-0 mb-1'>Booking Date</p>
-                  <p className='m-0'>10 May, 2023</p>
+                  {
+                          fileteredMilestone?.map((item)=>{
+                            return  <p className='m-0'>{item.booked_on}</p>
+                          }
+                          )
+                        }
                 </div>
                 <div className="booking_content">
                   <p className='m-0 mb-1'>Estimated time of Departure</p>
-                  <p className='m-0'>12 May, 2023</p>
+                  {
+                          fileteredMilestone?.map((item)=>{
+                            return  <p className='m-0'>{item.etd_atd}</p>
+                          }
+                          )
+                        }
+                  
                 </div>
                 <div className="booking_content">
                   <p className='m-0 mb-1'>Estimated time of Arrival</p>
-                  <p className='m-0'>20 May, 2023</p>
+                  {
+                          fileteredMilestone?.map((item)=>{
+                            return  <p className='m-0'>{item.eta_ata}</p>
+                          }
+                          )
+                        }
                 </div>
                 <div className="booking_content">
                   <p className='m-0 mb-1'>Mode</p>
-                  <p className='m-0'><img className='me-1' src={lcl} />LCL</p>
+                  {
+                          fileteredMilestone?.map((item)=>{
+                            return  <p className='m-0'><img className='me-1' src={lcl} />{item.mode}</p>
+                          }
+                          )
+                        }
+                  
                 </div>
                 <div className="booking_content">
                   <p className='m-0 mb-1'>Incoterm</p>
-                  <p className='m-0 text-center'>FOB</p>
+                  {
+                          fileteredMilestone?.map((item)=>{
+                            return  <p className='m-0 text-center'>{item.tos}</p>
+                          }
+                          )
+                        }
+                  
                 </div>
                 <div className="booking_content">
                   <p className='m-0 mb-1'>Rate is Valid Till</p>
-                  <p className='m-0'>31 May, 2023</p>
+                  {
+                          fileteredMilestone?.map((item)=>{
+                            return  <p className='m-0'>{item.valid_date}</p>
+                          }
+                          )
+                        }
+                  
                 </div>
             </div>
             <div className="booking_status_row" style={{position:"relative"}}>
@@ -239,7 +314,7 @@ const ShipmentHeader = () => {
                         }
                         
                     </div>
-                    <Stepper />
+                    <Stepper booking_id={progress} />
                     <div className='arrow_icon'>
                         {
                           showRightArrow && <IoIosArrowForward size={17} color='rgb(109 114 120)' onClick={()=>handleScrollRight()}  />

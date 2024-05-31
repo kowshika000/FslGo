@@ -8,7 +8,6 @@ import ShipperTab from '../PendingActions/ShipperTab';
 import UploadTab from '../PendingActions/UploadTab';
 import PaymentTab from '../PendingActions/PaymentTab';
 import image from '../../../../assets/Warning.svg'
-import warning from 'antd/es/_util/warning';
 
 const TabBase = () => {
 

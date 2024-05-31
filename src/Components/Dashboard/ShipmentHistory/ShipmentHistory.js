@@ -43,8 +43,6 @@ const ShipmentHistory = ({ selectedStatus, filterDays, setSelectedStatus }) => {
     dispatch(bookingRequest({ payload }));
   }, [filterDays]);
 
-
-
   const [tableVisible, setTableVisible] = useState(true); // State to toggle table visibility
 
   const handleToggleTable = () => {
@@ -56,7 +54,7 @@ const ShipmentHistory = ({ selectedStatus, filterDays, setSelectedStatus }) => {
 
   useEffect(() => {
     if (selectedStatus === "null") {
-    return
+      return;
     } else {
       let filteredData = [];
       if (selectedStatus === "New Requests") {
@@ -149,7 +147,7 @@ const ShipmentHistory = ({ selectedStatus, filterDays, setSelectedStatus }) => {
           style={{ color: "rgba(103, 120, 142, 1)", fontSize: "13px" }}
           className="px-4 mt-1"
         >
-          LCL
+          {rowData?.mode}
         </div>
       </div>
     );
