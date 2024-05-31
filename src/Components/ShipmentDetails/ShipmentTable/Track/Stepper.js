@@ -3,7 +3,7 @@ import './Stepper.css'
 import { useSelector } from 'react-redux';
 import { Tooltip } from 'antd';
 
-const Stepper = () => {
+const Stepper = ({booking_id}) => {
 
   const steps = [
     {
@@ -52,13 +52,14 @@ const Stepper = () => {
 ]
 
 //booking id hard code
-const allComplete = "190124100291"
-const progress = "121614000220"
+// const allComplete = "190124100291"
+const progress = booking_id //This is for getting previous page id
 
 const ShipmentData = useSelector((state) => state.Booking);
 const Booking = ShipmentData?.booking?.data
 const fileteredMilestone = Booking?.filter((item)=>item.id===progress)
-console.log(fileteredMilestone)
+console.log("Booking",Booking)
+console.log("filtered",fileteredMilestone)
 
 
 

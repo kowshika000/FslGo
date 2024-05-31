@@ -4,7 +4,7 @@ import './ShipmentTable.css'
 
 const ShipmentTable = ({tabListNoTitle,contentListNoTitle}) => {
 
-    const [activeTabKey, setActiveTabKey] = useState('PendingActions');
+    const [activeTabKey, setActiveTabKey] = useState('Track');
         const onTab2Change = (key) => {
                 setActiveTabKey(key);
     };

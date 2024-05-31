@@ -60,3 +60,15 @@
     background-color: #D32D2F;
 
   }
+  /* .p-button.p-button-outlined:not(:disabled):active{
+
+  } */
+  .dangerBtn:focus{
+    box-shadow:none !important;
+  }
+  .waringBtn:focus{
+    box-shadow: none !important;
+  }
+  .booked:focus{
+    box-shadow: none !important;
+  }
