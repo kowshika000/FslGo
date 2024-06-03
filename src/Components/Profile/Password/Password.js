@@ -1,6 +1,8 @@
 import React from 'react'
 import './Password.css'
 import { Checkbox, Flex } from 'antd'
+import PasswordFields from './PasswordFields';
+import PasswordRules from './PasswordRules';
 
 const Password = () => {
 
@@ -14,7 +16,9 @@ const Password = () => {
             <p className='m-0'>Manage Your Login Options & Password </p>
             <p className='m-0'>You can Manage Your Login Options or change your account password from this page. </p>
       </div>
-      <Flex>
+      <Flex
+        style={{marginBottom:"20px"}} 
+      >
         <Checkbox onChange={onChange}
             style={{
               fontWeight:"500",
@@ -34,6 +38,10 @@ const Password = () => {
               color:"#384656"
             }}
         >Use Email/Phone & password</Checkbox>
+      </Flex>
+      <Flex>
+        <PasswordFields />
+        <PasswordRules />
       </Flex>
     </>
   )
