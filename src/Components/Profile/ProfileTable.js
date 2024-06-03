@@ -1,14 +1,27 @@
 import React, { useState } from 'react'
 import './ProfileTable.css'
-import { Card } from 'antd'
+import { Card, Drawer } from 'antd'
 import { Link } from 'react-router-dom';
+// import Modal from '../ShipmentDetails/ShipmentTable/Modal/Modal';
+// import NotificationManagement from './NotificationManagement/NotificationManagement';
 
-const ProfileTable = ({tabListNoTitle,contentListNoTitle}) => {
+const ProfileTable = ({tabListNoTitle,contentListNoTitle,setOpen}) => {
 
     const [activeTabKey, setActiveTabKey] = useState('ConnectedAccounts');
         const onTab2Change = (key) => {
                 setActiveTabKey(key);
     };
+
+    //This is for modal
+    // const [open,setOpen] = useState(false)
+
+    //This is for notification drawer
+    // const [open, setOpen] = useState(false);
+    // const [placement, setPlacement] = useState('right');
+    // const onClose = () => {
+    //   setOpen(false);
+    // };
+
 
   return (
     <Card
@@ -28,6 +41,7 @@ const ProfileTable = ({tabListNoTitle,contentListNoTitle}) => {
               {contentListNoTitle[activeTabKey]}
             </div>
             <Link 
+                onClick={()=>setOpen(true)}
                 style={{
                     padding:"14.5px 19.5px",
                     backgroundColor:"#D40E0E",
@@ -40,11 +54,25 @@ const ProfileTable = ({tabListNoTitle,contentListNoTitle}) => {
                     color:"#FFFFFF",
                     position:"absolute",
                     top:"6px",
-                    right:"22px"
+                    right:"22px", 
                 }}
             >
                 Notification Management
             </Link>
+            {/* <Modal isOpen={open} width={"80vw"}>
+                  <NotificationManagement setOpen={setOpen} />
+            </Modal> */}
+            {/* <Drawer
+              title="Basic Drawer"
+              placement={placement}
+              closable={false}
+              onClose={onClose}
+              open={open}
+              key={placement}
+            >
+              <NotificationManagement setOpen={setOpen} />
+            </Drawer> */}
+            
     </Card>
   )
 }

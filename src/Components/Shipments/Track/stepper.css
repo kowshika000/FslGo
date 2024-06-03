@@ -133,7 +133,7 @@
 .viewDetails{
     width:211px;
     height:46px;
-    padding: 0px, 22px, 0px, 22px ;
+    padding: 0px 22px 0px 22px ;
     color: white;
     border-radius: 8px !important;
     background-color: #D32D2F;
@@ -165,7 +165,7 @@
 }
 
 .tracker{
-    width:1146px;
+    max-width:1146px;
     height:261px;    
 }
 
@@ -173,3 +173,4 @@
     scroll-behavior: auto;
     cursor: grab;
 }
+

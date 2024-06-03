@@ -64,7 +64,7 @@ console.log("filtered",fileteredMilestone)
 
 
   return (
-    <div className='stepper d-flex justify-content-between' style={{minWidth:"1585px",width:"100%",overflowX:"hidden",scrollBehavior:"smooth"}} >
+    <div className='stepper d-flex' style={{minWidth:fileteredMilestone[0]?.milestones.length>4 ? "1585px": null,width:"100%",overflowX:"hidden",scrollBehavior:"smooth"}} >
         {
             fileteredMilestone[0]?.milestones?.map((step,i)=>{
                 return(

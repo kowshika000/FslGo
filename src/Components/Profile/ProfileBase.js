@@ -1,6 +1,6 @@
 import { RightOutlined } from '@ant-design/icons';
 import { Breadcrumb, Button, Dropdown } from 'antd';
-import React from 'react'
+import React, { useEffect, useState,useRef } from 'react'
 import { FaPhoneVolume } from 'react-icons/fa6';
 import { IoMdChatboxes } from 'react-icons/io';
 import { IoMail } from 'react-icons/io5';
@@ -13,6 +13,8 @@ import Transactions from './Transactions/Transactions';
 import Password from './Password/Password';
 import ReferEarn from './ReferEarn/ReferEarn';
 import Addresses from './SavedAddresses/Addresses';
+import NotificationManagement from './NotificationManagement/NotificationManagement';
+
 
 const ProfileBase = () => {
 
@@ -92,8 +94,27 @@ const ProfileBase = () => {
         },
       ];
 
+      //This is for Notification Drawer
+       const [open,setOpen] = useState(false)
+       const modalref = useRef()
+       console.log(modalref)
+
+       useEffect(() => {
+         const handler =(e)=>{
+          if(!modalref.current.contains(e.target)){
+          setOpen(false)
+          }
+         }    
+         document.addEventListener("mousedown",handler)
+
+         return()=>{
+          document.removeEventListener("mousedown",handler)
+         }
+       })
+       
+
   return (
-    <div className="profile_section container-fluid p-0" style={{marginTop:"4.7rem",backgroundColor: "#F3F5F7"}} >
+    <div className="profile_section container-fluid p-0" style={{marginTop:"4.7rem",backgroundColor: "#F3F5F7",minHeight:"1200px"}} >
               <div className="black_box container-fluid"></div>
               <div className="profile_container">
                   <div className="row profile_title_row" style={{marginTop:"20px",marginBottom:"20px"}}>
@@ -134,9 +155,13 @@ const ProfileBase = () => {
                   </div>
                   <div className="row profile_header">
                             <ProfileHeader />
-                            <ProfileTable contentListNoTitle={contentListNoTitle} tabListNoTitle={tabListNoTitle} />
+                            <ProfileTable contentListNoTitle={contentListNoTitle} tabListNoTitle={tabListNoTitle} setOpen={setOpen} />
+                            {/* <NotificationManagement open={open} /> */}
+                            
+                            
                   </div>
               </div>
+              <NotificationManagement open={open} modalref={modalref}  />
           </div>
   )
 }
