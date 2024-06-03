@@ -8,6 +8,7 @@ import Union from "../../../../assets/Union.png";
 import menu from "../../../../assets/menustepper.png";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import "../../../ShipmentDetails/ShipmentTable/ShipmentHeader.css";
+import { useNavigate } from "react-router-dom";
 
 function Steppertrack({ isModalOpen, handleCancel, rowData }) {
   const mileStoneData = useSelector((state) => state.Booking);
@@ -34,6 +35,7 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
   const [showLeftArrow, setShowLeftArrow] = useState(true);
   const [showRightArrow, setShowRightArrow] = useState(true);
   const getlastStatus = document.getElementsByClassName("Inprogress");
+  const navigate = useNavigate()
   useEffect(() => {
     if (stepbox.current) {
       const getlastStatus = document.getElementsByClassName("Inprogress");
@@ -136,7 +138,9 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
                   {rowData?.destination}
                 </div>
                 <p className="mx-3">|</p>
-
+                <p style={{ fontSize: "15px" ,fontWeight: "500",}}>Shipment ID :&nbsp;&nbsp;</p>
+                {rowData?.id}
+{/* 
                 <p style={{ fontSize: "15px" }}>
                   <img src={Union} className="pe-2" />
                   <span
@@ -159,7 +163,7 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
                   >
                     9 days(5 Days Port to Port)
                   </span>
-                </p>
+                </p> */}
               </div>
             )}
             <div>
@@ -227,7 +231,7 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
             borderRadius: "0px 0px 8px 8px",
           }}
         >
-          <button className="viewDetails d-block ms-auto">
+          <button className="viewDetails d-block ms-auto" onClick={()=>navigate("shipmentdetails", { state: { rowData } })}>
             View Detailed Tracking
           </button>
         </div>

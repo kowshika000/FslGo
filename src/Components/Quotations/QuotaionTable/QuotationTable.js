@@ -13,7 +13,7 @@ import "primeicons/primeicons.css";
 import { FilterMatchMode } from "primereact/api";
 import { Row, Col, Input, Image } from "antd";
 import { SearchOutlined, CaretDownFilled } from "@ant-design/icons";
-// import FilterDrawer from "./Filter";
+import FilterDrawer from "./Fillter";
 import filter from "../../../assets/Filter 2.png";
 import calendar from "../../../assets/calendar.png";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
@@ -21,8 +21,17 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { IconButton } from "@mui/material";
 import { Dropdown } from "primereact/dropdown";
 import Vector from "../../../assets/Vector1.png";
-import Verified from  "../../../assets/Verified.png"
+import Verified from "../../../assets/Verified.png";
+import { QData } from "./QuotationData";
+import BookFor from "./QModal/BookFor";
+import Requested from "./QModal/Requested";
+import { useNavigate } from "react-router-dom";
+
 const QuotationTable = ({ filterData, selectedStatus }) => {
+  const [bookForModal, setbookForModal] = useState(false);
+  const [requstedModal, setrequstedModal] = useState(false);
+
+  const navigate = useNavigate()
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     id: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
@@ -39,111 +48,13 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; // Number of items per page
   const dispatch = useDispatch();
-  const tableValue = [
-    {
-      id: "345678",
-      origin: "nhavashiva",
-      destination: "jebelali",
-      Load: `LCL-100kg`,
-      etd: "-",
-      eta: "-",
-      rate_validity: "-",
-      action: "Requested",
-    },
-    {
-      id: "345678",
-      origin: "nhavashiva",
-      destination: "jebelali",
-      Load: `LCL-100kg`,
-      etd: "12/03/2023",
-      eta: "03/04/2023",
-      rate_validity: "05/03/2023",
-      action: "Booked",
-    },
-    {
-      id: "345678",
-      origin: "nhavashiva",
-      destination: "jebelali",
-      Load: `LCL-100kg`,
-      etd: "12/03/2023",
-      eta: "03/04/2023",
-      rate_validity: "Expired",
-      action: "Find New Rates",
-    },
-    {
-      id: "345678",
-      origin: "nhavashiva",
-      destination: "jebelali",
-      Load: `LCL-100kg`,
-      etd: "12/03/2023",
-      eta: "03/04/2023",
-      rate_validity: "05/03/2023",
-      action: "Book For $300",
-    },
-    {
-      id: "345678",
-      origin: "nhavashiva",
-      destination: "jebelali",
-      Load: `LCL-100kg`,
-      etd: "12/03/2023",
-      eta: "03/04/2023",
-      rate_validity: "05/03/2023",
-      action: "Book For $300",
-    },
-    {
-      id: "445678",
-      origin: "nhavashiva",
-      destination: "jebelali",
-      Load: `LCL-100kg`,
-      etd: "12/03/2023",
-      eta: "03/04/2023",
-      rate_validity: "05/03/2023",
-      action: "Book For $300",
-    },
-    {
-      id: "245678",
-      origin: "nhavashiva",
-      destination: "jebelali",
-      Load: `LCL-100kg`,
-      etd: "12/03/2023",
-      eta: "03/04/2023",
-      rate_validity: "05/03/2023",
-      action: "Book For $300",
-    },  
-    {
-      id: "345678",
-      origin: "nhavashiva",
-      destination: "jebelali",
-      Load: `LCL-100kg`,
-      etd: "12/03/2023",
-      eta: "03/04/2023",
-      rate_validity: "05/03/2023",
-      action: "Book For $300",
-    },
-    {
-        id: "345678",
-        origin: "nhavashiva",
-        destination: "jebelali",
-        Load: `LCL-100kg`,
-        etd: "12/03/2023",
-        eta: "03/04/2023",
-        rate_validity: "05/03/2023",
-        action: "Book For $300",
-      },  {
-        id: "245678",
-        origin: "nhavashiva",
-        destination: "jebelali",
-        Load: `LCL-100kg`,
-        etd: "12/03/2023",
-        eta: "03/04/2023",
-        rate_validity: "05/03/2023",
-        action: "Book For $300",
-      },
-  ];
+
+  const quotationData = QData ? QData.filter((data) => data) : [];
+  console.log(quotationData);
   const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
-    setFilteredData(filterData.length ? filterData : tableValue);
+    setFilteredData(filterData.length ? filterData : quotationData);
   }, [selectedStatus]);
   console.log("q booking", filteredData);
 
@@ -174,7 +85,7 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
           {/* <ReportIcon
             style={{ width: "15px", height: "15px", marginTop: "-2px" }}
           /> */}
-          <img src={Vector} style={{marginTop: "-2px",marginLeft:"4px"}}/>
+          <img src={Vector} style={{ marginTop: "-2px", marginLeft: "4px" }} />
         </>
       );
       btnClass = "waringBtn";
@@ -185,19 +96,35 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
       buttonLabel = (
         <>
           Find New Rates{" "}
-          <img src={Vector} style={{marginTop: "-2px",marginLeft:"4px"}}/>
+          <img src={Vector} style={{ marginTop: "-2px", marginLeft: "4px" }} />
         </>
       );
       btnClass = "waringBtn";
     } else if (rowData.action === "Booked") {
-        buttonLabel = (
-            <>
-            <img src={Verified} style={{marginTop: "-2px",marginRight:"4px"}}/> Booked
-            
-            </>
-          );
+      buttonLabel = (
+        <>
+          <img
+            src={Verified}
+            style={{ marginTop: "-2px", marginRight: "4px" }}
+          />{" "}
+          Booked
+        </>
+      );
       btnClass = "booked";
     }
+    const hadleModalOpen = () => {
+      if (rowData.action === "Requested") {
+        setrequstedModal(true);
+        
+        setbookForModal(false);
+      } else if (rowData.action === "Book For $300") {
+        setbookForModal(true);
+        setrequstedModal(false);
+        
+      } else if (rowData.action === "Find New Rates") {
+       navigate("/findnewrate")
+      }
+    };
     return (
       <Button
         outlined
@@ -212,7 +139,7 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
           gap: "8px",
         }}
         label={buttonLabel}
-        onClick={() => showModal(rowData)}
+        onClick={hadleModalOpen}
       />
     );
   };
@@ -442,7 +369,7 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
             </div>
           </div>
 
-          {/* <FilterDrawer visible={visible} onClose={onClose} /> */}
+          <FilterDrawer visible={visible} onClose={onClose} />
         </Col>
       </Row>
     );
@@ -727,6 +654,14 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
         handleCancel={handleCancel}
         rowData={modalRowData}
       /> */}
+      <BookFor
+        bookForModal={bookForModal}
+        handleCancel={() => setbookForModal(false)}
+      />
+      <Requested
+        requstedModal={requstedModal}
+        handleCancel={() => setrequstedModal(false)}
+      />
     </div>
   );
 };

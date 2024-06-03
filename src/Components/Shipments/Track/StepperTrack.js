@@ -7,6 +7,7 @@ import Union from "../../../assets/Union.png";
 import menu from "../../../assets/menustepper.png";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import "../../ShipmentDetails/ShipmentTable/ShipmentHeader.css";
+import { useNavigate } from "react-router-dom";
 
 function Steppertrack({ isModalOpen, handleCancel, rowData }) {
   const handleStatusLabel = () => {
@@ -27,6 +28,7 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
     }
   };
   //dragging
+  const navigate=useNavigate()
   const stepbox = useRef(null);
   const [isDragging, setIsDragging] = useState(false);
   const [showLeftArrow, setShowLeftArrow] = useState(true);
@@ -218,7 +220,7 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
             borderRadius: "0px 0px 8px 8px",
           }}
         >
-          <button className="viewDetails d-block ms-auto">
+          <button className="viewDetails d-block ms-auto" onClick={()=>navigate("/shipmentdetails" , { state: { rowData } })}>
             View Detailed Tracking
           </button>
         </div>
