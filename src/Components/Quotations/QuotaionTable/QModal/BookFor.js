@@ -5,6 +5,8 @@ import { Button, Input } from "antd";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import Pagination1 from "../../../Core-Components/Pagination1";
+import BookingCreateSuccess from "./BookForMdl/BookingCreateSuccess";
+import NewBooking from "./BookForMdl/NewBooking";
 
 const BookFor = ({ bookForModal, handleCancel }) => {
   const datas = [
@@ -108,6 +110,8 @@ const BookFor = ({ bookForModal, handleCancel }) => {
   const [selectedRows, setSelectedRows] = useState({});
   const [filteredData, setFilteredData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [bookingSuccessMdl, setBookingSuccessMdl] = useState(false)
+  const [newBooking, setNewBooking] = useState(false)
   const itemsPerPage = 10;
   useEffect(() => {
     setFilteredData(datas);
@@ -228,7 +232,7 @@ const BookFor = ({ bookForModal, handleCancel }) => {
                 borderRadius:"10px"
               }}
               className="bg-dark"
-              onClick={handleCancel}
+              onClick={()=>setNewBooking(true)}
             >
               No, Continue as New Booking
             </Button>
@@ -240,13 +244,15 @@ const BookFor = ({ bookForModal, handleCancel }) => {
               height:"40px",
               borderRadius:"10px"
             }}
-            onClick={handleCancel}
+            onClick={()=>setBookingSuccessMdl(true)}
             >
               Yes, Proceed
             </Button>
           </div>
         </div>
       </div>
+      <BookingCreateSuccess open={bookingSuccessMdl} close={()=>setBookingSuccessMdl(false)}/>
+      <NewBooking open={newBooking} close={()=>setNewBooking(false)} />
     </Dialog>
   );
 };
