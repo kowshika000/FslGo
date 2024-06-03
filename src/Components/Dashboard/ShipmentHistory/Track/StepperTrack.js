@@ -37,10 +37,12 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
   const getlastStatus = document.getElementsByClassName("Inprogress");
   const navigate = useNavigate()
   useEffect(() => {
-    if (stepbox.current) {
-      const getlastStatus = document.getElementsByClassName("Inprogress");
-      if (getlastStatus.length > 0) {
-        stepbox.current.scrollLeft = getlastStatus[0].offsetLeft;
+    if(rowData?.milestones?.length>5){
+      if (stepbox.current) {
+        const getlastStatus = document.getElementsByClassName("Inprogress");
+        if (getlastStatus.length > 0) {
+          stepbox.current.scrollLeft = getlastStatus[0].offsetLeft;
+        }
       }
     }
   }, [stepbox.current]);
@@ -199,7 +201,9 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
                 onMouseUp={() => dragStop()}
                 onMouseMove={(e) => dragging(e)}
               >
-                <div className="arrow_icon">
+                {
+                  rowData?.milestones?.length>5 &&
+                  <div className="arrow_icon">
                   {showLeftArrow && (
                     <IoIosArrowBack
                       size={17}
@@ -208,8 +212,11 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
                     />
                   )}
                 </div>
+                }
                 <Stepper data={rowData} />
-                <div className="arrow_icon">
+                {
+                  rowData?.milestones?.length>5 && 
+                  <div className="arrow_icon">
                   {showRightArrow && (
                     <IoIosArrowForward
                       size={17}
@@ -218,6 +225,7 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
                     />
                   )}
                 </div>
+                }
               </div>
             </div>
           </div>
