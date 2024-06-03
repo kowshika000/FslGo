@@ -32,3 +32,124 @@
 .Service-Included .ant-card-body .Service-card {
   padding: 0px 24px !important;
 }
+
+.tabs .ant-card-body {
+  padding: 0;
+}
+.tabs .ant-tabs-nav {
+  margin: 0;
+}
+
+.tabs .ant-tabs-tab {
+  padding: 16px 20px !important;
+}
+
+.track-btn {
+  border: 1px solid #f3f5f7;
+  background-color: #f3f5f7;
+  padding: 6px 20px;
+  border-radius: 5px;
+  font-size: 15px;
+  font-weight: 500;
+}
+
+.detail-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f3f5f7;
+  border-radius: 8px;
+  padding: 20px;
+  height: 117px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+.detail-card p {
+  margin: 0;
+}
+.lock-btn {
+  border: 1px solid #495a6e;
+  padding: 9px 20px;
+  color: #495a6e;
+  border-radius: 8px !important;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 26px;
+  letter-spacing: 1%;
+  text-align: center;
+}
+
+.book-btn {
+  padding: 10px 20px;
+  color: white;
+  border-radius: 8px !important;
+  background-color: #d32d2f;
+  font-size: 16px;
+  border: none;
+  font-weight: 500;
+  line-height: 26px;
+  letter-spacing: 1%;
+  text-align: center;
+}
+
+.charges table {
+  border: 1px solid #e7eaf0 !important;
+  border-radius: 8px !important;
+  overflow: hidden;
+}
+
+/* .charges table header {
+  background-color: #f3f5f7 !important;
+  padding: 10px !important;
+} */
+
+.charges .table-responsive {
+  border-radius: 8px !important;
+}
+
+.charges .table tbody tr td {
+  background-color: #f8fafc !important ;
+  padding: 10px !important;
+}
+
+.charges .origincharge {
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  letter-spacing: 0.01em;
+  background-color: #759cc3 !important;
+}
+
+.charges .pickupcharge {
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0.01em;
+}
+
+.charges .one {
+  font-family: Roboto;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 22px;
+  letter-spacing: 0.01em;
+  text-align: right;
+}
+
+.charges .price-value {
+  font-family: Roboto;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 24px;
+  letter-spacing: 0.01em;
+  text-align: right;
+}
+
+.charges table tbody .header td{
+  background-color: #f3f5f7 !important;
+}
+.charges table tbody .total th{
+  background-color:  rgba(243, 245, 247, 1)!important;
+}
