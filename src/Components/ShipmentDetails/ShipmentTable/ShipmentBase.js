@@ -93,8 +93,8 @@ const ShipmentBase = () => {
         Track: <>
           <p 
               style={{
-                fontWeight:"700",
-                fontSize:"19px",
+                fontWeight:"600",
+                fontSize:"17px",
                 lineHeight:"19px",
                 letterSpacing:".01em",
                 margin:"15px 0px",
@@ -103,8 +103,8 @@ const ShipmentBase = () => {
           <StepperColumn step={OriginMilestones}  />
           <p 
               style={{
-                fontWeight:"700",
-                fontSize:"19px",
+                fontWeight:"600",
+                fontSize:"17px",
                 lineHeight:"19px",
                 letterSpacing:".01em",
                 margin:"15px 0px",
@@ -113,8 +113,8 @@ const ShipmentBase = () => {
           <StepperColumn step={TransitMilestones}  />
           <p 
               style={{
-                fontWeight:"700",
-                fontSize:"19px",
+                fontWeight:"600",
+                fontSize:"17px",
                 lineHeight:"19px",
                 letterSpacing:".01em",
                 margin:"15px 0px",

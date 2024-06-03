@@ -5,6 +5,11 @@
     font-family: "Roboto", sans-serif;
 }
 
+.profile_section .ant-checkbox-checked .ant-checkbox-inner{
+    background-color: #D40E0E !important;
+    border-color:#D40E0E !important ;
+}
+
 .profile_section{
     position: relative !important;
     display: flex;
