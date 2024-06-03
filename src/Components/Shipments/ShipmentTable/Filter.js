@@ -13,10 +13,29 @@ const FilterDrawer = ({ visible, onClose }) => {
       onClose={onClose}
       visible={visible}
       width="378px"
-      closeIcon={<CloseOutlined style={{ fontSize: "16px", color: "#000" }} />}
+      style={{
+        borderRadius: "8px 0 0 0",
+        backgroundColor: "rgb(248, 250, 252)",
+      }}
+      closeIcon={
+        <CloseOutlined
+          style={{
+            fontSize: "12px",
+            color: "#000",
+            backgroundColor: "rgba(0, 0, 0, 0.06)",
+            borderRadius: "4px",
+            padding:"6px"
+            
+          }}
+          className="mx-auto"
+        />
+      }
     >
       <div>
-        <div className="div-colaligned justify-content-between height-full">
+        <div
+          className="div-colaligned justify-content-between height-full"
+          style={{ backgroundColor: "white" }}
+        >
           <div
             className="ant-row allfilters-container css-1vr7spz "
             style={{ rowGap: "20px" }}
@@ -25,16 +44,17 @@ const FilterDrawer = ({ visible, onClose }) => {
               <div className="div-colaligned gap-4 filter-section">
                 <span className="filter-heading">Booking ID</span>
                 <Input
-                 className={`filter-wrapper ${focused === 'booking' ? 'focused-border' : ''} filter-heading` }
+                  className={`filter-wrapper ${
+                    focused === "booking" ? "focused-border" : ""
+                  } filter-heading`}
                   size="large"
                   style={{ height: "50px", fontSize: "14px" }}
                   placeholder="Type here"
                   prefix={
                     <img src="https://www.fslgo.com/_next/static/media/bookingid.8055f8f1.svg" />
                   }
-                  onBlur={()=>setFocused(null)}
+                  onBlur={() => setFocused(null)}
                   onFocus={() => setFocused("booking")}
-
                 />
               </div>
             </div>
@@ -56,10 +76,10 @@ const FilterDrawer = ({ visible, onClose }) => {
                 >
                   <img src="https://www.fslgo.com/_next/static/media/pullicon.8a2f56ed.svg" />
                   <Select
-                    style={{ width: "100%", border: "none" }}
+                    style={{ width: "100%", border: "none"}}
                     placeholder="Select type"
                     prefixCls=""
-                   className="filter-heading"
+                    className="filter-heading"
                     suffixIcon={
                       <CaretDownOutlined
                         style={{ fontSize: "16px", color: "#000" }}
@@ -94,7 +114,9 @@ const FilterDrawer = ({ visible, onClose }) => {
                     padding: "4px 11px",
                     height: "50px",
                   }}
-                  className={`filter-wrapper ${focused === 'etd' ? 'focused-border' : ''}`}
+                  className={`filter-wrapper ${
+                    focused === "etd" ? "focused-border" : ""
+                  }`}
                 >
                   <img src="https://www.fslgo.com/_next/static/media/filtercalendar.6dba3ae4.svg" />
                   <DatePicker
@@ -103,7 +125,7 @@ const FilterDrawer = ({ visible, onClose }) => {
                     suffixIcon={
                       <CaretDownOutlined
                         style={{ fontSize: "16px", color: "#000" }}
-                        onFocus={() => setFocused('etd')}
+                        onFocus={() => setFocused("etd")}
                         onBlur={() => setFocused(null)}
                       />
                     }
@@ -115,7 +137,9 @@ const FilterDrawer = ({ visible, onClose }) => {
               <div className="quotation-filters div-colaligned gap-4 quotation-datepicker">
                 <span className="filter-heading">ETA</span>
                 <div
-                 className={`filter-wrapper ${focused === 'eta' ? 'focused-border' : ''}`}
+                  className={`filter-wrapper ${
+                    focused === "eta" ? "focused-border" : ""
+                  }`}
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -132,7 +156,7 @@ const FilterDrawer = ({ visible, onClose }) => {
                     suffixIcon={
                       <CaretDownOutlined
                         style={{ fontSize: "16px", color: "#000" }}
-                        onFocus={() => setFocused('eta')}
+                        onFocus={() => setFocused("eta")}
                         onBlur={() => setFocused(null)}
                       />
                     }
@@ -144,7 +168,9 @@ const FilterDrawer = ({ visible, onClose }) => {
               <div className="quotation-filters div-colaligned gap-4">
                 <span className="filter-heading">Origin</span>
                 <div
-                 className={`filter-wrapper ${focused === 'origin' ? 'focused-border' : ''}`}
+                  className={`filter-wrapper ${
+                    focused === "origin" ? "focused-border" : ""
+                  }`}
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -160,11 +186,11 @@ const FilterDrawer = ({ visible, onClose }) => {
                     width="26px"
                   />
                   <Select
-                  className="filter-heading"
+                    className="filter-heading"
                     style={{ width: "100%", border: "none" }}
                     placeholder="Enter Sea/Air port, City or Zip Code"
                     suffixIcon=""
-                    onFocus={() => setFocused('origin')}
+                    onFocus={() => setFocused("origin")}
                     onBlur={() => setFocused(null)}
                   />
                 </div>
@@ -174,7 +200,9 @@ const FilterDrawer = ({ visible, onClose }) => {
               <div className="quotation-filters div-colaligned gap-4">
                 <span className="filter-heading">Destination</span>
                 <div
-                className={`filter-wrapper ${focused === 'destination' ? 'focused-border' : ''}`}
+                  className={`filter-wrapper ${
+                    focused === "destination" ? "focused-border" : ""
+                  }`}
                   style={{
                     display: "flex",
                     alignItems: "center",
@@ -190,11 +218,11 @@ const FilterDrawer = ({ visible, onClose }) => {
                     width="26px"
                   />
                   <Select
-                  className="filter-heading"
+                    className="filter-heading"
                     style={{ width: "100%", border: "none" }}
                     placeholder="Enter Sea/Air port, City or Zip Code"
                     suffixIcon=""
-                    onFocus={() => setFocused('destination')}
+                    onFocus={() => setFocused("destination")}
                     onBlur={() => setFocused(null)}
                   />
                 </div>
@@ -208,7 +236,7 @@ const FilterDrawer = ({ visible, onClose }) => {
             display: "flex",
             flexDirection: "row",
             justifyContent: "end",
-            borderTop:"1px solid rgba(5, 5, 5, 0.06)"
+            borderTop: "1px solid rgba(5, 5, 5, 0.06)",
           }}
           className="p-3"
         >

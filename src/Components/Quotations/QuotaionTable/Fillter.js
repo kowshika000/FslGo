@@ -76,7 +76,7 @@ const FilterDrawer = ({ visible, onClose }) => {
                 >
                   <img src="https://www.fslgo.com/_next/static/media/pullicon.8a2f56ed.svg" />
                   <Select
-                    style={{ width: "100%", border: "none" }}
+                    style={{ width: "100%", border: "none"}}
                     placeholder="Select type"
                     prefixCls=""
                     className="filter-heading"
