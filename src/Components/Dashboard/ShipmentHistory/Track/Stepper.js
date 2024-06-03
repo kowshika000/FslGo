@@ -15,9 +15,9 @@ const Stepper = ({ data }) => {
   return (
     <div className="stepper-container">
       <div
-        className="stepper d-flex justify-content-between"
+        className="stepper d-flex"
         style={{
-          minWidth: "1585px",
+          minWidth: mileStone?.length>4?"1585px":null,
           width: "100%",
           overflowX: "hidden",
           scrollBehavior: "smooth",

@@ -92,7 +92,6 @@ const ShipmentHeader = () => {
 
   useEffect(() => {
     if (fileteredMilestone[0]?.milestones.length > 5) {
-      console.log("moved");
       if (getlastStatus) {
         stepbox.current.scrollLeft = getlastStatus[0]?.offsetLeft;
       } else if (getlastCompleteStatus) {
