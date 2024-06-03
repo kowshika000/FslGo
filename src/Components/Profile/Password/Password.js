@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import './Password.css'
 import { Checkbox, Flex } from 'antd'
-
+import PasswordFields from './PasswordFields'
+import PasswordRules from './PasswordRules'
 const Password = () => {
 
   const [passwordInput, setPasswordInput] = useState('')
@@ -23,7 +24,7 @@ const Password = () => {
             <p className='m-0'>Manage Your Login Options & Password </p>
             <p className='m-0'>You can Manage Your Login Options or change your account password from this page. </p>
       </div>
-      <Flex>
+      <Flex className='mb-3'>
         <Checkbox onChange={onChange}
             style={{
               fontWeight:"500",
@@ -44,10 +45,13 @@ const Password = () => {
             }}
         >Use Email/Phone & password</Checkbox>
       </Flex>
+      
+     <div className="row m-0 profile_password_row">
+            <PasswordFields handleChange={handleChange} />
+            <PasswordRules />
+     </div>
     </>
-=========
-    <div>password</div>
->>>>>>>>> Temporary merge branch 2
+
   )
 }
 
