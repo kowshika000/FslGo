@@ -19,6 +19,9 @@
   color: #181e25;
 }
 
+.Service-Included .ant-card-head{
+  padding: 0px 18px;
+}
 .Service-Included .ant-card-body {
   padding: 10px 0px;
 }
@@ -30,9 +33,12 @@
 }
 
 .Service-Included .ant-card-body .Service-card {
-  padding: 0px 24px !important;
+  padding: 0px 18px !important;
 }
 
+.Service-card .ant-checkbox-wrapper .ant-checkbox-checked .ant-checkbox-inner{
+  background-color: #d32d2f !important;
+}
 .tabs .ant-card-body {
   padding: 0;
 }
@@ -152,4 +158,20 @@
 }
 .charges table tbody .total th{
   background-color:  rgba(243, 245, 247, 1)!important;
+}
+
+.cargo-search{
+  border:1px solid #e7eaf0;
+  padding: 12px 18px;
+  border-radius: 10px;
+}
+
+.cargo-search .anticon svg{
+  width: 20px;
+  height:20px;
+}
+
+.location-bar .cargo-loc{
+  border-right: 1px solid #e7eaf0;
+  position: relative;
 }

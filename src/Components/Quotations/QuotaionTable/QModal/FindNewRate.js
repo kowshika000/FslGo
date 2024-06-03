@@ -4,6 +4,11 @@ import { Card, Checkbox, Tabs } from "antd";
 import "./FindNewRate.css";
 import Location from "../../../../assets/location.svg";
 import Union from "../../../../assets/Union.png";
+import info from "../../../../assets/Info.svg";
+import { Tooltip } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
+import arrow from "../../../../assets/arrow.png";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 
 function FindNewRate() {
   const onChange = (e) => {
@@ -33,7 +38,7 @@ function FindNewRate() {
             className="shadow"
           >
             <div className="row location-bar">
-              <div className="col d-flex">
+              <div className="col d-flex cargo-loc me-4">
                 <div className="align-self-center mx-2">
                   <img src={Location} alt="loc" />
                 </div>
@@ -42,8 +47,14 @@ function FindNewRate() {
                   {/* <img src="" alt="map" /> */}
                   <p className="p-value">Nhava Sheva(INNSA)</p>
                 </div>
+                <div
+                  className="align-self-center"
+                  style={{ position: "absolute", marginLeft: "376px" }}
+                >
+                  <img src={arrow} alt="arrow" />
+                </div>
               </div>
-              <div className="col d-flex">
+              <div className="col d-flex cargo-loc">
                 <div className="align-self-center mx-2">
                   <img src={Location} alt="loc" />
                 </div>
@@ -55,12 +66,17 @@ function FindNewRate() {
               </div>
               <div className="col d-flex">
                 <div className="align-self-center mx-2">
-                  <img src={Location} alt="loc" />
+                  <img
+                    src="https://www.fslgo.com/_next/static/media/cargo.8d7c215b.svg"
+                    alt="loc"
+                  />
                 </div>
                 <div>
                   <p className="p-label">Cargo</p>
-                  {/* <img src="" alt="map" /> */}
                   <p className="p-value">LCL, 2 Unit | Total : 100KG, 5CBM</p>
+                </div>
+                <div className="align-self-center ms-auto cargo-search">
+                  <SearchOutlined className="mt-1" />
                 </div>
               </div>
             </div>
@@ -70,48 +86,160 @@ function FindNewRate() {
           <div className="col-3 Service-Included">
             <Card title="Service Included">
               <div className="Service-card">
-                <p className="service-title">Origin</p>
+                <p className="service-title">
+                  Origin
+                  <span
+                    className="me-1"
+                    style={{ float: "right", width: "16px", color: "#495a6e" }}
+                  >
+                    <ExpandLessIcon />
+                  </span>
+                </p>
                 <p>
                   <Checkbox onChange={onChange}>Origin Charges</Checkbox>
+                  <Tooltip
+                    placement="topLeft"
+                    title="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+                  >
+                    <span style={{ float: "right" }} role="button">
+                      <img src={info} alt="more" />
+                    </span>
+                  </Tooltip>
                 </p>
                 <p>
                   <Checkbox onChange={onChange}>Export Clearance</Checkbox>
+                  <Tooltip
+                    placement="topLeft"
+                    title="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+                  >
+                    <span style={{ float: "right" }} role="button">
+                      <img src={info} alt="more" />
+                    </span>
+                  </Tooltip>
                 </p>
                 <p>
                   <Checkbox onChange={onChange}>Cargo Pickup</Checkbox>
+                  <Tooltip
+                    placement="topLeft"
+                    title="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+                  >
+                    <span style={{ float: "right" }} role="button">
+                      <img src={info} alt="more" />
+                    </span>
+                  </Tooltip>
                 </p>
                 <p>
                   <Checkbox onChange={onChange}>International Freight</Checkbox>
+                  <Tooltip
+                    placement="topLeft"
+                    title="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+                  >
+                    <span style={{ float: "right" }} role="button">
+                      <img src={info} alt="more" />
+                    </span>
+                  </Tooltip>
                 </p>
               </div>
               <hr style={{ backgroundColor: "#f0f0f0", borderTop: "none" }} />
               <div className="Service-card">
-                <p className="service-title">Destination</p>
+                <p className="service-title">
+                  Destination
+                  <span
+                    className="me-1"
+                    style={{ float: "right", width: "16px", color: "#495a6e" }}
+                  >
+                    <ExpandLessIcon />
+                  </span>
+                </p>
                 <p>
                   <Checkbox onChange={onChange}>Destination Charges</Checkbox>
+                  <Tooltip
+                    placement="topLeft"
+                    title="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+                  >
+                    <span style={{ float: "right" }} role="button">
+                      <img src={info} alt="more" />
+                    </span>
+                  </Tooltip>
                 </p>
                 <p>
                   <Checkbox onChange={onChange}>Import Clearance</Checkbox>
+                  <Tooltip
+                    placement="topLeft"
+                    title="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+                  >
+                    <span style={{ float: "right" }} role="button">
+                      <img src={info} alt="more" />
+                    </span>
+                  </Tooltip>
                 </p>
                 <p>
                   <Checkbox onChange={onChange}>Cargo Delivery</Checkbox>
+                  <Tooltip
+                    placement="topLeft"
+                    title="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+                  >
+                    <span style={{ float: "right" }} role="button">
+                      <img src={info} alt="more" />
+                    </span>
+                  </Tooltip>
                 </p>
               </div>
               <hr style={{ backgroundColor: "#f0f0f0", borderTop: "none" }} />
               <div className="Service-card">
-                <p className="service-title">Value Added</p>
+                <p className="service-title">
+                  Value Added
+                  <span
+                    className="me-1"
+                    style={{ float: "right", width: "16px" }}
+                  >
+                    <ExpandLessIcon />
+                  </span>
+                </p>
                 <p>
                   <Checkbox onChange={onChange}>Cargo Insurance</Checkbox>
+                  <Tooltip
+                    placement="topLeft"
+                    title="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+                  >
+                    <span style={{ float: "right" }} role="button">
+                      <img src={info} alt="more" />
+                    </span>
+                  </Tooltip>
                 </p>
               </div>
               <hr style={{ backgroundColor: "#f0f0f0", borderTop: "none" }} />
               <div className="Service-card">
-                <p className="service-title">Cargo Type</p>
+                <p className="service-title">
+                  Cargo Type
+                  <span
+                    className="me-1"
+                    style={{ float: "right", width: "16px", color: "#495a6e" }}
+                  >
+                    <ExpandLessIcon />
+                  </span>
+                </p>
                 <p>
                   <Checkbox onChange={onChange}>Stackable Cargo</Checkbox>
+                  <Tooltip
+                    placement="topLeft"
+                    title="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+                  >
+                    <span style={{ float: "right" }} role="button">
+                      <img src={info} alt="more" />
+                    </span>
+                  </Tooltip>
                 </p>
                 <p>
                   <Checkbox onChange={onChange}>Non Harzardous Cargo</Checkbox>
+                  <Tooltip
+                    placement="topLeft"
+                    title="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+                  >
+                    <span style={{ float: "right" }} role="button">
+                      <img src={info} alt="more" />
+                    </span>
+                  </Tooltip>
                 </p>
               </div>
             </Card>
@@ -315,7 +443,7 @@ function FindNewRate() {
                 <div>
                   <p
                     className="m-0"
-                    style={{ textDecoration: "underline",cursor:"pointer" }}
+                    style={{ textDecoration: "underline", cursor: "pointer" }}
                     onClick={handleShowCharges}
                   >
                     {showCharges ? "Hide" : "Show"} Charges Breakdown
@@ -461,7 +589,7 @@ function FindNewRate() {
                 <div>
                   <p
                     className="m-0"
-                    style={{ textDecoration: "underline",cursor:"pointer" }}
+                    style={{ textDecoration: "underline", cursor: "pointer" }}
                     onClick={handleShowCharges}
                   >
                     {showCharges ? "Hide" : "Show"} Charges Breakdown
@@ -607,7 +735,7 @@ function FindNewRate() {
                 <div>
                   <p
                     className="m-0"
-                    style={{ textDecoration: "underline",cursor:"pointer" }}
+                    style={{ textDecoration: "underline", cursor: "pointer" }}
                     onClick={handleShowCharges}
                   >
                     {showCharges ? "Hide" : "Show"} Charges Breakdown
@@ -753,7 +881,7 @@ function FindNewRate() {
                 <div>
                   <p
                     className="m-0"
-                    style={{ textDecoration: "underline",cursor:"pointer" }}
+                    style={{ textDecoration: "underline", cursor: "pointer" }}
                     onClick={handleShowCharges}
                   >
                     {showCharges ? "Hide" : "Show"} Charges Breakdown
@@ -899,7 +1027,7 @@ function FindNewRate() {
                 <div>
                   <p
                     className="m-0"
-                    style={{ textDecoration: "underline",cursor:"pointer" }}
+                    style={{ textDecoration: "underline", cursor: "pointer" }}
                     onClick={handleShowCharges}
                   >
                     {showCharges ? "Hide" : "Show"} Charges Breakdown
@@ -1045,7 +1173,7 @@ function FindNewRate() {
                 <div>
                   <p
                     className="m-0"
-                    style={{ textDecoration: "underline",cursor:"pointer" }}
+                    style={{ textDecoration: "underline", cursor: "pointer" }}
                     onClick={handleShowCharges}
                   >
                     {showCharges ? "Hide" : "Show"} Charges Breakdown
