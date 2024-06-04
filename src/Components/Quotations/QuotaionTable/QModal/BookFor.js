@@ -110,8 +110,8 @@ const BookFor = ({ bookForModal, handleCancel }) => {
   const [selectedRows, setSelectedRows] = useState({});
   const [filteredData, setFilteredData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
-  const [bookingSuccessMdl, setBookingSuccessMdl] = useState(false)
-  const [newBooking, setNewBooking] = useState(false)
+  const [bookingSuccessMdl, setBookingSuccessMdl] = useState(false);
+  const [newBooking, setNewBooking] = useState(false);
   const itemsPerPage = 10;
   useEffect(() => {
     setFilteredData(datas);
@@ -138,7 +138,7 @@ const BookFor = ({ bookForModal, handleCancel }) => {
         style={{
           height: "100vh",
           position: "fixed",
-          backgroundColor:"black"
+          backgroundColor: "black",
         }}
       >
         <div
@@ -154,31 +154,35 @@ const BookFor = ({ bookForModal, handleCancel }) => {
           }}
           className="mx-auto "
         >
-          <Typography style={{ fontSize: "28px", fontWeight: "700" }}>
+          <Typography
+            style={{ fontSize: "30px", fontWeight: "700", lineHeight: "36px" }}
+          >
             Recent Bookings
           </Typography>
-          <Typography>
+          <Typography
+            style={{ fontSize: "16px", lineHeight: "20px", color: "#29333D" }}
+          >
             Speed up your booking process by reusing details from your recent
             bookings
           </Typography>
           <div className="pt-2">
             <Input
               placeholder="Search Mode,Shipper,Consignee , POL,POD, Commodity... "
-              prefix={<SearchOutlined style={{ color: "#94A2B2" }} />}
+              prefix={<SearchOutlined style={{ color: "#ACB8C4" }} />}
               style={{
-                width: "420px",
+                width: "404px",
                 padding: "4px 11px",
-                borderRadius: "4px",
-                fontSize:"14px",
-                color:"#94A2B2",
-                fontWeight:"bolder",
-              
+                borderRadius: "6px",
+                fontSize: "13px",
+                color: "#ACB8C4",
+                fontWeight: 400,
+                letterSpacing: "1%",
               }}
             />
           </div>
 
           <div className="mt-3">
-            <div style={{ height: "375px", overflowY: "auto" }}>
+            <div style={{ height: "394px", overflowY: "auto" }}>
               <table id="customers">
                 <tr>
                   <th>Select</th>
@@ -227,32 +231,45 @@ const BookFor = ({ bookForModal, handleCancel }) => {
               style={{
                 // backgroundColor: "3f3f3f",
                 color: "white",
-                fontSize:"18px",
-                height:"40px",
-                borderRadius:"10px"
+                fontSize: "20px",
+                height: "44px",
+                borderRadius: "10px",
+                fontWeight: 500,
+                lineHeight: "24px",
+                padding: "10px",
               }}
-              className="bg-dark"
-              onClick={()=>setNewBooking(true)}
+              className="bg-dark "
+              onClick={() => setNewBooking(true)}
             >
+              <span className="btnfamily">
               No, Continue as New Booking
+              </span>
             </Button>
-            <Button type="primary" 
-            style={{
-              backgroundColor: "red",
-              color: "white",
-              fontSize:"18px",
-              height:"40px",
-              borderRadius:"10px"
-            }}
-            onClick={()=>setBookingSuccessMdl(true)}
+            <Button
+              type="primary"
+              style={{
+                backgroundColor: "#F80606",
+                color: "white",
+                fontSize: "20px",
+                height: "44px",
+                borderRadius: "10px",
+                fontWeight: 500,
+                lineHeight: "24px",
+                padding: "10px",
+              }}
+              onClick={() => setBookingSuccessMdl(true)}
             >
-              Yes, Proceed
+              <span className="btnfamily">
+              Yes, Proceed </span>
             </Button>
           </div>
         </div>
       </div>
-      <BookingCreateSuccess open={bookingSuccessMdl} close={()=>setBookingSuccessMdl(false)}/>
-      <NewBooking open={newBooking} close={()=>setNewBooking(false)} />
+      <BookingCreateSuccess
+        open={bookingSuccessMdl}
+        close={() => setBookingSuccessMdl(false)}
+      />
+      <NewBooking open={newBooking} close={() => setNewBooking(false)} />
     </Dialog>
   );
 };
