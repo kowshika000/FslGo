@@ -1,3 +1,4 @@
+
 .location-card .ant-card-body {
   padding: 20px;
 }
@@ -51,12 +52,13 @@
 }
 
 .track-btn {
-  border: 1px solid #f3f5f7;
-  background-color: #f3f5f7;
-  padding: 6px 20px;
-  border-radius: 5px;
+  background-color: #F8FAFC;
+  padding: 4px 16px 4px 16px;
+  border-radius: 4px;
   font-size: 15px;
   font-weight: 500;
+  height:32px;
+  color: #181E25;
 }
 
 .detail-card {
@@ -67,33 +69,33 @@
   border-radius: 8px;
   padding: 20px;
   height: 117px;
-  margin-bottom: 20px;
-  margin-top: 20px;
+  margin-bottom: 15px;
+  margin-top: 15px;
 }
 .detail-card p {
   margin: 0;
 }
 .lock-btn {
-  border: 1px solid #495a6e;
-  padding: 9px 20px;
-  color: #495a6e;
+  border: 1px solid #E7EAF0;
+  padding: 7px 16px;
+  color: #495A6E;
   border-radius: 8px !important;
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 26px;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 25px;
   letter-spacing: 1%;
   text-align: center;
 }
 
 .book-btn {
-  padding: 10px 20px;
-  color: white;
+  padding: 7px 40px;
+  color: #FFFFFF;
   border-radius: 8px !important;
-  background-color: #d32d2f;
-  font-size: 16px;
+  background-color: #D32D2F;
+  font-size: 14px;
   border: none;
   font-weight: 500;
-  line-height: 26px;
+  line-height: 24px;
   letter-spacing: 1%;
   text-align: center;
 }
@@ -104,10 +106,6 @@
   overflow: hidden;
 }
 
-/* .charges table header {
-  background-color: #f3f5f7 !important;
-  padding: 10px !important;
-} */
 
 .charges .table-responsive {
   border-radius: 8px !important;
@@ -161,9 +159,11 @@
 }
 
 .cargo-search{
-  border:1px solid #e7eaf0;
-  padding: 12px 18px;
-  border-radius: 10px;
+  width: 52px;
+  height:52px;  
+  border:1px solid #E7EAF0;
+  padding:13px 11px 11px 14px;
+  border-radius: 8px;
 }
 
 .cargo-search .anticon svg{
@@ -174,4 +174,44 @@
 .location-bar .cargo-loc{
   border-right: 1px solid #e7eaf0;
   position: relative;
+}
+.cargo-pick .ant-card-body{
+  padding: 20px;
+  border-radius: 8px;
+}
+
+.cargo-pick .cargo-pickup-p{
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 1%;
+  color: #181E25;
+}
+
+.track1 .ant-card-body{
+  padding: 20px;
+}
+
+.detail-card .card-label{
+  color: #67788E;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 19px;
+  letter-spacing: 1%;
+}
+
+.detail-card .p-value{
+  color: #384656;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 22px;
+  letter-spacing: 1%;
+  margin-top: 5px;
+}
+
+.track1 .cardl{
+  background-color: #f3f5f7;
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 20px;
+  margin-top: 20px;
 }
