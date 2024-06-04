@@ -1,4 +1,4 @@
-import { Dialog } from "@mui/material";
+import { Dialog ,} from "@mui/material";
 import React, { useEffect, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import Dragger from "antd/es/upload/Dragger";
@@ -49,7 +49,7 @@ const UploadDocument = ({ open, close }) => {
         >
           <div>
             <div className="mt-2" style={{ fontSize: "34px", fontWeight: "700" }}>Upload your Document</div>
-           <div style={{fontSize:"10px"}}>Kindly select your document type and upload your document to process your shipment</div>
+           <div style={{fontSize:"10px",color:"#384656"}}>Kindly select your document type and upload your document to process your shipment</div>
           </div>
           <div className="document_type_section mt-2">
             <div className="row document_type_row">
@@ -261,7 +261,7 @@ const UploadDocument = ({ open, close }) => {
           <Button
               type="primary"
               style={{
-                backgroundColor: "#ca1605",
+                backgroundColor: "#D32D2F",
                 height: "40px",
                 borderRadius: "8px",
               }}

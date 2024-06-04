@@ -1,17 +1,12 @@
 import { Dialog } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import { Button } from "antd";
 import { useNavigate } from "react-router-dom";
+import { VscClose } from "react-icons/vsc";
 
 const BookingCreateSuccess = ({ open, close }) => {
-  const [animate, setAnimate] = useState(false);
-const navigate = useNavigate()
-
-  useEffect(() => {
-    setAnimate(true);
-  }, []);
+  const navigate = useNavigate();
 
   return (
     <Dialog open={open} onClose={close} fullScreen>
@@ -22,34 +17,45 @@ const navigate = useNavigate()
           alignContent: "center",
         }}
       >
+        
         <div
           className="card m-auto"
-          style={{ height: "510px", width: "525px" }}
+          style={{ height: "513.93px", width: "527px" }}
         >
-          <div
-            className={`check-icon align-self-center ${
-              animate ? "animate" : ""
-            }`}
-            style={{ marginTop: "70px", marginBottom: "70px" }}
-          >
-            <CheckCircleIcon style={{ fontSize: "130px", color: "#4caf50" }} />
+          <div className="align-self-center my-5">
+            <img
+              src="https://s3-alpha-sig.figma.com/img/2a3a/4da6/4ceac65b0a2ff744cfb424800dc07dcf?Expires=1718582400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=CsvKX7ZBdE~7O3ZDF7eQI6El3FIozdx046-02P0hdfa~sQMTULNdpbJuSGuCwygCE-GkXJkv8PFjCmOpVroOjOM7e2BJUh41beR4jAVB5ihR7Rofn1EK~NB1N5WQVuCEe89vITTA~Lxe8sDNtDZQMFFW~ypAylZ10D45OQMWG43YfjTNP44pCeWkk~FDBX954CSsQLK3~1yP5RI4t1CoGuCXcPW3VasvRRUvF5tA~136TKd16MWiaEICw~VksdGSpvZyxOd8vuh9oueKrujEbuXa7kCzYk~lZ~Pv1LlhECE5zxefSbRP-LHWvM86GeISaCzwZ8MjHzwVLbj0-rFdqw__"
+              alt="check"
+              width="179.93px"
+              height="179.93px"
+            />
           </div>
           <div
-            style={{ fontWeight: "500", fontSize: "25px", textAlign: "center" }}
+            style={{
+              fontWeight: "500",
+              fontSize: "24px",
+              width: "411px",
+              alignSelf: "center",
+              lineHeight: "34px",
+              letterSpacing: "1%",
+            }}
           >
-            <div>Your Booking Created Successfully!</div>
-            <div>Your Booking # 12169300432</div>
+            <div className="text-center">
+              Your Booking Created Successfully!
+            </div>
+            <div className="text-center">Your Booking # 12169300432</div>
           </div>
-          <p style={{ textAlign: "center" }} className="mt-1">
+          <p style={{ textAlign: "center", color: "#384656" }} className="mt-1">
             Kindly click on Continue to view your booking!{" "}
           </p>
           <div className="d-flex justify-content-center mt-4">
             <Button
               type="primary"
               style={{
-                backgroundColor: "#ca1605",
+                backgroundColor: "#D32D2F",
                 height: "40px",
                 borderRadius: "8px",
+                lineHeight: "24px",
               }}
               onClick={close}
             >
