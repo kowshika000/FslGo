@@ -1,7 +1,7 @@
 import React from 'react'
 import GoogleIcon from '../../../assets/Google.svg'
 
-const AccountBox = () => {
+const AccountBox = ({setOpen}) => {
   return (
     <div className='account_box d-flex align-items-center justify-content-between'
         style={{
@@ -45,6 +45,8 @@ const AccountBox = () => {
                     letterSpacing:".01em",
                     color:"#384656"
                 }}
+                role='button'
+                onClick={()=>setOpen(true)}
             >Disconnect</p>
         </div>
     </div>

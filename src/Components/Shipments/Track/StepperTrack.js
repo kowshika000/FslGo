@@ -35,12 +35,14 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
   const [showRightArrow, setShowRightArrow] = useState(true);
   const getlastStatus = document.getElementsByClassName("Inprogress");
   useEffect(() => {
+    if(rowData?.milestones?.length>5){
     if (stepbox.current) {
       const getlastStatus = document.getElementsByClassName("Inprogress");
       if (getlastStatus.length > 0) {
         stepbox.current.scrollLeft = getlastStatus[0].offsetLeft;
       }
     }
+    } 
   }, [stepbox.current]);
 
   const manageIcons = () => {
@@ -188,6 +190,8 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
                 onMouseUp={() => dragStop()}
                 onMouseMove={(e) => dragging(e)}
               >
+                {
+                  rowData?.milestones?.length>5 &&
                 <div className="arrow_icon">
                   {showLeftArrow && (
                     <IoIosArrowBack
@@ -197,7 +201,10 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
                     />
                   )}
                 </div>
+                }
                 <Stepper data={rowData} />
+                {
+                  rowData?.milestones?.length>5 &&
                 <div className="arrow_icon">
                   {showRightArrow && (
                     <IoIosArrowForward
@@ -207,6 +214,8 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
                     />
                   )}
                 </div>
+                }
+
               </div>
             </div>
           </div>

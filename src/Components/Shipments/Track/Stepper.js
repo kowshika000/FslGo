@@ -16,7 +16,7 @@ const Stepper = ({ data }) => {
   return (
     <div className="stepper-container">
     
-    <div className='stepper d-flex justify-content-between' style={{minWidth:"1585px",width:"100%"}}>
+    <div className='stepper d-flex' style={{minWidth:mileStone?.length>4?"1585px":null,width:"100%"}}>
         {
             steps?.map((step,i)=>(
                 <div key={i}  className={`step-item ${step?.milestonestatus==="INPROGRESS" ? "active_yellow Inprogress":""} ${
