@@ -63,6 +63,18 @@ const Navbar = () => {
       Quotations Result
     </Link>
   );
+  const invoiceBreadcrumb = (
+    <Link
+    underline="hover"
+    key="3"
+    color="inherit"
+    href="/invoice"
+    onClick={handleClick}
+    style={{ fontSize: "14px", color: "#181E25", fontWeight: "400" }}
+  >
+    Invoice
+  </Link>
+  );
   const breadcrumbs = [homeBreadcrumb];
 
   if (pathname === "/shipments") {
@@ -71,6 +83,8 @@ const Navbar = () => {
     breadcrumbs.push(quotationsBreadcrumb);
   } else if (pathname === "/findnewrate") {
     breadcrumbs.push(quotationsResultBreadcrumb);
+  } else if (pathname === "/invoice") {
+    breadcrumbs.push(invoiceBreadcrumb);
   }
 
   const [anchorEl, setAnchorEl] = React.useState(null);
