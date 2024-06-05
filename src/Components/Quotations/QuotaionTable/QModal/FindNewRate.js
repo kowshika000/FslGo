@@ -156,7 +156,7 @@ function FindNewRate() {
                       <ExpandLessIcon />
                     </span>
                   </p>
-                  <p>
+                  <p className="checkbox-p">
                     <Checkbox onChange={onChange}>Origin Charges</Checkbox>
                     <Tooltip
                       placement="topLeft"
@@ -208,7 +208,6 @@ function FindNewRate() {
                     </Tooltip>
                   </p>
                 </div>
-                <hr style={{ backgroundColor: "#f0f0f0", borderTop: "none" }} />
                 <div className="Service-card">
                   <p className="service-title">
                     Destination
@@ -262,8 +261,7 @@ function FindNewRate() {
                     </Tooltip>
                   </p>
                 </div>
-                <hr style={{ backgroundColor: "#f0f0f0", borderTop: "none" }} />
-                <div className="Service-card">
+                <div className="Service-card mt-2">
                   <p className="service-title">
                     Value Added
                     <span
@@ -290,8 +288,7 @@ function FindNewRate() {
                     </Tooltip>
                   </p>
                 </div>
-                <hr style={{ backgroundColor: "#f0f0f0", borderTop: "none" }} />
-                <div className="Service-card">
+                <div className="Service-card mt-2">
                   <p className="service-title">
                     Cargo Type
                     <span
@@ -383,11 +380,11 @@ function FindNewRate() {
                       >
                         Low to High
                       </button>
-                      <ul className="dropdown-menu">
+                      {/* <ul>
                         <li className="dropdown-item">LCL</li>
                         <li className="dropdown-item">FCL</li>
                         <li className="dropdown-item">Air</li>
-                      </ul>
+                      </ul> */}
                     </div>
                   </div>
                 </div>
@@ -499,10 +496,34 @@ function FindNewRate() {
                     <div className="track-btn">LCL</div>
                     <div className="track-btn mx-2">Direct</div>
                     <div className="track-btn">Cheapest</div>
-                    <div className="ms-auto align-self-center">
-                      Validity : <b>{data.validity}</b>
+                    <div
+                      className="ms-auto align-self-center"
+                      style={{
+                        fontWeight: "400",
+                        fontSize: "14px",
+                        lineHeight: "24px",
+                        letterSpacing: "1%",
+                        color: "#495A6E",
+                      }}
+                    >
+                      Validity :&nbsp;&nbsp;
+                      <span
+                        style={{
+                          fontWeight: "500",
+                          fontSize: "14px",
+                          lineHeight: "24px",
+                          letterSpacing: "1%",
+                          color: "#181E25",
+                        }}
+                      >
+                        {data.validity}
+                      </span>
                       <span className="ms-2">
-                        <img src={info} alt="more" />
+                        <img
+                          src={info}
+                          alt="more"
+                          style={{ marginBottom: "3px" }}
+                        />
                       </span>
                     </div>
                   </div>
@@ -575,7 +596,6 @@ function FindNewRate() {
                             </tr>
                             <tr>
                               <td className="pickupcharge ps-4">
-                                {" "}
                                 Delivery Charges
                               </td>
                               <td className="price-value">$30</td>
@@ -600,6 +620,11 @@ function FindNewRate() {
                         style={{
                           textDecoration: "underline",
                           cursor: "pointer",
+                          fontSize:"14px",
+                          lineHeight:"24px",
+                          letterSpacing:"1%",
+                          fontWeight:"400",
+                          textAlign:"center"
                         }}
                         onClick={() => handleShowCharges(index)}
                       >
@@ -613,6 +638,7 @@ function FindNewRate() {
                   </div>
                 </Card>
               ))}
+              <hr />
               <Card className="track1 mb-2">
                 <div className="d-flex justify-content-between">
                   <div>
@@ -668,11 +694,11 @@ function FindNewRate() {
                 </div>
                 <div className="cardl">
                   <div className="d-flex justify-content-between align-items-center">
-                    <div style={{ opacity: "40%" }} className="cargo-pickup-p">
+                    <div className="cargo-pickup-p">
                       <img src={icon} alt="icon" className="me-1" />
                       3150,Chennai
                     </div>
-                    <div style={{ opacity: "40%" }}>
+                    <div>
                       <img src={Line} alt="line" />
                       <img src={Vector} alt="car" className="mx-2" />
                       <img src={Line} alt="line" />
@@ -699,16 +725,13 @@ function FindNewRate() {
                     <div>
                       <p className="m-0 cargo-pickup-p">NGB</p>
                     </div>
-                    <div style={{ opacity: "40%" }}>
+                    <div>
                       <img src={Line} alt="line" />
                       <img src={Vector} alt="car" className="mx-2" />
                       <img src={Line} alt="line" />
                     </div>
                     <div>
-                      <p
-                        className="m-0 cargo-pickup-p"
-                        style={{ opacity: "40%" }}
-                      >
+                      <p className="m-0 cargo-pickup-p">
                         <img
                           src={Cargo}
                           alt="cargo"
