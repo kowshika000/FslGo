@@ -22,7 +22,7 @@ function App() {
   const dispatch = useDispatch();
   const jwtToken = useSelector((state) => state.Login?.booking?.Token);
   const [loading, setLoading] = useState(true);
-  let isTokenReceived = false;
+  let isTokenReceived = false;  
 
   useEffect(() => {
     const currentUrl = window.location.href;
