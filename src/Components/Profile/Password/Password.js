@@ -6,8 +6,20 @@ import PasswordRules from './PasswordRules'
 const Password = () => {
 
   const [passwordInput, setPasswordInput] = useState('')
+  const [checkboxvalues,setCheckboxValues] = useState(
+    {
+      googlelogin:false,
+      manuallogin:false
+    }
+  )
+  console.log(checkboxvalues)
+
   const onChange = (e) => {
-    console.log(`checked = ${e.target.checked}`);
+    setCheckboxValues((prev)=>{
+      return {
+        ...prev,[e.target.name]:e.target.checked
+      }
+    });
   };
 
   const handleChange =(e)=>{
@@ -25,7 +37,7 @@ const Password = () => {
             <p className='m-0'>You can Manage Your Login Options or change your account password from this page. </p>
       </div>
       <Flex className='mb-3'>
-        <Checkbox onChange={onChange}
+        <Checkbox name="googlelogin" onChange={onChange}
             style={{
               fontWeight:"500",
               fontSize:"13px",
@@ -35,7 +47,7 @@ const Password = () => {
               marginRight:"30px"
             }}
         >Use Google account to login</Checkbox>
-        <Checkbox onChange={onChange}
+        <Checkbox name="manuallogin" onChange={onChange}
             style={{
               fontWeight:"500",
               fontSize:"13px",
@@ -46,10 +58,12 @@ const Password = () => {
         >Use Email/Phone & password</Checkbox>
       </Flex>
       
-     <div className="row m-0 profile_password_row">
-            <PasswordFields handleChange={handleChange} />
-            <PasswordRules />
-     </div>
+     {
+      checkboxvalues.manuallogin && <div className="row m-0 profile_password_row">
+                                        <PasswordFields handleChange={handleChange} />
+                                        <PasswordRules />
+                                    </div>
+     }
     </>
 
   )

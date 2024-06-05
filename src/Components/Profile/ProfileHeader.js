@@ -5,7 +5,7 @@ import uploadIcon from '../../assets/Upload.svg'
 import './ProfileHeader.css'
 import Edit_Image  from '../../assets/profile_Edit.svg'
 
-const ProfileHeader = () => {
+const ProfileHeader = ({setOpenEditModal}) => {
 
     //This is for ConvertBase64
     const getBase64 = (img, callback) => {
@@ -128,7 +128,7 @@ const ProfileHeader = () => {
                             <p className='m-0'>email@gmail.com</p>    
                         </div>
                         <div className="prefcurrency_field">
-                            <p className='m-0'>CPreferred currency</p>
+                            <p className='m-0'>Preferred currency</p>
                             <p className='m-0'>USD</p>
                         </div>
                     </div>
@@ -139,7 +139,7 @@ const ProfileHeader = () => {
                         </div>
                     </div>
                     <div className="edit_icon_box">
-                        <img src={Edit_Image} alt="" />
+                        <img src={Edit_Image} alt="" role='button' onClick={()=>setOpenEditModal(true)} />
                     </div>
                 </div>
                 {/* <div className="col-1">
