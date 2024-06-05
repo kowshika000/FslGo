@@ -7,8 +7,9 @@ import DownloadIcon from '../../assets/Download.png'
 
 const InvoiceDetails = () => {
   return (
-    <>
-      <div className="row w-50 px-4 d-flex">
+    <div >
+     <div  style={{ maxWidth: "1255px" }}>
+      <div className="row w-50 px-4 d-flex mt-1" >
         <div className="col-6 d-flex">
           <div
             className="card my-auto p-1"
@@ -316,7 +317,8 @@ const InvoiceDetails = () => {
         </table>
       </div>
       <div className="card-footer p-3" style={{backgroundColor:'#F8FAFC', border:'none'}}></div>
-    </>
+    </div>
+    </div>
   );
 };
 
