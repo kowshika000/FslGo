@@ -1,0 +1,8 @@
+#address_title .css-tlc64q-MuiPaper-root-MuiDialog-paper{
+    overflow-y: unset !important;
+}
+
+#address_title .css-bdhsul-MuiTypography-root-MuiDialogTitle-root{
+     padding: 19px 22px !important;
+     padding-bottom: 0px !important;
+}
