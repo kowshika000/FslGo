@@ -45,7 +45,7 @@ const Header = ({ activePage }) => {
         <Box sx={{ display: "flex", alignItems: "center", marginLeft: "auto", paddingLeft:'20px' }}>
           {/* Navigation links */}
 
-          <Link to="/" style={{ textDecoration: "none" }}>
+          {/* <Link to="/" style={{ textDecoration: "none" }}>
             <Typography
               sx={{
                 fontSize: "15px",
@@ -62,7 +62,7 @@ const Header = ({ activePage }) => {
             >
               Dashboard
             </Typography>
-          </Link>
+          </Link> */}
           <Link to="/shipments" style={{ textDecoration: "none" }}>
             <Typography
               sx={{
