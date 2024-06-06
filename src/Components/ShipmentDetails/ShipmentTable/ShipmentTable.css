@@ -4,7 +4,10 @@
 }
  .shipment_table_section  .ant-card-body{
     padding: 0px 20px 0px 20px;
-    position: relative;
+    /* position: relative; */
+}
+.shipment_table_section .ant-card-contain-tabs >.ant-card-head {
+    position: relative !important;
 }
 .shipment_table_section .ant-tabs .ant-tabs-tab-btn{
     letter-spacing: .01em !important;

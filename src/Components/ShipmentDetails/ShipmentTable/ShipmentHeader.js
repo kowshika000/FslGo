@@ -5,7 +5,8 @@ import ship from "../../../assets/Ship.svg";
 import menuIcon from "../../../assets/menuDots.png";
 import rightArrow from "../../../assets/rigtharrow.png";
 import OrImg from "../../../assets/orSymbol.png";
-import co2 from "../../../assets/Co2 Icons-05 1.png";
+// import co2 from "../../../assets/Co2 Icons-05 1.png";
+import co2 from "../../../assets/Co2 Icons-05 1.svg";
 import lcl from "../../../assets/LCL.svg";
 import { Link } from "react-router-dom";
 import Stepper from "./Track/Stepper";
@@ -149,13 +150,15 @@ const ShipmentHeader = () => {
       <Card
         style={{
           width: "100%",
+          border:"none"
         }}
         className="container mx-auto p-0 mob_response ship_section"
         id="mobile_margin"
       >
-        <div className="row reference_row">
+      {/* <div className="ship_section" style={{marginLeft:"6px",marginRight:"6px"}}> */}
+      <div className="row reference_row">
           <div className="col-3">
-            <h6 className="me-2 m-0">HBL Number:</h6>
+            <h6 className="me-2 m-0">Shipment ID:</h6>
             {/* {
                       ViewBooking?.map((item)=>{
                         return <h6 className='m-0'>{item.booking_id}</h6>
@@ -170,6 +173,12 @@ const ShipmentHeader = () => {
             <h6 className="m-0 me-2">Customer Reference (PO#):</h6>
             {fileteredMilestone?.map((item) => {
               return <h6 className="m-0">{item.order_no}</h6>;
+            })}
+          </div>
+          <div className="col-4">
+            <h6 className="m-0 me-2">HBL :</h6>
+            {fileteredMilestone?.map((item) => {
+              return <h6 className="m-0">{item.id}</h6>;
             })}
           </div>
         </div>
@@ -204,12 +213,12 @@ const ShipmentHeader = () => {
                     </div> */}
           </div>
           <div className="col-2 right_column">
-            <div className="bookedButton me-3">
+            <div className="bookedButton">
               {fileteredMilestone?.map((item) => {
-                return <Link>{item.status}</Link>;
+                return <span>{item.status}</span>
               })}
             </div>
-            <div className="menu_icon">
+            {/* <div className="menu_icon">
               <Dropdown
                 menu={{
                   items,
@@ -218,13 +227,11 @@ const ShipmentHeader = () => {
               >
                 <a onClick={(e) => e.target.value}>
                   <Space>
-                    {/* Hover me, Click menu item
-                        <DownOutlined /> */}
                     <img src={menuIcon} alt="" />
                   </Space>
                 </a>
               </Dropdown>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="booking_row">
@@ -264,7 +271,7 @@ const ShipmentHeader = () => {
             })}
           </div>
           <div className="booking_content">
-            <p className="m-0 mb-1">Rate is Valid Till</p>
+            <p className="m-0 mb-1"><span style={{marginRight:"7px"}}><img src={co2}></img></span>Emission</p>
             {fileteredMilestone?.map((item) => {
               return <p className="m-0">{item.valid_date}</p>;
             })}
@@ -308,7 +315,7 @@ const ShipmentHeader = () => {
             )}
           </div>
         </div>
-        <div className="estimated_row">
+        {/* <div className="estimated_row">
           <div className="estimated_header">
             <img src={co2} alt="" />
             <p className="m-0">Emissions</p>
@@ -322,8 +329,10 @@ const ShipmentHeader = () => {
               complete.
             </p>
           </div>
-        </div>
+        </div> */}
       </Card>
+      {/* </div> */}
+        
 
       {/* Modals */}
 

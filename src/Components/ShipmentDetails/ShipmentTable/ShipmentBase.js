@@ -5,7 +5,6 @@ import { Breadcrumb, Button, Card, Dropdown } from 'antd';
 import './ShipmentBase.css'
 import PendingActionsBase from './PendingActions/PendingActionsBase';
 import ShipmentDocuments from './Documents/ShipmentDocuments';
-import BookingSummary from './BookingSummary/BookingSummary';
 import QuoteDetails from './QuoteDetails/QuoteDetails';
 import VerticalTab from './Track/TabBase';
 import { MdKeyboardArrowRight } from 'react-icons/md';
@@ -18,8 +17,12 @@ import { FaPhoneVolume } from 'react-icons/fa6';
 import { IoMail } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import ShipmentDetailsModal from './Modal/ShipmentDetailsModal';
+import { Dialog, DialogContent } from '@mui/material';
+import ShipmentSummary from './BookingSummary/ShipmentSummary';
+import ShipmentMapModal from './ShipmentMapModal';
 
-const ShipmentBase = () => {
+const ShipmentBase = ({open,close}) => {
 
   const bookingData = useSelector((state)=>state.ViewBooking)
   console.log("bookingData",bookingData);
@@ -30,26 +33,27 @@ const ShipmentBase = () => {
   console.log("OriginMilestones", OriginMilestones);
 
     const tabListNoTitle = [
+        // {
+        //   key: 'PendingActions',
+        //   label: 'Pending Actions',
+        // },
         {
-          key: 'PendingActions',
-          label: 'Pending Actions',
+          key: 'Milestones',
+          label: 'Milestones',
         },
         {
-          key: 'BookingSummary',
-          label: 'Booking Summary',
+          key: 'ShipmentSummary',
+          label: 'Shipment Summary',
         },
-        {
-          key: 'QuoteDetails',
-          label: 'Quote Details',
-        },
+        // {
+        //   key: 'QuoteDetails',
+        //   label: 'Quote Details',
+        // },
         {
           key: 'Documents',
           label: 'Documents',
         },
-        {
-          key: 'Track',
-          label: 'Track',
-        },
+        
     
       ];
 
@@ -86,11 +90,11 @@ const ShipmentBase = () => {
     
       const contentListNoTitle = {
         // PendingActions: <PendingActionsBase />,
-        PendingActions: <TabBase />,
-        BookingSummary: <BookingSummary />,
+        // PendingActions: <TabBase />,
+        ShipmentSummary: <ShipmentSummary />,
         QuoteDetails: <QuoteDetails />,
         Documents: <ShipmentDocuments />,
-        Track: <>
+        Milestones: <>
           <p 
               style={{
                 fontWeight:"600",
@@ -143,62 +147,90 @@ const ShipmentBase = () => {
 
   return (
 
-          <div className="shipment_details_section container-fluid p-0" style={{marginTop:"4.7rem",backgroundColor: "#F3F5F7"}} >
-              <div className="black_box container-fluid"></div>
-              <div className="shipment_container">
-                  <div className="row shipment_ID_row" style={{marginTop:"20px",marginBottom:"20px"}}>
-                      <div className="shipment_ID" style={{marginBottom:"4px"}}>
-                          <p className='m-0 text-white'>Shipment ID :&nbsp; 
-                          {
-                            ViewBooking?.map((item)=>{
-                              return <span>{item.booking_id}</span>
-                            }
-                            )
-                          }
-                          </p>
-                      </div>
-                      <div className="breadCrumb d-flex justify-content-between align-items-center">
-                        <Breadcrumb
-                            separator={<RightOutlined style={{ fontSize: '11px', color: '#ACB8C4' }} />}
-                            items={[
-                              {
-                                title: <Link 
-                                style={{
-                                  color:"#ACB8C4",
-                                  fontWeight:"400",
-                                  fontSize:'14px',
-                                  letterSpacing:'.01em',
-                                  textDecoration:"none"
-                                }} 
-                                to='/'>Home</Link>,
-                              },
-                              {
-                                title: 'Shipments',
-                              },
-                              {
-                                title: 'Shipments Details',
-                              }
-                            ]}
-                            className='text-white'
-                        />
-                        <Dropdown
-                            menu={{
-                              items,
-                            }}
-                            placement="bottomRight"
-                            arrow
-                          >
-                            <p className="m-0">Need Help?</p>
-                        </Dropdown>
+          // <div className="shipment_details_section container-fluid p-0" style={{marginTop:"4.7rem",backgroundColor: "#F3F5F7"}} >
+          //     <div className="black_box container-fluid"></div>
+          //     <div className="shipment_container">
+          //         <div className="row shipment_ID_row" style={{marginTop:"20px",marginBottom:"20px"}}>
+          //             <div className="shipment_ID" style={{marginBottom:"4px"}}>
+          //                 <p className='m-0 text-white'>Shipment ID :&nbsp; 
+          //                 {
+          //                   ViewBooking?.map((item)=>{
+          //                     return <span>{item.booking_id}</span>
+          //                   }
+          //                   )
+          //                 }
+          //                 </p>
+          //             </div>
+          //             <div className="breadCrumb d-flex justify-content-between align-items-center">
+          //               <Breadcrumb
+          //                   separator={<RightOutlined style={{ fontSize: '11px', color: '#ACB8C4' }} />}
+          //                   items={[
+          //                     {
+          //                       title: <Link 
+          //                       style={{
+          //                         color:"#ACB8C4",
+          //                         fontWeight:"400",
+          //                         fontSize:'14px',
+          //                         letterSpacing:'.01em',
+          //                         textDecoration:"none"
+          //                       }} 
+          //                       to='/'>Home</Link>,
+          //                     },
+          //                     {
+          //                       title: 'Shipments',
+          //                     },
+          //                     {
+          //                       title: 'Shipments Details',
+          //                     }
+          //                   ]}
+          //                   className='text-white'
+          //               />
+          //               <Dropdown
+          //                   menu={{
+          //                     items,
+          //                   }}
+          //                   placement="bottomRight"
+          //                   arrow
+          //                 >
+          //                   <p className="m-0">Need Help?</p>
+          //               </Dropdown>
 
-                      </div>
-                  </div>
-                  <div className="row shipment_header">
-                        <ShipmentHeader />
-                        <ShipmentTable contentListNoTitle={contentListNoTitle} tabListNoTitle={tabListNoTitle}  />
-                  </div>
-              </div>
-          </div>
+          //             </div>
+          //         </div>
+          //         <div className="row shipment_header">
+          //               <ShipmentHeader />
+          //               <ShipmentTable contentListNoTitle={contentListNoTitle} tabListNoTitle={tabListNoTitle}  />
+          //         </div>
+          //     </div>
+          //     {/* <ShipmentDetailsModal open={true} /> */}
+          // </div>
+          <>
+              <Dialog
+                open={true}
+                onClose={close}
+                aria-labelledby="responsive-dialog-title"
+                id="edit_profile_modal_section"
+                maxWidth={"lg"}
+                fullWidth={true}
+              >
+                <DialogContent>
+                  <ShipmentHeader />
+                  <ShipmentTable contentListNoTitle={contentListNoTitle} tabListNoTitle={tabListNoTitle}  />
+                </DialogContent>
+              </Dialog>
+              <Dialog
+                open={false}
+                onClose={close}
+                aria-labelledby="responsive-dialog-title"
+                id="edit_profile_modal_section"
+                maxWidth={"lg"}
+                fullWidth={true}
+              >
+                <DialogContent>
+                  <ShipmentMapModal />
+                </DialogContent>
+              </Dialog>
+              </>
   )
 }
 

@@ -1,9 +1,10 @@
 .ship_section .ant-card-body{
-    padding: 20px !important;
+    padding: 0px !important;
 }
 .ship_section .reference_row{
     height: 39px;
-    margin-bottom: 20px;
+    margin:0px -2px 20px -2px; 
+    background-color: #F3F5F7 !important;
 }
 .ship_section .reference_row>div{
     display: flex;
@@ -81,22 +82,28 @@
     margin-bottom: 20px;
 }
 
-.ship_section .destination_row .bookedButton{
+/* .ship_section .destination_row .bookedButton{
     text-decoration: none;
-    border: 1px solid #E3B04C;
-    background-color: #FCF0CC;
+    border: 1px solid #008000;
+    background-color: #0080001A;
     padding: 4px 8px 4px 8px;
     border-radius: 4px;
     color: black;
     height: 30px;
-}
-.ship_section .destination_row .bookedButton a{
+} */
+.ship_section .destination_row .bookedButton span{
     text-decoration: none;
-    font-weight: 500;
-    font-size: 15px;
-    line-height: 22px;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 19px;
     letter-spacing:.01em !important;
     color: #384656;
+    border: 1px solid #008000;
+    background-color: #0080001A;
+    padding: 4px 8px 4px 8px;
+    border-radius: 4px;
+    height: 19px;
+
 
 }
 .ship_section .destination_row .menu_icon img{
