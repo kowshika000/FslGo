@@ -16,13 +16,13 @@ import Inbox from "./Components/Inbox/Inbox";
 import ShipmentBase from "./Components/ShipmentDetails/ShipmentTable/ShipmentBase";
 import { CircularProgress, Box } from "@mui/material";
 import ProfileBase from "./Components/Profile/ProfileBase";
-import FindNewRate from "./Components/Quotations/QuotaionTable/QModal/FindNewRate";
+import FindNewRate from "./Components/Quotations/QuotaionTable/QModal/FindNewRate/FindNewRate";
 
 function App() {
   const dispatch = useDispatch();
   const jwtToken = useSelector((state) => state.Login?.booking?.Token);
   const [loading, setLoading] = useState(true);
-  let isTokenReceived = false;
+  let isTokenReceived = false;  
 
   useEffect(() => {
     const currentUrl = window.location.href;
