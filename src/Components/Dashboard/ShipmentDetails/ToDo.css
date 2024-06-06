@@ -1,11 +1,12 @@
 ::-webkit-scrollbar {
     width: 3px !important; 
+    height: 3px !important;
   }
 
   ::-webkit-scrollbar-thumb {
     background: #BEBEBE !important; 
     border-radius: 10px !important;
-    max-height: 94px !important;
+    max-height: 5px !important;
   }
 
   
