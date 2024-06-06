@@ -119,7 +119,7 @@ const handleSubmit = () =>{
                 <Form layout="vertical" autoComplete="off" style={{width:"120%"}}>
                   <Form.Item
                     hasFeedback
-                    label="phone number"
+                    label="Phone number"
                     name="phone_number"
                     validateTrigger="onBlur"
                     rules={[{

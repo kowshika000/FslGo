@@ -59,7 +59,17 @@ const EditProfileModal = ({ open, close }) => {
 
   //This is handleInputs
 
-  const [profileinputs, setProfileinputs] = useState([])
+  const [profileinputs, setProfileinputs] = useState([
+    {
+      name:"",
+      email:"",
+      workemail:"",
+      phonenumber:"",
+      companyname:"",
+      companyprofile:"",
+      preferredcurrency:""
+    }
+  ])
 
   return (
       <Dialog
