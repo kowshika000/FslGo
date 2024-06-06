@@ -1,27 +1,51 @@
-import React from 'react'
-import Map from './Map/Map';
-import BookingTabs from './ShipmentTable/BookingTabs';
-import { Typography } from '@mui/material';
-import Navbar from '../Layout/Navbar';
-import './ShipBookingTabs.css'
-import MapboxMap from './Map/MapBox';
+import React, { useState } from "react";
+import Map from "./Map/Map";
+import BookingTabs from "./ShipmentTable/BookingTabs";
+import { Typography } from "@mui/material";
+import Navbar from "../Layout/Navbar";
+import "./ShipBookingTabs.css";
+import MapboxMap from "./Map/MapBox";
+import UpcomingSailings from "../Dashboard/Upcoming/UpcomingSailings";
+import uil_globe from "../../assets/uil_globe.png";
+import ph_table from "../../assets/ph_table.png";
 
 const ShipmentsHome = () => {
-  const currentPath = "/shipments";
+
+  const [showmap,setShowmap] = useState(false)
+
+  const haddleShowMap =() =>{
+    setShowmap(!showmap)
+
+  } 
 
   return (
-    <div style={{width:"100%", background: "linear-gradient(to bottom, white 49%,  rgb(248, 250, 252) 45%)",}}>
-    <div style={{maxWidth:'1255px'}} className='shipmentIndex py-5 mx-auto' >
-      <Typography style={{fontSize:'28px', fontWeight:'700'}} className='shipments-head'>Shipments</Typography>
-      <div >
-      <Navbar />
+    <div
+      style={{
+        width: "100%",
+        background:
+          "linear-gradient(to bottom, white 49%,  rgb(248, 250, 252) 45%)",
+      }}
+    >
+      <div
+        style={{ maxWidth: "1255px" }}
+        className="shipmentIndex mb-4 mx-auto"
+      >
+        <div className="py-4 d-flex justify-content-end">
+        <div>
+          <img src={ph_table} />
+        </div>
+        <div>
+          <img src={uil_globe} onClick={haddleShowMap}/>
+        </div>
       </div>
-    <Map/>
-    {/* <MapboxMap/> */}
-    <br/>
-    <BookingTabs/>
-    </div></div>
-  )
-}
+      {showmap && <Map/>}
+        {/* <Map/> */}
+        {/* <br /> */}
+        <BookingTabs />
+        <UpcomingSailings />
+      </div>
+    </div>
+  );
+};
 
-export default ShipmentsHome
+export default ShipmentsHome;

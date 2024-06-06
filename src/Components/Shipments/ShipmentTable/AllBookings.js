@@ -87,12 +87,12 @@ const AllBookings = ({ filterData, selectedStatus }) => {
     let buttonLabel;
     let btnClass;
     if (rowData.action === "Track") {
-      buttonLabel = "Track";
+      buttonLabel = "More";
       btnClass = "cargo-picked-up";
     } else if (rowData.action === "Booking In Progress") {
       buttonLabel = "-";
     } else if (rowData.action === "Cargo Picked Up") {
-      buttonLabel = "Track";
+      buttonLabel = "More";
       btnClass = "cargo-picked-up";
     }
     return (
@@ -116,6 +116,13 @@ const AllBookings = ({ filterData, selectedStatus }) => {
 
   const rowClassName = () => {
     return "custom-row";
+  };
+  const shipmentTemplateId = (rowData) => {
+    return (
+      <div style={{ textAlign: "start" }}>
+        <span className=" px-2">{rowData?.order_no}</span>
+      </div>
+    );
   };
   const shipmentTemplate = (rowData) => {
     return (
@@ -236,127 +243,6 @@ const AllBookings = ({ filterData, selectedStatus }) => {
     return new Date(parts[2], parts[1] - 1, parts[0]);
   };
 
-  const [visible, setVisible] = useState(false);
-
-  const showDrawer = () => {
-    setVisible(true);
-  };
-
-  const onClose = () => {
-    setVisible(false);
-  };
-  const onGlobalFilterChange = (e) => {
-    const value = e.target.value;
-    let _filters = { ...filters };
-
-    _filters["global"].value = value;
-
-    setFilters(_filters);
-    setGlobalFilterValue(value);
-  };
-
-  const [selectedDropdownItem, setSelectedDropdownItem] =
-    useState("Past 15 Days");
-
-  const items = ["Past 15 Days", "Past 30 Days", "Past 60 Days"];
-  useEffect(() => {
-    if (selectedDropdownItem === "Past 15 Days") {
-      setFilterValue(15);
-    } else if (selectedDropdownItem === "Past 30 Days") {
-      setFilterValue(30);
-    } else if (selectedDropdownItem === "Past 60 Days") {
-      setFilterValue(60);
-    }
-  }, [selectedDropdownItem]);
-
-  console.log("tab FilterValue", filterValue);
-
-  const renderHeader = () => {
-    return (
-      <Row
-        justify="space-between"
-        className="w-full mb-3"
-        style={{ backgroundColor: "white" }}
-      >
-        <Col>
-          <Input
-            placeholder="Search booking id , origin, destination... "
-            prefix={<SearchOutlined style={{ color: "#94A2B2" }} />}
-            style={{
-              width: "368.13px",
-              padding: "4px 11px",
-              borderRadius: "4px",
-            }}
-            value={globalFilterValue}
-            onChange={onGlobalFilterChange}
-          />
-        </Col>
-        <Col className="d-flex ">
-          <div
-            style={{ border: "1px solid #E7EAF0", borderRadius: "8px" }}
-            className="px-1 d-flex me-2"
-          >
-            <Image
-              src={calendar}
-              width="16px"
-              height="12px"
-              className="mt-2 pe-1"
-            />
-
-            <div
-              style={{
-                alignContent: "center",
-                border: "none ",
-                outline: "none ",
-              }}
-            >
-              <Dropdown
-                value={selectedDropdownItem}
-                onChange={(e) => {
-                  console.log("Selected item:", e.value); // Add logging statement
-                  setSelectedDropdownItem(e.value);
-                }}
-                options={items}
-                placeholder="Past 15 Days"
-                className="w-full md:w-14rem"
-                style={{ border: "none" }}
-              />
-            </div>
-          </div>
-
-          <div className="filter d-flex">
-            <div className="ant-image cursor-pointer" onClick={showDrawer}>
-              <img
-                src={filter}
-                className="ant-image-img me-1 my-1"
-                style={{
-                  marginTop: "2px",
-                  cursor: "pointer",
-                }}
-              />
-              <span
-                style={{
-                  cursor: "pointer",
-                  color: "#495A6E",
-                  textAlign: "center",
-                  fontWeight: "400",
-                  fontSize: "13px",
-                  letterSpacing: "1%",
-                  
-                }}
-              >
-                Filters
-              </span>
-            </div>
-          </div>
-
-          <FilterDrawer visible={visible} onClose={onClose} />
-        </Col>
-      </Row>
-    );
-  };
-  const header = renderHeader();
-
   return (
     <div
       style={{
@@ -372,10 +258,10 @@ const AllBookings = ({ filterData, selectedStatus }) => {
         currentPageReportTemplate="{first} to {last} out of {totalRecords} "
         // paginatorTemplate=" PrevPageLink PageLinks NextPageLink  CurrentPageReport "
         removableSort
-        header={header}
         filters={filters}
         globalFilterFields={[
           "id",
+          "orderid",
           "origin",
           "destination",
           "booked_on",
@@ -385,6 +271,39 @@ const AllBookings = ({ filterData, selectedStatus }) => {
         ]}
         rowClassName={rowClassName}
       >
+        <Column
+          field="orderid"
+          header={
+            <span
+              style={{ fontFamily: "Roboto", cursor: "pointer" }}
+              className="px-4 d-flex"
+            >
+              Order ID
+              <div
+                className="d-flex sorticon"
+                style={{ flexDirection: "column" }}
+              >
+                <IconButton
+                  onClick={() => {
+                    handleSort("orderid");
+                  }}
+                  className="p-0"
+                >
+                  <ExpandLessIcon className="sortup" />
+                </IconButton>
+                <IconButton
+                  onClick={() => {
+                    handleSortDown("orderid");
+                  }}
+                  className="p-0"
+                >
+                  <ExpandMoreIcon className="sortdown" />
+                </IconButton>
+              </div>
+            </span>
+          }
+          body={shipmentTemplateId}
+        ></Column>
         <Column
           field="id"
           header={
@@ -417,6 +336,39 @@ const AllBookings = ({ filterData, selectedStatus }) => {
             </span>
           }
           body={shipmentTemplate}
+        ></Column>
+        <Column
+          field="mode"
+          header={
+            <span
+              style={{ fontFamily: "Roboto", cursor: "pointer" }}
+              className="px-4 d-flex"
+            >
+              Mode
+              <div
+                className="d-flex sorticon"
+                style={{ flexDirection: "column" }}
+              >
+                <IconButton
+                  onClick={() => {
+                    handleSort("mode");
+                  }}
+                  className="p-0"
+                >
+                  <ExpandLessIcon className="sortup" />
+                </IconButton>
+                <IconButton
+                  onClick={() => {
+                    handleSortDown("mode");
+                  }}
+                  className="p-0"
+                >
+                  <ExpandMoreIcon className="sortdown" />
+                </IconButton>
+              </div>
+            </span>
+          }
+          // body={shipmentTemplate}
         ></Column>
 
         <Column
