@@ -12,7 +12,8 @@ import MapMarker from "./MapMarker";
 import { useDispatch, useSelector } from "react-redux";
 import { mapRequest } from "../../../Redux/Actions/MapAction";
 import { CountryData } from "./CountryData";
-import "../ShipmentTable/Booking.css"
+import "../ShipmentTable/Booking.css";
+
 
 // Define the position and coordinates
 const position = [10.586958, -34.623453];
@@ -60,7 +61,7 @@ export default function Americas() {
   // const markernumber = MapDatas?.map((data) => data.no_of_shipments);
 
   return (
-    <div>
+    <div className="mb-5">
       <MapContainer
         center={position}
         zoom={1.5}

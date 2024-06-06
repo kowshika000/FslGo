@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import "./BookingSummary.css";
+import "./ShipmentSummary.css";
 import { Tooltip } from "antd";
 import Modal from "../Modal/Modal";
 import ContainerDetailsModal from "../Modal/ContainerDetailsModal";
 import TextArea from "antd/es/input/TextArea";
 import { useSelector } from "react-redux";
 
-const BookingSummary = () => {
+const ShipmentSummary = () => {
   const bookingData = useSelector((state) => state.ViewBooking);
   console.log("bookingData", bookingData);
   const ViewBooking = bookingData?.viewBookingData?.customercode;
-  console.log("BookingSummary", ViewBooking);
+  console.log("ShipmentSummary", ViewBooking);
 
   const requirementDescription =
     "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, labore facere nisi a placeat impedit aliquam unde. Ab fugiat consequuntur aperiam error? Veritatis dolor aliquid nihil perspiciatis cumque sed nulla quidem quisquam iure sit quibusdam mollitia quis, deleniti eius tempore asperiores fugiat nam key at omnis hic. Libero ipsum officiis exercitationem atque quidem asperiores voluptatum accusantium impedit. Dignissimos saepe mollitia earum, numquam, id doloremque velit obcaecati rem molestias praesentium, aspernatur nostrum temporibus dolor neque! Deserunt aspernatur, architecto recusandae id consequatur cumque enim numquam aliquam hic beatae natus autem placeat dignissimos blanditiis modi harum debitis consectetur perferendis similique, perspiciatis laborum. Inventore.";
@@ -557,4 +557,4 @@ const BookingSummary = () => {
   );
 };
 
-export default BookingSummary;
+export default ShipmentSummary;

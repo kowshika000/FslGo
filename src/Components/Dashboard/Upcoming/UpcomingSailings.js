@@ -240,7 +240,7 @@ const UpcomingSailings = () => {
     <div
       className="w-100 mt-5 shadow mx-auto"
       style={{
-        minWidth: "1269px",
+        minWidth: "1255px",
         borderRadius: "8px",
       }}
     >
