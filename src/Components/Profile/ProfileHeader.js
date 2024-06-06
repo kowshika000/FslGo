@@ -66,6 +66,19 @@ const ProfileHeader = ({setOpenEditModal}) => {
         </button>
     );
 
+    //This is profile data
+    const [profileinputs, setProfileinputs] = useState([
+      {
+        name:"Jhon Doe",
+        email:"email@email.com",
+        workemail:"email@email.com",
+        phonenumber:"+91 7878786767",
+        companyname:"Abc Enterprise",
+        companyprofile:"Exporter",
+        preferredcurrency:"USD"
+      }
+    ])
+
   return (
     <Card
           style={{
@@ -118,7 +131,7 @@ const ProfileHeader = ({setOpenEditModal}) => {
                             <p className='m-0'>email@gmail.com</p>    
                         </div>
                         <div className="companyprofile_field">
-                            <p className='m-0'>Company Profilee</p>
+                            <p className='m-0'>Company Profile</p>
                             <p className='m-0'>Exporter</p>
                         </div>
                     </div>
