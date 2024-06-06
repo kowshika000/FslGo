@@ -10,13 +10,14 @@ import uil_globe from "../../assets/uil_globe.png";
 import ph_table from "../../assets/ph_table.png";
 
 const ShipmentsHome = () => {
+  const [showmap, setShowmap] = useState(false);
 
-  const [showmap,setShowmap] = useState(false)
-
-  const haddleShowMap =() =>{
-    setShowmap(!showmap)
-
-  } 
+  const haddleShowMap = () => {
+    setShowmap(true);
+  };
+  const haddleCloseMap = () => {
+    setShowmap(false);
+  };
 
   return (
     <div
@@ -31,14 +32,14 @@ const ShipmentsHome = () => {
         className="shipmentIndex mb-4 mx-auto"
       >
         <div className="py-4 d-flex justify-content-end">
-        <div>
-          <img src={ph_table} />
+          <div>
+            <img src={ph_table} onClick={haddleCloseMap} />
+          </div>
+          <div>
+            <img src={uil_globe} onClick={haddleShowMap} />
+          </div>
         </div>
-        <div>
-          <img src={uil_globe} onClick={haddleShowMap}/>
-        </div>
-      </div>
-      {showmap && <Map/>}
+        {showmap && <Map />}
         {/* <Map/> */}
         {/* <br /> */}
         <BookingTabs />

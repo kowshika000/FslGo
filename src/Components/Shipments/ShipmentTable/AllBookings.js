@@ -104,7 +104,7 @@ const AllBookings = ({ filterData, selectedStatus }) => {
           background: "rgba(240, 30, 30, 1)",
           color: "white",
           borderRadius: "8px",
-          width: "160px",
+          width: "80px",
           height: "30px",
           padding: "",
           gap: "8px",
@@ -195,7 +195,7 @@ const AllBookings = ({ filterData, selectedStatus }) => {
       if (!isNaN(valA) && !isNaN(valB)) {
         return valA - valB;
       }
-      if (col === "etd/atd" || col === "eta/ata") {
+      if (col === "etd/atd" || col === "eta/ata" || col === "order_no") {
         const dateA = parseDate1(valA);
         const dateB = parseDate1(valB);
         return dateA - dateB;
@@ -273,11 +273,11 @@ const AllBookings = ({ filterData, selectedStatus }) => {
         rowClassName={rowClassName}
       >
         <Column
-          field="orderid"
+          field="order_no"
           header={
             <span
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
-              className="px-4 d-flex"
+              className=" d-flex"
             >
               Order ID
               <div
@@ -286,7 +286,7 @@ const AllBookings = ({ filterData, selectedStatus }) => {
               >
                 <IconButton
                   onClick={() => {
-                    handleSort("orderid");
+                    handleSort("order_no");
                   }}
                   className="p-0"
                 >
@@ -294,7 +294,7 @@ const AllBookings = ({ filterData, selectedStatus }) => {
                 </IconButton>
                 <IconButton
                   onClick={() => {
-                    handleSortDown("orderid");
+                    handleSortDown("order_no");
                   }}
                   className="p-0"
                 >
@@ -303,7 +303,8 @@ const AllBookings = ({ filterData, selectedStatus }) => {
               </div>
             </span>
           }
-          body={shipmentTemplateId}
+          // body={shipmentTemplateId}
+          headerClassName="custom-header"
         ></Column>
         <Column
           field="id"
@@ -336,7 +337,7 @@ const AllBookings = ({ filterData, selectedStatus }) => {
               </div>
             </span>
           }
-          body={shipmentTemplate}
+          // body={shipmentTemplate}
         ></Column>
         <Column
           field="mode"
@@ -441,7 +442,7 @@ const AllBookings = ({ filterData, selectedStatus }) => {
           body={destinationBodyTemplate}
           className="p-3"
         ></Column>
-        <Column
+        {/* <Column
           field="booked_on"
           header={
             <span className="p-3 d-flex">
@@ -471,7 +472,7 @@ const AllBookings = ({ filterData, selectedStatus }) => {
           }
           bodyClassName="custom-cell"
           className="p-3"
-        ></Column>
+        ></Column> */}
         <Column
           field="etd/atd"
           header={
@@ -588,7 +589,7 @@ const AllBookings = ({ filterData, selectedStatus }) => {
       /> */}
       <ShipmentBase
         open={isModalOpen}
-        close={setIsModalOpen}  
+        close={setIsModalOpen}
         rowData={modalRowData}
       />
     </div>
