@@ -136,16 +136,6 @@ const Addresses = () => {
           </div>
         </div>
         <div className="border border-bottom mt-2 mb-2"></div>
-        {/* <Modal isOpen={addressModal} width="560px">
-            <AddressesModal onClose={handleClose} />
-        </Modal> */}
-        {/* <Dialog>
-          <AddressesModal 
-             onClose={handleClose}
-             addressModal ={addressModal}
-             setAddressModal ={setAddressModal}
-          />
-        </Dialog> */}
         <AddressesModal open={addressModal} setAddressModal={setAddressModal} setAddressTitle={setAddressTitle} close={() => setAddressModal(false)}/>
         <AddressTitleModal  open={addressTitle} setAddressTitle= {setAddressTitle} close={() => setAddressTitle(false)}/>
 
