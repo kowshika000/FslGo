@@ -11,6 +11,7 @@ import watchMap from "./MapSaga";
 import watchViewBooking from "./ViewBookingSaga";
 import watchUploadDocument from "./UploadDocumentSaga";
 import WatchCancelBooking from "./CancelBookingSaga";
+import watchQuotation from "./QuotationSaga";
 
 export default function* rootSaga() {
   yield all([
@@ -26,5 +27,6 @@ export default function* rootSaga() {
     watchViewBooking(),
     watchUploadDocument(),
     WatchCancelBooking(),
+    watchQuotation(),
   ]);
 }
