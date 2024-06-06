@@ -22,8 +22,10 @@ import { Dialog, DialogContent } from '@mui/material';
 import ShipmentSummary from './BookingSummary/ShipmentSummary';
 import ShipmentMapModal from './ShipmentMapModal';
 
-const ShipmentBase = ({open,close}) => {
+const ShipmentBase = ({open,close,rowData}) => {
 
+  console.log("rowData",rowData)
+  const rowDatas = rowData
   const bookingData = useSelector((state)=>state.ViewBooking)
   console.log("bookingData",bookingData);
   const ViewBooking = bookingData?.viewBookingData?.customercode
@@ -143,6 +145,7 @@ const ShipmentBase = ({open,close}) => {
         },
       ];
     
+      const [vesselmodalopen,setVesselmodalopen] = useState(false)
       
 
   return (
@@ -206,8 +209,8 @@ const ShipmentBase = ({open,close}) => {
           // </div>
           <>
               <Dialog
-                open={true}
-                onClose={close}
+                open={open}
+                onClose={()=>close(false)}
                 aria-labelledby="responsive-dialog-title"
                 id="edit_profile_modal_section"
                 maxWidth={"lg"}
@@ -215,19 +218,19 @@ const ShipmentBase = ({open,close}) => {
               >
                 <DialogContent>
                   <ShipmentHeader />
-                  <ShipmentTable contentListNoTitle={contentListNoTitle} tabListNoTitle={tabListNoTitle}  />
+                  <ShipmentTable contentListNoTitle={contentListNoTitle} tabListNoTitle={tabListNoTitle} setVesselmodalopen={setVesselmodalopen} close={close}  />
                 </DialogContent>
               </Dialog>
               <Dialog
-                open={false}
-                onClose={close}
+                open={vesselmodalopen}
+                onClose={()=>setVesselmodalopen(false)}
                 aria-labelledby="responsive-dialog-title"
                 id="edit_profile_modal_section"
                 maxWidth={"lg"}
                 fullWidth={true}
               >
                 <DialogContent>
-                  <ShipmentMapModal />
+                  <ShipmentMapModal rowDatas={rowDatas} />
                 </DialogContent>
               </Dialog>
               </>
