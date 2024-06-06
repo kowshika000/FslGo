@@ -1,13 +1,19 @@
 import { Card } from 'antd'
 import React, { useState } from 'react'
 import './ShipmentTable.css'
+import { Link } from 'react-router-dom';
 
-const ShipmentTable = ({tabListNoTitle,contentListNoTitle}) => {
+const ShipmentTable = ({tabListNoTitle,contentListNoTitle,setVesselmodalopen,close}) => {
 
-    const [activeTabKey, setActiveTabKey] = useState('Track');
+    const [activeTabKey, setActiveTabKey] = useState('Milestones');
         const onTab2Change = (key) => {
                 setActiveTabKey(key);
     };
+
+    const handleNextModal =()=>{
+      setVesselmodalopen(true)
+      close(false)
+    }
 
   return (
     <Card
@@ -23,9 +29,29 @@ const ShipmentTable = ({tabListNoTitle,contentListNoTitle}) => {
           size: 'middle',
           }}
         >
+
             <div style={{overflow:"auto",maxHeight:"500px"}}>
               {contentListNoTitle[activeTabKey]}
             </div>
+            <Link 
+                 onClick={handleNextModal}
+                style={{
+                    padding:"14.5px 19.5px",
+                    backgroundColor:"#D40E0E",
+                    fontWeight:"700",
+                    fontSize:"15px",
+                    lineHeight:"14.4px",
+                    letterSpacing:"-0.02em",
+                    borderRadius:"10px",
+                    textDecoration:"none",
+                    color:"#FFFFFF",
+                    position:"absolute",
+                    top:"6px",
+                    right:"22px", 
+                }}
+            >
+                View Vessel Tracking
+            </Link>
     </Card>
   )
 }

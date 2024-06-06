@@ -4,6 +4,13 @@
     border-width: 2px !important;
 }
 
+.profile_header_section .ant-card-body {
+    padding: 12px !important;
+}
+.profile_header_section{
+    margin-bottom: 20px !important;
+}
+
 /*This is for horizontal_line */
 .profile_section .horizontal_line{
     height: 70px;
