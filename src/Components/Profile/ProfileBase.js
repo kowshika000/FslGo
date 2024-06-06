@@ -8,7 +8,7 @@ import "./ProfileBase.css";
 import { Link } from "react-router-dom";
 import ProfileHeader from "./ProfileHeader";
 import ProfileTable from "./ProfileTable";
-import ConnectedAccounts from "./ConnectedAccounts/ConnectedAccounts";
+import ConnectedAccounts from "./KeyAccount/KeyAccountManagers";
 import Transactions from "./Transactions/Transactions";
 import Password from "./Password/Password";
 import ReferEarn from "./ReferEarn/ReferEarn";
@@ -16,6 +16,7 @@ import Addresses from "./SavedAddresses/Addresses";
 import NotificationManagement from "./NotificationManagement/NotificationManagement";
 import CreatePasswordModal from "./Modals/CreatePasswordModal";
 import EditProfileModal from "./Modals/EditProfileModal";
+import KeyAccountManagers from "./KeyAccount/KeyAccountManagers";
 
 const ProfileBase = () => {
   //This is for EditprofModal
@@ -23,25 +24,25 @@ const ProfileBase = () => {
 
   const tabListNoTitle = [
     {
-      key: "ConnectedAccounts",
-      label: "Connected Accounts",
+      key: "KeyAccount",
+      label: "Key Account Managers",
     },
     {
       key: "SavedAddresses",
       label: "Saved Addresses",
     },
-    {
-      key: "Transactions",
-      label: "Transactions",
-    },
+    // {
+    //   key: "Transactions",
+    //   label: "Transactions",
+    // },
     {
       key: "Password",
       label: "Password",
     },
-    {
-      key: "ReferEarn",
-      label: "Refer & Earn",
-    },
+    // {
+    //   key: "ReferEarn",
+    //   label: "Refer & Earn",
+    // },
   ];
 
   const steps = [
@@ -72,11 +73,11 @@ const ProfileBase = () => {
   ];
 
   const contentListNoTitle = {
-    ConnectedAccounts: <ConnectedAccounts />,
+    KeyAccount: <KeyAccountManagers />,
     SavedAddresses: <Addresses />,
-    Transactions: <Transactions />,
+    // Transactions: <Transactions />,
     Password: <Password />,
-    ReferEarn: <ReferEarn />,
+    // ReferEarn: <ReferEarn />,
   };
 
   const items = [
