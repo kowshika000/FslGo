@@ -11,7 +11,7 @@ import MapReducer from './MapReducer';
 import ViewBookingReducer from "./ViewBookingReducer"
 import UploadDocumentReducer from './UploadDocumentReducer';
 import CancelBookingReducer from './CancelBookingReducer';
-
+import QuotationReducer from './QuotationReducer';
 
 const rootReducer = combineReducers({
     ShipmentCount: shipmentCountReducer,
@@ -25,7 +25,8 @@ const rootReducer = combineReducers({
     Map: MapReducer,
     ViewBooking: ViewBookingReducer,
     UploadDocument:UploadDocumentReducer,
-    CancelBooking: CancelBookingReducer
+    CancelBooking: CancelBookingReducer,
+    QuotationList: QuotationReducer,
 });
 
 export default rootReducer;
