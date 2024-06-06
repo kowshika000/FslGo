@@ -84,7 +84,7 @@ const ProfileHeader = ({setOpenEditModal}) => {
           style={{
             width: "100%",
           }}
-          className='container mx-auto p-0 mob_response ship_section'
+          className='container mx-auto p-0 mob_response profile_header_section'
           id='mobile_margin'
         >
             <div className="row profile_details">
