@@ -20,16 +20,21 @@ import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { ViewBookingAction } from "../../../Redux/Actions/ViewBookingAction";
 import { useLocation } from "react-router-dom";
-const ShipmentHeader = () => {
+
+const ShipmentHeader = ({rowDatas}) => {
+
 
   //This is for getting id from previous page
-  const location = useLocation();
-  const { rowData } = location.state || {};
-  console.log("shipmentrowData", rowData.id);
-  const booking_id = rowData.id;
+
+  // const location = useLocation();
+  // const { rowData } = location.state || {};
+  // console.log("shipmentrowData", rowData.id);
+  // const booking_id = rowData.id;
+  const booking_id = rowDatas?.id;
 
 
   //get ViewBooking details ApiData
+  // const booking_id = rowData.id
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(ViewBookingAction({ booking_id }));

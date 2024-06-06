@@ -23,6 +23,7 @@ import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { IconButton } from "@mui/material";
 import { Dropdown } from "primereact/dropdown";
+import ShipmentBase from "../../ShipmentDetails/ShipmentTable/ShipmentBase";
 
 const AllBookings = ({ filterData, selectedStatus }) => {
   const [filters, setFilters] = useState({
@@ -580,9 +581,14 @@ const AllBookings = ({ filterData, selectedStatus }) => {
         setCurrentPage={setCurrentPage}
         totalItems={filteredData?.length}
       />
-      <Steppertrack
+      {/* <Steppertrack
         isModalOpen={isModalOpen}
         handleCancel={handleCancel}
+        rowData={modalRowData}
+      /> */}
+      <ShipmentBase
+        open={isModalOpen}
+        close={setIsModalOpen}  
         rowData={modalRowData}
       />
     </div>

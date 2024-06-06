@@ -3,12 +3,17 @@ import React, { useState } from 'react'
 import './ShipmentTable.css'
 import { Link } from 'react-router-dom';
 
-const ShipmentTable = ({tabListNoTitle,contentListNoTitle}) => {
+const ShipmentTable = ({tabListNoTitle,contentListNoTitle,setVesselmodalopen,close}) => {
 
     const [activeTabKey, setActiveTabKey] = useState('Milestones');
         const onTab2Change = (key) => {
                 setActiveTabKey(key);
     };
+
+    const handleNextModal =()=>{
+      setVesselmodalopen(true)
+      close(false)
+    }
 
   return (
     <Card
@@ -29,7 +34,7 @@ const ShipmentTable = ({tabListNoTitle,contentListNoTitle}) => {
               {contentListNoTitle[activeTabKey]}
             </div>
             <Link 
-                // onClick={()=>setOpen(true)}
+                 onClick={handleNextModal}
                 style={{
                     padding:"14.5px 19.5px",
                     backgroundColor:"#D40E0E",
