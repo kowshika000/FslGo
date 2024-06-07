@@ -111,7 +111,7 @@ function BookingTabs() {
         borderRadius: "8px",
       }}
     >
-      <SearchHeader />
+      <SearchHeader bookingData={bookingData} />
       <Row className="border" style={{ borderRadius: "8px" }}>
         <Col span={24} style={{ backgroundColor: "#F8FAFC" }}>
           <Row justify="space-between" style={{ height: "57px" }}>

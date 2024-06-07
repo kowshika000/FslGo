@@ -122,7 +122,7 @@ const ShipmentMapModal = () => {
             {/* {fileteredMilestone?.map((item) => {
               return <p className="m-0">{item.eta_ata}</p>;
             })} */}
-            <p className="m-0" color='#128807'>Active</p>
+            <p className="m-0" style={{color:"#128807"}}>Active</p>
           </div>
           <div className="booking_content">
             <p className="m-0 mb-1">MBL #</p>
@@ -151,7 +151,7 @@ const ShipmentMapModal = () => {
             <p className="m-0">4,348.96 KGMSC</p>
           </div>
         </div>
-            <img style={{width:"1152px"}} src={mapImage} />
+            <img style={{width:"1199px"}} src={mapImage} />
     </Card>
   )
 }

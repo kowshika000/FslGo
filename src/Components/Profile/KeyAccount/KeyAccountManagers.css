@@ -18,17 +18,27 @@
     color: #384656;
 } */
 
-.profile_section .key_border{
+
+/* This is for KeyAccountmanagers Styling */
+
+.profile_section .Key_account_content{
     border: 1px solid  #E7EAF0;
     width: 815px;
-    /* box-shadow: 0px 5px 15px #3C3844; */
-}
-
-.profile_section .key_header{
+    border-radius: 8px;
+    box-shadow: 0px 6px 18px 0px #0000001A;
     padding: 20px;
+
 }
 
-.profile_section .key_header th{
+/* .profile_section .keyhe{
+    padding: 20px; */
+    /* border: 1px solid  #E7EAF0;
+    width: 815px;
+    border-radius: 8px;
+    box-shadow: 0px 6px 18px 0px #0000001A; */
+/* } */
+
+.profile_section .Key_account_content th{
     padding: 10px;
     background-color:#3C3844;
     color: #ffff;
@@ -38,15 +48,15 @@
     line-height: 34px;
 }
 
-.profile_section .key_header tbody>tr>td:nth-child(1){
+.profile_section .Key_account_content tbody>tr>td:nth-child(1){
     font-weight: 400 !important;
 }
 
-.profile_section .key_header tbody>tr>td:nth-child(3){
+.profile_section .Key_account_content tbody>tr>td:nth-child(3){
     font-weight: 400 !important;
 }
 
-.profile_section .key_header td{
+.profile_section .Key_account_content td{
     width: 739px;
     padding: 10px;
     gap: 10px;

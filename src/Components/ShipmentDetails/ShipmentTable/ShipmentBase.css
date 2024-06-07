@@ -110,4 +110,15 @@
     }
 }
 
+/* This is for an close icon */
+.css-cyxlny-MuiPaper-root-MuiDialog-paper{
+    overflow-y: unset !important;
+}
 
+/* edit_profile_modal_section */
+#vessel_modal_section .css-ypiqx9-MuiDialogContent-root{
+    padding:0px !important;
+}
+#vessel_modal_section .ant-card .ant-card-body{
+    padding: 0px !important;
+}

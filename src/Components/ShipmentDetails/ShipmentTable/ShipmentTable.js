@@ -39,7 +39,7 @@ const ShipmentTable = ({tabListNoTitle,contentListNoTitle,setVesselmodalopen,clo
                     padding:"14.5px 19.5px",
                     backgroundColor:"#D40E0E",
                     fontWeight:"700",
-                    fontSize:"15px",
+                    fontSize:"14px",
                     lineHeight:"14.4px",
                     letterSpacing:"-0.02em",
                     borderRadius:"10px",

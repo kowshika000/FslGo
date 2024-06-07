@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 
 const ProfileTable = ({tabListNoTitle,contentListNoTitle,setOpen}) => {
 
-    const [activeTabKey, setActiveTabKey] = useState('ConnectedAccounts');
+    const [activeTabKey, setActiveTabKey] = useState('KeyAccount');
         const onTab2Change = (key) => {
                 setActiveTabKey(key);
     };
@@ -37,10 +37,10 @@ const ProfileTable = ({tabListNoTitle,contentListNoTitle,setOpen}) => {
           size: 'middle',
           }}
         >
-            <div style={{overflow:"auto",maxHeight:"500px"}}>
+            {/* <div style={{overflow:"auto",maxHeight:"500px"}}> */}
               {contentListNoTitle[activeTabKey]}
-            </div>
-            <Link 
+            {/* </div> */}
+            {/* <Link 
                 onClick={()=>setOpen(true)}
                 style={{
                     padding:"14.5px 19.5px",
@@ -58,7 +58,7 @@ const ProfileTable = ({tabListNoTitle,contentListNoTitle,setOpen}) => {
                 }}
             >
                 Notification Management
-            </Link>
+            </Link> */}
             {/* <Modal isOpen={open} width={"80vw"}>
                   <NotificationManagement setOpen={setOpen} />
             </Modal> */}
