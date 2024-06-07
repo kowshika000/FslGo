@@ -20,8 +20,7 @@ const KeyAccountManagers = () => {
     //         <CreatePasswordModal setOpen={setOpen} />
     //     </Modal>
     // </>
-    <div className='Key_account_contant'>
-        <div className="key_header key_border">
+    <div className='Key_account_content'>
           <thead>
             <tr>
               <th>Name</th>
@@ -49,8 +48,7 @@ const KeyAccountManagers = () => {
               <td>Akram.freightsystems.com <img src={copyIcon} className='mx-1'/></td>
             </tr>
           </tbody>
-        </div>
-    </div>
+      </div>
   )
 }
 

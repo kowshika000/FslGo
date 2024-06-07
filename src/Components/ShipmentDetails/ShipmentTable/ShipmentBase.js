@@ -21,6 +21,7 @@ import ShipmentDetailsModal from './Modal/ShipmentDetailsModal';
 import { Dialog, DialogContent } from '@mui/material';
 import ShipmentSummary from './BookingSummary/ShipmentSummary';
 import ShipmentMapModal from './ShipmentMapModal';
+import { VscClose } from 'react-icons/vsc';
 
 const ShipmentBase = ({open,close,rowData}) => {
 
@@ -100,8 +101,8 @@ const ShipmentBase = ({open,close,rowData}) => {
           <p 
               style={{
                 fontWeight:"600",
-                fontSize:"17px",
-                lineHeight:"19px",
+                fontSize:"15px",
+                lineHeight:"17px",
                 letterSpacing:".01em",
                 margin:"15px 0px",
               }}
@@ -110,8 +111,8 @@ const ShipmentBase = ({open,close,rowData}) => {
           <p 
               style={{
                 fontWeight:"600",
-                fontSize:"17px",
-                lineHeight:"19px",
+                fontSize:"15px",
+                lineHeight:"17px",
                 letterSpacing:".01em",
                 margin:"15px 0px",
               }}
@@ -120,8 +121,8 @@ const ShipmentBase = ({open,close,rowData}) => {
           <p 
               style={{
                 fontWeight:"600",
-                fontSize:"17px",
-                lineHeight:"19px",
+                fontSize:"15px",
+                lineHeight:"17px",
                 letterSpacing:".01em",
                 margin:"15px 0px",
               }}
@@ -137,7 +138,7 @@ const ShipmentBase = ({open,close,rowData}) => {
         },
         {
           key: '2',
-          label: <Button type='link' style={{color:"black",textDecoration:"none"}} icon={<FaPhoneVolume size={17} />} ><span className="ms-2">Request Callback</span></Button>,
+          label: <Button type='link' style={{color:"black",textDecoration:"none"}} icon={<FaPhoneVolume size={5} />} ><span className="ms-2">Request Callback</span></Button>,
         },
         {
           key: '3',
@@ -219,18 +220,20 @@ const ShipmentBase = ({open,close,rowData}) => {
                 <DialogContent>
                   <ShipmentHeader />
                   <ShipmentTable contentListNoTitle={contentListNoTitle} tabListNoTitle={tabListNoTitle} setVesselmodalopen={setVesselmodalopen} close={close}  />
+                  <VscClose size={22} color='#ffff' role='button' onClick={()=>close(false)} style={{position:"absolute",top:"0px",right:"-22px"}} />
                 </DialogContent>
               </Dialog>
               <Dialog
                 open={vesselmodalopen}
                 onClose={()=>setVesselmodalopen(false)}
                 aria-labelledby="responsive-dialog-title"
-                id="edit_profile_modal_section"
+                id="vessel_modal_section"
                 maxWidth={"lg"}
                 fullWidth={true}
               >
                 <DialogContent>
                   <ShipmentMapModal rowDatas={rowDatas} />
+                  <VscClose size={22} color='#ffff' role='button' onClick={()=>setVesselmodalopen(false)} style={{position:"absolute",top:"0px",right:"-22px"}} />
                 </DialogContent>
               </Dialog>
               </>

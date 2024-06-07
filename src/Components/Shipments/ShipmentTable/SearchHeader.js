@@ -2,10 +2,55 @@ import React, { useState } from "react";
 import { Row, Col, Input } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import "./Booking.css";
+import { useSelector } from "react-redux";
+import ShipmentBase from "../../ShipmentDetails/ShipmentTable/ShipmentBase";
+import { useNavigate } from "react-router-dom";
+import { Dialog, DialogContent } from "@mui/material";
 
-export const SearchHeader = () => {
+export const SearchHeader = ({bookingData}) => {
   const [selectedButton, setSelectedButton] = useState(null);
 
+
+  //This is for searching according to booking_id,hbl number
+  const navigate = useNavigate()
+  const [notfoundmodal, setNotfoundmodal] = useState(false)
+  const [modal, setmodal] = useState(false)
+  const [searchvalue, setSearchvalue] = useState("")
+  const [filterdata, setFilterData] = useState("")
+  console.log("searchData",bookingData?.data?.id)
+
+  //This function call only when pressing enter key
+  const handleSubmit=(e)=>{
+    if(e.key=== 'Enter'){
+      console.log(searchvalue)
+      const filteredId = bookingData?.data?.filter((item)=>searchvalue===item.id)
+      if(filteredId.length){
+        setFilterData(filteredId)
+        setmodal(true) //This is for show datafoundModal
+        setNotfoundmodal(false) //This is for hide Not foundModal
+      }
+      else{
+        setmodal(false) //This is for hide datafoundModal
+        setNotfoundmodal(true) //This is for show Not foundModal
+        console.log("not exist")
+      }
+    }
+  }
+
+  const Shipmentpopup=(show)=>{
+    return <ShipmentBase 
+                  open={modal}
+                  close={setmodal}
+                  rowData={show}
+                />
+  }
+  const Notfoundpopup=()=>{
+    return <Dialog open={notfoundmodal} onClose={()=>setNotfoundmodal(false)}>
+            <DialogContent>
+              <p>Data Not found !</p>
+            </DialogContent>
+           </Dialog>
+  }
   
   const handleUpcomingDep=()=>{
     setSelectedButton(true)
@@ -30,6 +75,9 @@ export const SearchHeader = () => {
           }}
           // value={globalFilterValue}
           // onChange={onGlobalFilterChange}
+           value={searchvalue}
+           onChange={(e)=>setSearchvalue(e.target.value)}
+           onKeyDown={(e)=>handleSubmit(e)}
         />
       </Col>
       <Col className="d-flex " >
@@ -50,6 +98,8 @@ export const SearchHeader = () => {
           >
             Upcoming Arrivals
           </button>
+          {modal&& Shipmentpopup(filterdata)}
+          {notfoundmodal&& Notfoundpopup()}
         </div>
       </Col>
     </Row>
