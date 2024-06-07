@@ -29,8 +29,8 @@ const ShipmentHeader = ({rowDatas}) => {
   // const location = useLocation();
   // const { rowData } = location.state || {};
   // console.log("shipmentrowData", rowData.id);
-  // const booking_id = rowData.id;
   const booking_id = rowDatas?.id;
+  console.log("rowdtas",booking_id)
 
 
   //get ViewBooking details ApiData

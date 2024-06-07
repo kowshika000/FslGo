@@ -18,6 +18,7 @@ export const SearchHeader = ({bookingData}) => {
   const [searchvalue, setSearchvalue] = useState("")
   const [filterdata, setFilterData] = useState("")
   console.log("searchData",bookingData?.data?.id)
+  console.log("filterheader",filterdata[0])
 
   //This function call only when pressing enter key
   const handleSubmit=(e)=>{
@@ -41,7 +42,7 @@ export const SearchHeader = ({bookingData}) => {
     return <ShipmentBase 
                   open={modal}
                   close={setmodal}
-                  rowData={show}
+                  rowData={filterdata[0]}
                 />
   }
   const Notfoundpopup=()=>{
@@ -66,7 +67,7 @@ export const SearchHeader = ({bookingData}) => {
     >
       <Col>
         <Input
-          placeholder="Search booking id , origin, destination... "
+          placeholder="Search shipment by PO/ Booking / HBL / Invoice Number "
           prefix={<SearchOutlined style={{ color: "#94A2B2" }} />}
           style={{
             width: "368.13px",

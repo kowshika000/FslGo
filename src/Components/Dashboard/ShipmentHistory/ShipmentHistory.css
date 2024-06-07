@@ -16,13 +16,13 @@
 }
 .p-datatable .p-datatable-tbody > tr > td {
   /* text-align: start !important; */
-  padding: 12px, 10px, 12px, 10px !important;
-  text-align: center;
+  /* padding: 12px 10px 12px 10px !important; */
   font-size: 14px;
   font-weight: 400;
   color: rgba(24, 30, 37, 1);
   align-items: center;
 }
+
 .upcoming-dep {
   width: 152px;
   height: 25px;
