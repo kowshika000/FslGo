@@ -26,7 +26,7 @@ import { VscClose } from 'react-icons/vsc';
 const ShipmentBase = ({open,close,rowData}) => {
 
   console.log("rowData",rowData)
-  const rowDatas = rowData
+  // const rowDatas = rowData
   const bookingData = useSelector((state)=>state.ViewBooking)
   console.log("bookingData",bookingData);
   const ViewBooking = bookingData?.viewBookingData?.customercode
@@ -218,7 +218,7 @@ const ShipmentBase = ({open,close,rowData}) => {
                 fullWidth={true}
               >
                 <DialogContent>
-                  <ShipmentHeader />
+                  <ShipmentHeader rowDatas={rowData} />
                   <ShipmentTable contentListNoTitle={contentListNoTitle} tabListNoTitle={tabListNoTitle} setVesselmodalopen={setVesselmodalopen} close={close}  />
                   <VscClose size={22} color='#ffff' role='button' onClick={()=>close(false)} style={{position:"absolute",top:"0px",right:"-22px"}} />
                 </DialogContent>
@@ -232,7 +232,7 @@ const ShipmentBase = ({open,close,rowData}) => {
                 fullWidth={true}
               >
                 <DialogContent>
-                  <ShipmentMapModal rowDatas={rowDatas} />
+                  <ShipmentMapModal />
                   <VscClose size={22} color='#ffff' role='button' onClick={()=>setVesselmodalopen(false)} style={{position:"absolute",top:"0px",right:"-22px"}} />
                 </DialogContent>
               </Dialog>

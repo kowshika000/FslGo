@@ -63,13 +63,13 @@ const Header = ({ activePage }) => {
               Dashboard
             </Typography>
           </Link> */}
-          <Link to="/shipments" style={{ textDecoration: "none" }}>
+          <Link to="/" style={{ textDecoration: "none" }}>
             <Typography
               sx={{
                 fontSize: "15px",
                 fontWeight: "400",
                 color:
-                  location.pathname === "/shipments"
+                  location.pathname === "/"
                     ? "white"
                     : "rgba(255, 255, 255, 0.5)",
                 padding: "20px",
