@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Tabs, Row, Col, Image } from "antd";
 import AllBookings from "./AllBookings";
 import "../ShipBookingTabs.css";
-import {  useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { SearchHeader } from "./SearchHeader";
 import calendar from "../../../assets/calendar.png";
 import { Dropdown } from "primereact/dropdown";
@@ -15,7 +15,7 @@ import image2 from "../../../assets/Shape (1).png";
 import image3 from "../../../assets/Shape (2).png";
 import DailyReportTable from "./DailyReportTable";
 
-function BookingTabs({ handleCloseMap, handleShowMap, showText, setShowText }) {
+function BookingTabs({ showText, setShowText }) {
   const [searchQuery] = useState("");
   const [data, setData] = useState([]);
   const ShipmentData = useSelector((state) => state.Booking);
@@ -177,8 +177,6 @@ function BookingTabs({ handleCloseMap, handleShowMap, showText, setShowText }) {
           handleUpcomingArr={handleUpcomingArr}
           handleUpcomingDep={handleUpcomingDep}
           selectedButton={selectedButton}
-          handleCloseMap={handleCloseMap}
-          handleShowMap={handleShowMap}
         />
       )}
       <Row className="border mt-3" style={{ borderRadius: "8px" }}>
@@ -288,6 +286,7 @@ function BookingTabs({ handleCloseMap, handleShowMap, showText, setShowText }) {
                   height: "32px",
                   width: "28.77px",
                 }}
+                className="me-2"
                 onClick={handleTableChange}
               >
                 <img
@@ -303,7 +302,7 @@ function BookingTabs({ handleCloseMap, handleShowMap, showText, setShowText }) {
                   <img
                     src={image1}
                     alt="img"
-                    className="ms-2 me-1"
+                    className="me-1"
                     style={{ width: "12px", height: "13.5px" }}
                   />
                   <img
