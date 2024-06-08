@@ -37,7 +37,7 @@ const AllBookings = ({ filterData, selectedStatus }) => {
     status: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
   });
   const [globalFilterValue, setGlobalFilterValue] = useState("");
-  const [filterValue, setFilterValue] = useState(15);
+  const [filterValue, setFilterValue] = useState(60);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5; // Number of items per page

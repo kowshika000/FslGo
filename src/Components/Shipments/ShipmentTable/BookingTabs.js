@@ -53,10 +53,10 @@ function BookingTabs() {
     setFilteredData(newFilteredData);
   }, [searchQuery, data]);
   const [selectedDropdownItem, setSelectedDropdownItem] =
-    useState("Past 15 Days");
-  const [filterValue, setFilterValue] = useState(15);
+    useState("Past 60 Days");
+  const [filterValue, setFilterValue] = useState(60);
 
-  const items = ["Past 15 Days", "Past 30 Days", "Past 60 Days"];
+  const items = ["Past 60 Days", "Past 30 Days", "Past 15 Days"];
   useEffect(() => {
     if (selectedDropdownItem === "Past 15 Days") {
       setFilterValue(15);
@@ -184,7 +184,7 @@ function BookingTabs() {
                           setSelectedDropdownItem(e.value);
                         }}
                         options={items}
-                        placeholder="Past 15 Days"
+                        // placeholder="Past 15 Days"
                         className="w-full md:w-14rem"
                         style={{ border: "none" }}
                       />
