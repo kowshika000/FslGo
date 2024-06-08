@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Tabs, Row, Col, Image } from "antd";
 import AllBookings from "./AllBookings";
 import "../ShipBookingTabs.css";
-import { useDispatch, useSelector } from "react-redux";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
+import { useSelector } from "react-redux";
 import { SearchHeader } from "./SearchHeader";
 import calendar from "../../../assets/calendar.png";
 import { Dropdown } from "primereact/dropdown";
@@ -12,8 +10,12 @@ import ButtonList from "../../../assets/ButtonList.png";
 import Group1 from "../../../assets/Group1.png";
 import FilterDrawer from "./Filter";
 import Navbar from "../../Layout/Navbar";
+import image1 from "../../../assets/Shape1.png";
+import image2 from "../../../assets/Shape (1).png";
+import image3 from "../../../assets/Shape (2).png";
+import DailyReportTable from "./DailyReportTable";
 
-function BookingTabs({ handleCloseMap, handleShowMap, showText, setShowText }) {
+function BookingTabs({ showText, setShowText }) {
   const [searchQuery] = useState("");
   const [data, setData] = useState([]);
   const ShipmentData = useSelector((state) => state.Booking);
@@ -175,13 +177,11 @@ function BookingTabs({ handleCloseMap, handleShowMap, showText, setShowText }) {
           handleUpcomingArr={handleUpcomingArr}
           handleUpcomingDep={handleUpcomingDep}
           selectedButton={selectedButton}
-          handleCloseMap={handleCloseMap}
-          handleShowMap={handleShowMap}
         />
       )}
       <Row className="border mt-3" style={{ borderRadius: "8px" }}>
         <Col span={24} style={{ backgroundColor: "#F8FAFC" }}>
-          <Row justify="space-between" style={{ height: "57px" }}>
+          <Row justify="between" style={{ height: "57px" }}>
             <Col span={20}>
               {!showText ? (
                 <Tabs defaultActiveKey="1" onChange={onChange}>
@@ -217,83 +217,108 @@ function BookingTabs({ handleCloseMap, handleShowMap, showText, setShowText }) {
             </Col>
             <Col
               span={4}
-              className="viewtab-col"
-              style={{ borderBottom: "1px solid #e7eaf0", height: "57px" }}
+              className="viewtab-col d-flex justify-content-end"
+              style={{
+                borderBottom: "1px solid #e7eaf0",
+                height: "57px",
+                float: "right",
+              }}
             >
-              <div>
-                <div className="ant-img d-flex">
-                  {showText ? (
-                    ""
-                  ) : (
-                    <div
-                      style={{
-                        border: "1px solid #E7EAF0",
-                        borderRadius: "8px",
-                      }}
-                      className="px-1 d-flex me-2"
-                    >
-                      <Image
-                        src={calendar}
-                        width="16px"
-                        height="12px"
-                        className="mt-2 pe-1"
-                      />
+              {showText ? (
+                ""
+              ) : (
+                <div
+                  style={{
+                    alignSelf: "center",
+                    border: "1px solid #E7EAF0",
+                    borderRadius: "8px",
+                  }}
+                  className="px-1 d-flex me-2"
+                >
+                  <Image
+                    src={calendar}
+                    width="16px"
+                    height="12px"
+                    className="mt-2 pe-1"
+                  />
 
-                      <div
-                        style={{
-                          alignContent: "center",
-                          border: "none ",
-                          outline: "none ",
-                          height: "36px",
-                        }}
-                      >
-                        <Dropdown
-                          value={selectedDropdownItem}
-                          onChange={(e) => {
-                            console.log("Selected item:", e.value); // Add logging statement
-                            setSelectedDropdownItem(e.value);
-                          }}
-                          options={items}
-                          // placeholder="Past 15 Days"
-                          className="w-full md:w-14rem"
-                          style={{ border: "none" }}
-                        />
-                      </div>
-                    </div>
-                  )}
                   <div
                     style={{
-                      alignSelf: "center",
-                      height: "32px",
-                      width: "32px",
+                      alignContent: "center",
+                      border: "none ",
+                      outline: "none ",
+                      height: "36px",
                     }}
                   >
-                    <img
-                      src={ButtonList}
-                      width="32px"
-                      height="32px"
-                      style={{ cursor: "pointer" }}
-                      onClick={() => setVisible(true)}
+                    <Dropdown
+                      value={selectedDropdownItem}
+                      onChange={(e) => {
+                        console.log("Selected item:", e.value); // Add logging statement
+                        setSelectedDropdownItem(e.value);
+                      }}
+                      options={items}
+                      // placeholder="Past 15 Days"
+                      className="w-full md:w-14rem"
+                      style={{ border: "none" }}
                     />
                   </div>
-                  <div
-                    style={{
-                      alignSelf: "center",
-                      backgroundColor: "#F3F5F7",
-                      height: "32px",
-                      width: "28.77px",
-                    }}
-                    onClick={handleTableChange}
-                  >
-                    <img
-                      src={Group1}
-                      style={{ cursor: "pointer" }}
-                      className="mt-2 ms-2"
-                    />
-                  </div>
-                  {showText ? "" : ""}
                 </div>
+              )}
+              <div
+                style={{
+                  alignSelf: "center",
+                  height: "32px",
+                  width: "32px",
+                }}
+              >
+                <img
+                  src={ButtonList}
+                  width="32px"
+                  height="32px"
+                  style={{ cursor: "pointer" }}
+                  onClick={() => setVisible(true)}
+                />
               </div>
+              <div
+                style={{
+                  alignSelf: "center",
+                  backgroundColor: "#F3F5F7",
+                  height: "32px",
+                  width: "28.77px",
+                }}
+                className="me-2"
+                onClick={handleTableChange}
+              >
+                <img
+                  src={Group1}
+                  style={{ cursor: "pointer" }}
+                  className="mt-2 ms-2"
+                />
+              </div>
+              {!showText ? (
+                ""
+              ) : (
+                <div className="d-flex align-items-center">
+                  <img
+                    src={image1}
+                    alt="img"
+                    className="me-1"
+                    style={{ width: "12px", height: "13.5px" }}
+                  />
+                  <img
+                    src={image2}
+                    alt="img"
+                    className="mx-1"
+                    style={{ width: "12px", height: "13.5px" }}
+                  />
+                  <img
+                    src={image3}
+                    alt="img"
+                    className="ms-1 me-3"
+                    style={{ width: "12px", height: "13.5px" }}
+                  />
+                </div>
+              )}
             </Col>
           </Row>
         </Col>
@@ -305,30 +330,7 @@ function BookingTabs({ handleCloseMap, handleShowMap, showText, setShowText }) {
               filterValue={filterValue}
             />
           ) : (
-            <div className="p-3">
-              <DataTable
-                dataKey="shipmentId"
-                paginator={false}
-                rows={10}
-                rowsPerPageOptions={[5, 10, 25]}
-                currentPageReportTemplate="{first} to {last} out of {totalRecords} "
-                // paginatorTemplate=" PrevPageLink PageLinks NextPageLink  CurrentPageReport "
-                removableSort
-              >
-                <Column
-                  field=""
-                  header="Service"
-                  style={{ padding: "15px" }}
-                ></Column>
-                <Column field="" header="Order No." className="p-3"></Column>
-                <Column field="" header="Status" className="p-3"></Column>
-                <Column field="" header="Booking No." className="p-3"></Column>
-                <Column field="" header="Booking Date" className="p-3"></Column>
-                <Column field="" header="Origin" className="p-3"></Column>
-                <Column field="" header="POL" className="p-3"></Column>
-                <Column field="" header="POD" className="p-3"></Column>
-              </DataTable>
-            </div>
+            <DailyReportTable />
           )}
         </Col>
       </Row>

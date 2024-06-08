@@ -4,16 +4,13 @@ import { SearchOutlined } from "@ant-design/icons";
 import "./Booking.css";
 import ShipmentBase from "../../ShipmentDetails/ShipmentTable/ShipmentBase";
 import { Dialog, DialogContent } from "@mui/material";
-import uil_globe from "../../../assets/uil_globe.png";
-import ph_table from "../../../assets/ph_table.png";
+
 
 export const SearchHeader = ({
   bookingData,
   handleUpcomingDep,
   handleUpcomingArr,
   selectedButton,
-  handleCloseMap,
-  handleShowMap,
 }) => {
   //This is for searching according to booking_id,hbl number
   const [notfoundmodal, setNotfoundmodal] = useState(false);
@@ -60,14 +57,7 @@ export const SearchHeader = ({
 
   return (
     <>
-      <div className="py-4 d-flex justify-content-end">
-        <div>
-          <img src={ph_table} onClick={handleCloseMap} />
-        </div>
-        <div>
-          <img src={uil_globe} onClick={handleShowMap} />
-        </div>
-      </div>
+      
       <Row
         justify="space-between"
         className="w-full mb-3"

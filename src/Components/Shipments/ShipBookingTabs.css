@@ -165,9 +165,8 @@
   font-size: 14px;
   font-family: roboto, sans-serif;
 }
-.viewtab-col {
-  height: 54px;
-  align-self: center;
+.ant-tabs-nav{
+  margin: 0 !important;
 }
 .viewtab-outer {
   margin-left: 100px;

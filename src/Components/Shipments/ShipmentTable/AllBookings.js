@@ -243,7 +243,8 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
           ) : (
             <Tooltip placement="topLeft" title={rowData?.order_no}>
               <span role="button">
-                {rowData?.order_no.slice(0, 12).trim().split(" ").join("") + ".."}
+                {rowData?.order_no.slice(0, 12).trim().split(" ").join("") +
+                  ".."}
               </span>
             </Tooltip>
           )}
@@ -309,6 +310,16 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
             </Tooltip>
           )}
         </span>
+      </div>
+    );
+  };
+  const bodyTemplate = (rowData) => {
+    const milestone = rowData?.milestones;
+    console.log("etdrowData", milestone);
+
+    return (
+      <div className={``}>
+        <span>{rowData?.eta_ata}</span>
       </div>
     );
   };
@@ -660,6 +671,7 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
               </div>
             </span>
           }
+          body={bodyTemplate}
           bodyClassName="custom-cell"
           className="p-3"
         ></Column>
