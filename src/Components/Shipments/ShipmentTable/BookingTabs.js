@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Tabs, Row, Col, Image } from "antd";
-import img1 from "../../../assets/img1.png";
-import img2 from "../../../assets/img2.png";
 import AllBookings from "./AllBookings";
 import "../ShipBookingTabs.css";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,16 +11,16 @@ import { Dropdown } from "primereact/dropdown";
 import ButtonList from "../../../assets/ButtonList.png";
 import Group1 from "../../../assets/Group1.png";
 import FilterDrawer from "./Filter";
+import Navbar from "../../Layout/Navbar";
 
-function BookingTabs() {
-  const [searchQuery, setSearchQuery] = useState("");
+function BookingTabs({ handleCloseMap, handleShowMap, showText, setShowText }) {
+  const [searchQuery] = useState("");
   const [data, setData] = useState([]);
-  const dispatch = useDispatch();
   const ShipmentData = useSelector((state) => state.Booking);
   const bookingData = ShipmentData?.booking;
   const tabCount = ShipmentData?.booking?.statuswise_count;
-  const [showText, setShowText] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [selectedButton, setSelectedButton] = useState(null);
 
   let schedule;
   if (tabCount && tabCount.length > 0) {
@@ -52,6 +50,7 @@ function BookingTabs() {
     );
     setFilteredData(newFilteredData);
   }, [searchQuery, data]);
+
   const [selectedDropdownItem, setSelectedDropdownItem] =
     useState("Past 60 Days");
   const [filterValue, setFilterValue] = useState(60);
@@ -70,39 +69,81 @@ function BookingTabs() {
     switch (key) {
       case "1":
         filterData("All");
+        setSelectedButton(null);
         break;
       // case "2":
       //   filterData(["Booked In Progress"]);
       //   break;
       case "2":
         filterData(["Booked", "Cargo Pickup", "Cargo Received"]);
+        setSelectedButton(null);
         break;
       case "3":
         filterData(["In Transit", "Departed"]);
+        setSelectedButton(null);
         break;
       case "4":
         filterData(["Arrived"]);
+        setSelectedButton(null);
         break;
       case "5":
         filterData(["Delivered"]);
+        setSelectedButton(null);
         break;
       case "6":
         filterData(["Canceled"]);
+        setSelectedButton(null);
         break;
       default:
         filterData("All");
+        setSelectedButton(null);
     }
   };
 
-  const toggleDisplayMode = () => {
-    setShowText(!showText);
+  const [isAscending, setIsAscending] = useState(true);
+  const handleUpcomingDep = () => {
+    console.log("clicked upcoming departure");
+    setSelectedButton("Upcoming Departures");
+    const filteredDatas = data?.filter(
+      (item) =>
+        item.status === "Booking In Progress" ||
+        item.status === "Booked" ||
+        item.status === "Cargo Received" ||
+        item.status === "Cargo Picked Up"
+    );
+    const sortedData = [...filteredDatas].sort((a, b) => {
+      const dateA = new Date(a["etd/atd"]);
+      const dateB = new Date(b["etd/atd"]);
+      return isAscending ? dateA - dateB : dateB - dateA;
+    });
+    setFilteredData(sortedData);
+    setIsAscending(!isAscending);
   };
-  const toggleDisplayNone = () => {
-    setShowText(false);
+  const handleUpcomingArr = () => {
+    console.log("clicked upcoming departure");
+    setSelectedButton("Upcoming Arrivals");
+    const filteredDatas = data?.filter(
+      (item) => item.status === "In Transit" || item.status === "Departed"
+    );
+
+    const sortedData = [...filteredDatas].sort((a, b) => {
+      const dateA = new Date(a["eta/ata"]);
+      const dateB = new Date(b["eta/ata"]);
+      return isAscending ? dateA - dateB : dateB - dateA;
+    });
+    setFilteredData(sortedData);
+    setIsAscending(!isAscending);
   };
+  console.log(filteredData, "from the upcoming status");
   const onClose = () => {
     setVisible(false);
   };
+  console.log("filteredData", filteredData);
+
+  const handleTableChange = () => {
+    setShowText(true);
+  };
+
   return (
     <div
       className="mx-auto mb-4"
@@ -111,8 +152,34 @@ function BookingTabs() {
         borderRadius: "8px",
       }}
     >
-      <SearchHeader bookingData={bookingData} />
-      <Row className="border" style={{ borderRadius: "8px" }}>
+      {showText ? (
+        <div>
+          <p
+            style={{
+              marginTop: "100px",
+              fontWeight: "700",
+              fontSize: "28px",
+              lineHeight: "38px",
+              letterSpacing: "1%",
+              color: "#181E25",
+              marginBottom: "0px",
+            }}
+          >
+            Daily Status Report
+          </p>
+          <Navbar />
+        </div>
+      ) : (
+        <SearchHeader
+          bookingData={bookingData}
+          handleUpcomingArr={handleUpcomingArr}
+          handleUpcomingDep={handleUpcomingDep}
+          selectedButton={selectedButton}
+          handleCloseMap={handleCloseMap}
+          handleShowMap={handleShowMap}
+        />
+      )}
+      <Row className="border mt-3" style={{ borderRadius: "8px" }}>
         <Col span={24} style={{ backgroundColor: "#F8FAFC" }}>
           <Row justify="space-between" style={{ height: "57px" }}>
             <Col span={20}>
@@ -145,9 +212,7 @@ function BookingTabs() {
                   />
                 </Tabs>
               ) : (
-                <div style={{ padding: "3px 6px 3px 4px", marginTop: "15px" }}>
-                  <h6 className="px-4">Customized Daily Reports</h6>
-                </div>
+                ""
               )}
             </Col>
             <Col
@@ -155,62 +220,80 @@ function BookingTabs() {
               className="viewtab-col"
               style={{ borderBottom: "1px solid #e7eaf0", height: "57px" }}
             >
-
+              <div>
                 <div className="ant-img d-flex">
-                  <div
-                    style={{ border: "1px solid #E7EAF0", borderRadius: "8px" }}
-                    className="px-1 d-flex me-2"
-                  >
-                    <Image
-                      src={calendar}
-                      width="16px"
-                      height="12px"
-                      className="mt-2 pe-1"
-                    />
-
+                  {showText ? (
+                    ""
+                  ) : (
                     <div
                       style={{
-                        alignContent: "center",
-                        border: "none ",
-                        outline: "none ",
-                        height:"36px",
-                      
+                        border: "1px solid #E7EAF0",
+                        borderRadius: "8px",
                       }}
+                      className="px-1 d-flex me-2"
                     >
-                      <Dropdown
-                        value={selectedDropdownItem}
-                        onChange={(e) => {
-                          console.log("Selected item:", e.value); // Add logging statement
-                          setSelectedDropdownItem(e.value);
-                        }}
-                        options={items}
-                        // placeholder="Past 15 Days"
-                        className="w-full md:w-14rem"
-                        style={{ border: "none" }}
+                      <Image
+                        src={calendar}
+                        width="16px"
+                        height="12px"
+                        className="mt-2 pe-1"
                       />
+
+                      <div
+                        style={{
+                          alignContent: "center",
+                          border: "none ",
+                          outline: "none ",
+                          height: "36px",
+                        }}
+                      >
+                        <Dropdown
+                          value={selectedDropdownItem}
+                          onChange={(e) => {
+                            console.log("Selected item:", e.value); // Add logging statement
+                            setSelectedDropdownItem(e.value);
+                          }}
+                          options={items}
+                          // placeholder="Past 15 Days"
+                          className="w-full md:w-14rem"
+                          style={{ border: "none" }}
+                        />
+                      </div>
                     </div>
-                  </div>
-                  <div style={{ alignSelf:"center"}}>
-                  <img
-                    src={ButtonList}
-                    width="32px"
-                    height="32px"
-                    style={{ cursor: "pointer" }}
-                   onClick={()=>setVisible(true)}
-                  />
-                  </div>
-                 
-                  <div style={{
-                    alignSelf:"center",
-                  }}
-                  className="ms-2 "
+                  )}
+                  <div
+                    style={{
+                      alignSelf: "center",
+                      height: "32px",
+                      width: "32px",
+                    }}
                   >
-                  <img
-                    src={Group1}                   
-                    style={{ cursor: "pointer", }}                   
-                  />
-                  </div>              
+                    <img
+                      src={ButtonList}
+                      width="32px"
+                      height="32px"
+                      style={{ cursor: "pointer" }}
+                      onClick={() => setVisible(true)}
+                    />
+                  </div>
+                  <div
+                    style={{
+                      alignSelf: "center",
+                      backgroundColor: "#F3F5F7",
+                      height: "32px",
+                      width: "28.77px",
+                    }}
+                    onClick={handleTableChange}
+                  >
+                    <img
+                      src={Group1}
+                      style={{ cursor: "pointer" }}
+                      className="mt-2 ms-2"
+                    />
+                  </div>
+                  {showText ? "" : ""}
                 </div>
+              </div>
             </Col>
           </Row>
         </Col>
@@ -219,9 +302,10 @@ function BookingTabs() {
             <AllBookings
               filterData={filteredData}
               selectedStatus={filterData}
+              filterValue={filterValue}
             />
           ) : (
-            <div className="mt-3 p-3">
+            <div className="p-3">
               <DataTable
                 dataKey="shipmentId"
                 paginator={false}
@@ -248,7 +332,7 @@ function BookingTabs() {
           )}
         </Col>
       </Row>
-      <FilterDrawer visible={visible} onClose={onClose}/>
+      <FilterDrawer visible={visible} onClose={onClose} />
     </div>
   );
 }

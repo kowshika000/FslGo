@@ -2,42 +2,25 @@ import React, { useState, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
-import sort from "../../../assets/sort.png";
 import Pagination from "../../Core-Components/Pagination";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { bookingRequest } from "../../../Redux/Actions/BookingAction";
-import { Tooltip ,Checkbox} from "antd";
+import { Tooltip, Checkbox } from "antd";
 import CountryFlag from "../../Core-Components/CountryFlag";
-import Steppertrack from "../Track/StepperTrack";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
-import { FilterMatchMode } from "primereact/api";
+
 import "./Booking.css";
-import { Row, Col, Input, Image } from "antd";
-import { SearchOutlined, CaretDownFilled } from "@ant-design/icons";
-import FilterDrawer from "./Filter";
-import filter from "../../../assets/Filter 2.png";
-import calendar from "../../../assets/calendar.png";
+
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { IconButton } from "@mui/material";
 import { Dropdown } from "primereact/dropdown";
 import ShipmentBase from "../../ShipmentDetails/ShipmentTable/ShipmentBase";
 
-const AllBookings = ({ filterData, selectedStatus }) => {
-  const [filters, setFilters] = useState({
-    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    id: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    origin: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    destination: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    booked_on: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    // etd/atd: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    // eta/ata: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    status: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-  });
-  const [globalFilterValue, setGlobalFilterValue] = useState("");
-  const [filterValue, setFilterValue] = useState(60);
+const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
+  console.log("filterValue", filterValue);
 
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5; // Number of items per page
@@ -49,76 +32,106 @@ const AllBookings = ({ filterData, selectedStatus }) => {
     console.log(`checked = ${e.target.checked}`);
   };
   const countries = [
-      { name: <Checkbox onChange={onChange}>08-JUN-24</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>03-MAR-24</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>03-MAR-24</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>03-MAR-24</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>08-JUN-24	</Checkbox>, code: 'AIR' },
-      { name: <Checkbox onChange={onChange}>03-MAR-24</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>08-JUN-24	</Checkbox>, code: 'AIR' },
-      { name: <Checkbox onChange={onChange}>03-MAR-24</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>08-JUN-24	</Checkbox>, code: 'AIR' },
-      { name: <Checkbox onChange={onChange}>03-MAR-24</Checkbox>, code: 'LCL' }
+    { name: <Checkbox onChange={onChange}>08-JUN-24</Checkbox>, code: "LCL" },
+    { name: <Checkbox onChange={onChange}>03-MAR-24</Checkbox>, code: "LCL" },
+    { name: <Checkbox onChange={onChange}>03-MAR-24</Checkbox>, code: "LCL" },
+    { name: <Checkbox onChange={onChange}>03-MAR-24</Checkbox>, code: "LCL" },
+    { name: <Checkbox onChange={onChange}>08-JUN-24 </Checkbox>, code: "AIR" },
+    { name: <Checkbox onChange={onChange}>03-MAR-24</Checkbox>, code: "LCL" },
+    { name: <Checkbox onChange={onChange}>08-JUN-24 </Checkbox>, code: "AIR" },
+    { name: <Checkbox onChange={onChange}>03-MAR-24</Checkbox>, code: "LCL" },
+    { name: <Checkbox onChange={onChange}>08-JUN-24 </Checkbox>, code: "AIR" },
+    { name: <Checkbox onChange={onChange}>03-MAR-24</Checkbox>, code: "LCL" },
   ];
   const orderNo = [
-      { name: <Checkbox onChange={onChange}>ASO/0805/24</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>ASO/0805/24</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>ASO/0805/24</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>ASO/0805/24</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>ASO/0805/24</Checkbox>, code: 'AIR' },
-      { name: <Checkbox onChange={onChange}>ASO/0805/24</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>ASO/0805/24</Checkbox>, code: 'AIR' },
-      { name: <Checkbox onChange={onChange}>ASO/0805/24</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>ASO/0805/24</Checkbox>, code: 'AIR' },
-      { name: <Checkbox onChange={onChange}>ASO/0805/24</Checkbox>, code: 'LCL' }
+    { name: <Checkbox onChange={onChange}>ASO/0805/24</Checkbox>, code: "LCL" },
+    { name: <Checkbox onChange={onChange}>ASO/0805/24</Checkbox>, code: "LCL" },
+    { name: <Checkbox onChange={onChange}>ASO/0805/24</Checkbox>, code: "LCL" },
+    { name: <Checkbox onChange={onChange}>ASO/0805/24</Checkbox>, code: "LCL" },
+    { name: <Checkbox onChange={onChange}>ASO/0805/24</Checkbox>, code: "AIR" },
+    { name: <Checkbox onChange={onChange}>ASO/0805/24</Checkbox>, code: "LCL" },
+    { name: <Checkbox onChange={onChange}>ASO/0805/24</Checkbox>, code: "AIR" },
+    { name: <Checkbox onChange={onChange}>ASO/0805/24</Checkbox>, code: "LCL" },
+    { name: <Checkbox onChange={onChange}>ASO/0805/24</Checkbox>, code: "AIR" },
+    { name: <Checkbox onChange={onChange}>ASO/0805/24</Checkbox>, code: "LCL" },
   ];
   const shipmentid = [
-      { name: <Checkbox onChange={onChange}>120104000312</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>120105678787</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>120105678787</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>120105678787</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>120104000312</Checkbox>, code: 'AIR' },
-      { name: <Checkbox onChange={onChange}>120105678787</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>120104000312</Checkbox>, code: 'AIR' },
-      { name: <Checkbox onChange={onChange}>120105678787</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>120104000312</Checkbox>, code: 'AIR' },
-      { name: <Checkbox onChange={onChange}>120105678787</Checkbox>, code: 'LCL' }
+    {
+      name: <Checkbox onChange={onChange}>120104000312</Checkbox>,
+      code: "LCL",
+    },
+    {
+      name: <Checkbox onChange={onChange}>120105678787</Checkbox>,
+      code: "LCL",
+    },
+    {
+      name: <Checkbox onChange={onChange}>120105678787</Checkbox>,
+      code: "LCL",
+    },
+    {
+      name: <Checkbox onChange={onChange}>120105678787</Checkbox>,
+      code: "LCL",
+    },
+    {
+      name: <Checkbox onChange={onChange}>120104000312</Checkbox>,
+      code: "AIR",
+    },
+    {
+      name: <Checkbox onChange={onChange}>120105678787</Checkbox>,
+      code: "LCL",
+    },
+    {
+      name: <Checkbox onChange={onChange}>120104000312</Checkbox>,
+      code: "AIR",
+    },
+    {
+      name: <Checkbox onChange={onChange}>120105678787</Checkbox>,
+      code: "LCL",
+    },
+    {
+      name: <Checkbox onChange={onChange}>120104000312</Checkbox>,
+      code: "AIR",
+    },
+    {
+      name: <Checkbox onChange={onChange}>120105678787</Checkbox>,
+      code: "LCL",
+    },
   ];
   const mode = [
-      { name: <Checkbox onChange={onChange}>LCL</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>AIR</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>AIR</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>AIR</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>LCL</Checkbox>, code: 'AIR' },
-      { name: <Checkbox onChange={onChange}>AIR</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>LCL</Checkbox>, code: 'AIR' },
-      { name: <Checkbox onChange={onChange}>AIR</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>LCL</Checkbox>, code: 'AIR' },
-      { name: <Checkbox onChange={onChange}>AIR</Checkbox>, code: 'LCL' }
+    { name: <Checkbox onChange={onChange}>LCL</Checkbox>, code: "LCL" },
+    { name: <Checkbox onChange={onChange}>AIR</Checkbox>, code: "LCL" },
+    { name: <Checkbox onChange={onChange}>AIR</Checkbox>, code: "LCL" },
+    { name: <Checkbox onChange={onChange}>AIR</Checkbox>, code: "LCL" },
+    { name: <Checkbox onChange={onChange}>LCL</Checkbox>, code: "AIR" },
+    { name: <Checkbox onChange={onChange}>AIR</Checkbox>, code: "LCL" },
+    { name: <Checkbox onChange={onChange}>LCL</Checkbox>, code: "AIR" },
+    { name: <Checkbox onChange={onChange}>AIR</Checkbox>, code: "LCL" },
+    { name: <Checkbox onChange={onChange}>LCL</Checkbox>, code: "AIR" },
+    { name: <Checkbox onChange={onChange}>AIR</Checkbox>, code: "LCL" },
   ];
   const origin = [
-      { name: <Checkbox onChange={onChange}>Delhi</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>Mumbai</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>Mumbai</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>Mumbai</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>Delhi</Checkbox>, code: 'AIR' },
-      { name: <Checkbox onChange={onChange}>Mumbai</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>Delhi</Checkbox>, code: 'AIR' },
-      { name: <Checkbox onChange={onChange}>Mumbai</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>Delhi</Checkbox>, code: 'AIR' },
-      { name: <Checkbox onChange={onChange}>Mumbai</Checkbox>, code: 'LCL' }
+    { name: <Checkbox onChange={onChange}>Delhi</Checkbox>, code: "LCL" },
+    { name: <Checkbox onChange={onChange}>Mumbai</Checkbox>, code: "LCL" },
+    { name: <Checkbox onChange={onChange}>Mumbai</Checkbox>, code: "LCL" },
+    { name: <Checkbox onChange={onChange}>Mumbai</Checkbox>, code: "LCL" },
+    { name: <Checkbox onChange={onChange}>Delhi</Checkbox>, code: "AIR" },
+    { name: <Checkbox onChange={onChange}>Mumbai</Checkbox>, code: "LCL" },
+    { name: <Checkbox onChange={onChange}>Delhi</Checkbox>, code: "AIR" },
+    { name: <Checkbox onChange={onChange}>Mumbai</Checkbox>, code: "LCL" },
+    { name: <Checkbox onChange={onChange}>Delhi</Checkbox>, code: "AIR" },
+    { name: <Checkbox onChange={onChange}>Mumbai</Checkbox>, code: "LCL" },
   ];
   const destination = [
-      { name: <Checkbox onChange={onChange}>Kuwait</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>Kuwait</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>Kuwait</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>Kuwait</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>Kuwait</Checkbox>, code: 'AIR' },
-      { name: <Checkbox onChange={onChange}>Kuwait</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>Kuwait</Checkbox>, code: 'AIR' },
-      { name: <Checkbox onChange={onChange}>Kuwait</Checkbox>, code: 'LCL' },
-      { name: <Checkbox onChange={onChange}>Kuwait</Checkbox>, code: 'AIR' },
-      { name: <Checkbox onChange={onChange}>Kuwait</Checkbox>, code: 'LCL' }
+    { name: <Checkbox onChange={onChange}>Kuwait</Checkbox>, code: "LCL" },
+    { name: <Checkbox onChange={onChange}>Kuwait</Checkbox>, code: "LCL" },
+    { name: <Checkbox onChange={onChange}>Kuwait</Checkbox>, code: "LCL" },
+    { name: <Checkbox onChange={onChange}>Kuwait</Checkbox>, code: "LCL" },
+    { name: <Checkbox onChange={onChange}>Kuwait</Checkbox>, code: "AIR" },
+    { name: <Checkbox onChange={onChange}>Kuwait</Checkbox>, code: "LCL" },
+    { name: <Checkbox onChange={onChange}>Kuwait</Checkbox>, code: "AIR" },
+    { name: <Checkbox onChange={onChange}>Kuwait</Checkbox>, code: "LCL" },
+    { name: <Checkbox onChange={onChange}>Kuwait</Checkbox>, code: "AIR" },
+    { name: <Checkbox onChange={onChange}>Kuwait</Checkbox>, code: "LCL" },
   ];
 
   // const selectedCountryTemplate = (option, props) => {
@@ -169,7 +182,7 @@ const AllBookings = ({ filterData, selectedStatus }) => {
   useEffect(() => {
     setFilteredData(filterData);
   }, [selectedStatus]);
-  console.log("booking", filteredData);
+  // console.log("booking", filteredData);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, filteredData?.length);
 
@@ -223,7 +236,18 @@ const AllBookings = ({ filterData, selectedStatus }) => {
   const shipmentTemplateId = (rowData) => {
     return (
       <div style={{ textAlign: "start" }}>
-        <span className=" px-2">{rowData?.order_no}</span>
+        {/* <span className=" px-2">{rowData?.order_no}</span> */}
+        <span className=" px-2">
+          {rowData?.order_no.length <= 12 ? (
+            rowData?.order_no
+          ) : (
+            <Tooltip placement="topLeft" title={rowData?.order_no}>
+              <span role="button">
+                {rowData?.order_no.slice(0, 12).trim().split(" ").join("") + ".."}
+              </span>
+            </Tooltip>
+          )}
+        </span>
       </div>
     );
   };
@@ -360,17 +384,6 @@ const AllBookings = ({ filterData, selectedStatus }) => {
         currentPageReportTemplate="{first} to {last} out of {totalRecords} "
         // paginatorTemplate=" PrevPageLink PageLinks NextPageLink  CurrentPageReport "
         removableSort
-        filters={filters}
-        globalFilterFields={[
-          "id",
-          "orderid",
-          "origin",
-          "destination",
-          "booked_on",
-          "etd/atd",
-          "eta/ata",
-          "status",
-        ]}
         rowClassName={rowClassName}
       >
         <Column
@@ -380,8 +393,14 @@ const AllBookings = ({ filterData, selectedStatus }) => {
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
               className=" d-flex p-3"
             >
-              Order ID<Dropdown value={orderNo}  options={orderNo} optionLabel="name" 
-                filter  style={{position:"absolute",opacity:"0",width:"40px"}} />
+              Order ID
+              <Dropdown
+                value={orderNo}
+                options={orderNo}
+                optionLabel="name"
+                filter
+                style={{ position: "absolute", opacity: "0", width: "40px" }}
+              />
               <div
                 className="d-flex sorticon"
                 style={{ flexDirection: "column" }}
@@ -405,7 +424,7 @@ const AllBookings = ({ filterData, selectedStatus }) => {
               </div>
             </span>
           }
-          // body={shipmentTemplateId}
+          body={shipmentTemplateId}
           className="p-3"
           headerClassName="custom-header"
         ></Column>
@@ -416,8 +435,14 @@ const AllBookings = ({ filterData, selectedStatus }) => {
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
               className="p-3 d-flex"
             >
-              Shipment ID<Dropdown value={selectedCountry}  options={shipmentid} optionLabel="name" 
-                filter  style={{position:"absolute",opacity:"0",width:"40px"}} />
+              Shipment ID
+              <Dropdown
+                value={selectedCountry}
+                options={shipmentid}
+                optionLabel="name"
+                filter
+                style={{ position: "absolute", opacity: "0", width: "40px" }}
+              />
               <div
                 className="d-flex sorticon"
                 style={{ flexDirection: "column" }}
@@ -452,8 +477,13 @@ const AllBookings = ({ filterData, selectedStatus }) => {
               className="p-3 d-flex"
             >
               Mode
-              <Dropdown value={selectedCountry}  options={mode} optionLabel="name" 
-                filter  style={{position:"absolute",opacity:"0",width:"40px"}} />
+              <Dropdown
+                value={selectedCountry}
+                options={mode}
+                optionLabel="name"
+                filter
+                style={{ position: "absolute", opacity: "0", width: "40px" }}
+              />
               <div
                 className="d-flex sorticon"
                 style={{ flexDirection: "column" }}
@@ -488,8 +518,14 @@ const AllBookings = ({ filterData, selectedStatus }) => {
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
               className="d-flex"
             >
-              Origin<Dropdown value={selectedCountry}  options={origin} optionLabel="name" 
-                filter  style={{position:"absolute",opacity:"0",width:"40px"}} />
+              Origin
+              <Dropdown
+                value={selectedCountry}
+                options={origin}
+                optionLabel="name"
+                filter
+                style={{ position: "absolute", opacity: "0", width: "40px" }}
+              />
               <div
                 className="d-flex sorticon"
                 style={{ flexDirection: "column" }}
@@ -524,8 +560,14 @@ const AllBookings = ({ filterData, selectedStatus }) => {
               className="p-3 d-flex"
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
             >
-              Destination<Dropdown value={selectedCountry}  options={destination} optionLabel="name" 
-                filter  style={{position:"absolute",opacity:"0",width:"40px"}} />
+              Destination
+              <Dropdown
+                value={selectedCountry}
+                options={destination}
+                optionLabel="name"
+                filter
+                style={{ position: "absolute", opacity: "0", width: "40px" }}
+              />
               <div
                 className="d-flex sorticon"
                 style={{ flexDirection: "column" }}
@@ -582,14 +624,19 @@ const AllBookings = ({ filterData, selectedStatus }) => {
           }
           bodyClassName="custom-cell"
           className="p-3"
-        ></Column> */}    
+        ></Column> */}
         <Column
           field="etd/atd"
           header={
-            <span className="p-3 d-flex" style={{position:"relative"}}>  
+            <span className="p-3 d-flex" style={{ position: "relative" }}>
               ETD/ATD
-              <Dropdown value={selectedCountry}  options={countries} optionLabel="name" 
-                filter  style={{position:"absolute",opacity:"0",width:"40px"}} />
+              <Dropdown
+                value={selectedCountry}
+                options={countries}
+                optionLabel="name"
+                filter
+                style={{ position: "absolute", opacity: "0", width: "40px" }}
+              />
               <div
                 className="d-flex sorticon"
                 style={{ flexDirection: "column" }}
@@ -615,16 +662,19 @@ const AllBookings = ({ filterData, selectedStatus }) => {
           }
           bodyClassName="custom-cell"
           className="p-3"
-        >
-        
-        </Column>
+        ></Column>
         <Column
           field="eta/ata"
           header={
             <span className="p-3 d-flex">
               ETA/ATA
-              <Dropdown value={selectedCountry}  options={countries} optionLabel="name" 
-                filter  style={{position:"absolute",opacity:"0",width:"40px"}} />
+              <Dropdown
+                value={selectedCountry}
+                options={countries}
+                optionLabel="name"
+                filter
+                style={{ position: "absolute", opacity: "0", width: "40px" }}
+              />
               <div
                 className="d-flex sorticon"
                 style={{ flexDirection: "column" }}
