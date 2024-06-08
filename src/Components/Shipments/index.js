@@ -6,16 +6,15 @@ import Navbar from "../Layout/Navbar";
 import "./ShipBookingTabs.css";
 import MapboxMap from "./Map/MapBox";
 import UpcomingSailings from "../Dashboard/Upcoming/UpcomingSailings";
-import uil_globe from "../../assets/uil_globe.png";
-import ph_table from "../../assets/ph_table.png";
 
 const ShipmentsHome = () => {
+  const [showText, setShowText] = useState(false);
   const [showmap, setShowmap] = useState(false);
 
-  const haddleShowMap = () => {
+  const handleShowMap = () => {
     setShowmap(true);
   };
-  const haddleCloseMap = () => {
+  const handleCloseMap = () => {
     setShowmap(false);
   };
 
@@ -31,19 +30,16 @@ const ShipmentsHome = () => {
         style={{ maxWidth: "1255px" }}
         className="shipmentIndex mb-4 mx-auto"
       >
-        <div className="py-4 d-flex justify-content-end">
-          <div>
-            <img src={ph_table} onClick={haddleCloseMap} />
-          </div>
-          <div>
-            <img src={uil_globe} onClick={haddleShowMap} />
-          </div>
-        </div>
         {showmap && <Map />}
         {/* <Map/> */}
         {/* <br /> */}
-        <BookingTabs />
-        <UpcomingSailings />
+        <BookingTabs
+          handleCloseMap={handleCloseMap}
+          handleShowMap={handleShowMap}
+          showText={showText}
+          setShowText={setShowText}
+        />
+        {showText ? "" : <UpcomingSailings />}
       </div>
     </div>
   );
