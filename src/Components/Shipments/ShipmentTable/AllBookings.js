@@ -164,11 +164,56 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
   };
   const bodyTemplate = (rowData) => {
     const milestone = rowData?.milestones;
-    console.log("etdrowData", milestone);
+    console.log("bodyTemplaterowData", rowData?.id);
+    console.log("bodyTemplateetdrowData", milestone);
+    const hasUpdated = milestone.some((data) => data?.is_updated !== "");
 
+    const TooltipMessage = milestone.filter((data) =>
+      data?.is_updated !== "" ? data?.updated_message : ""
+    );
+    console.log("TooltipMessage", TooltipMessage);
     return (
-      <div className={``}>
-        <span>{rowData?.eta_ata}</span>
+      <div className="message">
+        <span className={hasUpdated ? "text-red" : ""}>
+          {hasUpdated ? (
+            <Tooltip
+              placement="topLeft"
+              title="Old 26-May-2024 New 27-May-2024"
+            >
+              <span role="button">{rowData?.etd_atd}</span>
+            </Tooltip>
+          ) : (
+            rowData?.etd_atd
+          )}
+        </span>
+      </div>
+    );
+  };
+
+  const bodyTemplateEtd = (rowData) => {
+    const milestone = rowData?.milestones;
+    console.log("bodyTemplaterowData", rowData?.id);
+    console.log("bodyTemplateetdrowData", milestone);
+    const hasUpdated = milestone.some((data) => data?.is_updated !== "");
+
+    const TooltipMessage = milestone.filter((data) =>
+      data?.is_updated !== "" ? data?.updated_message : ""
+    );
+    console.log("TooltipMessage", TooltipMessage?.updated_message);
+    return (
+      <div className="message">
+        <span className={hasUpdated ? "text-red" : ""}>
+          {hasUpdated ? (
+            <Tooltip
+              placement="topLeft"
+              title="Old 26-May-2024 New 27-May-2024"
+            >
+              <span role="button">{rowData?.eta_ata}</span>
+            </Tooltip>
+          ) : (
+            rowData?.eta_ata
+          )}
+        </span>
       </div>
     );
   };
@@ -703,7 +748,7 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
         <Column
           field="etd/atd"
           header={
-            <span className="p-3 d-flex" style={{ position: "relative" }}>
+            <span className=" d-flex" style={{ position: "relative" }}>
               ETD/ATD
               {FilterETDRow()}
               <div
@@ -762,6 +807,7 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
               </div>
             </span>
           }
+          body={bodyTemplateEtd}
           bodyClassName="custom-cell"
           // className="p-3"
         ></Column>
