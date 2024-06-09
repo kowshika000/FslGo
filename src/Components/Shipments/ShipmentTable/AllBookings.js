@@ -10,14 +10,14 @@ import CountryFlag from "../../Core-Components/CountryFlag";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
-
 import "./Booking.css";
-
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { IconButton } from "@mui/material";
 import { Dropdown } from "primereact/dropdown";
 import ShipmentBase from "../../ShipmentDetails/ShipmentTable/ShipmentBase";
+import { MultiSelect } from "primereact/multiselect";
+import { useSelector } from "react-redux";
 
 const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
   console.log("filterValue", filterValue);
@@ -25,138 +25,6 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5; // Number of items per page
   const dispatch = useDispatch();
-
-  //This is filter dropdown
-  const [selectedCountry, setSelectedCountry] = useState(null);
-  const onChange = (e) => {
-    console.log(`checked = ${e.target.checked}`);
-  };
-  const countries = [
-    { name: <Checkbox onChange={onChange}>08-JUN-24</Checkbox>, code: "LCL" },
-    { name: <Checkbox onChange={onChange}>03-MAR-24</Checkbox>, code: "LCL" },
-    { name: <Checkbox onChange={onChange}>03-MAR-24</Checkbox>, code: "LCL" },
-    { name: <Checkbox onChange={onChange}>03-MAR-24</Checkbox>, code: "LCL" },
-    { name: <Checkbox onChange={onChange}>08-JUN-24 </Checkbox>, code: "AIR" },
-    { name: <Checkbox onChange={onChange}>03-MAR-24</Checkbox>, code: "LCL" },
-    { name: <Checkbox onChange={onChange}>08-JUN-24 </Checkbox>, code: "AIR" },
-    { name: <Checkbox onChange={onChange}>03-MAR-24</Checkbox>, code: "LCL" },
-    { name: <Checkbox onChange={onChange}>08-JUN-24 </Checkbox>, code: "AIR" },
-    { name: <Checkbox onChange={onChange}>03-MAR-24</Checkbox>, code: "LCL" },
-  ];
-  const orderNo = [
-    { name: <Checkbox onChange={onChange}>ASO/0805/24</Checkbox>, code: "LCL" },
-    { name: <Checkbox onChange={onChange}>ASO/0805/24</Checkbox>, code: "LCL" },
-    { name: <Checkbox onChange={onChange}>ASO/0805/24</Checkbox>, code: "LCL" },
-    { name: <Checkbox onChange={onChange}>ASO/0805/24</Checkbox>, code: "LCL" },
-    { name: <Checkbox onChange={onChange}>ASO/0805/24</Checkbox>, code: "AIR" },
-    { name: <Checkbox onChange={onChange}>ASO/0805/24</Checkbox>, code: "LCL" },
-    { name: <Checkbox onChange={onChange}>ASO/0805/24</Checkbox>, code: "AIR" },
-    { name: <Checkbox onChange={onChange}>ASO/0805/24</Checkbox>, code: "LCL" },
-    { name: <Checkbox onChange={onChange}>ASO/0805/24</Checkbox>, code: "AIR" },
-    { name: <Checkbox onChange={onChange}>ASO/0805/24</Checkbox>, code: "LCL" },
-  ];
-  const shipmentid = [
-    {
-      name: <Checkbox onChange={onChange}>120104000312</Checkbox>,
-      code: "LCL",
-    },
-    {
-      name: <Checkbox onChange={onChange}>120105678787</Checkbox>,
-      code: "LCL",
-    },
-    {
-      name: <Checkbox onChange={onChange}>120105678787</Checkbox>,
-      code: "LCL",
-    },
-    {
-      name: <Checkbox onChange={onChange}>120105678787</Checkbox>,
-      code: "LCL",
-    },
-    {
-      name: <Checkbox onChange={onChange}>120104000312</Checkbox>,
-      code: "AIR",
-    },
-    {
-      name: <Checkbox onChange={onChange}>120105678787</Checkbox>,
-      code: "LCL",
-    },
-    {
-      name: <Checkbox onChange={onChange}>120104000312</Checkbox>,
-      code: "AIR",
-    },
-    {
-      name: <Checkbox onChange={onChange}>120105678787</Checkbox>,
-      code: "LCL",
-    },
-    {
-      name: <Checkbox onChange={onChange}>120104000312</Checkbox>,
-      code: "AIR",
-    },
-    {
-      name: <Checkbox onChange={onChange}>120105678787</Checkbox>,
-      code: "LCL",
-    },
-  ];
-  const mode = [
-    { name: <Checkbox onChange={onChange}>LCL</Checkbox>, code: "LCL" },
-    { name: <Checkbox onChange={onChange}>AIR</Checkbox>, code: "LCL" },
-    { name: <Checkbox onChange={onChange}>AIR</Checkbox>, code: "LCL" },
-    { name: <Checkbox onChange={onChange}>AIR</Checkbox>, code: "LCL" },
-    { name: <Checkbox onChange={onChange}>LCL</Checkbox>, code: "AIR" },
-    { name: <Checkbox onChange={onChange}>AIR</Checkbox>, code: "LCL" },
-    { name: <Checkbox onChange={onChange}>LCL</Checkbox>, code: "AIR" },
-    { name: <Checkbox onChange={onChange}>AIR</Checkbox>, code: "LCL" },
-    { name: <Checkbox onChange={onChange}>LCL</Checkbox>, code: "AIR" },
-    { name: <Checkbox onChange={onChange}>AIR</Checkbox>, code: "LCL" },
-  ];
-  const origin = [
-    { name: <Checkbox onChange={onChange}>Delhi</Checkbox>, code: "LCL" },
-    { name: <Checkbox onChange={onChange}>Mumbai</Checkbox>, code: "LCL" },
-    { name: <Checkbox onChange={onChange}>Mumbai</Checkbox>, code: "LCL" },
-    { name: <Checkbox onChange={onChange}>Mumbai</Checkbox>, code: "LCL" },
-    { name: <Checkbox onChange={onChange}>Delhi</Checkbox>, code: "AIR" },
-    { name: <Checkbox onChange={onChange}>Mumbai</Checkbox>, code: "LCL" },
-    { name: <Checkbox onChange={onChange}>Delhi</Checkbox>, code: "AIR" },
-    { name: <Checkbox onChange={onChange}>Mumbai</Checkbox>, code: "LCL" },
-    { name: <Checkbox onChange={onChange}>Delhi</Checkbox>, code: "AIR" },
-    { name: <Checkbox onChange={onChange}>Mumbai</Checkbox>, code: "LCL" },
-  ];
-  const destination = [
-    { name: <Checkbox onChange={onChange}>Kuwait</Checkbox>, code: "LCL" },
-    { name: <Checkbox onChange={onChange}>Kuwait</Checkbox>, code: "LCL" },
-    { name: <Checkbox onChange={onChange}>Kuwait</Checkbox>, code: "LCL" },
-    { name: <Checkbox onChange={onChange}>Kuwait</Checkbox>, code: "LCL" },
-    { name: <Checkbox onChange={onChange}>Kuwait</Checkbox>, code: "AIR" },
-    { name: <Checkbox onChange={onChange}>Kuwait</Checkbox>, code: "LCL" },
-    { name: <Checkbox onChange={onChange}>Kuwait</Checkbox>, code: "AIR" },
-    { name: <Checkbox onChange={onChange}>Kuwait</Checkbox>, code: "LCL" },
-    { name: <Checkbox onChange={onChange}>Kuwait</Checkbox>, code: "AIR" },
-    { name: <Checkbox onChange={onChange}>Kuwait</Checkbox>, code: "LCL" },
-  ];
-
-  // const selectedCountryTemplate = (option, props) => {
-  //     if (option) {
-  //         return (
-  //             <div className="flex align-items-center">
-  //                 <img alt={option.name} src="https://primefaces.org/cdn/primereact/images/flag/flag_placeholder.png" className={`mr-2 flag flag-${option.code.toLowerCase()}`} style={{ width: '18px' }} />
-  //                 <div>{option.name}</div>
-  //             </div>
-  //         );
-  //     }
-
-  //     return <span>{props.placeholder}</span>;
-  // };
-
-  // const countryOptionTemplate = (option) => {
-  //     return (
-  //         <div className="flex align-items-center">
-  //             <img alt={option.name} src="https://primefaces.org/cdn/primereact/images/flag/flag_placeholder.png" className={`mr-2 flag flag-${option.code.toLowerCase()}`} style={{ width: '18px' }} />
-  //             <div>{option.name}</div>
-  //         </div>
-  //     );
-  // };
-
-  //end
 
   const payload = {
     filter_month: "",
@@ -187,16 +55,13 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
   const endIndex = Math.min(startIndex + itemsPerPage, filteredData?.length);
 
   // Extract the data for the current page
-  const currentPageData = filteredData?.slice(startIndex, endIndex);
+  const currentPageData = filteredData?.slice(startIndex, endIndex) ;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalRowData, setModalRowData] = useState(null);
   const showModal = (rowData) => {
     setModalRowData(rowData);
     setIsModalOpen(true);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
   };
 
   const actionBodyTemplate = (rowData) => {
@@ -237,7 +102,7 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
     return (
       <div style={{ textAlign: "start" }}>
         {/* <span className=" px-2">{rowData?.order_no}</span> */}
-        <span className=" px-2">
+        <span className="">
           {rowData?.order_no.length <= 12 ? (
             rowData?.order_no
           ) : (
@@ -252,23 +117,7 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
       </div>
     );
   };
-  const shipmentTemplate = (rowData) => {
-    return (
-      <div style={{ textAlign: "start" }}>
-        <span className="bold px-4">{rowData?.id}</span>
-        <div
-          style={{
-            color: "rgba(103, 120, 142, 1)",
-            fontSize: "13px",
-            textAlign: "start",
-          }}
-          className="mt-1 px-4"
-        >
-          LCL
-        </div>
-      </div>
-    );
-  };
+
   const originBodyTemplate = (rowData) => {
     return (
       <div className="origin-cell" style={{ textAlign: "start" }}>
@@ -331,7 +180,7 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
       if (!isNaN(valA) && !isNaN(valB)) {
         return valA - valB;
       }
-      if (col === "etd/atd" || col === "eta/ata" || col === "order_no") {
+      if (col === "etd/atd" || col === "eta/ata") {
         const dateA = parseDate1(valA);
         const dateB = parseDate1(valB);
         return dateA - dateB;
@@ -380,6 +229,277 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
     return new Date(parts[2], parts[1] - 1, parts[0]);
   };
 
+  const [tblFilter, setTblFilter] = useState({
+    order_no: [],
+    shipmentidD: [],
+    modeD: [],
+    originD: [],
+    DestD: [],
+    etdD: [],
+    etaD: [],
+    statusD: [],
+  });
+  const idd = useSelector((state) => state.Booking?.booking?.data);
+    const getUniqueOptions = (array, key) => {
+    return Array.from(new Set(array?.map((data) => data[key])))?.map((value) => ({
+      label: value,
+      value,
+    }));
+  };
+
+  const orderId_ = getUniqueOptions(idd, "order_no");
+  const ShipId = getUniqueOptions(idd, "id");
+  const Mode_ = getUniqueOptions(idd, "mode");
+  const Org_ = getUniqueOptions(idd, "origin");
+  const dest_ = getUniqueOptions(idd, "destination");
+  const eta_ = getUniqueOptions(idd, "eta_ata");
+  const etd_ = getUniqueOptions(idd, "etd_atd");
+  const status_ = getUniqueOptions(idd, "status");
+
+  const handleChangeFilter = (field, value) => {
+    setTblFilter({
+      ...tblFilter,
+      [field]: value,
+    });
+    console.log("selectId", value);
+  };
+  const FilterOrderRow = () => {
+    return (
+      <MultiSelect
+        className="custom-multi-select"
+        value={tblFilter.order_no}
+        options={orderId_}
+        filter
+        style={{
+          position: "absolute",
+          opacity: "0",
+          width: "20px",
+          fontSize: "10px",
+          // maxWidth:"100px"
+        }}
+        showSelectAll={false}
+        onChange={(e) => handleChangeFilter("order_no", e.value)}
+        display="chip"
+        placeholder="Select"
+        itemTemplate={(option) => {
+          return (
+            <Tooltip placement="topLeft" title={option.label}>
+              <span>{option.label}</span>
+            </Tooltip>
+          );
+        }}
+      />
+    );
+  };
+  const FilterIdRow = () => {
+    return (
+      <MultiSelect
+        className="custom-multi-select"
+        value={tblFilter.shipmentidD}
+        options={ShipId}
+        filter
+        style={{
+          position: "absolute",
+          opacity: "0",
+          width: "20px",
+          fontSize: "10px",
+        }}
+        showSelectAll={false}
+        onChange={(e) => handleChangeFilter("shipmentidD", e.value)}
+        display="chip"
+        placeholder="Select"
+        itemTemplate={(option) => {
+          return (
+            <Tooltip placement="topLeft" title={option.label}>
+              <span>{option.label}</span>
+            </Tooltip>
+          );
+        }}
+      />
+    );
+  };
+  const FilterModeRow = () => {
+    return (
+      <MultiSelect
+        className="custom-multi-select"
+        value={tblFilter.modeD}
+        options={Mode_}
+        filter
+        style={{
+          position: "absolute",
+          opacity: "0",
+          width: "20px",
+          fontSize: "10px",
+          // maxWidth:"100px"
+        }}
+        showSelectAll={false}
+        onChange={(e) => handleChangeFilter("modeD", e.value)}
+        display="chip"
+        placeholder="Select"
+        itemTemplate={(option) => {
+          return (
+            <Tooltip placement="topLeft" title={option.label}>
+              <span>{option.label}</span>
+            </Tooltip>
+          );
+        }}
+      />
+    );
+  };
+  const FilterOrgRow = () => {
+    return (
+      <MultiSelect
+        className="custom-multi-select"
+        value={tblFilter.originD}
+        options={Org_}
+        filter
+        style={{
+          position: "absolute",
+          opacity: "0",
+          width: "20px",
+          fontSize: "10px",
+          // maxWidth:"100px"
+        }}
+        showSelectAll={false}
+        onChange={(e) => handleChangeFilter("originD", e.value)}
+        display="chip"
+        placeholder="Select"
+        itemTemplate={(option) => {
+          return (
+            <Tooltip placement="topLeft" title={option.label}>
+              <span>{option.label}</span>
+            </Tooltip>
+          );
+        }}
+      />
+    );
+  };
+  const FilterDestRow = () => {
+    return (
+      <MultiSelect
+        className="custom-multi-select"
+        value={tblFilter.DestD}
+        options={dest_}
+        filter
+        style={{
+          position: "absolute",
+          opacity: "0",
+          width: "20px",
+          fontSize: "10px",
+          // maxWidth:"100px"
+        }}
+        showSelectAll={false}
+        onChange={(e) => handleChangeFilter("DestD", e.value)}
+        display="chip"
+        placeholder="Select"
+        itemTemplate={(option) => {
+          return (
+            <Tooltip placement="topLeft" title={option.label}>
+              <span>{option.label}</span>
+            </Tooltip>
+          );
+        }}
+      />
+    );
+  };
+  const FilterETDRow = () => {
+    return (
+      <MultiSelect
+        className="custom-multi-select"
+        value={tblFilter.etdD}
+        options={etd_}
+        filter
+        style={{
+          position: "absolute",
+          opacity: "0",
+          width: "20px",
+          fontSize: "10px",
+          // maxWidth:"100px"
+        }}
+        showSelectAll={false}
+        onChange={(e) => handleChangeFilter("etdD", e.value)}
+        display="chip"
+        placeholder="Select"
+        itemTemplate={(option) => {
+          return (
+            <Tooltip placement="topLeft" title={option.label}>
+              <span>{option.label}</span>
+            </Tooltip>
+          );
+        }}
+      />
+    );
+  };
+  const FilterETARow = () => {
+    return (
+      <MultiSelect
+        className="custom-multi-select"
+        value={tblFilter.etaD}
+        options={eta_}
+        filter
+        style={{
+          position: "absolute",
+          opacity: "0",
+          width: "20px",
+          fontSize: "10px",
+          // maxWidth:"100px"
+        }}
+        showSelectAll={false}
+        onChange={(e) => handleChangeFilter("etaD", e.value)}
+        display="chip"
+        placeholder="Select"
+        itemTemplate={(option) => {
+          return (
+            <Tooltip placement="topLeft" title={option.label}>
+              <span>{option.label}</span>
+            </Tooltip>
+          );
+        }}
+      />
+    );
+  };
+  const FilterStatusRow = () => {
+    return (
+      <MultiSelect
+        className="custom-multi-select"
+        value={tblFilter.statusD}
+        options={status_}
+        filter
+        style={{
+          position: "absolute",
+          opacity: "0",
+          width: "20px",
+          fontSize: "10px",
+          // maxWidth:"100px"
+        }}
+        showSelectAll={false}
+        onChange={(e) => handleChangeFilter("statusD", e.value)}
+        display="chip"
+        placeholder="Select"
+        itemTemplate={(option) => {
+          return (
+            <Tooltip placement="topLeft" title={option.label}>
+              <span>{option.label}</span>
+            </Tooltip>
+          );
+        }}
+      />
+    );
+  };
+  const filteredDataa = filterData.filter((item) => {
+    // Customize this logic based on your specific filter requirements
+    return (
+      (tblFilter.order_no.length === 0 || tblFilter.order_no.includes(item.order_no)) &&
+      (tblFilter.shipmentidD.length === 0 || tblFilter.shipmentidD.includes(item.id)) &&
+      (tblFilter.modeD.length === 0 || tblFilter.modeD.includes(item.mode)) &&
+      (tblFilter.originD.length === 0 || tblFilter.originD.includes(item.origin)) &&
+      (tblFilter.DestD.length === 0 || tblFilter.DestD.includes(item.destination)) &&
+      (tblFilter.etaD.length === 0 || tblFilter.etaD.includes(item.eta_ata)) &&
+      (tblFilter.etdD.length === 0 || tblFilter.etdD.includes(item.etd_atd)) &&
+      (tblFilter.statusD.length === 0 || tblFilter.statusD.includes(item.status)) 
+      // Add more conditions for other filters
+    );
+  });
   return (
     <div
       style={{
@@ -401,17 +521,11 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
           field="order_no"
           header={
             <span
-              style={{ fontFamily: "Roboto", cursor: "pointer" }}
-              className=" d-flex p-3"
+              style={{ fontFamily: "Roboto", cursor: "pointer"}}
+              className="py-3 d-flex "
             >
               Order ID
-              <Dropdown
-                value={orderNo}
-                options={orderNo}
-                optionLabel="name"
-                filter
-                style={{ position: "absolute", opacity: "0", width: "40px" }}
-              />
+              {FilterOrderRow()}
               <div
                 className="d-flex sorticon"
                 style={{ flexDirection: "column" }}
@@ -436,65 +550,57 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
             </span>
           }
           body={shipmentTemplateId}
-          className="p-3"
+          // filterElement={representativeRowFilterTemplate}
+          // className="ps-4"
+          style={{paddingLeft:"30px"}}
           headerClassName="custom-header"
         ></Column>
         <Column
           field="id"
           header={
-            <span
-              style={{ fontFamily: "Roboto", cursor: "pointer" }}
-              className="p-3 d-flex"
-            >
-              Shipment ID
-              <Dropdown
-                value={selectedCountry}
-                options={shipmentid}
-                optionLabel="name"
-                filter
-                style={{ position: "absolute", opacity: "0", width: "40px" }}
-              />
-              <div
-                className="d-flex sorticon"
-                style={{ flexDirection: "column" }}
+           
+              <span
+                style={{ fontFamily: "Roboto", cursor: "pointer" }}
+                className=" d-flex"
               >
-                <IconButton
-                  onClick={() => {
-                    handleSort("id");
-                  }}
-                  className="p-0"
+                Shipment ID
+                {FilterIdRow()}
+                <div
+                  className="d-flex sorticon"
+                  style={{ flexDirection: "column" }}
                 >
-                  <ExpandLessIcon className="sortup" />
-                </IconButton>
-                <IconButton
-                  onClick={() => {
-                    handleSortDown("id");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandMoreIcon className="sortdown" />
-                </IconButton>
-              </div>
-            </span>
+                  <IconButton
+                    onClick={() => {
+                      handleSort("id");
+                    }}
+                    className="p-0"
+                  >
+                    <ExpandLessIcon className="sortup" />
+                  </IconButton>
+                  <IconButton
+                    onClick={() => {
+                      handleSortDown("id");
+                    }}
+                    className="p-0"
+                  >
+                    <ExpandMoreIcon className="sortdown" />
+                  </IconButton>
+                </div>
+              </span>
+           
           }
           // body={shipmentTemplate}
-          className="p-3"
+          // className="p-3"
         ></Column>
         <Column
           field="mode"
           header={
             <span
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
-              className="p-3 d-flex"
+              className=" d-flex"
             >
               Mode
-              <Dropdown
-                value={selectedCountry}
-                options={mode}
-                optionLabel="name"
-                filter
-                style={{ position: "absolute", opacity: "0", width: "40px" }}
-              />
+              {FilterModeRow()}
               <div
                 className="d-flex sorticon"
                 style={{ flexDirection: "column" }}
@@ -519,7 +625,7 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
             </span>
           }
           // body={shipmentTemplate}
-          className="p-3"
+          
         ></Column>
 
         <Column
@@ -530,13 +636,7 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
               className="d-flex"
             >
               Origin
-              <Dropdown
-                value={selectedCountry}
-                options={origin}
-                optionLabel="name"
-                filter
-                style={{ position: "absolute", opacity: "0", width: "40px" }}
-              />
+              {FilterOrgRow()}
               <div
                 className="d-flex sorticon"
                 style={{ flexDirection: "column" }}
@@ -561,24 +661,18 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
             </span>
           }
           body={originBodyTemplate}
-          headerClassName="custom-header p-3"
-          className="p-3"
+          headerClassName="custom-header"
+          // className="p-3"
         ></Column>
         <Column
           field="destination"
           header={
             <span
-              className="p-3 d-flex"
+              className=" d-flex"
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
             >
               Destination
-              <Dropdown
-                value={selectedCountry}
-                options={destination}
-                optionLabel="name"
-                filter
-                style={{ position: "absolute", opacity: "0", width: "40px" }}
-              />
+              {FilterDestRow()}
               <div
                 className="d-flex sorticon"
                 style={{ flexDirection: "column" }}
@@ -603,51 +697,15 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
             </span>
           }
           body={destinationBodyTemplate}
-          className="p-3"
+          // className="p-3"
         ></Column>
-        {/* <Column
-          field="booked_on"
-          header={
-            <span className="p-3 d-flex">
-              Booked On
-              <div
-                className="d-flex sorticon"
-                style={{ flexDirection: "column" }}
-              >
-                <IconButton
-                  onClick={() => {
-                    handleSort("booked_on");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandLessIcon className="sortup" />
-                </IconButton>
-                <IconButton
-                  onClick={() => {
-                    handleSortDown("booked_on");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandMoreIcon className="sortdown" />
-                </IconButton>
-              </div>
-            </span>
-          }
-          bodyClassName="custom-cell"
-          className="p-3"
-        ></Column> */}
+
         <Column
           field="etd/atd"
           header={
             <span className="p-3 d-flex" style={{ position: "relative" }}>
               ETD/ATD
-              <Dropdown
-                value={selectedCountry}
-                options={countries}
-                optionLabel="name"
-                filter
-                style={{ position: "absolute", opacity: "0", width: "40px" }}
-              />
+              {FilterETDRow()}
               <div
                 className="d-flex sorticon"
                 style={{ flexDirection: "column" }}
@@ -673,20 +731,14 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
           }
           body={bodyTemplate}
           bodyClassName="custom-cell"
-          className="p-3"
+          // className="p-3"
         ></Column>
         <Column
           field="eta/ata"
           header={
-            <span className="p-3 d-flex">
+            <span className=" d-flex">
               ETA/ATA
-              <Dropdown
-                value={selectedCountry}
-                options={countries}
-                optionLabel="name"
-                filter
-                style={{ position: "absolute", opacity: "0", width: "40px" }}
-              />
+              {FilterETARow()}
               <div
                 className="d-flex sorticon"
                 style={{ flexDirection: "column" }}
@@ -711,13 +763,14 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
             </span>
           }
           bodyClassName="custom-cell"
-          className="p-3"
+          // className="p-3"
         ></Column>
         <Column
           field="status"
           header={
-            <span className="p-3 d-flex">
+            <span className=" d-flex">
               Status
+              {FilterStatusRow()}
               <div
                 className="d-flex sorticon"
                 style={{ flexDirection: "column" }}
@@ -746,13 +799,13 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
               ? "booking-progress-cell"
               : "booked-cell "
           }
-          className=" m-3 px-2"
+          className="text-start my-3"
         ></Column>
         <Column
           field="action"
           body={actionBodyTemplate}
-          header={<span className="p-3">Action</span>}
-          className="p-3 text-start"
+          header={<span>Action</span>}
+          className=" text-start"
         ></Column>
       </DataTable>
       <Pagination

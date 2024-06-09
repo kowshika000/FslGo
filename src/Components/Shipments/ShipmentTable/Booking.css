@@ -1,57 +1,120 @@
-.p-datatable-header{
-    border:none;
- }
- 
- .ant-tabs-nav-wrap{
-    height:57px !important;
- }
- 
- .pi-search{
-    display: none !important;
- }
- 
- .custom-input::placeholder {
-    color: #888; 
-    font-size: 5px !important; 
-  }
+.p-datatable-header {
+  border: none;
+}
 
-  .ant-tabs-nav-more{
-   display: none !important;
-  }
+.ant-tabs-nav-wrap {
+  height: 57px !important;
+}
 
-  .p-dropdown:not(.p-disabled).p-focus{
-   box-shadow: none !important;
-  }
+.pi-search {
+  display: none !important;
+}
 
-  .ant-image-mask:hover{
-   display: none !important;
-  }
+.custom-input::placeholder {
+  color: #888;
+  font-size: 5px !important;
+}
 
-  .origin-cell{
-   text-align: start !important;
-  }
-  .bodycell{
-   text-align: start !important;
-  }
-  .leaflet-top, .leaflet-bottom{
-   z-index: auto;
-  }
-  .filter{
-   border:1px solid #e7eaf0 !important;
-   padding: 5px 20px 0 20px !important;
-   margin-left: 10px !important;
-   border-radius: 4px !important;
-   height:36px !important;
- }
+.ant-tabs-nav-more {
+  display: none !important;
+}
 
- .ant-input {
-   font-family: 'Roboto', sans-serif !important;
- }
+.p-dropdown:not(.p-disabled).p-focus {
+  box-shadow: none !important;
+}
 
- /* This is for search on table filter Styling */
- .p-icon{
-   top: 6px !important;
- }
- /* .p-dropdown-panel{
+.ant-image-mask:hover {
+  display: none !important;
+}
+
+.origin-cell {
+  text-align: start !important;
+}
+.bodycell {
+  text-align: start !important;
+}
+.leaflet-top,
+.leaflet-bottom {
+  z-index: auto;
+}
+.filter {
+  border: 1px solid #e7eaf0 !important;
+  padding: 5px 20px 0 20px !important;
+  margin-left: 10px !important;
+  border-radius: 4px !important;
+  height: 36px !important;
+}
+
+.ant-input {
+  font-family: "Roboto", sans-serif !important;
+}
+
+/* This is for search on table filter Styling */
+.p-icon {
+  top: 6px !important;
+}
+/* .p-dropdown-panel{
    width: 50px !important;
  } */
+.p-multiselect-close {
+  display: none !important;
+}
+.p-multiselect-items {
+  padding-left: 0;
+  /* padding: 5px; */
+  font-size: 14px;
+  /* margin: 10px; */
+}
+.p-checkbox .p-component {
+  /* margin-right: 15px !important; */
+  /* padding-right: 10px; */
+  height: 5px;
+  /* padding-top: 2px;
+  padding-bottom: 2px; */
+  font-size: 12px;
+}
+.custom-multi-select {
+  width: 200px;
+  height: 30px;
+  /* font-size:  !important; */
+}
+.p-multiselect-panel {
+  max-width: 140px;
+  /* font-size: 10px !important; */
+  padding: 10px;
+  /* max-height: 150px; */
+  /* background-color: white; */
+}
+.p-checkbox-box {
+  width: 16px;
+  height: 16px;
+  margin-top: 4px;
+  border-radius: 3px;
+  /* align-self: center; */
+}
+.p-multiselect-item {
+  margin-top: 10px;
+}
+.p-inputtext:enabled:focus {
+  box-shadow: none;
+  border-color: silver;
+}
+.p-inputtext {
+  border-radius: 8px;
+  height: 22px;
+}
+.p-multiselect-filter-icon {
+  display: none;
+}
+.p-multiselect-item.p-highlight.p-focus {
+  color: black;
+  background-color: white;
+}
+.p-multiselect-panel .p-multiselect-items .p-multiselect-item.p-highlight{
+  color: black;
+  background-color: white;
+}
+.p-checkbox.p-highlight .p-checkbox-box{
+  border-color: red;
+  background-color: red;
+}
