@@ -15,7 +15,7 @@ import image2 from "../../../assets/Shape (1).png";
 import image3 from "../../../assets/Shape (2).png";
 import DailyReportTable from "./DailyReportTable";
 
-function BookingTabs({ showText, setShowText, }) {
+function BookingTabs({ showText, setShowText }) {
   const [searchQuery] = useState("");
   const [data, setData] = useState([]);
   const ShipmentData = useSelector((state) => state.Booking);
@@ -23,6 +23,7 @@ function BookingTabs({ showText, setShowText, }) {
   const tabCount = ShipmentData?.booking?.statuswise_count;
   const [visible, setVisible] = useState(false);
   const [selectedButton, setSelectedButton] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
 
   let schedule;
   if (tabCount && tabCount.length > 0) {
@@ -57,7 +58,12 @@ function BookingTabs({ showText, setShowText, }) {
     useState("Past 60 Days");
   const [filterValue, setFilterValue] = useState(60);
 
-  const items = ["Past 30 Days", "Past 60 Days", "Past 90 Days", "Past 6 Months"];
+  const items = [
+    "Past 30 Days",
+    "Past 60 Days",
+    "Past 90 Days",
+    "Past 6 Months",
+  ];
   useEffect(() => {
     if (selectedDropdownItem === "Past 90 Days") {
       setFilterValue(90);
@@ -65,17 +71,16 @@ function BookingTabs({ showText, setShowText, }) {
       setFilterValue(30);
     } else if (selectedDropdownItem === "Past 60 Days") {
       setFilterValue(60);
-    }else if (selectedDropdownItem === "Past 6 Days") {
+    } else if (selectedDropdownItem === "Past 6 Days") {
       setFilterValue(6);
     }
-
   }, [selectedDropdownItem]);
   const onChange = (key) => {
     switch (key) {
       case "1":
         filterData("All");
         setSelectedButton(null);
-       
+        setCurrentPage(1);
         break;
       // case "2":
       //   filterData(["Booked In Progress"]);
@@ -83,26 +88,32 @@ function BookingTabs({ showText, setShowText, }) {
       case "2":
         filterData(["Booked", "Cargo Pickup", "Cargo Received"]);
         setSelectedButton(null);
+        setCurrentPage(1);
         break;
       case "3":
         filterData(["In Transit", "Departed"]);
         setSelectedButton(null);
+        setCurrentPage(1);
         break;
       case "4":
         filterData(["Arrived"]);
         setSelectedButton(null);
+        setCurrentPage(1);
         break;
       case "5":
         filterData(["Delivered"]);
         setSelectedButton(null);
+        setCurrentPage(1);
         break;
       case "6":
         filterData(["Canceled"]);
         setSelectedButton(null);
+        setCurrentPage(1);
         break;
       default:
         filterData("All");
         setSelectedButton(null);
+        setCurrentPage(1);
     }
   };
 
@@ -149,13 +160,13 @@ function BookingTabs({ showText, setShowText, }) {
   const handleTableChange = () => {
     setShowText(true);
   };
-  const handlShowFilter=()=>{
-    if(!showText){
-      setVisible(true)
-    }else if(showText){
-      setShowText(false)
+  const handlShowFilter = () => {
+    if (!showText) {
+      setVisible(true);
+    } else if (showText) {
+      setShowText(false);
     }
-  }
+  };
   return (
     <div
       className="mx-auto mb-4"
@@ -242,7 +253,7 @@ function BookingTabs({ showText, setShowText, }) {
                     alignSelf: "center",
                     border: "1px solid #E7EAF0",
                     borderRadius: "8px",
-                    backgroundColor:"white",
+                    backgroundColor: "white",
                   }}
                   className="px-1 d-flex me-2 datehover"
                 >
@@ -272,7 +283,6 @@ function BookingTabs({ showText, setShowText, }) {
                       placeholder="Past 60 Days"
                       className="w-full md:w-14rem datehover"
                       style={{ border: "none" }}
-                      
                     />
                   </div>
                 </div>
@@ -341,6 +351,8 @@ function BookingTabs({ showText, setShowText, }) {
               filterData={filteredData}
               selectedStatus={filterData}
               filterValue={filterValue}
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
             />
           ) : (
             <DailyReportTable />
