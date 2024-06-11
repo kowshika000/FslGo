@@ -19,10 +19,15 @@ import ShipmentBase from "../../ShipmentDetails/ShipmentTable/ShipmentBase";
 import { MultiSelect } from "primereact/multiselect";
 import { useSelector } from "react-redux";
 
-const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
+const AllBookings = ({
+  filterData,
+  selectedStatus,
+  filterValue,
+  currentPage,
+  setCurrentPage,
+}) => {
   console.log("filterValue", filterValue);
 
-  const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5; // Number of items per page
   const dispatch = useDispatch();
 
@@ -57,11 +62,13 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
     statusD: [],
   });
   const idd = useSelector((state) => state.Booking?.booking?.data);
-    const getUniqueOptions = (array, key) => {
-    return Array.from(new Set(array?.map((data) => data[key])))?.map((value) => ({
-      label: value,
-      value,
-    }));
+  const getUniqueOptions = (array, key) => {
+    return Array.from(new Set(array?.map((data) => data[key])))?.map(
+      (value) => ({
+        label: value,
+        value,
+      })
+    );
   };
 
   const orderId_ = getUniqueOptions(idd, "order_no");
@@ -303,23 +310,28 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
       />
     );
   };
- 
 
   useEffect(() => {
     const filteredDataa = filterData.filter((item) => {
       return (
-        (tblFilter.order_no.length === 0 || tblFilter.order_no.includes(item.order_no)) &&
-        (tblFilter.shipmentidD.length === 0 || tblFilter.shipmentidD.includes(item.id)) &&
+        (tblFilter.order_no.length === 0 ||
+          tblFilter.order_no.includes(item.order_no)) &&
+        (tblFilter.shipmentidD.length === 0 ||
+          tblFilter.shipmentidD.includes(item.id)) &&
         (tblFilter.modeD.length === 0 || tblFilter.modeD.includes(item.mode)) &&
-        (tblFilter.originD.length === 0 || tblFilter.originD.includes(item.origin)) &&
-        (tblFilter.DestD.length === 0 || tblFilter.DestD.includes(item.destination)) &&
-        (tblFilter.etaD.length === 0 || tblFilter.etaD.includes(item.eta_ata)) &&
-        (tblFilter.etdD.length === 0 || tblFilter.etdD.includes(item.etd_atd)) &&
-        (tblFilter.statusD.length === 0 || tblFilter.statusD.includes(item.status)) 
-
+        (tblFilter.originD.length === 0 ||
+          tblFilter.originD.includes(item.origin)) &&
+        (tblFilter.DestD.length === 0 ||
+          tblFilter.DestD.includes(item.destination)) &&
+        (tblFilter.etaD.length === 0 ||
+          tblFilter.etaD.includes(item.eta_ata)) &&
+        (tblFilter.etdD.length === 0 ||
+          tblFilter.etdD.includes(item.etd_atd)) &&
+        (tblFilter.statusD.length === 0 ||
+          tblFilter.statusD.includes(item.status))
       );
     });
-    setFilteredData(filteredDataa); 
+    setFilteredData(filteredDataa);
   }, [tblFilter, filterData]);
   // console.log("booking", filteredData);
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -388,25 +400,24 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
       </div>
     );
   };
-const shipmentTemplateIdd=(rowData)=>{
-  return (
-    <div style={{ textAlign: "start" }}>
-      {/* <span className=" px-2">{rowData?.order_no}</span> */}
-      <span className="">
-        {rowData?.id.length <= 20 ? (
-          rowData?.id
-        ) : (
-          <Tooltip placement="topLeft" title={rowData?.id}>
-            <span role="button">
-              {rowData?.id.slice(0, 20).trim().split(" ").join("") +
-                ".."}
-            </span>
-          </Tooltip>
-        )}
-      </span>
-    </div>
-  );
-}
+  const shipmentTemplateIdd = (rowData) => {
+    return (
+      <div style={{ textAlign: "start" }}>
+        {/* <span className=" px-2">{rowData?.order_no}</span> */}
+        <span className="">
+          {rowData?.id.length <= 20 ? (
+            rowData?.id
+          ) : (
+            <Tooltip placement="topLeft" title={rowData?.id}>
+              <span role="button">
+                {rowData?.id.slice(0, 20).trim().split(" ").join("") + ".."}
+              </span>
+            </Tooltip>
+          )}
+        </span>
+      </div>
+    );
+  };
   const originBodyTemplate = (rowData) => {
     return (
       <div className="origin-cell" style={{ textAlign: "start" }}>
@@ -436,7 +447,9 @@ const shipmentTemplateIdd=(rowData)=>{
     return (
       <div className="origin-cell" style={{ textAlign: "start" }}>
         <CountryFlag countryCode={rowData?.destination_countrycode} />
-        <span style={{ paddingLeft: "8px", fontWeight: "400", textWrap: "wrap" }}>
+        <span
+          style={{ paddingLeft: "8px", fontWeight: "400", textWrap: "wrap" }}
+        >
           {rowData?.destination.length <= 20 ? (
             rowData?.destination
           ) : (
@@ -563,10 +576,13 @@ const shipmentTemplateIdd=(rowData)=>{
     return new Date(parts[2], parts[1] - 1, parts[0]);
   };
 
-  const paginatedData = filteredData.slice(startIndex, startIndex + itemsPerPage);
-  const noData=()=>{
+  const paginatedData = filteredData.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
+  const noData = () => {
     return <div className="no-options ">No Data Found</div>;
-  }
+  };
   return (
     <div
       style={{
@@ -583,16 +599,15 @@ const shipmentTemplateIdd=(rowData)=>{
         // paginatorTemplate=" PrevPageLink PageLinks NextPageLink  CurrentPageReport "
         removableSort
         rowClassName={rowClassName}
-        className={`${filteredData.length === 0 ? 'text-center' : ''}`}
-        style={{height:"353px"}}
+        className={`${filteredData.length === 0 ? "text-center" : ""}`}
+        style={{ height: "353px" }}
         emptyMessage={noData()}
-        
       >
         <Column
           field="order_no"
           header={
             <span
-              style={{ fontFamily: "Roboto", cursor: "pointer"}}
+              style={{ fontFamily: "Roboto", cursor: "pointer" }}
               className="py-3 d-flex "
             >
               Order ID
@@ -621,46 +636,45 @@ const shipmentTemplateIdd=(rowData)=>{
             </span>
           }
           body={shipmentTemplateId}
-          style={{paddingLeft:"20px",width:"180px"}}
+          style={{ paddingLeft: "20px", width: "180px" }}
           headerClassName="custom-header"
         ></Column>
         <Column
           field="id"
-          headerStyle={{width:"150px"}}
-          header={           
-              <span
-                style={{ fontFamily: "Roboto", cursor: "pointer" }}
-                className=" d-flex"
+          headerStyle={{ width: "150px" }}
+          header={
+            <span
+              style={{ fontFamily: "Roboto", cursor: "pointer" }}
+              className=" d-flex"
+            >
+              Shipment ID
+              {FilterIdRow()}
+              <div
+                className="d-flex sorticon"
+                style={{ flexDirection: "column" }}
               >
-                Shipment ID
-                {FilterIdRow()}
-                <div
-                  className="d-flex sorticon"
-                  style={{ flexDirection: "column" }}
+                <IconButton
+                  onClick={() => {
+                    handleSort("id");
+                  }}
+                  className="p-0"
                 >
-                  <IconButton
-                    onClick={() => {
-                      handleSort("id");
-                    }}
-                    className="p-0"
-                  >
-                    <ExpandLessIcon className="sortup" />
-                  </IconButton>
-                  <IconButton
-                    onClick={() => {
-                      handleSortDown("id");
-                    }}
-                    className="p-0"
-                  >
-                    <ExpandMoreIcon className="sortdown" />
-                  </IconButton>
-                </div>
-              </span>
-           
+                  <ExpandLessIcon className="sortup" />
+                </IconButton>
+                <IconButton
+                  onClick={() => {
+                    handleSortDown("id");
+                  }}
+                  className="p-0"
+                >
+                  <ExpandMoreIcon className="sortdown" />
+                </IconButton>
+              </div>
+            </span>
           }
           body={shipmentTemplateIdd}
           // className="p-3"
-          style={{paddingLeft:"30px"}}
+          style={{ paddingLeft: "30px" }}
         ></Column>
         <Column
           field="mode"
@@ -696,7 +710,7 @@ const shipmentTemplateIdd=(rowData)=>{
             </span>
           }
           // body={shipmentTemplate}
-          style={{paddingLeft:"20px"}}
+          style={{ paddingLeft: "20px" }}
         ></Column>
 
         <Column
@@ -734,7 +748,7 @@ const shipmentTemplateIdd=(rowData)=>{
           body={originBodyTemplate}
           headerClassName="custom-header"
           // className="p-3"
-          style={{width:"165px",paddingLeft:"20px"}}
+          style={{ width: "165px", paddingLeft: "20px" }}
         ></Column>
         <Column
           field="destination"
@@ -770,8 +784,7 @@ const shipmentTemplateIdd=(rowData)=>{
           }
           body={destinationBodyTemplate}
           // className="p-3"
-          style={{width:"120px",paddingLeft:"30px"}}
-
+          style={{ width: "120px", paddingLeft: "30px" }}
         ></Column>
 
         <Column
@@ -807,7 +820,7 @@ const shipmentTemplateIdd=(rowData)=>{
           body={bodyTemplate}
           bodyClassName="custom-cell"
           // className="p-3"
-          style={{paddingLeft:"20px"}}
+          style={{ paddingLeft: "20px" }}
         ></Column>
         <Column
           field="eta/ata"
@@ -842,12 +855,12 @@ const shipmentTemplateIdd=(rowData)=>{
           body={bodyTemplateEtd}
           bodyClassName="custom-cell"
           // className="p-3"
-          style={{paddingLeft:"20px"}}
+          style={{ paddingLeft: "20px" }}
         ></Column>
         <Column
           field="status"
-          header={         
-          <span className=" d-flex" >
+          header={
+            <span className=" d-flex">
               Status
               {FilterStatusRow()}
               <div
@@ -873,14 +886,14 @@ const shipmentTemplateIdd=(rowData)=>{
               </div>
             </span>
           }
-          headerStyle={{width:"130px",paddingLeft:"20px"}}
+          headerStyle={{ width: "130px", paddingLeft: "20px" }}
           bodyClassName={(rowData) =>
             rowData.status === "Booking In Progress"
               ? "booking-progress-cell"
               : "booked-cell "
           }
           className="text-start my-3"
-          style={{marginLeft:"20px"}}
+          style={{ marginLeft: "20px" }}
         ></Column>
         <Column
           field="action"
