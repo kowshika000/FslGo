@@ -46,16 +46,287 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
   }, [filterValue]);
 
   const [filteredData, setFilteredData] = useState([]);
+  const [tblFilter, setTblFilter] = useState({
+    order_no: [],
+    shipmentidD: [],
+    modeD: [],
+    originD: [],
+    DestD: [],
+    etdD: [],
+    etaD: [],
+    statusD: [],
+  });
+  const idd = useSelector((state) => state.Booking?.booking?.data);
+    const getUniqueOptions = (array, key) => {
+    return Array.from(new Set(array?.map((data) => data[key])))?.map((value) => ({
+      label: value,
+      value,
+    }));
+  };
+
+  const orderId_ = getUniqueOptions(idd, "order_no");
+  const ShipId = getUniqueOptions(idd, "id");
+  const Mode_ = getUniqueOptions(idd, "mode");
+  const Org_ = getUniqueOptions(idd, "origin");
+  const dest_ = getUniqueOptions(idd, "destination");
+  const eta_ = getUniqueOptions(idd, "eta_ata");
+  const etd_ = getUniqueOptions(idd, "etd_atd");
+  const status_ = getUniqueOptions(idd, "status");
+
+  const handleChangeFilter = (field, value) => {
+    setTblFilter({
+      ...tblFilter,
+      [field]: value,
+    });
+    console.log("selectId", value);
+  };
+  const FilterOrderRow = () => {
+    return (
+      <MultiSelect
+        className="custom-multi-select"
+        value={tblFilter.order_no}
+        options={orderId_}
+        filter
+        style={{
+          position: "absolute",
+          opacity: "0",
+          width: "20px",
+          fontSize: "10px",
+          // maxWidth:"100px"
+        }}
+        showSelectAll={false}
+        onChange={(e) => handleChangeFilter("order_no", e.value)}
+        display="chip"
+        placeholder="Select "
+        itemTemplate={(option) => {
+          return (
+            <Tooltip placement="topLeft" title={option.label}>
+              <span>{option.label}</span>
+            </Tooltip>
+          );
+        }}
+      />
+    );
+  };
+  const FilterIdRow = () => {
+    return (
+      <MultiSelect
+        className="custom-multi-select"
+        value={tblFilter.shipmentidD}
+        options={ShipId}
+        filter
+        style={{
+          position: "absolute",
+          opacity: "0",
+          width: "20px",
+          fontSize: "10px",
+        }}
+        showSelectAll={false}
+        onChange={(e) => handleChangeFilter("shipmentidD", e.value)}
+        display="chip"
+        placeholder="Select"
+        // itemTemplate={(option) => {
+        //   return (
+        //     <Tooltip placement="topLeft" title={option.label}>
+        //       <span>{option.label}</span>
+        //     </Tooltip>
+        //   );
+        // }}
+      />
+    );
+  };
+  const FilterModeRow = () => {
+    return (
+      <MultiSelect
+        className="custom-multi-select"
+        value={tblFilter.modeD}
+        options={Mode_}
+        filter
+        style={{
+          position: "absolute",
+          opacity: "0",
+          width: "20px",
+          fontSize: "10px",
+          // maxWidth:"100px"
+        }}
+        showSelectAll={false}
+        onChange={(e) => handleChangeFilter("modeD", e.value)}
+        display="chip"
+        placeholder="Select"
+        // itemTemplate={(option) => {
+        //   return (
+        //     <Tooltip placement="topLeft" title={option.label}>
+        //       <span>{option.label}</span>
+        //     </Tooltip>
+        //   );
+        // }}
+      />
+    );
+  };
+  const FilterOrgRow = () => {
+    return (
+      <MultiSelect
+        className="custom-multi-select"
+        value={tblFilter.originD}
+        options={Org_}
+        filter
+        style={{
+          position: "absolute",
+          opacity: "0",
+          width: "20px",
+          fontSize: "10px",
+          // maxWidth:"100px"
+        }}
+        showSelectAll={false}
+        onChange={(e) => handleChangeFilter("originD", e.value)}
+        display="chip"
+        placeholder="Select"
+        itemTemplate={(option) => {
+          return (
+            <Tooltip placement="topLeft" title={option.label}>
+              <span>{option.label}</span>
+            </Tooltip>
+          );
+        }}
+      />
+    );
+  };
+  const FilterDestRow = () => {
+    return (
+      <MultiSelect
+        className="custom-multi-select"
+        value={tblFilter.DestD}
+        options={dest_}
+        filter
+        style={{
+          position: "absolute",
+          opacity: "0",
+          width: "20px",
+          fontSize: "10px",
+          // maxWidth:"100px"
+        }}
+        showSelectAll={false}
+        onChange={(e) => handleChangeFilter("DestD", e.value)}
+        display="chip"
+        placeholder="Select"
+        itemTemplate={(option) => {
+          return (
+            <Tooltip placement="topLeft" title={option.label}>
+              <span>{option.label}</span>
+            </Tooltip>
+          );
+        }}
+      />
+    );
+  };
+  const FilterETDRow = () => {
+    return (
+      <MultiSelect
+        className="custom-multi-select"
+        value={tblFilter.etdD}
+        options={etd_}
+        filter
+        style={{
+          position: "absolute",
+          opacity: "0",
+          width: "20px",
+          fontSize: "10px",
+          // maxWidth:"100px"
+        }}
+        showSelectAll={false}
+        onChange={(e) => handleChangeFilter("etdD", e.value)}
+        display="chip"
+        placeholder="Select"
+        // itemTemplate={(option) => {
+        //   return (
+        //     <Tooltip placement="topLeft" title={option.label}>
+        //       <span>{option.label}</span>
+        //     </Tooltip>
+        //   );
+        // }}
+      />
+    );
+  };
+  const FilterETARow = () => {
+    return (
+      <MultiSelect
+        className="custom-multi-select"
+        value={tblFilter.etaD}
+        options={eta_}
+        filter
+        style={{
+          position: "absolute",
+          opacity: "0",
+          width: "20px",
+          fontSize: "10px",
+          // maxWidth:"100px"
+        }}
+        showSelectAll={false}
+        onChange={(e) => handleChangeFilter("etaD", e.value)}
+        display="chip"
+        placeholder="Select"
+        // itemTemplate={(option) => {
+        //   return (
+        //     <Tooltip placement="topLeft" title={option.label}>
+        //       <span>{option.label}</span>
+        //     </Tooltip>
+        //   );
+        // }}
+      />
+    );
+  };
+  const FilterStatusRow = () => {
+    return (
+      <MultiSelect
+        className="custom-multi-select"
+        value={tblFilter.statusD}
+        options={status_}
+        filter
+        style={{
+          position: "absolute",
+          opacity: "0",
+          width: "20px",
+          fontSize: "10px",
+          // maxWidth:"100px"
+        }}
+        showSelectAll={false}
+        onChange={(e) => handleChangeFilter("statusD", e.value)}
+        display="chip"
+        placeholder="Select"
+        // itemTemplate={(option) => {
+        //   return (
+        //     <Tooltip placement="topLeft" title={option.label}>
+        //       <span>{option.label}</span>
+        //     </Tooltip>
+        //   );
+        // }}
+      />
+    );
+  };
+ 
 
   useEffect(() => {
-    setFilteredData(filterData);
-  }, [selectedStatus]);
+    const filteredDataa = filterData.filter((item) => {
+      return (
+        (tblFilter.order_no.length === 0 || tblFilter.order_no.includes(item.order_no)) &&
+        (tblFilter.shipmentidD.length === 0 || tblFilter.shipmentidD.includes(item.id)) &&
+        (tblFilter.modeD.length === 0 || tblFilter.modeD.includes(item.mode)) &&
+        (tblFilter.originD.length === 0 || tblFilter.originD.includes(item.origin)) &&
+        (tblFilter.DestD.length === 0 || tblFilter.DestD.includes(item.destination)) &&
+        (tblFilter.etaD.length === 0 || tblFilter.etaD.includes(item.eta_ata)) &&
+        (tblFilter.etdD.length === 0 || tblFilter.etdD.includes(item.etd_atd)) &&
+        (tblFilter.statusD.length === 0 || tblFilter.statusD.includes(item.status)) 
+
+      );
+    });
+    setFilteredData(filteredDataa); 
+  }, [tblFilter, filterData]);
   // console.log("booking", filteredData);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, filteredData?.length);
 
   // Extract the data for the current page
-  const currentPageData = filteredData?.slice(startIndex, endIndex) ;
+  // const currentPageData = filteredData?.slice(startIndex, endIndex) ;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalRowData, setModalRowData] = useState(null);
@@ -103,12 +374,12 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
       <div style={{ textAlign: "start" }}>
         {/* <span className=" px-2">{rowData?.order_no}</span> */}
         <span className="">
-          {rowData?.order_no.length <= 12 ? (
+          {rowData?.order_no.length <= 20 ? (
             rowData?.order_no
           ) : (
             <Tooltip placement="topLeft" title={rowData?.order_no}>
               <span role="button">
-                {rowData?.order_no.slice(0, 12).trim().split(" ").join("") +
+                {rowData?.order_no.slice(0, 20).trim().split(" ").join("") +
                   ".."}
               </span>
             </Tooltip>
@@ -117,25 +388,43 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
       </div>
     );
   };
-
+const shipmentTemplateIdd=(rowData)=>{
+  return (
+    <div style={{ textAlign: "start" }}>
+      {/* <span className=" px-2">{rowData?.order_no}</span> */}
+      <span className="">
+        {rowData?.id.length <= 20 ? (
+          rowData?.id
+        ) : (
+          <Tooltip placement="topLeft" title={rowData?.id}>
+            <span role="button">
+              {rowData?.id.slice(0, 20).trim().split(" ").join("") +
+                ".."}
+            </span>
+          </Tooltip>
+        )}
+      </span>
+    </div>
+  );
+}
   const originBodyTemplate = (rowData) => {
     return (
       <div className="origin-cell" style={{ textAlign: "start" }}>
         <CountryFlag countryCode={rowData?.origin_countrycode} />
         <span
           style={{
-            padding: "8px",
+            paddingLeft: "8px",
             fontWeight: "400",
-            width: "50px",
+            // width: "50px",
             textAlign: "start",
           }}
         >
-          {rowData?.origin.length <= 12 ? (
+          {rowData?.origin.length <= 20 ? (
             rowData?.origin
           ) : (
             <Tooltip placement="topLeft" title={rowData?.origin}>
               <span role="button">
-                {rowData?.origin.slice(0, 12).trim().split(" ").join("") + ".."}
+                {rowData?.origin.slice(0, 20).trim().split(" ").join("") + ".."}
               </span>
             </Tooltip>
           )}
@@ -147,13 +436,13 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
     return (
       <div className="origin-cell" style={{ textAlign: "start" }}>
         <CountryFlag countryCode={rowData?.destination_countrycode} />
-        <span style={{ padding: "8px", fontWeight: "400", textWrap: "wrap" }}>
-          {rowData?.destination.length <= 12 ? (
+        <span style={{ paddingLeft: "8px", fontWeight: "400", textWrap: "wrap" }}>
+          {rowData?.destination.length <= 20 ? (
             rowData?.destination
           ) : (
             <Tooltip placement="topLeft" title={rowData?.destination}>
               <span role="button">
-                {rowData?.destination.slice(0, 12).trim().split("").join("") +
+                {rowData?.destination.slice(0, 20).trim().split("").join("") +
                   ".."}
               </span>
             </Tooltip>
@@ -274,277 +563,10 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
     return new Date(parts[2], parts[1] - 1, parts[0]);
   };
 
-  const [tblFilter, setTblFilter] = useState({
-    order_no: [],
-    shipmentidD: [],
-    modeD: [],
-    originD: [],
-    DestD: [],
-    etdD: [],
-    etaD: [],
-    statusD: [],
-  });
-  const idd = useSelector((state) => state.Booking?.booking?.data);
-    const getUniqueOptions = (array, key) => {
-    return Array.from(new Set(array?.map((data) => data[key])))?.map((value) => ({
-      label: value,
-      value,
-    }));
-  };
-
-  const orderId_ = getUniqueOptions(idd, "order_no");
-  const ShipId = getUniqueOptions(idd, "id");
-  const Mode_ = getUniqueOptions(idd, "mode");
-  const Org_ = getUniqueOptions(idd, "origin");
-  const dest_ = getUniqueOptions(idd, "destination");
-  const eta_ = getUniqueOptions(idd, "eta_ata");
-  const etd_ = getUniqueOptions(idd, "etd_atd");
-  const status_ = getUniqueOptions(idd, "status");
-
-  const handleChangeFilter = (field, value) => {
-    setTblFilter({
-      ...tblFilter,
-      [field]: value,
-    });
-    console.log("selectId", value);
-  };
-  const FilterOrderRow = () => {
-    return (
-      <MultiSelect
-        className="custom-multi-select"
-        value={tblFilter.order_no}
-        options={orderId_}
-        filter
-        style={{
-          position: "absolute",
-          opacity: "0",
-          width: "20px",
-          fontSize: "10px",
-          // maxWidth:"100px"
-        }}
-        showSelectAll={false}
-        onChange={(e) => handleChangeFilter("order_no", e.value)}
-        display="chip"
-        placeholder="Select"
-        itemTemplate={(option) => {
-          return (
-            <Tooltip placement="topLeft" title={option.label}>
-              <span>{option.label}</span>
-            </Tooltip>
-          );
-        }}
-      />
-    );
-  };
-  const FilterIdRow = () => {
-    return (
-      <MultiSelect
-        className="custom-multi-select"
-        value={tblFilter.shipmentidD}
-        options={ShipId}
-        filter
-        style={{
-          position: "absolute",
-          opacity: "0",
-          width: "20px",
-          fontSize: "10px",
-        }}
-        showSelectAll={false}
-        onChange={(e) => handleChangeFilter("shipmentidD", e.value)}
-        display="chip"
-        placeholder="Select"
-        itemTemplate={(option) => {
-          return (
-            <Tooltip placement="topLeft" title={option.label}>
-              <span>{option.label}</span>
-            </Tooltip>
-          );
-        }}
-      />
-    );
-  };
-  const FilterModeRow = () => {
-    return (
-      <MultiSelect
-        className="custom-multi-select"
-        value={tblFilter.modeD}
-        options={Mode_}
-        filter
-        style={{
-          position: "absolute",
-          opacity: "0",
-          width: "20px",
-          fontSize: "10px",
-          // maxWidth:"100px"
-        }}
-        showSelectAll={false}
-        onChange={(e) => handleChangeFilter("modeD", e.value)}
-        display="chip"
-        placeholder="Select"
-        itemTemplate={(option) => {
-          return (
-            <Tooltip placement="topLeft" title={option.label}>
-              <span>{option.label}</span>
-            </Tooltip>
-          );
-        }}
-      />
-    );
-  };
-  const FilterOrgRow = () => {
-    return (
-      <MultiSelect
-        className="custom-multi-select"
-        value={tblFilter.originD}
-        options={Org_}
-        filter
-        style={{
-          position: "absolute",
-          opacity: "0",
-          width: "20px",
-          fontSize: "10px",
-          // maxWidth:"100px"
-        }}
-        showSelectAll={false}
-        onChange={(e) => handleChangeFilter("originD", e.value)}
-        display="chip"
-        placeholder="Select"
-        itemTemplate={(option) => {
-          return (
-            <Tooltip placement="topLeft" title={option.label}>
-              <span>{option.label}</span>
-            </Tooltip>
-          );
-        }}
-      />
-    );
-  };
-  const FilterDestRow = () => {
-    return (
-      <MultiSelect
-        className="custom-multi-select"
-        value={tblFilter.DestD}
-        options={dest_}
-        filter
-        style={{
-          position: "absolute",
-          opacity: "0",
-          width: "20px",
-          fontSize: "10px",
-          // maxWidth:"100px"
-        }}
-        showSelectAll={false}
-        onChange={(e) => handleChangeFilter("DestD", e.value)}
-        display="chip"
-        placeholder="Select"
-        itemTemplate={(option) => {
-          return (
-            <Tooltip placement="topLeft" title={option.label}>
-              <span>{option.label}</span>
-            </Tooltip>
-          );
-        }}
-      />
-    );
-  };
-  const FilterETDRow = () => {
-    return (
-      <MultiSelect
-        className="custom-multi-select"
-        value={tblFilter.etdD}
-        options={etd_}
-        filter
-        style={{
-          position: "absolute",
-          opacity: "0",
-          width: "20px",
-          fontSize: "10px",
-          // maxWidth:"100px"
-        }}
-        showSelectAll={false}
-        onChange={(e) => handleChangeFilter("etdD", e.value)}
-        display="chip"
-        placeholder="Select"
-        itemTemplate={(option) => {
-          return (
-            <Tooltip placement="topLeft" title={option.label}>
-              <span>{option.label}</span>
-            </Tooltip>
-          );
-        }}
-      />
-    );
-  };
-  const FilterETARow = () => {
-    return (
-      <MultiSelect
-        className="custom-multi-select"
-        value={tblFilter.etaD}
-        options={eta_}
-        filter
-        style={{
-          position: "absolute",
-          opacity: "0",
-          width: "20px",
-          fontSize: "10px",
-          // maxWidth:"100px"
-        }}
-        showSelectAll={false}
-        onChange={(e) => handleChangeFilter("etaD", e.value)}
-        display="chip"
-        placeholder="Select"
-        itemTemplate={(option) => {
-          return (
-            <Tooltip placement="topLeft" title={option.label}>
-              <span>{option.label}</span>
-            </Tooltip>
-          );
-        }}
-      />
-    );
-  };
-  const FilterStatusRow = () => {
-    return (
-      <MultiSelect
-        className="custom-multi-select"
-        value={tblFilter.statusD}
-        options={status_}
-        filter
-        style={{
-          position: "absolute",
-          opacity: "0",
-          width: "20px",
-          fontSize: "10px",
-          // maxWidth:"100px"
-        }}
-        showSelectAll={false}
-        onChange={(e) => handleChangeFilter("statusD", e.value)}
-        display="chip"
-        placeholder="Select"
-        itemTemplate={(option) => {
-          return (
-            <Tooltip placement="topLeft" title={option.label}>
-              <span>{option.label}</span>
-            </Tooltip>
-          );
-        }}
-      />
-    );
-  };
-  const filteredDataa = filterData.filter((item) => {
-    // Customize this logic based on your specific filter requirements
-    return (
-      (tblFilter.order_no.length === 0 || tblFilter.order_no.includes(item.order_no)) &&
-      (tblFilter.shipmentidD.length === 0 || tblFilter.shipmentidD.includes(item.id)) &&
-      (tblFilter.modeD.length === 0 || tblFilter.modeD.includes(item.mode)) &&
-      (tblFilter.originD.length === 0 || tblFilter.originD.includes(item.origin)) &&
-      (tblFilter.DestD.length === 0 || tblFilter.DestD.includes(item.destination)) &&
-      (tblFilter.etaD.length === 0 || tblFilter.etaD.includes(item.eta_ata)) &&
-      (tblFilter.etdD.length === 0 || tblFilter.etdD.includes(item.etd_atd)) &&
-      (tblFilter.statusD.length === 0 || tblFilter.statusD.includes(item.status)) 
-      // Add more conditions for other filters
-    );
-  });
+  const paginatedData = filteredData.slice(startIndex, startIndex + itemsPerPage);
+  const noData=()=>{
+    return <div className="no-options ">No Data Found</div>;
+  }
   return (
     <div
       style={{
@@ -552,7 +574,7 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
       }}
     >
       <DataTable
-        value={currentPageData}
+        value={paginatedData}
         dataKey="shipmentId"
         paginator={false}
         rows={10}
@@ -561,6 +583,10 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
         // paginatorTemplate=" PrevPageLink PageLinks NextPageLink  CurrentPageReport "
         removableSort
         rowClassName={rowClassName}
+        className={`${filteredData.length === 0 ? 'text-center' : ''}`}
+        style={{height:"353px"}}
+        emptyMessage={noData()}
+        
       >
         <Column
           field="order_no"
@@ -595,15 +621,13 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
             </span>
           }
           body={shipmentTemplateId}
-          // filterElement={representativeRowFilterTemplate}
-          // className="ps-4"
-          style={{paddingLeft:"30px"}}
+          style={{paddingLeft:"20px",width:"180px"}}
           headerClassName="custom-header"
         ></Column>
         <Column
           field="id"
-          header={
-           
+          headerStyle={{width:"150px"}}
+          header={           
               <span
                 style={{ fontFamily: "Roboto", cursor: "pointer" }}
                 className=" d-flex"
@@ -634,11 +658,13 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
               </span>
            
           }
-          // body={shipmentTemplate}
+          body={shipmentTemplateIdd}
           // className="p-3"
+          style={{paddingLeft:"30px"}}
         ></Column>
         <Column
           field="mode"
+          // headerStyle={{width:"50px"}}
           header={
             <span
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
@@ -670,7 +696,7 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
             </span>
           }
           // body={shipmentTemplate}
-          
+          style={{paddingLeft:"20px"}}
         ></Column>
 
         <Column
@@ -708,6 +734,7 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
           body={originBodyTemplate}
           headerClassName="custom-header"
           // className="p-3"
+          style={{width:"165px",paddingLeft:"20px"}}
         ></Column>
         <Column
           field="destination"
@@ -743,10 +770,13 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
           }
           body={destinationBodyTemplate}
           // className="p-3"
+          style={{width:"120px",paddingLeft:"30px"}}
+
         ></Column>
 
         <Column
           field="etd/atd"
+          // headerStyle={{width:"80px"}}
           header={
             <span className=" d-flex" style={{ position: "relative" }}>
               ETD/ATD
@@ -777,9 +807,11 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
           body={bodyTemplate}
           bodyClassName="custom-cell"
           // className="p-3"
+          style={{paddingLeft:"20px"}}
         ></Column>
         <Column
           field="eta/ata"
+          // headerStyle={{width:"80px"}}
           header={
             <span className=" d-flex">
               ETA/ATA
@@ -810,11 +842,12 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
           body={bodyTemplateEtd}
           bodyClassName="custom-cell"
           // className="p-3"
+          style={{paddingLeft:"20px"}}
         ></Column>
         <Column
           field="status"
-          header={
-            <span className=" d-flex">
+          header={         
+          <span className=" d-flex" >
               Status
               {FilterStatusRow()}
               <div
@@ -840,12 +873,14 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
               </div>
             </span>
           }
+          headerStyle={{width:"130px",paddingLeft:"20px"}}
           bodyClassName={(rowData) =>
             rowData.status === "Booking In Progress"
               ? "booking-progress-cell"
               : "booked-cell "
           }
           className="text-start my-3"
+          style={{marginLeft:"20px"}}
         ></Column>
         <Column
           field="action"
@@ -858,6 +893,7 @@ const AllBookings = ({ filterData, selectedStatus, filterValue }) => {
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         totalItems={filteredData?.length}
+        onPageChange={() => setCurrentPage(1)}
       />
       {/* <Steppertrack
         isModalOpen={isModalOpen}

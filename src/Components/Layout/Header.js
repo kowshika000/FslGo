@@ -117,13 +117,13 @@ const Header = ({ activePage }) => {
               Invoice
             </Typography>
           </Link>
-          <Link to="/inbox" style={{ textDecoration: "none" }}>
+          <Link to="/quick" style={{ textDecoration: "none" }}>
             <Typography
               sx={{
                 fontSize: "15px",
                 fontWeight: "400",
                 color:
-                  location.pathname === "/inbox"
+                  location.pathname === "/quick"
                     ? "white"
                     : "rgba(255, 255, 255, 0.5)",
                 padding: "20px",
@@ -132,7 +132,7 @@ const Header = ({ activePage }) => {
                 },
               }}
             >
-              Inbox (35)
+             Quick Booking
             </Typography>
           </Link>
         </Box>

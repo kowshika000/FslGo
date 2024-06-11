@@ -3,8 +3,10 @@ import Map from "./Map/Map";
 import BookingTabs from "./ShipmentTable/BookingTabs";
 import "./ShipBookingTabs.css";
 import UpcomingSailings from "../Dashboard/Upcoming/UpcomingSailings";
-import uil_globe from "../../assets/uil_globe.png";
-import ph_table from "../../assets/ph_table.png";
+import uil_globe from "../../assets/VectorGlobe.png";
+import ph_table from "../../assets/VectorList1.png";
+import globBlack from "../../assets/globBlack.png";
+import listGray from "../../assets/globListGray.png"
 
 const ShipmentsHome = () => {
   const [showText, setShowText] = useState(false);
@@ -30,14 +32,25 @@ const ShipmentsHome = () => {
         className="shipmentIndex mb-4 mx-auto"
       >
         {!showText ? (
-          <div className="py-4 d-flex justify-content-end">
-            <div>
+          showmap ? (         
+          <div className="py-4 d-flex justify-content-end gap-1">
+            <div style={{cursor:"pointer"}}>
               <img src={ph_table} onClick={haddleCloseMap} />
             </div>
-            <div>
+            <div style={{cursor:"pointer"}}>
               <img src={uil_globe} onClick={haddleShowMap} />
             </div>
           </div>
+        ):(
+          <div className="py-4 d-flex justify-content-end gap-1">
+          <div style={{cursor:"pointer"}}>
+            <img src={listGray} onClick={haddleCloseMap} width="18px" height="14px"/>
+          </div>
+          <div style={{cursor:"pointer"}}>
+            <img src={globBlack} onClick={haddleShowMap} width="15px" height="15px"/>
+          </div>
+        </div>
+        ) 
         ) : (
           ""
         )}

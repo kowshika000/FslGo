@@ -15,7 +15,7 @@ import image2 from "../../../assets/Shape (1).png";
 import image3 from "../../../assets/Shape (2).png";
 import DailyReportTable from "./DailyReportTable";
 
-function BookingTabs({ showText, setShowText }) {
+function BookingTabs({ showText, setShowText, }) {
   const [searchQuery] = useState("");
   const [data, setData] = useState([]);
   const ShipmentData = useSelector((state) => state.Booking);
@@ -57,21 +57,25 @@ function BookingTabs({ showText, setShowText }) {
     useState("Past 60 Days");
   const [filterValue, setFilterValue] = useState(60);
 
-  const items = ["Past 60 Days", "Past 30 Days", "Past 15 Days"];
+  const items = ["Past 30 Days", "Past 60 Days", "Past 90 Days", "Past 6 Months"];
   useEffect(() => {
-    if (selectedDropdownItem === "Past 15 Days") {
-      setFilterValue(15);
+    if (selectedDropdownItem === "Past 90 Days") {
+      setFilterValue(90);
     } else if (selectedDropdownItem === "Past 30 Days") {
       setFilterValue(30);
     } else if (selectedDropdownItem === "Past 60 Days") {
       setFilterValue(60);
+    }else if (selectedDropdownItem === "Past 6 Days") {
+      setFilterValue(6);
     }
+
   }, [selectedDropdownItem]);
   const onChange = (key) => {
     switch (key) {
       case "1":
         filterData("All");
         setSelectedButton(null);
+       
         break;
       // case "2":
       //   filterData(["Booked In Progress"]);
@@ -145,7 +149,13 @@ function BookingTabs({ showText, setShowText }) {
   const handleTableChange = () => {
     setShowText(true);
   };
-
+  const handlShowFilter=()=>{
+    if(!showText){
+      setVisible(true)
+    }else if(showText){
+      setShowText(false)
+    }
+  }
   return (
     <div
       className="mx-auto mb-4"
@@ -232,14 +242,15 @@ function BookingTabs({ showText, setShowText }) {
                     alignSelf: "center",
                     border: "1px solid #E7EAF0",
                     borderRadius: "8px",
+                    backgroundColor:"white",
                   }}
-                  className="px-1 d-flex me-2"
+                  className="px-1 d-flex me-2 datehover"
                 >
                   <Image
                     src={calendar}
-                    width="16px"
-                    height="12px"
-                    className="mt-2 pe-1"
+                    width="14px"
+                    height="14px"
+                    className="mt-2"
                   />
 
                   <div
@@ -249,6 +260,7 @@ function BookingTabs({ showText, setShowText }) {
                       outline: "none ",
                       height: "36px",
                     }}
+                    className="datehover"
                   >
                     <Dropdown
                       value={selectedDropdownItem}
@@ -257,9 +269,10 @@ function BookingTabs({ showText, setShowText }) {
                         setSelectedDropdownItem(e.value);
                       }}
                       options={items}
-                      // placeholder="Past 15 Days"
-                      className="w-full md:w-14rem"
+                      placeholder="Past 60 Days"
+                      className="w-full md:w-14rem datehover"
                       style={{ border: "none" }}
+                      
                     />
                   </div>
                 </div>
@@ -276,7 +289,7 @@ function BookingTabs({ showText, setShowText }) {
                   width="32px"
                   height="32px"
                   style={{ cursor: "pointer" }}
-                  onClick={() => setVisible(true)}
+                  onClick={handlShowFilter}
                 />
               </div>
               <div

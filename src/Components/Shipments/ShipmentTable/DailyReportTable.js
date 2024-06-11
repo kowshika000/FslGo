@@ -3,6 +3,9 @@ import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 
 function DailyReportTable() {
+  const noData=()=>{
+    return <div className="no-options ">No Data Found</div>;
+  }
   return (
     <div>
       <DataTable
@@ -13,6 +16,8 @@ function DailyReportTable() {
         currentPageReportTemplate="{first} to {last} out of {totalRecords} "
         // paginatorTemplate=" PrevPageLink PageLinks NextPageLink  CurrentPageReport "
         removableSort
+        style={{height:"400px"}}
+        emptyMessage={noData()}
       >
         <Column field="" header="Service" style={{ padding: "15px" }}></Column>
         <Column field="" header="Order No." className="p-3"></Column>
