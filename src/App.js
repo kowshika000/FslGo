@@ -17,6 +17,7 @@ import ShipmentBase from "./Components/ShipmentDetails/ShipmentTable/ShipmentBas
 import { CircularProgress, Box } from "@mui/material";
 import ProfileBase from "./Components/Profile/ProfileBase";
 import FindNewRate from "./Components/Quotations/QuotaionTable/QModal/FindNewRate/FindNewRate";
+import Quick from "./Components/QuickBooking/Quick";
 
 function App() {
   const dispatch = useDispatch();
@@ -89,6 +90,7 @@ function App() {
           <Route path="/shipmentdetails" element={<ShipmentBase />} />
           <Route path="/findnewrate" element={<FindNewRate/>} />
           <Route path="/profile" element={<ProfileBase />} />
+          <Route path="/quick" element={<Quick/>}/>
         </Routes>
       </div>
       <Footer />

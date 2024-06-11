@@ -122,3 +122,38 @@
 .message .text-red {
   color: red;
 }
+
+:where(.css-dev-only-do-not-override-1okl62o).ant-input-outlined:hover{
+  border-color: #CFD6DF !important;
+  background-color: #CFD6DF !important;
+  outline: none;
+  /* border: none; */
+}
+:where(.css-dev-only-do-not-override-1okl62o).ant-input-affix-wrapper >input.ant-input:hover{
+  background-color: #CFD6DF !important;
+}
+:where(.css-dev-only-do-not-override-1okl62o).ant-input-outlined:focus{
+  border-color: #FCE2D5 !important;
+  /* background-color: #CFD6DF !important; */
+  outline: none;
+  box-shadow: none; 
+}
+.datehover:hover{
+  background-color: #CFD6DF !important;
+}
+.p-dropdown-items{
+  padding:10px !important;
+  margin-bottom: 0;
+}
+.p-dropdown-panel {
+ margin-top: 6px !important;
+margin-left: -20px !important;
+width: 120px !important;
+
+}
+.cargo-picked-up {
+  background-color: #F01E1E  !important;
+}
+.cargo-picked-up:hover{
+  background-color: #DA1E28   !important;
+}

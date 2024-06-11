@@ -183,3 +183,38 @@
   color: white;
   
 }
+.booked-cell {
+  border-left: 1px solid #008000;
+  display: flex;
+  justify-content: start;
+  float: left;
+  padding-left: 8px;
+  padding-right: 8px;
+  background-color: rgba(0, 128, 0, 0.1);
+  display: inline-block;
+  height: 27px;
+  align-content: center !important;
+  align-self: center !important;
+}
+.booking-progress-cell {
+  background-color: #fcf0cc;
+  display: inline-block !important;
+  border-left: 1px solid #e3b04c;
+  display: flex;
+  justify-content: start;
+  padding-left: 8px;
+  padding-right: 8px;
+  float: left;
+  height: 27px;
+  align-content: center !important;
+  align-self: center !important;
+}
+.no-options {
+  text-align: center;
+  width: 100%; /* Ensure the div takes the full width of the cell */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  align-self: center;
+}
