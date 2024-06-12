@@ -228,7 +228,7 @@ const ShipmentBase = ({open,close,rowData}) => {
               >
                 <DialogContent>
                   <ShipmentHeader rowDatas={rowData} />
-                  <ShipmentTable contentListNoTitle={contentListNoTitle} tabListNoTitle={tabListNoTitle} setVesselmodalopen={setVesselmodalopen} close={close}  />
+                  <ShipmentTable contentListNoTitle={contentListNoTitle} tabListNoTitle={tabListNoTitle} setVesselmodalopen={setVesselmodalopen} close={close} rowDatas={rowData}  />
                   <VscClose size={22} color='#ffff' role='button' onClick={()=>close(false)} style={{position:"absolute",top:"0px",right:"-22px"}} />
                 </DialogContent>
               </Dialogs>
@@ -245,7 +245,7 @@ const ShipmentBase = ({open,close,rowData}) => {
                   <VscClose size={22} color='#ffff' role='button' onClick={()=>setVesselmodalopen(false)} style={{position:"absolute",top:"0px",right:"-22px"}} />
                 </DialogContent>
               </Dialog>
-              
+
               </>
   )
 }
