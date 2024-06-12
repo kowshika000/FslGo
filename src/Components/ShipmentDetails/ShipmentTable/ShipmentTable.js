@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 
 const ShipmentTable = ({tabListNoTitle,contentListNoTitle,setVesselmodalopen,close}) => {
 
+    
+
     const [activeTabKey, setActiveTabKey] = useState('Milestones');
         const onTab2Change = (key) => {
                 setActiveTabKey(key);
@@ -21,7 +23,7 @@ const ShipmentTable = ({tabListNoTitle,contentListNoTitle,setVesselmodalopen,clo
             width:"100%",
             boxShadow: "0px 6px 18px 0px #0000001A"
           }}
-          className='container mx-auto p-0 mb-4 shipment_table_section'
+          className='mx-auto p-0 mb-4 shipment_table_section'
           tabList={tabListNoTitle}
           activeTabKey={activeTabKey}
           onTabChange={onTab2Change}
@@ -35,9 +37,10 @@ const ShipmentTable = ({tabListNoTitle,contentListNoTitle,setVesselmodalopen,clo
             </div>
             <Link 
                  onClick={handleNextModal}
+                 className='vessel_button'
                 style={{
                     padding:"14.5px 19.5px",
-                    backgroundColor:"#D40E0E",
+                    backgroundColor:"#F01E1E",
                     fontWeight:"700",
                     fontSize:"14px",
                     lineHeight:"14.4px",
@@ -48,6 +51,10 @@ const ShipmentTable = ({tabListNoTitle,contentListNoTitle,setVesselmodalopen,clo
                     position:"absolute",
                     top:"6px",
                     right:"22px", 
+                    "& :hover": {
+                      backgroundColor: "green"
+                    },
+                    
                 }}
             >
                 View Vessel Tracking
