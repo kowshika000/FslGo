@@ -3,10 +3,14 @@ import { Box, Typography, Button } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
 import { Link, useLocation } from "react-router-dom";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import LogoutIcon from '@mui/icons-material/Logout';
+
 
 // import { ReactComponent as Logo } from "../../assets/Logo.svg";
 import Logo from "../../assets/fresGoLogo.jpg"
 import { ReactComponent as Bell } from "../../assets/bell.svg";
+import { Dropdown } from "antd";
 
 const Header = ({ activePage }) => {
   const location = useLocation();
@@ -20,6 +24,50 @@ const Header = ({ activePage }) => {
     setHeaderFocused(false);
   };
 
+  const items = [
+    {
+      key:'1',
+      label: (
+        <Link 
+          to="/profile"
+          className="text-decoration-none " 
+          style={
+            {
+              fontSize:"16px",
+              fontWeight:"400",
+              letterSpacing:".01em",
+              color:"black",
+              marginRight:"70px",
+              lineHeight:"27px",
+            }
+          }
+          >
+           <AccountCircleIcon sx={{fontSize:"23px", color:"#384656"}} className="me-3" />Profile
+          </Link>
+      )
+    },
+    {
+      key:'2',
+      label: (
+        <Link
+          className="text-decoration-none"
+          style={
+            {
+              fontSize:"14px",
+              fontWeight:"400",
+              letterSpacing:".01em",
+              color:"black",
+              marginRight:"70px",
+              lineHeight:"27px",
+            }
+          }
+        >
+          <LogoutIcon sx={{fontSize:"23px", color:"#384656"}} className="me-3"/>
+          Logout
+        </Link>
+      )
+    },
+  ]
   return (
     <div
       className="d-flex justify-content-between"
@@ -184,6 +232,15 @@ const Header = ({ activePage }) => {
             </Typography>
           </div>
         </div>
+        <Dropdown 
+          menu={{
+            items,
+          }}
+          placement="bottomRight"
+          arrow={{
+            pointAtCenter:true,
+          }}
+        >
         <div
           style={{
             backgroundColor: "#FB450C",
@@ -193,20 +250,19 @@ const Header = ({ activePage }) => {
           }}
           className="justify-text-center align-content-center"
         >
-          <Link to='/profile' className="text-decoration-none">
             <Typography
               sx={{
                 color: "white",
                 fontFamily: "Lato",
                 fontSize: "16px",
                 fontWeight: "400",
-                textAlign: "center",
+                textAlign: "center",  
               }}
             >
             G
             </Typography>
-          </Link>
         </div>
+        </Dropdown>
       </div>
     </div>
   );

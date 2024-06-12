@@ -18,11 +18,11 @@ const PasswordRules = () => {
         <span>Uppercase letter (A-Z)</span>
       </div>
       <div className="mt-2 number_contain">
-        <img src={tikIcon} alt="" className="me-2" />
+        <img src={tikIcon} alt="" className="me-2" style={{opacity:".4"}}/>
         <span>Number (0-9)</span>
       </div>
       <div className="mt-2 number_contain">
-        <img src={tikIcon} alt="" className="me-2" />
+        <img src={tikIcon} alt="" className="me-2" style={{opacity:".4"}}/>
         <span>Special characters (!"# %&'()*+,-./:;?@[\]^_`{}~)</span>
       </div>
     </div>
