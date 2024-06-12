@@ -33,7 +33,7 @@ const Header = ({ activePage }) => {
           className="text-decoration-none " 
           style={
             {
-              fontSize:"16px",
+              fontSize:"14px",
               fontWeight:"400",
               letterSpacing:".01em",
               color:"black",
@@ -240,6 +240,7 @@ const Header = ({ activePage }) => {
           arrow={{
             pointAtCenter:true,
           }}
+          trigger={['click']}
         >
         <div
           style={{
@@ -248,6 +249,7 @@ const Header = ({ activePage }) => {
             height: "35px",
             borderRadius: "50px",
           }}
+          role="button"
           className="justify-text-center align-content-center"
         >
             <Typography

@@ -189,8 +189,9 @@ const ProfileBase = () => {
               }}
               placement="bottomRight"
               arrow
+              trigger={['click']}
             >
-              <p className="m-0">Need Help?</p>
+              <p className="m-0" role="button">Need Help?</p>
             </Dropdown>
           </div>
         </div>

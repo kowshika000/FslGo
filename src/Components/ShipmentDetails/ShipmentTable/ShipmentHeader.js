@@ -149,6 +149,9 @@ const ShipmentHeader = ({rowDatas}) => {
     manageIcons();
   };
 
+  const ship_id = "12060400067845654567"
+  const order_no = "ASO/0143/245757755555555555555555555555555555555555"
+
   return (
     <>
       <Card
@@ -217,13 +220,13 @@ const ShipmentHeader = ({rowDatas}) => {
             <h6 className="m-0 me-2">Order ID:</h6>
             {fileteredMilestone?.map((item) => {
               return <h6 className="m-0">{/*ASO/0143/247887878*/}
-                {item?.order_no?.length <= 20 ? (
+                {item?.order_no?.length <= 70 ? (
                               item?.order_no
                             ) : (
                               <Tooltip placement="topLeft" zIndex={9999} title={item?.order_no}>
                                 <span role="button">
                                   {item?.order_no
-                                    .slice(0, 20)
+                                    .slice(0, 69)
                                     .trim()
                                     .split("")
                                     .join("") + "..."}
