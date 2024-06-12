@@ -14,6 +14,7 @@ import image1 from "../../../assets/Shape1.png";
 import image2 from "../../../assets/Shape (1).png";
 import image3 from "../../../assets/Shape (2).png";
 import DailyReportTable from "./DailyReportTable";
+import { CloseCircleOutlined } from "@ant-design/icons";
 
 function BookingTabs({ showText, setShowText }) {
   const [searchQuery] = useState("");
@@ -69,16 +70,16 @@ function BookingTabs({ showText, setShowText }) {
   useEffect(() => {
     if (selectedDropdownItem === "Past 90 Days") {
       setFilterValue(90);
-      setFilterMonthValue(null)
+      setFilterMonthValue(null);
     } else if (selectedDropdownItem === "Past 30 Days") {
       setFilterValue(30);
-      setFilterMonthValue(null)
+      setFilterMonthValue(null);
     } else if (selectedDropdownItem === "Past 60 Days") {
       setFilterValue(60);
-      setFilterMonthValue(null)
+      setFilterMonthValue(null);
     } else if (selectedDropdownItem === "Past 6 Months") {
       setFilterMonthValue(6);
-      setFilterValue(null)
+      setFilterValue(null);
     }
   }, [selectedDropdownItem]);
 
@@ -174,6 +175,9 @@ function BookingTabs({ showText, setShowText }) {
       setShowText(false);
     }
   };
+  const handleClearFilter=()=>{
+
+  }
   return (
     <div
       className="mx-auto mb-4"
@@ -214,28 +218,39 @@ function BookingTabs({ showText, setShowText }) {
               {!showText ? (
                 <Tabs defaultActiveKey="1" onChange={onChange}>
                   <Tabs.TabPane
-                    tab={`All Bookings (${schedule?.all ?schedule?.all:0})`}
+                    tab={`All Bookings (${schedule?.all ? schedule?.all : 0})`}
                     key="1"
                   />
                   {/* <Tabs.TabPane
                     tab={`Pending Action (${schedule?.pending})`}
                     key="2"
                   /> */}
-                  <Tabs.TabPane tab={`Booked (${schedule?.booked ? schedule?.booked:0})`} key="2" />
                   <Tabs.TabPane
-                    tab={`In-Transit (${schedule?.in_transit ? schedule?.in_transit:0})`}
+                    tab={`Booked (${schedule?.booked ? schedule?.booked : 0})`}
+                    key="2"
+                  />
+                  <Tabs.TabPane
+                    tab={`In-Transit (${
+                      schedule?.in_transit ? schedule?.in_transit : 0
+                    })`}
                     key="3"
                   />
                   <Tabs.TabPane
-                    tab={`Arrived (${schedule?.arrived ? schedule?.arrived:0})`}
+                    tab={`Arrived (${
+                      schedule?.arrived ? schedule?.arrived : 0
+                    })`}
                     key="4"
                   />
                   <Tabs.TabPane
-                    tab={`Delivered (${schedule?.arrived ? schedule?.arrived:0})`}
+                    tab={`Delivered (${
+                      schedule?.arrived ? schedule?.arrived : 0
+                    })`}
                     key="5"
                   />
                   <Tabs.TabPane
-                    tab={`Cancelled (${schedule?.cancelled ? schedule?.cancelled:0})`}
+                    tab={`Cancelled (${
+                      schedule?.cancelled ? schedule?.cancelled : 0
+                    })`}
                     key="6"
                   />
                 </Tabs>
@@ -252,15 +267,34 @@ function BookingTabs({ showText, setShowText }) {
                 float: "right",
               }}
             >
+           
               {showText ? (
                 ""
               ) : (
+                <>
+                {/* <div
+                style={{
+                  alignSelf: "center",
+                  border: "1px solid #E7EAF0",
+                  borderRadius: "8px",
+                  backgroundColor: "white",
+                  height:"36px",
+                  paddingTop:"5px",
+                  
+                }}
+                onClick={handleClearFilter}
+                className="px-1  d-flex me-2 datehover"
+              >
+                
+                <span>Filter</span>
+              </div> */}
                 <div
                   style={{
                     alignSelf: "center",
                     border: "1px solid #E7EAF0",
                     borderRadius: "8px",
                     backgroundColor: "white",
+                    height: "36px",
                   }}
                   className="px-1 d-flex me-2 datehover"
                 >
@@ -293,6 +327,7 @@ function BookingTabs({ showText, setShowText }) {
                     />
                   </div>
                 </div>
+                </>
               )}
               <div
                 style={{

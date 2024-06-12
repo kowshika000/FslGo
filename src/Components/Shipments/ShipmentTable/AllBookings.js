@@ -18,14 +18,15 @@ import { Dropdown } from "primereact/dropdown";
 import ShipmentBase from "../../ShipmentDetails/ShipmentTable/ShipmentBase";
 import { MultiSelect } from "primereact/multiselect";
 import { useSelector } from "react-redux";
+import { Tag } from "primereact/tag";
+import { CloseOutlined } from "@ant-design/icons";
 
 const AllBookings = ({
   filterData,
-  selectedStatus,
   filterValue,
   currentPage,
   setCurrentPage,
-  filterMonthValue
+  filterMonthValue,
 }) => {
   console.log("filterValue", filterValue);
 
@@ -53,8 +54,8 @@ const AllBookings = ({
 
   const [filteredData, setFilteredData] = useState([]);
   const [tblFilter, setTblFilter] = useState({
-    order_no: [],
     shipmentidD: [],
+    order_no: [],
     modeD: [],
     originD: [],
     DestD: [],
@@ -63,23 +64,52 @@ const AllBookings = ({
     statusD: [],
   });
   const idd = useSelector((state) => state.Booking?.booking?.data);
-  const getUniqueOptions = (array, key) => {
-    return Array.from(new Set(array?.map((data) => data[key])))?.map(
-      (value) => ({
-        label: value,
-        value,
-      })
+  const filteredDataa = filterData.filter((item) => {
+    return (
+      (tblFilter.shipmentidD.length === 0 ||
+        tblFilter.shipmentidD.includes(item.id)) &&
+      (tblFilter.order_no.length === 0 ||
+        tblFilter.order_no.includes(item.order_no)) &&
+      (tblFilter.modeD.length === 0 || tblFilter.modeD.includes(item.mode)) &&
+      (tblFilter.originD.length === 0 ||
+        tblFilter.originD.includes(item.origin)) &&
+      (tblFilter.DestD.length === 0 ||
+        tblFilter.DestD.includes(item.destination)) &&
+      (tblFilter.etaD.length === 0 || tblFilter.etaD.includes(item.eta_ata)) &&
+      (tblFilter.etdD.length === 0 || tblFilter.etdD.includes(item.etd_atd)) &&
+      (tblFilter.statusD.length === 0 ||
+        tblFilter.statusD.includes(item.status))
     );
+  });
+  console.log("filter", filteredDataa);
+
+  useEffect(() => {
+    setFilteredData(filteredDataa);
+    setCurrentPage(1);
+  }, [tblFilter, filterData]);
+
+  const getUniqueOptions = (array, key) => {
+    if (!Array.isArray(array) || !array.length) {
+      return [];
+    }
+    return Array.from(new Set(array.map((data) => data[key]))).map((value) => ({
+      label: value,
+      value,
+    }));
   };
 
-  const orderId_ = getUniqueOptions(idd, "order_no");
-  const ShipId = getUniqueOptions(idd, "id");
-  const Mode_ = getUniqueOptions(idd, "mode");
-  const Org_ = getUniqueOptions(idd, "origin");
-  const dest_ = getUniqueOptions(idd, "destination");
-  const eta_ = getUniqueOptions(idd, "eta_ata");
-  const etd_ = getUniqueOptions(idd, "etd_atd");
-  const status_ = getUniqueOptions(idd, "status");
+  const handleShowOption = idd;
+
+  console.log("filterOption", handleShowOption);
+
+  const ShipId = getUniqueOptions(handleShowOption, "id");
+  const orderId_ = getUniqueOptions(handleShowOption, "order_no");
+  const Mode_ = getUniqueOptions(handleShowOption, "mode");
+  const Org_ = getUniqueOptions(handleShowOption, "origin");
+  const dest_ = getUniqueOptions(handleShowOption, "destination");
+  const eta_ = getUniqueOptions(handleShowOption, "eta_ata");
+  const etd_ = getUniqueOptions(handleShowOption, "etd_atd");
+  const status_ = getUniqueOptions(handleShowOption, "status");
 
   const handleChangeFilter = (field, value) => {
     setTblFilter({
@@ -88,34 +118,7 @@ const AllBookings = ({
     });
     console.log("selectId", value);
   };
-  const FilterOrderRow = () => {
-    return (
-      <MultiSelect
-        className="custom-multi-select"
-        value={tblFilter.order_no}
-        options={orderId_}
-        filter
-        style={{
-          position: "absolute",
-          opacity: "0",
-          width: "20px",
-          fontSize: "10px",
-          // maxWidth:"100px"
-        }}
-        showSelectAll={false}
-        onChange={(e) => handleChangeFilter("order_no", e.value)}
-        display="chip"
-        placeholder="Select "
-        itemTemplate={(option) => {
-          return (
-            <Tooltip placement="topLeft" title={option.label}>
-              <span>{option.label}</span>
-            </Tooltip>
-          );
-        }}
-      />
-    );
-  };
+
   const FilterIdRow = () => {
     return (
       <MultiSelect
@@ -133,6 +136,7 @@ const AllBookings = ({
         onChange={(e) => handleChangeFilter("shipmentidD", e.value)}
         display="chip"
         placeholder="Select"
+        
         // itemTemplate={(option) => {
         //   return (
         //     <Tooltip placement="topLeft" title={option.label}>
@@ -141,6 +145,36 @@ const AllBookings = ({
         //   );
         // }}
       />
+    );
+  };
+  const FilterOrderRow = () => {
+    return (
+      <div className="custom-multi-select-container">
+        <MultiSelect
+          className="custom-multi-select"
+          value={tblFilter.order_no}
+          options={orderId_}
+          filter
+          style={{
+            position: "absolute",
+            opacity: "0",
+            width: "20px",
+            fontSize: "10px",
+            // maxWidth:"100px"
+          }}
+          showSelectAll={false}
+          onChange={(e) => handleChangeFilter("order_no", e.value)}
+          display="chip"
+          placeholder="Select "
+          itemTemplate={(option) => {
+            return (
+              <Tooltip placement="topLeft" title={option.label}>
+                <span>{option.label}</span>
+              </Tooltip>
+            );
+          }}
+        />
+      </div>
     );
   };
   const FilterModeRow = () => {
@@ -312,28 +346,6 @@ const AllBookings = ({
     );
   };
 
-  useEffect(() => {
-    const filteredDataa = filterData.filter((item) => {
-      return (
-        (tblFilter.order_no.length === 0 ||
-          tblFilter.order_no.includes(item.order_no)) &&
-        (tblFilter.shipmentidD.length === 0 ||
-          tblFilter.shipmentidD.includes(item.id)) &&
-        (tblFilter.modeD.length === 0 || tblFilter.modeD.includes(item.mode)) &&
-        (tblFilter.originD.length === 0 ||
-          tblFilter.originD.includes(item.origin)) &&
-        (tblFilter.DestD.length === 0 ||
-          tblFilter.DestD.includes(item.destination)) &&
-        (tblFilter.etaD.length === 0 ||
-          tblFilter.etaD.includes(item.eta_ata)) &&
-        (tblFilter.etdD.length === 0 ||
-          tblFilter.etdD.includes(item.etd_atd)) &&
-        (tblFilter.statusD.length === 0 ||
-          tblFilter.statusD.includes(item.status))
-      );
-    });
-    setFilteredData(filteredDataa);
-  }, [tblFilter, filterData]);
   // console.log("booking", filteredData);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, filteredData?.length);
@@ -584,14 +596,92 @@ const AllBookings = ({
     startIndex + itemsPerPage
   );
   const noData = () => {
-    return <div className="no-options ">No Data Found</div>;
+    return (
+      <div
+        className="no-options "
+        style={{ alignSelf: "center", height: "353px" }}
+      >
+        No Data Found
+      </div>
+    );
   };
+  const FilterTag = ({ field, filterValues, handleChangeFilter }) => {
+    if (!Array.isArray(filterValues)) {
+      return null;
+    }
+    const renderedColumns = new Set();
+    const anyFilterValuesPresent = filterValues.some(
+      (values) => values.length > 0
+    );
+
+    return (
+      <>
+        {filterValues.map((option) => {
+          if (!renderedColumns.has(field)) {
+            renderedColumns.add(field);
+            return (
+              <Tag
+                key={field}
+                style={{ backgroundColor: "#F01E1E", marginRight: "10px" }}
+                className="px-2 py-1"
+                rounded
+              >
+                <div>
+                  {field === "order_no" ? "Order No" : ""}
+                  {field === "shipmentidD" ? "Shipment Id" : ""}
+                  {field === "modeD" ? "Mode" : ""}
+                  {field === "etdD" ? "ETD/ATD" : ""}
+                  {field === "etaD" ? "ETA/ATA" : ""}
+                  {field === "statusD" ? "Status" : ""}
+                  {field === "originD" ? "Origin" : ""}
+                  {field === "DestD" ? "Destination" : ""}
+                  <span className="ms-2">
+                    <CloseOutlined
+                      onClick={() => handleChangeFilter(field, [])}
+                    />
+                  </span>
+                </div>
+              </Tag>
+            );
+          }
+          return null;
+        })}
+
+        {/* {anyFilterValuesPresent && (
+          <div className="d-flex justify-content-end">
+            <CloseOutlined onClick={() => handleChangeFilter("", [])} />
+          </div>
+        )} */}
+      </>
+    );
+  };
+
   return (
     <div
       style={{
         backgroundColor: "white",
       }}
     >
+      <div className="">
+        {Object.entries(tblFilter).map(([field, filterValues]) => (
+          <FilterTag
+            key={field}
+            field={field}
+            filterValues={filterValues}
+            handleChangeFilter={handleChangeFilter}
+          />
+        ))}
+        {/* <div className="d-flex justify-content-end">
+          {Object.keys(tblFilter).length > 0 && (
+            <CloseOutlined
+              onClick={() => {
+                // Clear all filters
+                handleChangeFilter("all", {});
+              }}
+            />
+          )}
+        </div> */}
+      </div>
       <DataTable
         value={paginatedData}
         dataKey="shipmentId"
@@ -607,44 +697,8 @@ const AllBookings = ({
         emptyMessage={noData()}
       >
         <Column
-          field="order_no"
-          header={
-            <span
-              style={{ fontFamily: "Roboto", cursor: "pointer" }}
-              className="py-3 d-flex "
-            >
-              Order ID
-              {FilterOrderRow()}
-              <div
-                className="d-flex sorticon"
-                style={{ flexDirection: "column" }}
-              >
-                <IconButton
-                  onClick={() => {
-                    handleSort("order_no");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandLessIcon className="sortup" />
-                </IconButton>
-                <IconButton
-                  onClick={() => {
-                    handleSortDown("order_no");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandMoreIcon className="sortdown" />
-                </IconButton>
-              </div>
-            </span>
-          }
-          body={shipmentTemplateId}
-          style={{ paddingLeft: "20px",paddingRight:"10px", width: "165px" }}
-          headerClassName="custom-header"
-        ></Column>
-        <Column
           field="id"
-          headerStyle={{ width: "150px" }}
+          // headerStyle={{ width: "150px" }}
           header={
             <span
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
@@ -677,7 +731,43 @@ const AllBookings = ({
           }
           body={shipmentTemplateIdd}
           // className="p-3"
-          style={{paddingLeft: "10px",paddingRight:"10px" ,width:"165px"}}
+          style={{ paddingRight: "10px", width: "170px" }}
+        ></Column>
+        <Column
+          field="order_no"
+          header={
+            <span
+              style={{ fontFamily: "Roboto", cursor: "pointer" }}
+              className="py-3 d-flex "
+            >
+              Order No 
+              {FilterOrderRow()}
+              <div
+                className="d-flex sorticon"
+                style={{ flexDirection: "column" }}
+              >
+                <IconButton
+                  onClick={() => {
+                    handleSort("order_no");
+                  }}
+                  className="p-0"
+                >
+                  <ExpandLessIcon className="sortup" />
+                </IconButton>
+                <IconButton
+                  onClick={() => {
+                    handleSortDown("order_no");
+                  }}
+                  className="p-0"
+                >
+                  <ExpandMoreIcon className="sortdown" />
+                </IconButton>
+              </div>
+            </span>
+          }
+          body={shipmentTemplateId}
+          style={{ paddingLeft: "10px", paddingRight: "10px", width: "185px" }}
+          headerClassName="custom-header"
         ></Column>
         <Column
           field="mode"
@@ -713,7 +803,7 @@ const AllBookings = ({
             </span>
           }
           // body={shipmentTemplate}
-          style={{paddingLeft: "10px",paddingRight:"10px" }}
+          style={{ paddingLeft: "10px", paddingRight: "10px" }}
         ></Column>
 
         <Column
@@ -751,7 +841,7 @@ const AllBookings = ({
           body={originBodyTemplate}
           headerClassName="custom-header"
           // className="p-3"
-          style={{ width: "165px",paddingLeft: "10px",paddingRight:"10px" }}
+          style={{ width: "185px", paddingLeft: "10px", paddingRight: "10px" }}
         ></Column>
         <Column
           field="destination"
@@ -787,7 +877,7 @@ const AllBookings = ({
           }
           body={destinationBodyTemplate}
           // className="p-3"
-          style={{ width: "165px",paddingLeft: "10px",paddingRight:"10px" }}
+          style={{ width: "185px", paddingLeft: "10px", paddingRight: "10px" }}
         ></Column>
 
         <Column
@@ -823,7 +913,7 @@ const AllBookings = ({
           body={bodyTemplate}
           bodyClassName="custom-cell"
           // className="p-3"
-          style={{paddingLeft: "10px",paddingRight:"10px" }}
+          style={{ paddingLeft: "10px", paddingRight: "10px" }}
         ></Column>
         <Column
           field="eta/ata"
@@ -858,7 +948,7 @@ const AllBookings = ({
           body={bodyTemplateEtd}
           bodyClassName="custom-cell"
           // className="p-3"
-          style={{paddingLeft: "10px",paddingRight:"10px" }}
+          style={{ paddingLeft: "10px", paddingRight: "10px" }}
         ></Column>
         <Column
           field="status"
@@ -889,21 +979,25 @@ const AllBookings = ({
               </div>
             </span>
           }
-          headerStyle={{ width: "130px",paddingLeft: "10px",paddingRight:"10px" }}
+          headerStyle={{
+            width: "130px",
+            paddingLeft: "10px",
+            paddingRight: "10px",
+          }}
           bodyClassName={(rowData) =>
             rowData.status === "Booking In Progress"
               ? "booking-progress-cell"
               : "booked-cell "
           }
           className="text-start my-3"
-          style={{ marginLeft: "10px",marginRight:"10px" }}
+          style={{ marginLeft: "10px", marginRight: "10px" }}
         ></Column>
         <Column
           field="action"
           body={actionBodyTemplate}
           header={<span>Action</span>}
           className=" text-start"
-          headerStyle={{paddingLeft: "10px",paddingRight:"10px" }}
+          headerStyle={{ paddingLeft: "10px" }}
         ></Column>
       </DataTable>
       <Pagination

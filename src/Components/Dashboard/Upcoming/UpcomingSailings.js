@@ -231,7 +231,7 @@ const UpcomingSailings = () => {
     );
   };
   const sailingdataShow = () => {
-    if (sailingData.length === 0) {
+    if (sailingData?.length === 0) {
       return (
         <div
           className="text-center"
@@ -242,23 +242,23 @@ const UpcomingSailings = () => {
       );
     }
     return sailingData
-      .slice(0, displaySailingData)
-      .map((data, index) => renderAccordion(data, index));
+      ?.slice(0, displaySailingData)
+      ?.map((data, index) => renderAccordion(data, index));
   };
   const schedulesDataShow = () => {
-    if (schedules.length === 0) {
+    if (schedules?.length === 0) {
       return (
         <div
           className="text-center"
-          style={{ height: "70vh", alignContent: "center" }}
+          style={{ height: "50vh", alignContent: "center" }}
         >
           No data found
         </div>
       );
     }
     return schedules
-      .slice(0, displayedSchedules)
-      .map((data, index) => renderAccordion(data, index));
+      ?.slice(0, displayedSchedules)
+      ?.map((data, index) => renderAccordion(data, index));
   };
   return (
     <div
@@ -270,8 +270,8 @@ const UpcomingSailings = () => {
     >
       <Port />
 
-      {sailingData ? sailingdataShow() : schedules && schedulesDataShow()}
-
+      {sailingData ? sailingdataShow() : schedules? schedules : schedulesDataShow()}
+       
       <div
         className="card-footer p-3"
         style={{
@@ -282,7 +282,7 @@ const UpcomingSailings = () => {
         role="button"
         onClick={handleShowMore}
       >
-        {sailingData?.length !== 0 && schedules?.length !== 0 
+        {sailingData?.length !== 0  && schedules?.length !== 0 
           ? sailingData
           ? displaySailingData === 4
             ? "Show More"
