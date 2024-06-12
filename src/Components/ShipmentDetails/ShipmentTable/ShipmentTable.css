@@ -58,3 +58,8 @@
 .shipment_table_section .ant-tabs{
     width: 100%;
  } 
+
+ /* vessel_button */
+ .shipment_table_section .vessel_button:hover{
+    background-color: #DA1E28 !important;
+ }
