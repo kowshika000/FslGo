@@ -35,19 +35,19 @@ const ShipmentsHome = () => {
           showmap ? (         
           <div className="py-4 d-flex justify-content-end gap-1">
             <div style={{cursor:"pointer"}}>
-              <img src={ph_table} onClick={haddleCloseMap} />
+              <img src={listGray} onClick={haddleCloseMap} width="18px" height="14px"/>
             </div>
             <div style={{cursor:"pointer"}}>
-              <img src={uil_globe} onClick={haddleShowMap} />
+              <img src={globBlack} onClick={haddleShowMap} width="15px" height="15px"/>
             </div>
           </div>
         ):(
           <div className="py-4 d-flex justify-content-end gap-1">
           <div style={{cursor:"pointer"}}>
-            <img src={listGray} onClick={haddleCloseMap} width="18px" height="14px"/>
+            <img src={ph_table} onClick={haddleCloseMap} />
           </div>
           <div style={{cursor:"pointer"}}>
-            <img src={globBlack} onClick={haddleShowMap} width="15px" height="15px"/>
+            <img src={uil_globe} onClick={haddleShowMap} />
           </div>
         </div>
         ) 
@@ -58,7 +58,7 @@ const ShipmentsHome = () => {
         {/* <Map/> */}
         {/* <br /> */}
         <BookingTabs showText={showText} setShowText={setShowText} />
-        {showText ? "" : <UpcomingSailings />}
+        {showText ? "" :<div style={{height:"90v"}}> <UpcomingSailings /></div>}
       </div>
     </div>
   );

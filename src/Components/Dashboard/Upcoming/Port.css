@@ -67,3 +67,14 @@
   align-self: center;
   margin-right: 5px;
 }
+.book-now:hover{
+  background-color: #DA1E28 !important;
+}
+.focusSearch:focus-within{
+  border-color: #FCE2D5 !important;
+  box-shadow: 0 0 0 2px #FCE2D5!important;
+}
+.focusSearch:hover{
+  border-color: #FCE2D5 !important;
+  box-shadow: 0 0 0 2px #FCE2D5!important;
+}

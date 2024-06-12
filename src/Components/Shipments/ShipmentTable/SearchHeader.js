@@ -1,10 +1,9 @@
 import React, { useState } from "react";
-import { Row, Col, Input } from "antd";
-import { SearchOutlined } from "@ant-design/icons";
+import { Row, Col, Input, Tag } from "antd";
+import { SearchOutlined ,CloseOutlined} from "@ant-design/icons";
 import "./Booking.css";
 import ShipmentBase from "../../ShipmentDetails/ShipmentTable/ShipmentBase";
 import { Dialog, DialogContent } from "@mui/material";
-
 
 export const SearchHeader = ({
   bookingData,
@@ -12,16 +11,14 @@ export const SearchHeader = ({
   handleUpcomingArr,
   selectedButton,
 }) => {
-  //This is for searching according to booking_id,hbl number
   const [notfoundmodal, setNotfoundmodal] = useState(false);
-
   const [modal, setmodal] = useState(false);
   const [searchvalue, setSearchvalue] = useState("");
   const [filterdata, setFilterData] = useState("");
-  const data = bookingData?.data;
-  console.log("bookingData", data);
+  const [searchHistory, setSearchHistory] = useState([]); // New state for storing search history
 
-  //This function call only when pressing enter key
+  const data = bookingData?.data;
+
   const handleSubmit = (e) => {
     if (e.key === "Enter") {
       console.log(searchvalue);
@@ -30,21 +27,24 @@ export const SearchHeader = ({
       );
       if (filteredId.length) {
         setFilterData(filteredId);
-        setmodal(true); //This is for show datafoundModal
-        setNotfoundmodal(false); //This is for hide Not foundModal
+        setmodal(true);
+        setNotfoundmodal(false);
+        setSearchHistory(prevState => [...prevState, searchvalue]);
+        setSearchvalue("")
       } else {
-        setmodal(false); //This is for hide datafoundModal
-        setNotfoundmodal(true); //This is for show Not foundModal
+        setmodal(false);
+        setNotfoundmodal(true);
         console.log("not exist");
       }
     }
   };
 
-  const Shipmentpopup = (show) => {
+  const Shipmentpopup = () => {
     return (
       <ShipmentBase open={modal} close={setmodal} rowData={filterdata[0]} />
     );
   };
+  
   const Notfoundpopup = () => {
     return (
       <Dialog open={notfoundmodal} onClose={() => setNotfoundmodal(false)}>
@@ -57,13 +57,12 @@ export const SearchHeader = ({
 
   return (
     <>
-      
       <Row
         justify="space-between"
         className="w-full mb-3"
-        style={{ backgroundColor: "white" }}
+        // style={{ backgroundColor: "white" }}
       >
-        <Col>
+        <Col className="input-hover">
           <Input
             placeholder="Search shipment by PO/ Booking / HBL / Invoice Number "
             prefix={<SearchOutlined style={{ color: "#94A2B2" }} />}
@@ -75,7 +74,17 @@ export const SearchHeader = ({
             value={searchvalue}
             onChange={(e) => setSearchvalue(e.target.value)}
             onKeyDown={(e) => handleSubmit(e)}
+            // allowClear={{
+            //   clearIcon:<CloseOutlined/>
+            // }}
           />
+          {/* <div style={{ marginTop: '5px' }}>
+            {searchHistory.map((term, index) => (
+              <Tag color="#C8102E" 
+              style={{borderRadius:"8px", cursor: selectedButton ? "pointer" : "default"}}
+              key={index} closable onClose={() => setSearchHistory(prevState => prevState.filter(item => item !== term))}>{term}</Tag>
+            ))}
+          </div> */}
         </Col>
         <Col className="d-flex ">
           <div className="d-flex  justify-content-end ">

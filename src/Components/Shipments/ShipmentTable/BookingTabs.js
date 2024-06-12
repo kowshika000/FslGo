@@ -58,6 +58,8 @@ function BookingTabs({ showText, setShowText }) {
     useState("Past 60 Days");
   const [filterValue, setFilterValue] = useState(60);
 
+  const [filterMonthValue, setFilterMonthValue] = useState(null);
+
   const items = [
     "Past 30 Days",
     "Past 60 Days",
@@ -67,14 +69,19 @@ function BookingTabs({ showText, setShowText }) {
   useEffect(() => {
     if (selectedDropdownItem === "Past 90 Days") {
       setFilterValue(90);
+      setFilterMonthValue(null)
     } else if (selectedDropdownItem === "Past 30 Days") {
       setFilterValue(30);
+      setFilterMonthValue(null)
     } else if (selectedDropdownItem === "Past 60 Days") {
       setFilterValue(60);
-    } else if (selectedDropdownItem === "Past 6 Days") {
-      setFilterValue(6);
+      setFilterMonthValue(null)
+    } else if (selectedDropdownItem === "Past 6 Months") {
+      setFilterMonthValue(6);
+      setFilterValue(null)
     }
   }, [selectedDropdownItem]);
+
   const onChange = (key) => {
     switch (key) {
       case "1":
@@ -207,28 +214,28 @@ function BookingTabs({ showText, setShowText }) {
               {!showText ? (
                 <Tabs defaultActiveKey="1" onChange={onChange}>
                   <Tabs.TabPane
-                    tab={`All Bookings (${schedule?.all})`}
+                    tab={`All Bookings (${schedule?.all ?schedule?.all:0})`}
                     key="1"
                   />
                   {/* <Tabs.TabPane
                     tab={`Pending Action (${schedule?.pending})`}
                     key="2"
                   /> */}
-                  <Tabs.TabPane tab={`Booked (${schedule?.booked})`} key="2" />
+                  <Tabs.TabPane tab={`Booked (${schedule?.booked ? schedule?.booked:0})`} key="2" />
                   <Tabs.TabPane
-                    tab={`In-Transit (${schedule?.in_transit})`}
+                    tab={`In-Transit (${schedule?.in_transit ? schedule?.in_transit:0})`}
                     key="3"
                   />
                   <Tabs.TabPane
-                    tab={`Arrived (${schedule?.arrived})`}
+                    tab={`Arrived (${schedule?.arrived ? schedule?.arrived:0})`}
                     key="4"
                   />
                   <Tabs.TabPane
-                    tab={`Delivered (${schedule?.arrived})`}
+                    tab={`Delivered (${schedule?.arrived ? schedule?.arrived:0})`}
                     key="5"
                   />
                   <Tabs.TabPane
-                    tab={`Cancelled (${schedule?.cancelled})`}
+                    tab={`Cancelled (${schedule?.cancelled ? schedule?.cancelled:0})`}
                     key="6"
                   />
                 </Tabs>
@@ -353,6 +360,7 @@ function BookingTabs({ showText, setShowText }) {
               filterValue={filterValue}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
+              filterMonthValue={filterMonthValue}
             />
           ) : (
             <DailyReportTable />
