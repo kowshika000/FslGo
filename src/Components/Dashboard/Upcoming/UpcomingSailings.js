@@ -70,11 +70,15 @@ const UpcomingSailings = () => {
       <div key={index}>
         <Accordion
           sx={{
-            padding: "20px",
+            // paddingTop: "10px",
+            // paddingBottom:"10px",
+            // paddingLeft:"25px",
+            // paddingRight:"25px",
+             padding:"10px",
             border: "none",
             borderBottom: "1px solid #F3F5F7",
           }}
-          className="mx-2 acc-row"
+          className="acc-row mx-1"
         >
           <AccordionSummary
             expandIcon={<ArrowDropDownIcon />}
@@ -86,7 +90,7 @@ const UpcomingSailings = () => {
               <div style={{ width: "15%" }}>
                 <Typography
                   className="fw-bold"
-                  sx={{ fontSize: "15px", lineHeight: "22px" }}
+                  sx={{ fontSize: "14px", lineHeight: "22px" }}
                 >
                   {data.origin_date || data.ETD}
                 </Typography>
@@ -131,7 +135,7 @@ const UpcomingSailings = () => {
               <div className=" " style={{ width: "15%" }}>
                 <Typography
                   className="fw-bold"
-                  sx={{ fontSize: "15px", lineHeight: "22px" }}
+                  sx={{ fontSize: "14px", lineHeight: "22px" }}
                 >
                   {data.destination_date || data.ETA}
                 </Typography>
@@ -161,9 +165,13 @@ const UpcomingSailings = () => {
                   borderRadius: "6px",
                   color: "white",
                   border: "none",
+                  height:"30px",
+                  alignSelf:"center"
                 }}
               >
+                <span style={{fontSize:"13px"}}>
                 Book Now
+                </span>
               </button>
             </div>
           </AccordionSummary>
@@ -186,9 +194,9 @@ const UpcomingSailings = () => {
                 </Typography>
               </div>
               <div className="d-flex justify-content-between p-2 ">
-                <Typography sx={{ fontSize: "13px" }}>TRANSIT TIME</Typography>
+                <Typography sx={{ fontSize: "13px" }}>TRANSIT TIME (PORT TO PORT)</Typography>
                 <Typography className="fw-bolder" sx={{ fontSize: "13px" }}>
-                  {data.transit_ptp || data.ttport}
+                  {data.transit_ptp || data.ttport} Days
                 </Typography>
               </div>
             </div>
@@ -223,15 +231,31 @@ const UpcomingSailings = () => {
     );
   };
   const sailingdataShow = () => {
-
     if (sailingData.length === 0) {
-      return <div className="text-center">No data found</div>;
+      return (
+        <div
+          className="text-center"
+          style={{ height: "50vh", alignContent: "center" }}
+        >
+          No data found
+        </div>
+      );
     }
     return sailingData
       .slice(0, displaySailingData)
       .map((data, index) => renderAccordion(data, index));
   };
   const schedulesDataShow = () => {
+    if (schedules.length === 0) {
+      return (
+        <div
+          className="text-center"
+          style={{ height: "70vh", alignContent: "center" }}
+        >
+          No data found
+        </div>
+      );
+    }
     return schedules
       .slice(0, displayedSchedules)
       .map((data, index) => renderAccordion(data, index));
@@ -246,7 +270,7 @@ const UpcomingSailings = () => {
     >
       <Port />
 
-      {sailingData? sailingdataShow() : schedules &&  schedulesDataShow()}
+      {sailingData ? sailingdataShow() : schedules && schedulesDataShow()}
 
       <div
         className="card-footer p-3"
@@ -258,13 +282,14 @@ const UpcomingSailings = () => {
         role="button"
         onClick={handleShowMore}
       >
-        {sailingData
+        {sailingData?.length !== 0 && schedules?.length !== 0 
+          ? sailingData
           ? displaySailingData === 4
             ? "Show More"
             : "Show Less"
           : displayedSchedules === 4
           ? "Show More"
-          : "Show Less"}
+          : "Show Less" : ""} 
       </div>
     </div>
   );

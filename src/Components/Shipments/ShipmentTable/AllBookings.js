@@ -25,6 +25,7 @@ const AllBookings = ({
   filterValue,
   currentPage,
   setCurrentPage,
+  filterMonthValue
 }) => {
   console.log("filterValue", filterValue);
 
@@ -32,7 +33,7 @@ const AllBookings = ({
   const dispatch = useDispatch();
 
   const payload = {
-    filter_month: "",
+    filter_month: filterMonthValue,
     booking_type: "",
     status: "",
     spagesize: "",
@@ -371,6 +372,8 @@ const AllBookings = ({
           height: "30px",
           padding: "",
           gap: "8px",
+          // marginLeft:"10px",
+          // marginRight:"10px"
         }}
         label={buttonLabel}
         onClick={() => showModal(rowData)}
@@ -636,7 +639,7 @@ const AllBookings = ({
             </span>
           }
           body={shipmentTemplateId}
-          style={{ paddingLeft: "20px", width: "180px" }}
+          style={{ paddingLeft: "20px",paddingRight:"10px", width: "165px" }}
           headerClassName="custom-header"
         ></Column>
         <Column
@@ -674,7 +677,7 @@ const AllBookings = ({
           }
           body={shipmentTemplateIdd}
           // className="p-3"
-          style={{ paddingLeft: "30px" }}
+          style={{paddingLeft: "10px",paddingRight:"10px" ,width:"165px"}}
         ></Column>
         <Column
           field="mode"
@@ -710,7 +713,7 @@ const AllBookings = ({
             </span>
           }
           // body={shipmentTemplate}
-          style={{ paddingLeft: "20px" }}
+          style={{paddingLeft: "10px",paddingRight:"10px" }}
         ></Column>
 
         <Column
@@ -748,7 +751,7 @@ const AllBookings = ({
           body={originBodyTemplate}
           headerClassName="custom-header"
           // className="p-3"
-          style={{ width: "165px", paddingLeft: "20px" }}
+          style={{ width: "165px",paddingLeft: "10px",paddingRight:"10px" }}
         ></Column>
         <Column
           field="destination"
@@ -784,7 +787,7 @@ const AllBookings = ({
           }
           body={destinationBodyTemplate}
           // className="p-3"
-          style={{ width: "120px", paddingLeft: "30px" }}
+          style={{ width: "165px",paddingLeft: "10px",paddingRight:"10px" }}
         ></Column>
 
         <Column
@@ -820,7 +823,7 @@ const AllBookings = ({
           body={bodyTemplate}
           bodyClassName="custom-cell"
           // className="p-3"
-          style={{ paddingLeft: "20px" }}
+          style={{paddingLeft: "10px",paddingRight:"10px" }}
         ></Column>
         <Column
           field="eta/ata"
@@ -855,7 +858,7 @@ const AllBookings = ({
           body={bodyTemplateEtd}
           bodyClassName="custom-cell"
           // className="p-3"
-          style={{ paddingLeft: "20px" }}
+          style={{paddingLeft: "10px",paddingRight:"10px" }}
         ></Column>
         <Column
           field="status"
@@ -886,20 +889,21 @@ const AllBookings = ({
               </div>
             </span>
           }
-          headerStyle={{ width: "130px", paddingLeft: "20px" }}
+          headerStyle={{ width: "130px",paddingLeft: "10px",paddingRight:"10px" }}
           bodyClassName={(rowData) =>
             rowData.status === "Booking In Progress"
               ? "booking-progress-cell"
               : "booked-cell "
           }
           className="text-start my-3"
-          style={{ marginLeft: "20px" }}
+          style={{ marginLeft: "10px",marginRight:"10px" }}
         ></Column>
         <Column
           field="action"
           body={actionBodyTemplate}
           header={<span>Action</span>}
           className=" text-start"
+          headerStyle={{paddingLeft: "10px",paddingRight:"10px" }}
         ></Column>
       </DataTable>
       <Pagination

@@ -131,12 +131,12 @@ export const Port = () => {
       >
         <Typography
           className=" "
-          style={{ fontSize: "20px", fontWeight: "500" }}
+          style={{ fontSize: "15px", fontWeight: "500",color:"#181E25" }}
         >
           Upcoming Sailings
         </Typography>{" "}
         <div
-          className="d-flex my-2 rounded-1 "
+          className="d-flex my-2 rounded-1 focusSearch"
           style={{
             border: "1px solid #E7EAF0",
             padding: "6px 10px",
@@ -144,6 +144,10 @@ export const Port = () => {
             background: "white",
             position: "relative",
             width: "300px",
+            // "&:focusWithin":{
+            //   borderColor:"#FCE2D5",
+            //   boxShadow:"0 0 0 2px #FCE2D5",
+            // }
           }}
         >
           <Location className="pt-1" style={{ width: "22px" }} />
@@ -254,7 +258,7 @@ export const Port = () => {
           )}{" "}
         </div>
         <div
-          className="d-flex my-2 rounded-1 "
+          className="d-flex my-2 rounded-1 focusSearch"
           style={{
             border: "1px solid #E7EAF0",
             padding: "6px 10px",

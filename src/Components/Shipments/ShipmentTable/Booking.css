@@ -132,11 +132,20 @@
 :where(.css-dev-only-do-not-override-1okl62o).ant-input-affix-wrapper >input.ant-input:hover{
   background-color: #CFD6DF !important;
 }
+/* :where(.css-dev-only-do-not-override-1okl62o).ant-input-affix-wrapper >input.ant-input:focus-within{
+  background-color: #CFD6DF !important;
+} */
 :where(.css-dev-only-do-not-override-1okl62o).ant-input-outlined:focus{
   border-color: #FCE2D5 !important;
   /* background-color: #CFD6DF !important; */
-  outline: none;
-  box-shadow: none; 
+  outline: #FCE2D5 !important;
+  box-shadow: 0 0 0 2px #FCE2D5!important; 
+}
+:where(.css-dev-only-do-not-override-1okl62o).ant-input-outlined:focus, :where(.css-dev-only-do-not-override-1okl62o).ant-input-outlined:focus-within{
+  border-color: #FCE2D5 !important;
+  box-shadow: 0 0 0 2px #FCE2D5!important;
+  /* background-color: #CFD6DF !important; */
+
 }
 .datehover:hover{
   background-color: #CFD6DF !important;
@@ -156,4 +165,15 @@ width: 120px !important;
 }
 .cargo-picked-up:hover{
   background-color: #DA1E28   !important;
+}
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item .p-highlight .p-focus {
+  background-color: white !important;
+  color: #4b5563 !important;
+}
+
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight{
+  color: #4b5563 !important;
+}
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight{
+  background-color: white !important;
 }
