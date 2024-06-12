@@ -35,17 +35,17 @@ const KeyAccountManagers = () => {
               <td>Waseem</td>
               <td>Sales</td>
               <td>12345678901
-                <img src={copyIcon} className='mx-1'/>
+                <img src={copyIcon} style={{cursor:"pointer"}} className='mx-1'/>
               </td>
-              <td>waseem.freightsystems.com <img src={copyIcon} className='mx-1'/></td>
+              <td>waseem.freightsystems.com <img src={copyIcon} style={{cursor:"pointer"}} className='mx-1'/></td>
             </tr>
             <tr>
               <td>Akram</td>
               <td>Customer Service</td>
               <td>12345678901
-                <img src={copyIcon} alt="" className='mx-1'/>
+                <img src={copyIcon} style={{cursor:"pointer"}} alt="" className='mx-1'/>
               </td>
-              <td>Akram.freightsystems.com <img src={copyIcon} className='mx-1'/></td>
+              <td>Akram.freightsystems.com <img src={copyIcon} style={{cursor:"pointer"}} className='mx-1'/></td>
             </tr>
           </tbody>
       </div>

@@ -18,10 +18,21 @@ import { IoMail } from 'react-icons/io5';
 import { Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ShipmentDetailsModal from './Modal/ShipmentDetailsModal';
-import { Dialog, DialogContent } from '@mui/material';
+import { Dialog, DialogContent,styled } from '@mui/material';
+import { makeStyles } from '@emotion/styled';
 import ShipmentSummary from './BookingSummary/ShipmentSummary';
 import ShipmentMapModal from './ShipmentMapModal';
 import { VscClose } from 'react-icons/vsc';
+import { Widgets } from '@mui/icons-material';
+
+const Dialogs = styled(Dialog)({
+  '& .MuiDialog-paper':{
+    overflowY:"unset",
+    maxWidth: "1800px",
+    width:"1400px",
+    height:"90vh"
+  }
+});
 
 const ShipmentBase = ({open,close,rowData}) => {
 
@@ -147,7 +158,6 @@ const ShipmentBase = ({open,close,rowData}) => {
       ];
     
       const [vesselmodalopen,setVesselmodalopen] = useState(false)
-      
 
   return (
 
@@ -209,20 +219,19 @@ const ShipmentBase = ({open,close,rowData}) => {
           //     {/* <ShipmentDetailsModal open={true} /> */}
           // </div>
           <>
-              <Dialog
+              <Dialogs
                 open={open}
                 onClose={()=>close(false)}
                 aria-labelledby="responsive-dialog-title"
                 id="edit_profile_modal_section"
-                maxWidth={"lg"}
-                fullWidth={true}
+                maxWidth={"xl"}
               >
                 <DialogContent>
                   <ShipmentHeader rowDatas={rowData} />
                   <ShipmentTable contentListNoTitle={contentListNoTitle} tabListNoTitle={tabListNoTitle} setVesselmodalopen={setVesselmodalopen} close={close}  />
                   <VscClose size={22} color='#ffff' role='button' onClick={()=>close(false)} style={{position:"absolute",top:"0px",right:"-22px"}} />
                 </DialogContent>
-              </Dialog>
+              </Dialogs>
               <Dialog
                 open={vesselmodalopen}
                 onClose={()=>setVesselmodalopen(false)}
@@ -236,6 +245,7 @@ const ShipmentBase = ({open,close,rowData}) => {
                   <VscClose size={22} color='#ffff' role='button' onClick={()=>setVesselmodalopen(false)} style={{position:"absolute",top:"0px",right:"-22px"}} />
                 </DialogContent>
               </Dialog>
+              
               </>
   )
 }

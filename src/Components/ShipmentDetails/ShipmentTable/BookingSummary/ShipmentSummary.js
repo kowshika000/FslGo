@@ -111,8 +111,8 @@ const ShipmentSummary = () => {
 
   return (
     <div className="container-fluid booking_summary">
-      {ViewBooking?.map((item) => {
-        return (
+      {/* {ViewBooking?.map((item) => { */}
+        {/* return ( */}
           <div className="row mx-0">
             <div className="col-6 mb-3">
               <div className="card h-100">
@@ -130,7 +130,7 @@ const ShipmentSummary = () => {
                             {item.total_weight?.length <= 12 ? (
                               item.total_weight
                             ) : (
-                              <Tooltip placement="topLeft" title={totalWeight}>
+                              <Tooltip placement="topLeft" zIndex={9999} title={totalWeight}>
                                 <span role="button">
                                   {item.total_weight
                                     .slice(0, 13)
@@ -153,7 +153,7 @@ const ShipmentSummary = () => {
                             {item.total_volume?.length <= 12 ? (
                               item.total_volume
                             ) : (
-                              <Tooltip placement="topLeft" title={item.total_volume}>
+                              <Tooltip placement="topLeft" zIndex={9999} style={{zIndex:"9999"}} title={item.total_volume}>
                                 <span role="button">
                                   {item.total_volume
                                     .slice(0, 13)
@@ -175,7 +175,7 @@ const ShipmentSummary = () => {
                             {item?.value?.length <= 12 ? (
                               item?.value
                             ) : (
-                              <Tooltip placement="topLeft" title={item?.value}>
+                              <Tooltip placement="topLeft" zIndex={9999} title={item?.value}>
                                 <span role="button">
                                   {item?.value?.slice(0, 13)
                                     .trim()
@@ -212,24 +212,27 @@ const ShipmentSummary = () => {
                     </div>
                     <div className="col">
                       <p className="row_head">No of Units</p>
-                      <p className="row_head2">
-                        {item?.no_of_units?.length <= 12 ? (
-                          item?.no_of_units
-                        ) : (
-                          <Tooltip
-                            placement="topLeft"
-                            title={item?.no_of_units}
-                          >
-                            <span role="button">
-                              {item?.no_of_units
-                                .slice(0, 13)
-                                .trim()
-                                .split("")
-                                .join("") + "..."}
-                            </span>
-                          </Tooltip>
-                        )}
-                      </p>
+                      {ViewBooking?.map((item) => {
+                        return (
+                          <p className="row_head2">
+                            {item?.no_of_units?.length <= 12 ? (
+                              item?.no_of_units
+                            ) : (
+                              <Tooltip
+                                placement="topLeft"
+                                title={item?.no_of_units}
+                              >
+                                <span role="button">
+                                  {item?.no_of_units
+                                    .slice(0, 13)
+                                    .trim()
+                                    .split("")
+                                    .join("") + "..."}
+                                </span>
+                              </Tooltip>
+                            )}
+                          </p>)
+                      })}
                     </div>
                     <div className="col">
                       <p className="row_head">Stackable Cargo</p>
@@ -248,37 +251,43 @@ const ShipmentSummary = () => {
                   <div className="row  mx-0">
                     <div className="col">
                       <p className="row_head">Cargo Type</p>
-                      <p className="row_head2">
-                        {item?.cargo_type?.length <= 15 ? (
-                          item?.cargo_type
-                        ) : (
-                          <Tooltip placement="topLeft" title={item?.cargo_type}>
-                            <span role="button">
-                              {item?.cargo_type.slice(0, 16)
-                                .trim()
-                                .split("")
-                                .join("") + "..."}
-                            </span>
-                          </Tooltip>
-                        )}
-                      </p>
+                      {ViewBooking?.map((item) => {
+                        return (
+                        <p className="row_head2">
+                          {item?.cargo_type?.length <= 15 ? (
+                            item?.cargo_type
+                          ) : (
+                            <Tooltip placement="topLeft" zIndex={9999} title={item?.cargo_type}>
+                              <span role="button">
+                                {item?.cargo_type.slice(0, 16)
+                                  .trim()
+                                  .split("")
+                                  .join("") + "..."}
+                              </span>
+                            </Tooltip>
+                          )}
+                        </p>)
+                      })}
                     </div>
                     <div className="col">
                       <p className="row_head">Commodity Name</p>
-                      <p className="row_head2">
-                        {item?.commodity_name.length <= 15 ? (
-                          item?.commodity_name
-                        ) : (
-                          <Tooltip placement="topLeft" title={item?.commodity_name}>
-                            <span role="button">
-                              {item?.commodity_name.slice(0, 16)
-                                .trim()
-                                .split("")
-                                .join("") + "..."}
-                            </span>
-                          </Tooltip>
-                        )}
-                      </p>
+                      {ViewBooking?.map((item) => {
+                        return (
+                          <p className="row_head2">
+                            {item?.commodity_name.length <= 15 ? (
+                              item?.commodity_name
+                            ) : (
+                              <Tooltip placement="topLeft" zIndex={9999} title={item?.commodity_name}>
+                                <span role="button">
+                                  {item?.commodity_name.slice(0, 16)
+                                    .trim()
+                                    .split("")
+                                    .join("") + "..."}
+                                </span>
+                              </Tooltip>
+                            )}
+                          </p>)
+                        })}
                       {/*                  
                   {
                     ViewBooking?.map((item)=>{
@@ -300,35 +309,41 @@ const ShipmentSummary = () => {
                   <div className="row  mx-0">
                     <div className="col">
                       <p className="row_head">Hs Code</p>
-                      <p className="row_head2">
-                        {item?.hs_code.length <= 12 ? (
-                          item?.hs_code
-                        ) : (
-                          <Tooltip placement="topLeft" title={item?.hs_code}>
-                            <span role="button">
-                              {item?.hs_code.slice(0, 13).trim().split("").join("") +
-                                "..."}
-                            </span>
-                          </Tooltip>
-                        )}
-                      </p>
+                      {ViewBooking?.map((item) => {
+                        return (
+                          <p className="row_head2">
+                            {item?.hs_code.length <= 12 ? (
+                              item?.hs_code
+                            ) : (
+                              <Tooltip placement="topLeft" zIndex={9999} title={item?.hs_code}>
+                                <span role="button">
+                                  {item?.hs_code.slice(0, 13).trim().split("").join("") +
+                                    "..."}
+                                </span>
+                              </Tooltip>
+                            )}
+                          </p>)
+                      })}
                     </div>
                     <div className="col">
                       <p className="row_head">No of Containers</p>
-                      <p className="row_head2">
-                        {item?.no_of_containers.length <= 40 ? (
-                          item?.no_of_containers
-                        ) : (
-                          <Tooltip placement="topLeft" title={item?.no_of_containers}>
-                            <span role="button">
-                              {item?.no_of_containers.slice(0, 41)
-                                .trim()
-                                .split("")
-                                .join("") + "..."}
-                            </span>
-                          </Tooltip>
-                        )}
-                      </p>
+                      {ViewBooking?.map((item) => {
+                        return (
+                          <p className="row_head2">
+                            {item?.no_of_containers.length <= 40 ? (
+                              item?.no_of_containers
+                            ) : (
+                              <Tooltip placement="topLeft" zIndex={9999} title={item?.no_of_containers}>
+                                <span role="button">
+                                  {item?.no_of_containers.slice(0, 41)
+                                    .trim()
+                                    .split("")
+                                    .join("") + "..."}
+                                </span>
+                              </Tooltip>
+                            )}
+                          </p>)
+                      })}
                     </div>
                     <div className="col"></div>
                   </div>
@@ -336,8 +351,8 @@ const ShipmentSummary = () => {
               </div>
             </div>
           </div>
-        );
-      })}
+        {/* ); */}
+      {/* })} */}
   {ViewBooking?.map((item) => {
       return <div className="row mt-3  mx-0 Parties_row">
         <div className="col-6 mb-3">
@@ -355,7 +370,7 @@ const ShipmentSummary = () => {
                   {item?.shipper_name.length <= 56 ? (
                     item?.shipper_name
                   ) : (
-                    <Tooltip placement="topLeft" title={item?.shipper_name}>
+                    <Tooltip placement="topLeft" zIndex={9999} title={item?.shipper_name}>
                       <span role="button">
                         {item?.shipper_name.slice(0, 57).trim().split("").join("") +
                           "..."}
@@ -373,7 +388,7 @@ const ShipmentSummary = () => {
                   {item?.consignee_name.length <= 56 ? (
                     item?.consignee_name
                   ) : (
-                    <Tooltip placement="topLeft" title={item?.consignee_name}>
+                    <Tooltip placement="topLeft" zIndex={9999} title={item?.consignee_name}>
                       <span role="button">
                         {item?.consignee_name.slice(0, 57)
                           .trim()
@@ -393,7 +408,7 @@ const ShipmentSummary = () => {
                   {item?.notify_name.length <= 56 ? (
                     item?.notify_name
                   ) : (
-                    <Tooltip placement="topLeft" title={item?.notify_name}>
+                    <Tooltip placement="topLeft" zIndex={9999} title={item?.notify_name}>
                       <span role="button">
                         {item?.notify_name.slice(0, 57).trim().split("").join("") +
                           "..."}
@@ -411,7 +426,7 @@ const ShipmentSummary = () => {
                   {item?.billing_party_name.length <= 56 ? (
                     item?.billing_party_name
                   ) : (
-                    <Tooltip placement="topLeft" title={item?.billing_party_name}>
+                    <Tooltip placement="topLeft" zIndex={9999} title={item?.billing_party_name}>
                       <span role="button">
                         {item?.billing_party_name?.slice(0, 57).trim().split("").join("") +
                           "..."}

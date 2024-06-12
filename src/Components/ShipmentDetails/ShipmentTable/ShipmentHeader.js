@@ -10,7 +10,7 @@ import co2 from "../../../assets/Co2 Icons-05 1.svg";
 import lcl from "../../../assets/LCL.svg";
 import { Link } from "react-router-dom";
 import Stepper from "./Track/Stepper";
-import { Card, Dropdown, Space, message } from "antd";
+import { Card, Dropdown, Space, Tooltip, message } from "antd";
 import "./ShipmentHeader.css";
 import Modal from "./Modal/Modal";
 import TransactionModal from "./Modal/TransactionModal";
@@ -31,7 +31,6 @@ const ShipmentHeader = ({rowDatas}) => {
   // console.log("shipmentrowData", rowData.id);
   const booking_id = rowDatas?.id;
   console.log("rowdtas",booking_id)
-
 
   //get ViewBooking details ApiData
   // const booking_id = rowData.id
@@ -97,7 +96,7 @@ const ShipmentHeader = ({rowDatas}) => {
   const stepbox = useRef(null);
 
   useEffect(() => {
-    if (fileteredMilestone[0]?.milestones.length > 5) {
+    if (fileteredMilestone[0]?.milestones.length > 7) {
       if (getlastStatus) {
         stepbox.current.scrollLeft = getlastStatus[0]?.offsetLeft;
       } else if (getlastCompleteStatus) {
@@ -157,13 +156,13 @@ const ShipmentHeader = ({rowDatas}) => {
           width: "100%",
           border:"none"
         }}
-        className="container mx-auto p-0 mob_response ship_section"
+        className="mx-auto p-0 mob_response ship_section"
         id="mobile_margin"
       >
       {/* <div className="ship_section" style={{marginLeft:"6px",marginRight:"6px"}}> */}
-      <div className="row reference_row">
-          <div className="col-3">
-            <h6 className="me-2 m-0">Shipment ID:</h6>
+      <div className="reference_row d-flex flex-row px-4">
+          <div className="me-5">
+            <h6 className="me-2 m-0">Shipment ID :</h6>
             {/* {
                       ViewBooking?.map((item)=>{
                         return <h6 className='m-0'>{item.booking_id}</h6>
@@ -171,19 +170,67 @@ const ShipmentHeader = ({rowDatas}) => {
                       )
                     } */}
             {fileteredMilestone?.map((item) => {
-              return <h6 className="m-0">{item.id}</h6>;
+              return <h6 className="m-0">{/*4565655656*/}
+                {item?.id?.length <= 20 ? (
+                              item?.id
+                            ) : (
+                              <Tooltip placement="topLeft" zIndex={9999} title={item?.id}>
+                                <span role="button">
+                                  {item?.id
+                                    .slice(0, 20)
+                                    .trim()
+                                    .split("")
+                                    .join("") + "..."}
+                                </span>
+                              </Tooltip>
+                            )}
+              </h6>;
             })}
           </div>
-          <div className="col-4">
-            <h6 className="m-0 me-2">Customer Reference (PO#):</h6>
+          {/* <div className="col-4">
+            <h6 className="m-0 me-2">Order ID:</h6>
             {fileteredMilestone?.map((item) => {
               return <h6 className="m-0">{item.order_no}</h6>;
             })}
-          </div>
-          <div className="col-4">
+          </div> */}
+          <div className="me-5">
             <h6 className="m-0 me-2">HBL :</h6>
             {fileteredMilestone?.map((item) => {
-              return <h6 className="m-0">{item.id}</h6>;
+              return <h6 className="m-0">{/*456565677*/}
+                {item?.id?.length <= 20 ? (
+                              item?.id
+                            ) : (
+                              <Tooltip placement="topLeft" zIndex={9999} title={item?.id}>
+                                <span role="button">
+                                  {item?.id
+                                    .slice(0, 20)
+                                    .trim()
+                                    .split("")
+                                    .join("") + "..."}
+                                </span>
+                              </Tooltip>
+                            )}
+              </h6>;
+            })}
+          </div>
+          <div className="">
+            <h6 className="m-0 me-2">Order ID:</h6>
+            {fileteredMilestone?.map((item) => {
+              return <h6 className="m-0">{/*ASO/0143/247887878*/}
+                {item?.order_no?.length <= 20 ? (
+                              item?.order_no
+                            ) : (
+                              <Tooltip placement="topLeft" zIndex={9999} title={item?.order_no}>
+                                <span role="button">
+                                  {item?.order_no
+                                    .slice(0, 20)
+                                    .trim()
+                                    .split("")
+                                    .join("") + "..."}
+                                </span>
+                              </Tooltip>
+                            )}
+              </h6>;
             })}
           </div>
         </div>
@@ -278,7 +325,7 @@ const ShipmentHeader = ({rowDatas}) => {
           <div className="booking_content">
             <p className="m-0 mb-1"><span style={{marginRight:"7px"}}><img src={co2}></img></span>Emission</p>
             {fileteredMilestone?.map((item) => {
-              return <p className="m-0">{item.valid_date}</p>;
+              return <p className="m-0 text-center">-</p>;
             })}
           </div>
         </div>
@@ -292,7 +339,7 @@ const ShipmentHeader = ({rowDatas}) => {
             onMouseUp={() => dragStop()}
             onMouseMove={(e) => dragging(e)}
           >
-            {fileteredMilestone[0]?.milestones.length > 5 && (
+            {fileteredMilestone[0]?.milestones.length > 7 && (
               <div className="arrow_icon">
                 {showLeftArrow && (
                   <IoIosArrowBack
@@ -307,7 +354,7 @@ const ShipmentHeader = ({rowDatas}) => {
             {/* stepper */}
 
             <Stepper booking_id={progress} />
-            {fileteredMilestone[0]?.milestones.length > 5 && (
+            {fileteredMilestone[0]?.milestones.length > 7 && (
               <div className="arrow_icon">
                 {showRightArrow && (
                   <IoIosArrowForward

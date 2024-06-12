@@ -64,7 +64,7 @@ console.log("filtered",fileteredMilestone)
 
 
   return (
-    <div className='stepper d-flex' style={{minWidth:fileteredMilestone[0]?.milestones.length>4 ? "1585px": null,width:"100%",overflowX:"hidden",scrollBehavior:"smooth"}} >
+    <div className='stepper d-flex' style={{minWidth:fileteredMilestone[0]?.milestones.length > 7 ? "1585px": null,width:"100%",overflowX:"hidden",scrollBehavior:"smooth"}} >
         {
             fileteredMilestone[0]?.milestones?.map((step,i)=>{
                 return(
@@ -73,7 +73,7 @@ console.log("filtered",fileteredMilestone)
                                     <div style={{backgroundColor:"#ACB8C4",borderRadius:"50%",width:"10px",height:"10px"}}></div>
                                 </p>
                                 <p className='m-0 ' style={{color:"#181E25"}}>{step.milestone.length<15?step.milestone:
-                                <Tooltip placement="topLeft" title={step.milestone} >
+                                <Tooltip placement="topLeft" zIndex={9999} title={step.milestone} >
                                     <span role='button'>
                                     {step.milestone.slice(0, 16).trim().split("").join("") + "..."}
                                     </span>
