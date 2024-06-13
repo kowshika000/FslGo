@@ -246,7 +246,7 @@ const UpcomingSailings = () => {
       ?.map((data, index) => renderAccordion(data, index));
   };
   const schedulesDataShow = () => {
-    if (schedules?.length === 0) {
+    if (!schedules?.length) {
       return (
         <div
           className="text-center"
@@ -270,7 +270,7 @@ const UpcomingSailings = () => {
     >
       <Port />
 
-      {sailingData ? sailingdataShow() : schedules? schedules : schedulesDataShow()}
+      {sailingData ? sailingdataShow() : schedulesDataShow()}
        
       <div
         className="card-footer p-3"

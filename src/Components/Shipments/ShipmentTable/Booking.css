@@ -173,6 +173,19 @@ width: 120px !important;
 .cargo-picked-up:hover{
   background-color: #DA1E28   !important;
 }
+
+
+.dropdownfield .p-dropdown {
+  width: 144px !important;
+  height: 35px !important;
+  border: 1px solid #e7eaf0;
+  border-radius: 4px;
+  background-color: white;
+  color: #ffffff;
+  padding: 6px 9px 0px 9px;
+  text-align: center;
+}
+
 .p-dropdown-panel .p-dropdown-items .p-dropdown-item .p-highlight .p-focus {
   background-color: white !important;
   color: #4b5563 !important;

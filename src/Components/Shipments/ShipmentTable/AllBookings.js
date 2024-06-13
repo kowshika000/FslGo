@@ -34,7 +34,7 @@ const AllBookings = ({
   const dispatch = useDispatch();
 
   const payload = {
-    filter_month: filterMonthValue,
+    filter_month: filterMonthValue ? filterMonthValue : "",
     booking_type: "",
     status: "",
     spagesize: "",
@@ -45,12 +45,12 @@ const AllBookings = ({
     mode: "",
     etd: "",
     eta: "",
-    filter_days: filterValue,
+    filter_days: filterValue ? filterValue : "",
   };
 
   useEffect(() => {
     dispatch(bookingRequest({ payload }));
-  }, [filterValue]);
+  }, [filterValue, filterMonthValue]);
 
   const [filteredData, setFilteredData] = useState([]);
   const [tblFilter, setTblFilter] = useState({
@@ -98,7 +98,7 @@ const AllBookings = ({
     }));
   };
 
-  const handleShowOption = idd;
+  const handleShowOption = filteredDataa;
 
   console.log("filterOption", handleShowOption);
 
@@ -136,7 +136,7 @@ const AllBookings = ({
         onChange={(e) => handleChangeFilter("shipmentidD", e.value)}
         display="chip"
         placeholder="Select"
-        
+
         // itemTemplate={(option) => {
         //   return (
         //     <Tooltip placement="topLeft" title={option.label}>
@@ -740,7 +740,7 @@ const AllBookings = ({
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
               className="py-3 d-flex "
             >
-              Order No 
+              Order No
               {FilterOrderRow()}
               <div
                 className="d-flex sorticon"
