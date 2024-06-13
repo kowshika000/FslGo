@@ -18,9 +18,9 @@
     border-radius: 4px 4px 0px 0px;
     overflow: hidden;
 }
-.shipment_table_section  .ant-card-body>div{
+/* .shipment_table_section  .ant-card-body>div{
     max-height: 950px !important;
-}
+} */
 .shipment_table_section  .ant-card-body .ant-tabs-nav-list{
     padding-top: 20px ;
 }
@@ -51,7 +51,7 @@
     padding: 20px 0px 20px 20px !important;
 }
 .shipment_table_section .ant-card-body>div::-webkit-scrollbar{
-    /* display: none !important; */
+    display: none !important;
     max-height: 8px !important;
     max-width: 10px !important;
 }
