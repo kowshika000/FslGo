@@ -1,11 +1,14 @@
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { Card, Upload } from 'antd'
+import { Card, Tooltip, Upload } from 'antd'
 import React, { useState } from 'react'
 import uploadIcon from '../../assets/Upload.svg'
 import './ProfileHeader.css'
 import Edit_Image  from '../../assets/profile_Edit.svg'
 
-const ProfileHeader = ({setOpenEditModal}) => {
+const ProfileHeader = ({setOpenEditModal,profiledata}) => {
+
+  const userDetails = profiledata?.userdetails
+  console.log("pdata",userDetails)
 
     //This is for ConvertBase64
     const getBase64 = (img, callback) => {
@@ -117,40 +120,84 @@ const ProfileHeader = ({setOpenEditModal}) => {
                 <div className="col-10 profile_box d-flex align-items-start">
                     <div className="profile_box_1"> 
                         <div className="name_field">
-                            <p className='m-0'>Name</p>
-                            <p className='m-0'>Jhon Doe</p>    
+                            <p className='m-0'>Company Name</p>
+                                <p className='m-0'>
+                                {userDetails?.company.length <= 50 ? (
+                                    userDetails?.company
+                                  ) : (
+                                    <Tooltip placement="topLeft" zIndex={9999} title={userDetails?.company}>
+                                      <span role="button">
+                                        {userDetails?.company.slice(49 ).trim().split("").join("") +
+                                          "..."}
+                                      </span>
+                                    </Tooltip>
+                                  )} 
+                                  </p>     
                         </div>
                         <div className="companyname_field">
-                            <p className='m-0'>Company Name</p>
-                            <p className='m-0'>Abc Enterprise</p>
+                            <p className='m-0'>Country</p>
+                            <p className='m-0'>
+                            {userDetails?.country_name.length <= 27 ? (
+                                    userDetails?.country_name
+                                  ) : (
+                                    <Tooltip placement="topLeft" zIndex={9999} title={userDetails?.country_name}>
+                                      <span role="button">
+                                        {userDetails?.country_name.slice(0,26 ).trim().split("").join("") +
+                                          "..."}
+                                      </span>
+                                    </Tooltip>
+                                  )} 
+                            </p>
                         </div>
                     </div>
                     <div className="profile_box_2">
                         <div className="email_field">
                             <p className='m-0'>Email</p>
-                            <p className='m-0'>email@gmail.com</p>    
+                            <p className='m-0'>{userDetails?.email.length <= 27 ? (
+                                    userDetails?.email
+                                  ) : (
+                                    <Tooltip placement="topLeft" zIndex={9999} title={userDetails?.email}>
+                                      <span role="button">
+                                        {userDetails?.email.slice(0,26 ).trim().split("").join("") +
+                                          "..."}
+                                      </span>
+                                    </Tooltip>
+                                  )}
+                            </p>    
                         </div>
                         <div className="companyprofile_field">
-                            <p className='m-0'>Company Profile</p>
+                            <p className='m-0'>Preferred currency</p>
                             <p className='m-0'>Exporter</p>
                         </div>
                     </div>
                     <div className="profile_box_3">
                         <div className="workemail_field">
-                            <p className='m-0'>Work Email</p>
-                            <p className='m-0'>email@gmail.com</p>    
+                            <p className='m-0'>Phone</p>
+                            <p className='m-0'>
+                            <p className='m-0'>{userDetails?.mobile}</p>
+                            {/* {userDetails?.email.length <= 27 ? (
+                                    userDetails?.email
+                                  ) : (
+                                    <Tooltip placement="topLeft" zIndex={9999} title={userDetails?.email}>
+                                      <span role="button">
+                                        {userDetails?.email.slice(0,26 ).trim().split("").join("") +
+                                          "..."}
+                                      </span>
+                                    </Tooltip>
+                                  )}  */}
+                            </p>    
                         </div>
-                        <div className="prefcurrency_field">
+                        {/* <div className="prefcurrency_field">
                             <p className='m-0'>Preferred currency</p>
                             <p className='m-0'>USD</p>
-                        </div>
+                        </div> */}
                     </div>
-                    <div className="profile_box_4">
+                    {/* <div className="profile_box_4">
                         <div className="phone_field">
                             <p className='m-0'>Phone</p>
-                            <p className='m-0'>+91 98596826282</p>    
+                            <p className='m-0'>{userDetails?.mobile}</p>    
                         </div>
-                    </div>
+                    </div> */}
                     <div className="edit_icon_box">
                         <img src={Edit_Image} alt="" role='button' onClick={()=>setOpenEditModal(true)} />
                     </div>

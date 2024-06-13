@@ -75,9 +75,12 @@ const ShipmentDocuments = () => {
                 <th>
                   Action{" "}
                   <span
-                    className="ms-2 py-1"
+                    className="ms-4"
                     style={{
                       visibility: checkinputs.length > 1 ? "visible" : "hidden",
+                      background: "rgba(243, 245, 247, 1)",
+                      borderRadius: "4px",
+                      padding: "8px"
                     }}
                   >
                     <HiArrowDownTray size={16} />
@@ -99,12 +102,13 @@ const ShipmentDocuments = () => {
                       <div className="d-flex justify-content-start align-items-center">
                         <div
                           className="checkbox"
-                          style={{ marginRight: "5px" }}
+                          style={{ marginRight: "5px",opacity:allcheck ? ".5":"1"}}
                         >
                           <CustomCheckBox
                             checked={checkinputs.includes(item.file_name)}
                             value={item.file_name}
                             onChange={handleCheckInputs}
+                            disabled={allcheck}
                           />
                         </div>
                         <div>

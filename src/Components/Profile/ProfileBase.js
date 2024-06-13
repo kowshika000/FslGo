@@ -17,8 +17,24 @@ import NotificationManagement from "./NotificationManagement/NotificationManagem
 import CreatePasswordModal from "./Modals/CreatePasswordModal";
 import EditProfileModal from "./Modals/EditProfileModal";
 import KeyAccountManagers from "./KeyAccount/KeyAccountManagers";
+import { useDispatch, useSelector } from "react-redux";
+import { profileRequest } from "../../Redux/Actions/ProfileAction";
 
 const ProfileBase = () => {
+
+
+  //This is for call profile_data api
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(profileRequest());
+  }, []);
+
+  const profileData = useSelector((state) => state.ProfileData);
+  console.log("profileData", profileData);
+  const Profile = profileData?.profileData
+  console.log("Profile", Profile);
+
+
   //This is for EditprofModal
   const [openEditModal, setOpenEditModal] = useState(false);
 
@@ -27,10 +43,10 @@ const ProfileBase = () => {
       key: "KeyAccount",
       label: "Key Account Managers",
     },
-    {
-      key: "SavedAddresses",
-      label: "Saved Addresses",
-    },
+    // {
+    //   key: "SavedAddresses",
+    //   label: "Saved Addresses",
+    // },
     // {
     //   key: "Transactions",
     //   label: "Transactions",
@@ -74,7 +90,7 @@ const ProfileBase = () => {
 
   const contentListNoTitle = {
     KeyAccount: <KeyAccountManagers />,
-    SavedAddresses: <Addresses />,
+    // SavedAddresses: <Addresses />,
     // Transactions: <Transactions />,
     Password: <Password />,
     // ReferEarn: <ReferEarn />,
@@ -183,7 +199,7 @@ const ProfileBase = () => {
               ]}
               className="text-white"
             />
-            <Dropdown
+            {/* <Dropdown
               menu={{
                 items,
               }}
@@ -192,11 +208,11 @@ const ProfileBase = () => {
               trigger={['click']}
             >
               <p className="m-0" role="button">Need Help?</p>
-            </Dropdown>
+            </Dropdown> */}
           </div>
         </div>
         <div className="row profile_header">
-          <ProfileHeader setOpenEditModal={setOpenEditModal} />
+          <ProfileHeader setOpenEditModal={setOpenEditModal}  profiledata={Profile} />
           <ProfileTable
             contentListNoTitle={contentListNoTitle}
             tabListNoTitle={tabListNoTitle}
