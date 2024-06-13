@@ -12,6 +12,8 @@ import ViewBookingReducer from "./ViewBookingReducer"
 import UploadDocumentReducer from './UploadDocumentReducer';
 import CancelBookingReducer from './CancelBookingReducer';
 import QuotationReducer from './QuotationReducer';
+import ProfileReducer from './ProfileReducer';
+import UpdatePasswordReducer from './UpdatePasswordReducer';
 
 const rootReducer = combineReducers({
     ShipmentCount: shipmentCountReducer,
@@ -27,6 +29,8 @@ const rootReducer = combineReducers({
     UploadDocument:UploadDocumentReducer,
     CancelBooking: CancelBookingReducer,
     QuotationList: QuotationReducer,
+    ProfileData: ProfileReducer,
+    UpdatePassword: UpdatePasswordReducer
 });
 
 export default rootReducer;

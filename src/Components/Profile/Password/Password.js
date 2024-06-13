@@ -5,22 +5,36 @@ import PasswordFields from './PasswordFields'
 import PasswordRules from './PasswordRules'
 const Password = () => {
 
-  const [passwordInput, setPasswordInput] = useState('')
-  const [checkboxvalues,setCheckboxValues] = useState(
+  const [passwordInput, setPasswordInput] = useState(
     {
-      googlelogin:false,
-      manuallogin:false
-    }
-  )
-  console.log(checkboxvalues)
+      old_password:"",
+      new_password:"",
+      confirm_password:"",
+  }
+)
 
-  const onChange = (e) => {
-    setCheckboxValues((prev)=>{
-      return {
-        ...prev,[e.target.name]:e.target.checked
-      }
-    });
-  };
+const onFinish = (values) => {
+  console.log('Success:', values);
+};
+const onFinishFailed = (errorInfo) => {
+  console.log('Failed:', errorInfo);
+};
+
+  // const [checkboxvalues,setCheckboxValues] = useState(
+  //   {
+  //     googlelogin:false,
+  //     manuallogin:false
+  //   }
+  // )
+  // console.log(checkboxvalues)
+
+  // const onChange = (e) => {
+  //   setCheckboxValues((prev)=>{
+  //     return {
+  //       ...prev,[e.target.name]:e.target.checked
+  //     }
+  //   });
+  // };
 
   const handleChange =(e)=>{
     setPasswordInput((prev)=>{
@@ -29,6 +43,11 @@ const Password = () => {
         }
     })
 }
+
+  const handleSubmit =(e)=>{
+    e.preventDefault()
+    console.log(passwordInput)
+  }
 
   return (
     <>
@@ -65,7 +84,7 @@ const Password = () => {
                                     </div>
      } */}
       <div className="row m-0 profile_password_row">
-                                        <PasswordFields handleChange={handleChange} />
+                                        <PasswordFields handleChange={handleChange} passwordInput={passwordInput} handleSubmit={handleSubmit} onFinish={onFinish} onFinishFailed={onFinishFailed} />
                                         <PasswordRules />
                                     </div>
     </>

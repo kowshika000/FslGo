@@ -365,7 +365,6 @@ const ShipmentSummary = () => {
                 <p className="parties_head">Shipper</p>
                 <p
                   className="parties_enterprise"
-                  style={{ marginLeft: "87px" }}
                 >
                   {item?.shipper_name.length <= 56 ? (
                     item?.shipper_name
@@ -383,7 +382,6 @@ const ShipmentSummary = () => {
                 <p className="parties_head">Consignee</p>
                 <p
                   className="parties_enterprise"
-                  style={{ marginLeft: "68px" }}
                 >
                   {item?.consignee_name.length <= 56 ? (
                     item?.consignee_name
@@ -403,7 +401,6 @@ const ShipmentSummary = () => {
                 <p className="parties_head">Notify</p>
                 <p
                   className="parties_enterprise"
-                  style={{ marginLeft: "97px" }}
                 >
                   {item?.notify_name.length <= 56 ? (
                     item?.notify_name
@@ -421,7 +418,6 @@ const ShipmentSummary = () => {
                 <p className="parties_head">Billing</p>
                 <p
                   className="parties_enterprise"
-                  style={{ marginLeft: "97px" }}
                 >
                   {item?.billing_party_name.length <= 56 ? (
                     item?.billing_party_name
@@ -524,8 +520,8 @@ const ShipmentSummary = () => {
                 className="requirement_section"
                 style={{ padding: "0px 13px" }}
               >
-                <div className="textarea_description d-flex justify-content-between">
-                  <p
+                <div className="textarea_description d-flex justify-content-end">
+                  {/* <p
                     className=""
                     style={{
                       fontWeight: "500",
@@ -537,7 +533,7 @@ const ShipmentSummary = () => {
                     }}
                   >
                     Tell us more about your requirements
-                  </p>
+                  </p> */}
                   <p
                     className="m-0"
                     style={{
@@ -552,9 +548,9 @@ const ShipmentSummary = () => {
                   </p>
                 </div>
                 <TextArea
-                  placeholder="Type here..."
                   rows={4}
                   maxLength={1000}
+                  readOnly
                   onChange={(e) => setTextInput(e.target.value)}
                 />
               </div>

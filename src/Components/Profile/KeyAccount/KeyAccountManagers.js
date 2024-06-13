@@ -27,14 +27,13 @@ const KeyAccountManagers = () => {
               <th>Designation</th>
               <th>Phone #</th>
               <th>Email Id</th>
-              <th></th>
             </tr>
           </thead>
           <tbody>
             <tr>
               <td>Waseem</td>
               <td>Sales</td>
-              <td>12345678901
+              <td>123456789015756767
                 <img src={copyIcon} style={{cursor:"pointer"}} className='mx-1'/>
               </td>
               <td>waseem.freightsystems.com <img src={copyIcon} style={{cursor:"pointer"}} className='mx-1'/></td>

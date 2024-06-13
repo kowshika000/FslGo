@@ -39,6 +39,8 @@
     letter-spacing: 0.01em;
     text-align: left;
     color: rgba(24, 30, 37, 1);
+    width:72.55px;
+    margin-right: 30px !important;
 
 }
 .booking_summary .parties_enterprise{
