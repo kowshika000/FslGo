@@ -3,10 +3,10 @@ import Map from "./Map/Map";
 import BookingTabs from "./ShipmentTable/BookingTabs";
 import "./ShipBookingTabs.css";
 import UpcomingSailings from "../Dashboard/Upcoming/UpcomingSailings";
-import uil_globe from "../../assets/VectorGlobe.png";
-import ph_table from "../../assets/VectorList1.png";
-import globBlack from "../../assets/globBlack.png";
-import listGray from "../../assets/globListGray.png"
+import uil_globe from "../../assets/NewGlobeG.svg";
+import ph_table from "../../assets/NewListB.svg";
+import globBlack from "../../assets/NewGlobeB.svg";
+import listGray from "../../assets/NewListG.svg"
 
 const ShipmentsHome = () => {
   const [showText, setShowText] = useState(false);

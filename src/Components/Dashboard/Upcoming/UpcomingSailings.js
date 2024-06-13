@@ -17,10 +17,8 @@ import { Port } from "./Port";
 import { opensailingRequest } from "../../../Redux/Actions/OpneSailingAction";
 
 const UpcomingSailings = () => {
-  const [selectedVolume, setSelectedVolume] = useState(null);
   const [displayedSchedules, setDisplayedSchedules] = useState(4);
   const [displaySailingData, setDisplaySailingData] = useState(4);
-  const volume = [{ name: "LCL" }, { name: "FCL" }, { name: "Air" }];
   const [orgPortCode, setOrgPortCode] = useState("");
   const [desPortCode, setDesPortCode] = useState("");
   const dispatch = useDispatch();
@@ -74,7 +72,7 @@ const UpcomingSailings = () => {
             // paddingBottom:"10px",
             // paddingLeft:"25px",
             // paddingRight:"25px",
-             padding:"10px",
+            padding: "10px",
             border: "none",
             borderBottom: "1px solid #F3F5F7",
           }}
@@ -165,13 +163,11 @@ const UpcomingSailings = () => {
                   borderRadius: "6px",
                   color: "white",
                   border: "none",
-                  height:"30px",
-                  alignSelf:"center"
+                  height: "30px",
+                  alignSelf: "center",
                 }}
               >
-                <span style={{fontSize:"13px"}}>
-                Book Now
-                </span>
+                <span style={{ fontSize: "13px" }}>Book Now</span>
               </button>
             </div>
           </AccordionSummary>
@@ -194,7 +190,9 @@ const UpcomingSailings = () => {
                 </Typography>
               </div>
               <div className="d-flex justify-content-between p-2 ">
-                <Typography sx={{ fontSize: "13px" }}>TRANSIT TIME (PORT TO PORT)</Typography>
+                <Typography sx={{ fontSize: "13px" }}>
+                  TRANSIT TIME (PORT TO PORT)
+                </Typography>
                 <Typography className="fw-bolder" sx={{ fontSize: "13px" }}>
                   {data.transit_ptp || data.ttport} Days
                 </Typography>
@@ -271,7 +269,7 @@ const UpcomingSailings = () => {
       <Port />
 
       {sailingData ? sailingdataShow() : schedulesDataShow()}
-       
+      {(sailingData?.length > 0 || schedules?.length > 0) && (
       <div
         className="card-footer p-3"
         style={{
@@ -282,15 +280,15 @@ const UpcomingSailings = () => {
         role="button"
         onClick={handleShowMore}
       >
-        {sailingData?.length !== 0  && schedules?.length !== 0 
-          ? sailingData
+        {sailingData
           ? displaySailingData === 4
             ? "Show More"
             : "Show Less"
           : displayedSchedules === 4
           ? "Show More"
-          : "Show Less" : ""} 
+          : "Show Less"}
       </div>
+       )}
     </div>
   );
 };

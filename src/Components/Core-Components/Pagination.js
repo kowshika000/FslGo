@@ -36,7 +36,7 @@ const Pagination = ({ currentPage, setCurrentPage, totalItems }) => {
   };
 
   return (
-    <div className="pagination mt-3 justify-content-between" style={{backgroundColor:'#F8FAFC'}}>
+    <div className="pagination justify-content-between" style={{backgroundColor:'#F8FAFC'}}>
       <div className="pagination-left p-1 px-3 align-content-center" style={{color:'rgba(24, 30, 37, 1)'}}>
         {startItem} to {endItem} out of {totalItems}
       </div>

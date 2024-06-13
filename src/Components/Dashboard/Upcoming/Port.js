@@ -9,6 +9,10 @@ import CountryFlag from "../../Core-Components/CountryFlag";
 import { Col, Row } from "antd";
 import { opensailingRequest } from "../../../Redux/Actions/OpneSailingAction";
 import { CircularProgress, Box } from "@mui/material";
+import { Select, Menu } from "antd";
+import { CalendarOutlined, CaretDownOutlined } from "@ant-design/icons";
+
+const { Option } = Select;
 
 export const Port = () => {
   const [searchOriginPort, setSearchOriginPort] = useState("");
@@ -21,14 +25,17 @@ export const Port = () => {
     useState(false);
   const [destPortOptionsVisible, setDestPortOptionsVisible] = useState(false);
   const outerRef = useRef(null);
-
+  const [selectedVolume, setSelectedVolume] = useState("LCL");
+  const volume = ["FCL", "LCL", "AIR"];
   const originPortData = useSelector((state) => state.Port);
   const { loading, error } = useSelector((state) => state.Port);
   const originPortDataValue = originPortData?.portData?.Data;
   console.log("originPortvalue", originPortDataValue);
   const [prevValue, setPrevValue] = useState("");
   const dispatch = useDispatch();
-
+  const handleVolumeChange = (volume) => {
+    setSelectedVolume(volume);
+  };
   const handleOriginPortChange = (event) => {
     const { value } = event.target;
     setSearchOriginPort(value);
@@ -373,22 +380,22 @@ export const Port = () => {
           )}{" "}
         </div>
       </div>
-      <div className="dropdown my-2" style={{ width: "5%", float: "left" }}>
-        <button
-          className="btn dropdown-toggle"
-          type="button"
-          data-bs-toggle="dropdown"
-          aria-expanded="true"
-          style={{ fontSize: "14px", fontWeight: "400" }}
+      <div className="my-2" style={{ float: "left" }}>
+        <Select
+          defaultValue={selectedVolume}
+          className=""
+          style={{ width: 80 }}
+          onChange={handleVolumeChange}
+          suffixIcon={<CaretDownOutlined style={{ color: "#67788E" }}/>}
+          
         >
-          LCL
-        </button>
-        <ul className="dropdown-menu">
-          <li className="dropdown-item">LCL</li>
-          <li className="dropdown-item">FCL</li>
-          <li className="dropdown-item">Air</li>
-        </ul>
-      </div>
+          {volume.map((vol, index) => (
+            <Option key={index} value={vol} disabled={vol !== 'LCL'}>
+              {vol}
+            </Option>
+          ))}
+        </Select>
+    </div>
     </div>
   );
 };

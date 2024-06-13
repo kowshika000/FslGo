@@ -5,8 +5,8 @@ import "../ShipBookingTabs.css";
 import { useSelector } from "react-redux";
 import { SearchHeader } from "./SearchHeader";
 import { Dropdown } from "primereact/dropdown";
-import ButtonList from "../../../assets/ButtonList.png";
-import Group1 from "../../../assets/Group1.png";
+import ButtonList from "../../../assets/ButtonListNew.svg";
+import Group1 from "../../../assets/newGropL.svg";
 import FilterDrawer from "./Filter";
 import Navbar from "../../Layout/Navbar";
 import image1 from "../../../assets/Shape1.png";
@@ -203,7 +203,6 @@ function BookingTabs({ showText, setShowText }) {
       className="mx-auto mb-4"
       style={{
         minWidth: "1255px",
-        borderRadius: "8px",
       }}
     >
       {showText ? (
@@ -231,20 +230,19 @@ function BookingTabs({ showText, setShowText }) {
           selectedButton={selectedButton}
         />
       )}
-      <Row className="border mt-3" style={{ borderRadius: "8px" }}>
-        <Col span={24} style={{ backgroundColor: "#F8FAFC" }}>
+      <Row className="mt-3 border" style={{ borderRadius: "8px"}}>
+        <Col span={24} style={{ backgroundColor: "#F8FAFC",borderRadius: "8px" }}>
           <Row justify="between" style={{ height: "57px" }}>
             <Col span={20}>
               {!showText ? (
                 <Tabs defaultActiveKey="1" onChange={onChange}>
                   <Tabs.TabPane
                     tab={`All Bookings (${schedule?.all ? schedule?.all : 0})`}
-                    key="1"
-                  />
+                    key="1"                  />
                   {/* <Tabs.TabPane
                     tab={`Pending Action (${schedule?.pending})`}
                     key="2"
-                  /> */}
+                  /> */}       
                   <Tabs.TabPane
                     tab={`Booked (${schedule?.booked ? schedule?.booked : 0})`}
                     key="2"
@@ -365,7 +363,7 @@ function BookingTabs({ showText, setShowText }) {
             </Col>
           </Row>
         </Col>
-        <Col span={24} style={{ padding: "20px", backgroundColor: "white" }}>
+        <Col span={24} style={{ padding: "20px", backgroundColor: "white",borderRadius: "8px" }}>
           {!showText ? (
             <AllBookings
               filterData={filteredData}
