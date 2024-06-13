@@ -4,17 +4,16 @@ import AllBookings from "./AllBookings";
 import "../ShipBookingTabs.css";
 import { useSelector } from "react-redux";
 import { SearchHeader } from "./SearchHeader";
-import calendar from "../../../assets/calendar.png";
 import { Dropdown } from "primereact/dropdown";
-import ButtonList from "../../../assets/ButtonList.png";
-import Group1 from "../../../assets/Group1.png";
+import ButtonList from "../../../assets/ButtonListNew.svg";
+import Group1 from "../../../assets/newGropL.svg";
 import FilterDrawer from "./Filter";
 import Navbar from "../../Layout/Navbar";
 import image1 from "../../../assets/Shape1.png";
 import image2 from "../../../assets/Shape (1).png";
 import image3 from "../../../assets/Shape (2).png";
 import DailyReportTable from "./DailyReportTable";
-import { CloseCircleOutlined } from "@ant-design/icons";
+import { CalendarOutlined, CaretDownOutlined } from "@ant-design/icons";
 
 function BookingTabs({ showText, setShowText }) {
   const [searchQuery] = useState("");
@@ -175,15 +174,35 @@ function BookingTabs({ showText, setShowText }) {
       setShowText(false);
     }
   };
-  const handleClearFilter=()=>{
-
+  const valueTemplate = () => {
+    return (
+      <div>
+        <CalendarOutlined className="me-2"/>
+        <span
+          style={{
+            color: "#495A6E",
+            fontWeight: "400",
+            fontSize: "13px",
+            lineHeight: "19px",
+            letterSpacing: "1%",
+            textAlign: "center",
+          }}
+        >
+          {selectedDropdownItem}
+        </span>
+        <CaretDownOutlined className="ms-1" style={{ color: "#67788E" }} />
+      </div>
+    );
+  };
+  const dropdownbutton = document.querySelector(".p-dropdown-trigger");
+  if (dropdownbutton) {
+    dropdownbutton.remove();
   }
   return (
     <div
       className="mx-auto mb-4"
       style={{
         minWidth: "1255px",
-        borderRadius: "8px",
       }}
     >
       {showText ? (
@@ -211,20 +230,19 @@ function BookingTabs({ showText, setShowText }) {
           selectedButton={selectedButton}
         />
       )}
-      <Row className="border mt-3" style={{ borderRadius: "8px" }}>
-        <Col span={24} style={{ backgroundColor: "#F8FAFC" }}>
+      <Row className="mt-3 border" style={{ borderRadius: "8px"}}>
+        <Col span={24} style={{ backgroundColor: "#F8FAFC",borderRadius: "8px" }}>
           <Row justify="between" style={{ height: "57px" }}>
             <Col span={20}>
               {!showText ? (
                 <Tabs defaultActiveKey="1" onChange={onChange}>
                   <Tabs.TabPane
                     tab={`All Bookings (${schedule?.all ? schedule?.all : 0})`}
-                    key="1"
-                  />
+                    key="1"                  />
                   {/* <Tabs.TabPane
                     tab={`Pending Action (${schedule?.pending})`}
                     key="2"
-                  /> */}
+                  /> */}       
                   <Tabs.TabPane
                     tab={`Booked (${schedule?.booked ? schedule?.booked : 0})`}
                     key="2"
@@ -267,67 +285,25 @@ function BookingTabs({ showText, setShowText }) {
                 float: "right",
               }}
             >
-           
               {showText ? (
                 ""
               ) : (
-                <>
-                {/* <div
-                style={{
-                  alignSelf: "center",
-                  border: "1px solid #E7EAF0",
-                  borderRadius: "8px",
-                  backgroundColor: "white",
-                  height:"36px",
-                  paddingTop:"5px",
-                  
-                }}
-                onClick={handleClearFilter}
-                className="px-1  d-flex me-2 datehover"
-              >
-                
-                <span>Filter</span>
-              </div> */}
                 <div
-                  style={{
-                    alignSelf: "center",
-                    border: "1px solid #E7EAF0",
-                    borderRadius: "8px",
-                    backgroundColor: "white",
-                    height: "36px",
-                  }}
-                  className="px-1 d-flex me-2 datehover"
+                  className="dropdownfield mx-2"
+                  style={{ alignContent: "center" }}
                 >
-                  <Image
-                    src={calendar}
-                    width="14px"
-                    height="14px"
-                    className="mt-2"
-                  />
-
-                  <div
-                    style={{
-                      alignContent: "center",
-                      border: "none ",
-                      outline: "none ",
-                      height: "36px",
+                  <Dropdown
+                    value={selectedDropdownItem}
+                    onChange={(e) => {
+                      console.log("Selected item:", e.value); // Add logging statement
+                      setSelectedDropdownItem(e.value);
                     }}
-                    className="datehover"
-                  >
-                    <Dropdown
-                      value={selectedDropdownItem}
-                      onChange={(e) => {
-                        console.log("Selected item:", e.value); // Add logging statement
-                        setSelectedDropdownItem(e.value);
-                      }}
-                      options={items}
-                      placeholder="Past 60 Days"
-                      className="w-full md:w-14rem datehover"
-                      style={{ border: "none" }}
-                    />
-                  </div>
+                    options={items}
+                    valueTemplate={valueTemplate}
+                    className="w-full md:w-14rem datehover"
+                    style={{ border: "none" }}
+                  />
                 </div>
-                </>
               )}
               <div
                 style={{
@@ -387,7 +363,7 @@ function BookingTabs({ showText, setShowText }) {
             </Col>
           </Row>
         </Col>
-        <Col span={24} style={{ padding: "20px", backgroundColor: "white" }}>
+        <Col span={24} style={{ padding: "20px", backgroundColor: "white",borderRadius: "8px" }}>
           {!showText ? (
             <AllBookings
               filterData={filteredData}

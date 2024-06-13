@@ -1,23 +1,17 @@
 import React, { useState } from "react";
-import { Row, Col, Input, Tag } from "antd";
-import { SearchOutlined ,CloseOutlined} from "@ant-design/icons";
+import { Row, Col, Input } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
 import "./Booking.css";
 import ShipmentBase from "../../ShipmentDetails/ShipmentTable/ShipmentBase";
 import { Dialog, DialogContent } from "@mui/material";
+import { InputText } from "primereact/inputtext";
 
-export const SearchHeader = ({
-  bookingData,
-  handleUpcomingDep,
-  handleUpcomingArr,
-  selectedButton,
-}) => {
+export const SearchHeader = ({ bookingData }) => {
   const [notfoundmodal, setNotfoundmodal] = useState(false);
   const [modal, setmodal] = useState(false);
   const [searchvalue, setSearchvalue] = useState("");
   const [filterdata, setFilterData] = useState("");
   const [searchHistory, setSearchHistory] = useState([]); // New state for storing search history
-
-  const data = bookingData?.data;
 
   const handleSubmit = (e) => {
     if (e.key === "Enter") {
@@ -29,8 +23,8 @@ export const SearchHeader = ({
         setFilterData(filteredId);
         setmodal(true);
         setNotfoundmodal(false);
-        setSearchHistory(prevState => [...prevState, searchvalue]);
-        setSearchvalue("")
+        setSearchHistory((prevState) => [...prevState, searchvalue]);
+        // setSearchvalue("");
       } else {
         setmodal(false);
         setNotfoundmodal(true);
@@ -44,7 +38,7 @@ export const SearchHeader = ({
       <ShipmentBase open={modal} close={setmodal} rowData={filterdata[0]} />
     );
   };
-  
+
   const Notfoundpopup = () => {
     return (
       <Dialog open={notfoundmodal} onClose={() => setNotfoundmodal(false)}>
@@ -54,39 +48,28 @@ export const SearchHeader = ({
       </Dialog>
     );
   };
-
+  const icon = <SearchOutlined />;
   return (
     <>
-      <Row
-        justify="space-between"
-        className="w-full mb-3"
-        // style={{ backgroundColor: "white" }}
-      >
-        <Col className="input-hover">
+      <Row justify="space-between" className="w-full mb-3">
+        <Col>
           <Input
-            placeholder="Search shipment by PO/ Booking / HBL / Invoice Number "
+            placeholder="Search shipment by PO/ Booking / HBL / Invoice Number"
             prefix={<SearchOutlined style={{ color: "#94A2B2" }} />}
+            className="search-input"
             style={{
-              width: "368.13px",
-              padding: "4px 11px",
-              borderRadius: "4px",
+              width: "524px",
+              height: "36px",
+              borderRadius: "6px",
+              border: "2px solid #E7EAF0",
+              padding: "9px 11px 9px 11px",
             }}
             value={searchvalue}
             onChange={(e) => setSearchvalue(e.target.value)}
             onKeyDown={(e) => handleSubmit(e)}
-            // allowClear={{
-            //   clearIcon:<CloseOutlined/>
-            // }}
           />
-          {/* <div style={{ marginTop: '5px' }}>
-            {searchHistory.map((term, index) => (
-              <Tag color="#C8102E" 
-              style={{borderRadius:"8px", cursor: selectedButton ? "pointer" : "default"}}
-              key={index} closable onClose={() => setSearchHistory(prevState => prevState.filter(item => item !== term))}>{term}</Tag>
-            ))}
-          </div> */}
         </Col>
-        <Col className="d-flex ">
+        {/* <Col className="d-flex ">
           <div className="d-flex  justify-content-end ">
             <button
               className={`${
@@ -104,10 +87,11 @@ export const SearchHeader = ({
             >
               Upcoming Arrivals
             </button>
-            {modal && Shipmentpopup(filterdata)}
-            {notfoundmodal && Notfoundpopup()}
+            
           </div>
-        </Col>
+        </Col> */}
+        {modal && Shipmentpopup(filterdata)}
+        {notfoundmodal && Notfoundpopup()}
       </Row>
     </>
   );

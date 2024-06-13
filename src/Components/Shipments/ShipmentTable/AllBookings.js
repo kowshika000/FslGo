@@ -5,7 +5,7 @@ import { Button } from "primereact/button";
 import Pagination from "../../Core-Components/Pagination";
 import { useDispatch } from "react-redux";
 import { bookingRequest } from "../../../Redux/Actions/BookingAction";
-import { Tooltip, Checkbox } from "antd";
+import { Tooltip } from "antd";
 import CountryFlag from "../../Core-Components/CountryFlag";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
@@ -14,7 +14,6 @@ import "./Booking.css";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { IconButton } from "@mui/material";
-import { Dropdown } from "primereact/dropdown";
 import ShipmentBase from "../../ShipmentDetails/ShipmentTable/ShipmentBase";
 import { MultiSelect } from "primereact/multiselect";
 import { useSelector } from "react-redux";
@@ -34,7 +33,7 @@ const AllBookings = ({
   const dispatch = useDispatch();
 
   const payload = {
-    filter_month: filterMonthValue,
+    filter_month: filterMonthValue ? filterMonthValue : "",
     booking_type: "",
     status: "",
     spagesize: "",
@@ -45,12 +44,12 @@ const AllBookings = ({
     mode: "",
     etd: "",
     eta: "",
-    filter_days: filterValue,
+    filter_days: filterValue ? filterValue : "",
   };
 
   useEffect(() => {
     dispatch(bookingRequest({ payload }));
-  }, [filterValue]);
+  }, [filterValue, filterMonthValue]);
 
   const [filteredData, setFilteredData] = useState([]);
   const [tblFilter, setTblFilter] = useState({
@@ -136,7 +135,7 @@ const AllBookings = ({
         onChange={(e) => handleChangeFilter("shipmentidD", e.value)}
         display="chip"
         placeholder="Select"
-        
+
         // itemTemplate={(option) => {
         //   return (
         //     <Tooltip placement="topLeft" title={option.label}>
@@ -158,14 +157,16 @@ const AllBookings = ({
           style={{
             position: "absolute",
             opacity: "0",
-            width: "20px",
+            width: "50px",
             fontSize: "10px",
             // maxWidth:"100px"
+            left:"180px"
           }}
           showSelectAll={false}
           onChange={(e) => handleChangeFilter("order_no", e.value)}
           display="chip"
           placeholder="Select "
+          variant="standard"
           itemTemplate={(option) => {
             return (
               <Tooltip placement="topLeft" title={option.label}>
@@ -622,7 +623,7 @@ const AllBookings = ({
             return (
               <Tag
                 key={field}
-                style={{ backgroundColor: "#F01E1E", marginRight: "10px" }}
+                style={{ backgroundColor: "#F01E1E", marginRight: "10px" ,position:"relative",top:"-11px"}}
                 className="px-2 py-1"
                 rounded
               >
@@ -740,7 +741,7 @@ const AllBookings = ({
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
               className="py-3 d-flex "
             >
-              Order No 
+              Order No
               {FilterOrderRow()}
               <div
                 className="d-flex sorticon"

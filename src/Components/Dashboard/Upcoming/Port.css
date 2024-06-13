@@ -78,3 +78,11 @@
   border-color: #FCE2D5 !important;
   box-shadow: 0 0 0 2px #FCE2D5!important;
 }
+.ant-select-selector:hover{
+  background-color: #CFD6DF !important;
+}
+.ant-select-dropdown .ant-select-item-option-selected{
+  background-color: white !important;
+  color: black;
+  font-weight: 400 !important;
+}
