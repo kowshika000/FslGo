@@ -4,7 +4,7 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: #BEBEBE !important; 
+    background: #333333 !important; 
     border-radius: 10px !important;
     max-height: 5px !important;
   }
