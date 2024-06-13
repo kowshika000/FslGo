@@ -28,7 +28,7 @@
   overflow: hidden;
 }
 .shipment_documents table td{
-    padding: 10px 10px;
+    padding: 10px 12px;
      white-space: nowrap;
      vertical-align: middle !important;
 }
