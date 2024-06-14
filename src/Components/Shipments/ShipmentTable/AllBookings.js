@@ -65,19 +65,21 @@ const AllBookings = ({
   const idd = useSelector((state) => state.Booking?.booking?.data);
   const filteredDataa = filterData.filter((item) => {
     return (
-      (tblFilter.shipmentidD.length === 0 ||
-        tblFilter.shipmentidD.includes(item.id)) &&
-      (tblFilter.order_no.length === 0 ||
-        tblFilter.order_no.includes(item.order_no)) &&
-      (tblFilter.modeD.length === 0 || tblFilter.modeD.includes(item.mode)) &&
-      (tblFilter.originD.length === 0 ||
-        tblFilter.originD.includes(item.origin)) &&
-      (tblFilter.DestD.length === 0 ||
-        tblFilter.DestD.includes(item.destination)) &&
-      (tblFilter.etaD.length === 0 || tblFilter.etaD.includes(item.eta_ata)) &&
-      (tblFilter.etdD.length === 0 || tblFilter.etdD.includes(item.etd_atd)) &&
-      (tblFilter.statusD.length === 0 ||
-        tblFilter.statusD.includes(item.status))
+      (tblFilter.shipmentidD?.length === 0 ||
+        tblFilter.shipmentidD?.includes(item.id)) &&
+      (tblFilter.order_no?.length === 0 ||
+        tblFilter.order_no?.includes(item.order_no)) &&
+      (tblFilter.modeD?.length === 0 || tblFilter.modeD?.includes(item.mode)) &&
+      (tblFilter.originD?.length === 0 ||
+        tblFilter.originD?.includes(item.origin)) &&
+      (tblFilter.DestD?.length === 0 ||
+        tblFilter.DestD?.includes(item.destination)) &&
+      (tblFilter.etaD?.length === 0 ||
+        tblFilter.etaD?.includes(item.eta_ata)) &&
+      (tblFilter.etdD?.length === 0 ||
+        tblFilter.etdD?.includes(item.etd_atd)) &&
+      (tblFilter.statusD?.length === 0 ||
+        tblFilter.statusD?.includes(item.status))
     );
   });
   console.log("filter", filteredDataa);
@@ -88,7 +90,7 @@ const AllBookings = ({
   }, [tblFilter, filterData]);
 
   const getUniqueOptions = (array, key) => {
-    if (!Array.isArray(array) || !array.length) {
+    if (!Array.isArray(array) || !array?.length) {
       return [];
     }
     return Array.from(new Set(array.map((data) => data[key]))).map((value) => ({
@@ -110,15 +112,41 @@ const AllBookings = ({
   const etd_ = getUniqueOptions(handleShowOption, "etd_atd");
   const status_ = getUniqueOptions(handleShowOption, "status");
 
-  const handleChangeFilter = (field, value) => {
-    setTblFilter({
-      ...tblFilter,
-      [field]: value,
-    });
-    console.log("selectId", value);
+  const handleChangeFilter = (field, filterValues) => {
+    if (field === "all") {
+      setTblFilter({
+        shipmentidD: [],
+        order_no: [],
+        modeD: [],
+        originD: [],
+        DestD: [],
+        etdD: [],
+        etaD: [],
+        statusD: [],
+      });
+    } else {
+      setTblFilter((prevFilters) => ({
+        ...prevFilters,
+        [field]: filterValues,
+      }));
+    }
+    // console.log("selectId", value);
   };
 
   const FilterIdRow = () => {
+    const renderOption = (option) => {
+      if (option.label.length <= 14) {
+        return <span>{option.label}</span>; // Render full label if it's 14 characters or less
+      } else {
+        const truncatedText = option.label.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
+  
+        return (
+          <Tooltip placement="topLeft" title={option.label}>
+            <span role="button">{truncatedText}</span>
+          </Tooltip>
+        );
+      }
+    };
     return (
       <MultiSelect
         className="custom-multi-select"
@@ -135,18 +163,25 @@ const AllBookings = ({
         onChange={(e) => handleChangeFilter("shipmentidD", e.value)}
         display="chip"
         placeholder="Select"
-
-        // itemTemplate={(option) => {
-        //   return (
-        //     <Tooltip placement="topLeft" title={option.label}>
-        //       <span>{option.label}</span>
-        //     </Tooltip>
-        //   );
-        // }}
+        itemTemplate={renderOption}
+        filterPlaceholder="Search"     
       />
     );
   };
   const FilterOrderRow = () => {
+    const renderOption = (option) => {
+      if (option.label.length <= 12) {
+        return <span>{option.label}</span>; // Render full label if it's 12 characters or less
+      } else {
+        const truncatedText = option.label.slice(0, 12).trim() + ".."; // Truncate label and add ".." at the end
+  
+        return (
+          <Tooltip placement="topLeft" title={option.label}>
+            <span role="button">{truncatedText}</span>
+          </Tooltip>
+        );
+      }
+    };
     return (
       <div className="custom-multi-select-container">
         <MultiSelect
@@ -160,25 +195,33 @@ const AllBookings = ({
             width: "50px",
             fontSize: "10px",
             // maxWidth:"100px"
-            left:"180px"
+            left: "180px",
           }}
           showSelectAll={false}
           onChange={(e) => handleChangeFilter("order_no", e.value)}
           display="chip"
           placeholder="Select "
-          variant="standard"
-          itemTemplate={(option) => {
-            return (
-              <Tooltip placement="topLeft" title={option.label}>
-                <span>{option.label}</span>
-              </Tooltip>
-            );
-          }}
+          itemTemplate={renderOption}
+        filterPlaceholder="Search"     
+
         />
       </div>
     );
   };
   const FilterModeRow = () => {
+    const renderOption = (option) => {
+      if (option.label.length <= 14) {
+        return <span>{option.label}</span>; // Render full label if it's 14 characters or less
+      } else {
+        const truncatedText = option.label.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
+  
+        return (
+          <Tooltip placement="topLeft" title={option.label}>
+            <span role="button">{truncatedText}</span>
+          </Tooltip>
+        );
+      }
+    };
     return (
       <MultiSelect
         className="custom-multi-select"
@@ -196,17 +239,26 @@ const AllBookings = ({
         onChange={(e) => handleChangeFilter("modeD", e.value)}
         display="chip"
         placeholder="Select"
-        // itemTemplate={(option) => {
-        //   return (
-        //     <Tooltip placement="topLeft" title={option.label}>
-        //       <span>{option.label}</span>
-        //     </Tooltip>
-        //   );
-        // }}
+        itemTemplate={renderOption}
+        filterPlaceholder="Search"     
+
       />
     );
   };
   const FilterOrgRow = () => {
+    const renderOption = (option) => {
+      if (option.label.length <= 14) {
+        return <span>{option.label}</span>; // Render full label if it's 14 characters or less
+      } else {
+        const truncatedText = option.label.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
+  
+        return (
+          <Tooltip placement="topLeft" title={option.label}>
+            <span role="button">{truncatedText}</span>
+          </Tooltip>
+        );
+      }
+    };
     return (
       <MultiSelect
         className="custom-multi-select"
@@ -224,17 +276,26 @@ const AllBookings = ({
         onChange={(e) => handleChangeFilter("originD", e.value)}
         display="chip"
         placeholder="Select"
-        itemTemplate={(option) => {
-          return (
-            <Tooltip placement="topLeft" title={option.label}>
-              <span>{option.label}</span>
-            </Tooltip>
-          );
-        }}
+        itemTemplate={renderOption}
+        filterPlaceholder="Search"     
+
       />
     );
   };
   const FilterDestRow = () => {
+    const renderOption = (option) => {
+      if (option.label.length <= 14) {
+        return <span>{option.label}</span>; // Render full label if it's 14 characters or less
+      } else {
+        const truncatedText = option.label.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
+  
+        return (
+          <Tooltip placement="topLeft" title={option.label}>
+            <span role="button">{truncatedText}</span>
+          </Tooltip>
+        );
+      }
+    };
     return (
       <MultiSelect
         className="custom-multi-select"
@@ -252,17 +313,26 @@ const AllBookings = ({
         onChange={(e) => handleChangeFilter("DestD", e.value)}
         display="chip"
         placeholder="Select"
-        itemTemplate={(option) => {
-          return (
-            <Tooltip placement="topLeft" title={option.label}>
-              <span>{option.label}</span>
-            </Tooltip>
-          );
-        }}
+        itemTemplate={renderOption}
+        filterPlaceholder="Search"     
+
       />
     );
   };
   const FilterETDRow = () => {
+    const renderOption = (option) => {
+      if (option.label.length <= 14) {
+        return <span>{option.label}</span>; // Render full label if it's 14 characters or less
+      } else {
+        const truncatedText = option.label.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
+  
+        return (
+          <Tooltip placement="topLeft" title={option.label}>
+            <span role="button">{truncatedText}</span>
+          </Tooltip>
+        );
+      }
+    };
     return (
       <MultiSelect
         className="custom-multi-select"
@@ -280,17 +350,26 @@ const AllBookings = ({
         onChange={(e) => handleChangeFilter("etdD", e.value)}
         display="chip"
         placeholder="Select"
-        // itemTemplate={(option) => {
-        //   return (
-        //     <Tooltip placement="topLeft" title={option.label}>
-        //       <span>{option.label}</span>
-        //     </Tooltip>
-        //   );
-        // }}
+        itemTemplate={renderOption}
+        filterPlaceholder="Search"     
+
       />
     );
   };
   const FilterETARow = () => {
+    const renderOption = (option) => {
+      if (option.label.length <= 14) {
+        return <span>{option.label}</span>; // Render full label if it's 14 characters or less
+      } else {
+        const truncatedText = option.label.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
+  
+        return (
+          <Tooltip placement="topLeft" title={option.label}>
+            <span role="button">{truncatedText}</span>
+          </Tooltip>
+        );
+      }
+    };
     return (
       <MultiSelect
         className="custom-multi-select"
@@ -308,17 +387,26 @@ const AllBookings = ({
         onChange={(e) => handleChangeFilter("etaD", e.value)}
         display="chip"
         placeholder="Select"
-        // itemTemplate={(option) => {
-        //   return (
-        //     <Tooltip placement="topLeft" title={option.label}>
-        //       <span>{option.label}</span>
-        //     </Tooltip>
-        //   );
-        // }}
+        itemTemplate={renderOption}
+        filterPlaceholder="Search"     
+
       />
     );
   };
   const FilterStatusRow = () => {
+    const renderOption = (option) => {
+      if (option.label.length <= 14) {
+        return <span>{option.label}</span>; // Render full label if it's 14 characters or less
+      } else {
+        const truncatedText = option.label.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
+  
+        return (
+          <Tooltip placement="topLeft" title={option.label}>
+            <span role="button">{truncatedText}</span>
+          </Tooltip>
+        );
+      }
+    };
     return (
       <MultiSelect
         className="custom-multi-select"
@@ -336,13 +424,9 @@ const AllBookings = ({
         onChange={(e) => handleChangeFilter("statusD", e.value)}
         display="chip"
         placeholder="Select"
-        // itemTemplate={(option) => {
-        //   return (
-        //     <Tooltip placement="topLeft" title={option.label}>
-        //       <span>{option.label}</span>
-        //     </Tooltip>
-        //   );
-        // }}
+        itemTemplate={renderOption}
+        filterPlaceholder="Search"     
+
       />
     );
   };
@@ -402,7 +486,7 @@ const AllBookings = ({
       <div style={{ textAlign: "start" }}>
         {/* <span className=" px-2">{rowData?.order_no}</span> */}
         <span className="">
-          {rowData?.order_no.length <= 20 ? (
+          {rowData?.order_no?.length <= 20 ? (
             rowData?.order_no
           ) : (
             <Tooltip placement="topLeft" title={rowData?.order_no}>
@@ -421,7 +505,7 @@ const AllBookings = ({
       <div style={{ textAlign: "start" }}>
         {/* <span className=" px-2">{rowData?.order_no}</span> */}
         <span className="">
-          {rowData?.id.length <= 20 ? (
+          {rowData?.id?.length <= 20 ? (
             rowData?.id
           ) : (
             <Tooltip placement="topLeft" title={rowData?.id}>
@@ -446,7 +530,7 @@ const AllBookings = ({
             textAlign: "start",
           }}
         >
-          {rowData?.origin.length <= 20 ? (
+          {rowData?.origin?.length <= 20 ? (
             rowData?.origin
           ) : (
             <Tooltip placement="topLeft" title={rowData?.origin}>
@@ -466,7 +550,7 @@ const AllBookings = ({
         <span
           style={{ paddingLeft: "8px", fontWeight: "400", textWrap: "wrap" }}
         >
-          {rowData?.destination.length <= 20 ? (
+          {rowData?.destination?.length <= 20 ? (
             rowData?.destination
           ) : (
             <Tooltip placement="topLeft" title={rowData?.destination}>
@@ -612,7 +696,7 @@ const AllBookings = ({
     }
     const renderedColumns = new Set();
     const anyFilterValuesPresent = filterValues.some(
-      (values) => values.length > 0
+      (values) => values?.length > 0
     );
 
     return (
@@ -623,7 +707,12 @@ const AllBookings = ({
             return (
               <Tag
                 key={field}
-                style={{ backgroundColor: "#F01E1E", marginRight: "10px" ,position:"relative",top:"-11px"}}
+                style={{
+                  backgroundColor: "#F01E1E",
+                  marginRight: "10px",
+                  position: "relative",
+                  top: "-11px",
+                }}
                 className="px-2 py-1"
                 rounded
               >
@@ -663,7 +752,8 @@ const AllBookings = ({
         backgroundColor: "white",
       }}
     >
-      <div className="">
+      <div className="d-flex justify-content-between ">
+        <div>
         {Object.entries(tblFilter).map(([field, filterValues]) => (
           <FilterTag
             key={field}
@@ -672,16 +762,32 @@ const AllBookings = ({
             handleChangeFilter={handleChangeFilter}
           />
         ))}
-        {/* <div className="d-flex justify-content-end">
-          {Object.keys(tblFilter).length > 0 && (
-            <CloseOutlined
-              onClick={() => {
-                // Clear all filters
-                handleChangeFilter("all", {});
+        </div>
+        <div
+          className="d-flex justify-content-end"
+          style={{ position: "relative",top:"-8px"  }}
+        >
+          {Object.keys(tblFilter)?.some(
+            (key) => tblFilter[key]?.length > 0
+          ) && (
+            <div
+              style={{
+                backgroundColor: "#F01E1E",
+                cursor: "pointer",
+                borderRadius: "6px",
+                width: "20px",
+                height: "20px",
+                alignItems:"center",
+                color:"white",
+                textAlign:"center",
+                // fontWeight:"bolder"
               }}
-            />
+            >
+              {" "}
+              <CloseOutlined  onClick={() => handleChangeFilter("all", [])} />
+            </div>
           )}
-        </div> */}
+        </div>
       </div>
       <DataTable
         value={paginatedData}
@@ -693,7 +799,7 @@ const AllBookings = ({
         // paginatorTemplate=" PrevPageLink PageLinks NextPageLink  CurrentPageReport "
         removableSort
         rowClassName={rowClassName}
-        className={`${filteredData.length === 0 ? "text-center" : ""}`}
+        className={`${filteredData?.length === 0 ? "text-center" : ""}`}
         style={{ height: "353px" }}
         emptyMessage={noData()}
       >

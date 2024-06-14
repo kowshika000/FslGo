@@ -8,13 +8,13 @@ export const Footer = () => {
       style={{
         minWidth: "1330px",
         width: "100%",
-        height: "76px",
+        height: "55px",
         alignItems: "center",
         padding: "20px 24px 20px 24px",
       }}
     >
       <div
-        className="d-flex justify-content-between gap-5 "
+        className="d-flex justify-content-start gap-5 "
         style={{ width: "453px", color: "#FFFFFF" }}
       >
         <Typography
