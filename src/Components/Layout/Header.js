@@ -101,6 +101,7 @@ const Header = ({ activePage }) => {
             height="35px"
             alt="Logo"
             onClick={handleRedirectToShipments}
+            style={{cursor:"pointer"}}
           />
         </div>
         <Box
@@ -244,7 +245,7 @@ const Header = ({ activePage }) => {
                 padding: "6px",
                 color: "#da1e28",
                 alignItems: "start",
-                paddingTop: "3px",
+                paddingTop: "2px",
               }}
             >
               3{/* 3<sup>+</sup> */}
@@ -267,6 +268,8 @@ const Header = ({ activePage }) => {
               width: "43px",
               height: "35px",
               borderRadius: "50px",
+              alignSelf:"center",
+              alignContent:"center"
             }}
             role="button"
             className="justify-text-center align-content-center"

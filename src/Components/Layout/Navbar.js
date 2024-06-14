@@ -10,15 +10,33 @@ import MailIcon from "@mui/icons-material/Mail";
 const Navbar = ({ setShowText }) => {
   const location = useLocation();
   const pathname = location.pathname;
+  const navigate = useNavigate();
+  console.log("path",pathname);
   const handleClick = () => {
     // setShowText(false);
+  };
+  const handleNavHome = () => {
+    if (
+      pathname ==="/"
+    ) {
+      setShowText(false);
+    } else {
+      // navigate("/#/login?id=FRESCONV2&token=e1745a907281400e938a8203a1004c5f");
+      navigate("/");
+    }
+  
   };
   const homeBreadcrumb = (
     <Link
       underline="hover"
       key="1"
-      onClick={() => setShowText(false)}
-      style={{ fontSize: "14px", color: "#ACB8C4", fontWeight: "400" }}
+      onClick={handleNavHome}
+      style={{
+        fontSize: "14px",
+        color: "#ACB8C4",
+        fontWeight: "400",
+        cursor: "pointer",
+      }}
     >
       Home
     </Link>
