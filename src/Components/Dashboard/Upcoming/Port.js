@@ -384,7 +384,7 @@ export const Port = () => {
         <Select
           defaultValue={selectedVolume}
           className=""
-          style={{ width: 80 }}
+          style={{ width: 80, height:40,margin:"8px 0"}}
           onChange={handleVolumeChange}
           suffixIcon={<CaretDownOutlined style={{ color: "#67788E" }}/>}
           

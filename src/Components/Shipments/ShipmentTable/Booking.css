@@ -91,6 +91,15 @@
   border-radius: 3px;
   /* align-self: center; */
 }
+.p-checkbox:not(.p-disabled):has(.p-checkbox-input:hover) .p-checkbox-box {
+  border-color: #d1d5db !important;
+}
+.p-multiselect-panel{
+  z-index: 999 !important;
+}
+.p-button:focus{
+  box-shadow: none !important;
+}
 .p-multiselect-item {
   margin-top: 10px;
 }
