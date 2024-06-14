@@ -69,8 +69,8 @@
   font-size: 12px;
 }
 .p-multiselect-filter.p-inputtext.p-component {
-  padding: 5px !important;
-  font-size: 14px !important;
+  padding: 10px !important;
+  font-size: 13px !important;
 }
 .custom-multi-select {
   width: 200px;
@@ -103,7 +103,7 @@
   height: 22px;
 }
 .p-multiselect-filter-icon {
-  display: block;
+  display: none;
   height: 13px;
   width: 13px;
 }
@@ -122,6 +122,9 @@
 
 .message .text-red {
   color: red;
+}
+.pi-check {
+  font-weight: bold !important;
 }
 
 /* :where(.css-dev-only-do-not-override-1okl62o).ant-input-outlined:hover{
