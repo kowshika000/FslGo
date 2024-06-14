@@ -3,10 +3,14 @@
     color: #fff !important;
     width:36px;
     height:36px;
+    font-size: 14px;
   }
   .btn:hover {
     color: white !important;
     background-color: #384656 !important;
+  }
+  .pagination-right{
+    font-size: 14px;
   }
   
   

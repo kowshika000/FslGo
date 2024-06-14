@@ -82,7 +82,7 @@ function App() {
       <div style={{ marginTop: "4rem" }}>
         <Routes>
           {/* <Route path="/" element={<Dashboard />} /> */}
-          <Route path="/" element={<ShipmentsHome />} />
+          <Route path="/" element={<ShipmentsHome/>} />
           <Route path="/recentBooking" element={<RecentBooking />} />
           <Route path="/inbox" element={<Inbox />} />
           <Route path="/invoice" element={<Invoice />} />

@@ -73,9 +73,11 @@
   background-color: #DA1E28   !important;
 } */
 .custom-row:hover {
-  background-color: rgba(247, 252, 255, 1);
-  border-bottom: 1px solid #acacac;
+  background-color: #F8FAFC !important;
+  border-bottom: 1px solid #F3F5F7 !important;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.25);
 }
+
 .sorticon {
   margin-left: 3px;
 }
