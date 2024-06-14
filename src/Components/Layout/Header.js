@@ -244,7 +244,7 @@ const Header = ({ activePage }) => {
                 padding: "6px",
                 color: "#da1e28",
                 alignItems: "start",
-                paddingTop: "3px",
+                paddingTop: "2px",
               }}
             >
               3{/* 3<sup>+</sup> */}
