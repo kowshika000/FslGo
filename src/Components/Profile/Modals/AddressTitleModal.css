@@ -3,6 +3,9 @@
 }
 
 #address_title .css-bdhsul-MuiTypography-root-MuiDialogTitle-root{
-     padding: 19px 22px !important;
+     padding: 50px 22px !important;
      padding-bottom: 0px !important;
+}
+#address_title .css-ypiqx9-MuiDialogContent-root{
+    padding: 0px 24px 49px 24px !important;
 }

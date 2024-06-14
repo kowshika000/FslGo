@@ -3,6 +3,7 @@ import "./ShipmentDocuments.css";
 import { HiArrowDownTray } from "react-icons/hi2";
 import CustomCheckBox from "../Track/CustomCheckBox";
 import { useSelector } from "react-redux";
+import { Button } from "antd";
 
 const ShipmentDocuments = () => {
   const bookingData = useSelector((state) => state.ViewBooking);
@@ -77,7 +78,7 @@ const ShipmentDocuments = () => {
                   <span
                     className="ms-4"
                     style={{
-                      visibility: checkinputs.length > 1 ? "visible" : "hidden",
+                      visibility: checkinputs.length > 0 ? "visible" : "hidden",
                       background: "rgba(243, 245, 247, 1)",
                       borderRadius: "4px",
                       padding: "8px"
@@ -102,13 +103,12 @@ const ShipmentDocuments = () => {
                       <div className="d-flex justify-content-start align-items-center">
                         <div
                           className="checkbox"
-                          style={{ marginRight: "5px",opacity:allcheck ? ".5":"1"}}
+                          style={{ marginRight: "5px"}}
                         >
                           <CustomCheckBox
                             checked={checkinputs.includes(item.file_name)}
                             value={item.file_name}
                             onChange={handleCheckInputs}
-                            disabled={allcheck}
                           />
                         </div>
                         <div>
@@ -122,9 +122,11 @@ const ShipmentDocuments = () => {
                     <td>{item.id}</td>
                     <td>{item.document_date}</td>
                     <td>
-                      <span className="px-1 py-1">
+                      <button  style={{opacity:allcheck ? ".5":"1",border:"none"}} disabled={allcheck}>
+                      <span className="px-1 py-1" >
                         <HiArrowDownTray size={16} />
                       </span>
+                      </button>
                     </td>
                   </tr>
                 );
