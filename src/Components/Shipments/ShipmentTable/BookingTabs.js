@@ -5,8 +5,10 @@ import "../ShipBookingTabs.css";
 import { useSelector } from "react-redux";
 import { SearchHeader } from "./SearchHeader";
 import { Dropdown } from "primereact/dropdown";
-import ButtonList from "../../../assets/listbtn.svg";
-import Group1 from "../../../assets/newGropL.svg";
+import ButtonList from "../../../assets/Button.svg";
+import Buttonfade from "../../../assets/Buttonfade.svg";
+import Group1 from "../../../assets/CButton.svg";
+import Groupfade from "../../../assets/CButtonfade.svg";
 import FilterDrawer from "./Filter";
 import Navbar from "../../Layout/Navbar";
 import image1 from "../../../assets/Shape.svg";
@@ -313,16 +315,10 @@ function BookingTabs({ showText, setShowText }) {
                       alignSelf: "center",
                       height: "32px",
                       width: "32px",
-                      backgroundColor: "#FFFFFF",
-                      border: "1px solid #E7EAF0",
-                      borderRadius: "4px",
                     }}
                   >
                     <img
                       src={ButtonList}
-                      width="14px"
-                      height="14px"
-                      className="mt-2 ms-2"
                       style={{ cursor: "pointer" }}
                       onClick={handlShowFilter}
                     />
@@ -330,19 +326,13 @@ function BookingTabs({ showText, setShowText }) {
                   <div
                     style={{
                       alignSelf: "center",
-                      backgroundColor: "#F3F5F7",
+                      width: "32px",
                       height: "32px",
-                      width: "28.77px",
-                      borderRadius: "4px",
                     }}
-                    className="me-2"
+                    className="ms-1 me-2"
                     onClick={handleTableChange}
                   >
-                    <img
-                      src={Group1}
-                      style={{ cursor: "pointer" }}
-                      className="mt-2 ms-2"
-                    />
+                    <img src={Group1} style={{ cursor: "pointer" }} />
                   </div>
                 </>
               ) : (
@@ -350,17 +340,11 @@ function BookingTabs({ showText, setShowText }) {
                   <div
                     style={{
                       alignSelf: "center",
-                      height: "32px",
-                      backgroundColor: "#F3F5F7",
                       width: "32px",
-                      borderRadius: "4px",
                     }}
                   >
                     <img
-                      src={ButtonList}
-                      width="14px"
-                      height="14px"
-                      className="mt-2 ms-2"
+                      src={Buttonfade}
                       style={{ cursor: "pointer" }}
                       onClick={handlShowFilter}
                     />
@@ -369,18 +353,14 @@ function BookingTabs({ showText, setShowText }) {
                     style={{
                       alignSelf: "center",
                       height: "32px",
-                      width: "28.77px",
-                      backgroundColor: "#FFFFFF",
-                      border: "1px solid #E7EAF0",
-                      borderRadius: "4px",
+                      width: "32px",
                     }}
-                    className="me-2"
+                    className="ms-1 me-2"
                     onClick={handleTableChange}
                   >
                     <img
-                      src={Group1}
+                      src={Groupfade}
                       style={{ cursor: "pointer" }}
-                      className="mt-2 ms-2"
                     />
                   </div>
                 </>
