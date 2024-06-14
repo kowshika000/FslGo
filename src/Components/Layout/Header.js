@@ -2,17 +2,17 @@ import { useState } from "react";
 import { Box, Typography, Button } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
-import { Link, useLocation } from "react-router-dom";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import LogoutIcon from '@mui/icons-material/Logout';
-
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 // import { ReactComponent as Logo } from "../../assets/Logo.svg";
-import Logo from "../../assets/fresGoLogo.jpg"
+import Logo from "../../assets/fresGoLogo.jpg";
 import { ReactComponent as Bell } from "../../assets/bell.svg";
 import { Dropdown } from "antd";
 
 const Header = ({ activePage }) => {
+  const navigate = useNavigate();
   const location = useLocation();
   const [headerFocused, setHeaderFocused] = useState(true);
 
@@ -26,48 +26,55 @@ const Header = ({ activePage }) => {
 
   const items = [
     {
-      key:'1',
+      key: "1",
       label: (
-        <Link 
+        <Link
           to="/profile"
-          className="text-decoration-none " 
-          style={
-            {
-              fontSize:"14px",
-              fontWeight:"400",
-              letterSpacing:".01em",
-              color:"black",
-              marginRight:"70px",
-              lineHeight:"27px",
-            }
-          }
-          >
-           <AccountCircleIcon sx={{fontSize:"23px", color:"#384656"}} className="me-3" />Profile
-          </Link>
-      )
+          className="text-decoration-none "
+          style={{
+            fontSize: "14px",
+            fontWeight: "400",
+            letterSpacing: ".01em",
+            color: "black",
+            marginRight: "70px",
+            lineHeight: "27px",
+          }}
+        >
+          <AccountCircleIcon
+            sx={{ fontSize: "23px", color: "#384656" }}
+            className="me-3"
+          />
+          Profile
+        </Link>
+      ),
     },
     {
-      key:'2',
+      key: "2",
       label: (
         <Link
           className="text-decoration-none"
-          style={
-            {
-              fontSize:"14px",
-              fontWeight:"400",
-              letterSpacing:".01em",
-              color:"black",
-              marginRight:"70px",
-              lineHeight:"27px",
-            }
-          }
+          style={{
+            fontSize: "14px",
+            fontWeight: "400",
+            letterSpacing: ".01em",
+            color: "black",
+            marginRight: "70px",
+            lineHeight: "27px",
+          }}
         >
-          <LogoutIcon sx={{fontSize:"23px", color:"#384656"}} className="me-3"/>
+          <LogoutIcon
+            sx={{ fontSize: "23px", color: "#384656" }}
+            className="me-3"
+          />
           Logout
         </Link>
-      )
+      ),
     },
-  ]
+  ];
+  const handleRedirectToShipments = () => {
+    console.log("redirect Clicked");
+    navigate("/#/login?id=FRESCONV2&token=e1745a907281400e938a8203a1004c5f");
+  };
   return (
     <div
       className="d-flex justify-content-between"
@@ -88,9 +95,22 @@ const Header = ({ activePage }) => {
     >
       <div className="d-flex">
         <div className="align-content-center">
-          <img src={Logo} width="120px" height="35px" alt="Logo" />
+          <img
+            src={Logo}
+            width="120px"
+            height="35px"
+            alt="Logo"
+            onClick={handleRedirectToShipments}
+          />
         </div>
-        <Box sx={{ display: "flex", alignItems: "center", marginLeft: "auto", paddingLeft:'20px' }}>
+        <Box
+          sx={{
+            display: "flex",
+            alignItems: "center",
+            marginLeft: "auto",
+            paddingLeft: "20px",
+          }}
+        >
           {/* Navigation links */}
 
           {/* <Link to="/" style={{ textDecoration: "none" }}>
@@ -180,7 +200,7 @@ const Header = ({ activePage }) => {
                 },
               }}
             >
-             Quick Booking
+              Quick Booking
             </Typography>
           </Link>
         </Box>
@@ -210,8 +230,8 @@ const Header = ({ activePage }) => {
           <div
             style={{
               borderRadius: "50px",
-              widht:'50px',
-              height:'20px',
+              widht: "50px",
+              height: "20px",
               background: "#ffd7d9",
               alignItems: "center",
             }}
@@ -221,49 +241,48 @@ const Header = ({ activePage }) => {
                 fontSize: "12px",
                 fontWeight: "400",
                 textAlign: "center",
-                padding:'6px',
+                padding: "6px",
                 color: "#da1e28",
                 alignItems: "start",
-               paddingTop:'3px'
+                paddingTop: "3px",
               }}
             >
-              3
-              {/* 3<sup>+</sup> */}
+              3{/* 3<sup>+</sup> */}
             </Typography>
           </div>
         </div>
-        <Dropdown 
+        <Dropdown
           menu={{
             items,
           }}
           placement="bottomRight"
           arrow={{
-            pointAtCenter:true,
+            pointAtCenter: true,
           }}
-          trigger={['click']}
+          trigger={["click"]}
         >
-        <div
-          style={{
-            backgroundColor: "#FB450C",
-            width: "43px",
-            height: "35px",
-            borderRadius: "50px",
-          }}
-          role="button"
-          className="justify-text-center align-content-center"
-        >
+          <div
+            style={{
+              backgroundColor: "#FB450C",
+              width: "43px",
+              height: "35px",
+              borderRadius: "50px",
+            }}
+            role="button"
+            className="justify-text-center align-content-center"
+          >
             <Typography
               sx={{
                 color: "white",
                 fontFamily: "Lato",
                 fontSize: "16px",
                 fontWeight: "400",
-                textAlign: "center",  
+                textAlign: "center",
               }}
             >
-            G
+              G
             </Typography>
-        </div>
+          </div>
         </Dropdown>
       </div>
     </div>
