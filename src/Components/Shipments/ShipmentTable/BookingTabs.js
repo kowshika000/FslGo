@@ -5,13 +5,15 @@ import "../ShipBookingTabs.css";
 import { useSelector } from "react-redux";
 import { SearchHeader } from "./SearchHeader";
 import { Dropdown } from "primereact/dropdown";
-import ButtonList from "../../../assets/ButtonListNew.svg";
-import Group1 from "../../../assets/newGropL.svg";
+import ButtonList from "../../../assets/Button.svg";
+import Buttonfade from "../../../assets/Buttonfade.svg";
+import Group1 from "../../../assets/CButton.svg";
+import Groupfade from "../../../assets/CButtonfade.svg";
 import FilterDrawer from "./Filter";
 import Navbar from "../../Layout/Navbar";
-import image1 from "../../../assets/Shape1.png";
-import image2 from "../../../assets/Shape (1).png";
-import image3 from "../../../assets/Shape (2).png";
+import image1 from "../../../assets/Shape.svg";
+import image2 from "../../../assets/Shape1.svg";
+import image3 from "../../../assets/Shape2.svg";
 import DailyReportTable from "./DailyReportTable";
 import { CalendarOutlined, CaretDownOutlined } from "@ant-design/icons";
 
@@ -168,16 +170,12 @@ function BookingTabs({ showText, setShowText }) {
     setShowText(true);
   };
   const handlShowFilter = () => {
-    if (!showText) {
-      setVisible(true);
-    } else if (showText) {
-      setShowText(false);
-    }
+    setShowText(false);
   };
   const valueTemplate = () => {
     return (
       <div>
-        <CalendarOutlined className="me-2"/>
+        <CalendarOutlined className="me-2" />
         <span
           style={{
             color: "#495A6E",
@@ -220,7 +218,7 @@ function BookingTabs({ showText, setShowText }) {
           >
             Daily Status Report
           </p>
-          <Navbar />
+          <Navbar setShowText={setShowText} />
         </div>
       ) : (
         <SearchHeader
@@ -228,21 +226,26 @@ function BookingTabs({ showText, setShowText }) {
           handleUpcomingArr={handleUpcomingArr}
           handleUpcomingDep={handleUpcomingDep}
           selectedButton={selectedButton}
+          showText={showText}
         />
       )}
-      <Row className="mt-3 border" style={{ borderRadius: "8px"}}>
-        <Col span={24} style={{ backgroundColor: "#F8FAFC",borderRadius: "8px" }}>
+      <Row className="mt-3 border" style={{ borderRadius: "8px" }}>
+        <Col
+          span={24}
+          style={{ backgroundColor: "#F8FAFC", borderRadius: "8px" }}
+        >
           <Row justify="between" style={{ height: "57px" }}>
-            <Col span={20}>
+            <Col span={19}>
               {!showText ? (
                 <Tabs defaultActiveKey="1" onChange={onChange}>
                   <Tabs.TabPane
                     tab={`All Bookings (${schedule?.all ? schedule?.all : 0})`}
-                    key="1"                  />
+                    key="1"
+                  />
                   {/* <Tabs.TabPane
                     tab={`Pending Action (${schedule?.pending})`}
                     key="2"
-                  /> */}       
+                  /> */}
                   <Tabs.TabPane
                     tab={`Booked (${schedule?.booked ? schedule?.booked : 0})`}
                     key="2"
@@ -277,7 +280,7 @@ function BookingTabs({ showText, setShowText }) {
               )}
             </Col>
             <Col
-              span={4}
+              span={5}
               className="viewtab-col d-flex justify-content-end"
               style={{
                 borderBottom: "1px solid #e7eaf0",
@@ -305,37 +308,63 @@ function BookingTabs({ showText, setShowText }) {
                   />
                 </div>
               )}
-              <div
-                style={{
-                  alignSelf: "center",
-                  height: "32px",
-                  width: "32px",
-                }}
-              >
-                <img
-                  src={ButtonList}
-                  width="32px"
-                  height="32px"
-                  style={{ cursor: "pointer" }}
-                  onClick={handlShowFilter}
-                />
-              </div>
-              <div
-                style={{
-                  alignSelf: "center",
-                  backgroundColor: "#F3F5F7",
-                  height: "32px",
-                  width: "28.77px",
-                }}
-                className="me-2"
-                onClick={handleTableChange}
-              >
-                <img
-                  src={Group1}
-                  style={{ cursor: "pointer" }}
-                  className="mt-2 ms-2"
-                />
-              </div>
+              {!showText ? (
+                <>
+                  <div
+                    style={{
+                      alignSelf: "center",
+                      height: "32px",
+                      width: "32px",
+                    }}
+                  >
+                    <img
+                      src={ButtonList}
+                      style={{ cursor: "pointer" }}
+                      onClick={handlShowFilter}
+                    />
+                  </div>
+                  <div
+                    style={{
+                      alignSelf: "center",
+                      width: "32px",
+                      height: "32px",
+                    }}
+                    className="ms-1 me-2"
+                    onClick={handleTableChange}
+                  >
+                    <img src={Group1} style={{ cursor: "pointer" }} />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div
+                    style={{
+                      alignSelf: "center",
+                      width: "32px",
+                    }}
+                  >
+                    <img
+                      src={Buttonfade}
+                      style={{ cursor: "pointer" }}
+                      onClick={handlShowFilter}
+                    />
+                  </div>
+                  <div
+                    style={{
+                      alignSelf: "center",
+                      height: "32px",
+                      width: "32px",
+                    }}
+                    className="ms-1 me-2"
+                    onClick={handleTableChange}
+                  >
+                    <img
+                      src={Groupfade}
+                      style={{ cursor: "pointer" }}
+                    />
+                  </div>
+                </>
+              )}
               {!showText ? (
                 ""
               ) : (
@@ -363,7 +392,14 @@ function BookingTabs({ showText, setShowText }) {
             </Col>
           </Row>
         </Col>
-        <Col span={24} style={{ padding: "20px", backgroundColor: "white",borderRadius: "8px" }}>
+        <Col
+          span={24}
+          style={{
+            padding: "20px",
+            backgroundColor: "white",
+            borderRadius: "8px",
+          }}
+        >
           {!showText ? (
             <AllBookings
               filterData={filteredData}

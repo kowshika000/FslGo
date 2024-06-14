@@ -46,10 +46,10 @@ const Pagination = ({ currentPage, setCurrentPage, totalItems }) => {
         {startPage > 1 && <button className="btn" onClick={() => goToPage(1)}>1</button>}
         {startPage > 2 && <span className="ellipsis">...</span>}
         {Array.from({ length: endPage - startPage + 1 }, (_, i) => startPage + i).map((page) => (
-          <button key={page} className={`btn ${currentPage === page ? 'current-page' : ''}`} style={{color:'rgba(24, 30, 37, 1)'}} onClick={() => goToPage(page)}>{page}</button>
+          <button key={page} className={`btn ${currentPage === page ? 'current-page' : ''}`} style={{color:'rgba(24, 30, 37, 1)',fontSize:"14px"}} onClick={() => goToPage(page)}>{page}</button>
         ))}
         {endPage < totalPages - 1 && <span className="ellipsis" >...</span>}
-        {endPage < totalPages && <button className="btn "  onClick={() => goToPage(totalPages)}>{totalPages}</button>}
+        {endPage < totalPages && <button className="btn " style={{fontSize:"14px"}}  onClick={() => goToPage(totalPages)}>{totalPages}</button>}
         
         <button className=""style={{border:'none', background:'transparent'}} onClick={handleNextPage}><KeyboardArrowRightIcon sx={{color:'rgba(24, 30, 37, 1)', opacity:'0.5 '}}/></button>
       </div>

@@ -233,7 +233,7 @@ const UpcomingSailings = () => {
       return (
         <div
           className="text-center"
-          style={{ height: "50vh", alignContent: "center" }}
+          style={{ height: "50vh", alignContent: "center",backgroundColor:"white" }}
         >
           No data found
         </div>
@@ -248,7 +248,7 @@ const UpcomingSailings = () => {
       return (
         <div
           className="text-center"
-          style={{ height: "50vh", alignContent: "center" }}
+          style={{ height: "50vh", alignContent: "center",backgroundColor:"white" }}
         >
           No data found
         </div>
