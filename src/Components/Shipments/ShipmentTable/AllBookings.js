@@ -566,10 +566,7 @@ const AllBookings = ({
       <div className="message">
         <span className={hasUpdated ? "text-red" : ""}>
           {hasUpdated ? (
-            <Tooltip
-              placement="topLeft"
-              title="Old 26-May-2024 New 27-May-2024"
-            >
+            <Tooltip placement="topLeft" title={rowData?.updated_message}>
               <span role="button">{rowData?.etd_atd}</span>
             </Tooltip>
           ) : (
@@ -580,17 +577,14 @@ const AllBookings = ({
     );
   };
 
-  const bodyTemplateEtd = (rowData) => {
+  const bodyTemplateEta = (rowData) => {
     const hasUpdated =
       rowData?.is_updated === "Y" ? rowData?.updated_message : "";
     return (
       <div className="message">
         <span className={hasUpdated ? "text-red" : ""}>
           {hasUpdated ? (
-            <Tooltip
-              placement="topLeft"
-              title="Old 26-May-2024 New 27-May-2024"
-            >
+            <Tooltip placement="topLeft" title={rowData?.updated_message}>
               <span role="button">{rowData?.eta_ata}</span>
             </Tooltip>
           ) : (
@@ -761,11 +755,11 @@ const AllBookings = ({
                 alignItems: "center",
                 color: "white",
                 textAlign: "center",
-                padding:"2px 2px 0px 2px ",
-                fontSize:"12px"
+                padding: "2px 2px 0px 2px ",
+                fontSize: "12px",
                 // fontWeight:"bolder"
               }}
-            > 
+            >
               Clear All &nbsp;&nbsp;
               <CloseOutlined onClick={() => handleChangeFilter("all", [])} />
             </div>
@@ -1035,7 +1029,7 @@ const AllBookings = ({
               </div>
             </span>
           }
-          body={bodyTemplateEtd}
+          body={bodyTemplateEta}
           bodyClassName="custom-cell"
           // className="p-3"
           style={{ paddingLeft: "10px", paddingRight: "10px" }}
