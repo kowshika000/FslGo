@@ -2,10 +2,11 @@ import { useState } from "react";
 import { Box, Typography, Button } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
-import Cookies from 'js-cookie'
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
+import Cookies from 'js-cookie'
+
 
 // import { ReactComponent as Logo } from "../../assets/Logo.svg";
 import Logo from "../../assets/fresGoLogo.jpg";
@@ -59,14 +60,18 @@ const Header = ({ activePage }) => {
       label: (
         <Link
           className="text-decoration-none"
-          style={{
-            fontSize: "14px",
-            fontWeight: "400",
-            letterSpacing: ".01em",
-            color: "black",
-            marginRight: "70px",
-            lineHeight: "27px",
-          }}
+
+
+          style={
+            {
+              fontSize:"14px",
+              fontWeight:"400",
+              letterSpacing:".01em",
+              color:"black",
+              marginRight:"70px",
+              lineHeight:"27px",
+            }
+          }
           onClick={()=>handleLogout()}
         >
           <LogoutIcon
