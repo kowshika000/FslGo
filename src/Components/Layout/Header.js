@@ -2,9 +2,6 @@ import { useState } from "react";
 import { Box, Typography, Button } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import CloseIcon from "@mui/icons-material/Close";
-import { Link, useLocation } from "react-router-dom";
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import LogoutIcon from '@mui/icons-material/Logout';
 import Cookies from 'js-cookie'
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
