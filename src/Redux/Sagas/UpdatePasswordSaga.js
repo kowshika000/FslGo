@@ -2,7 +2,7 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import * as Types from "../ActionTypes";
 import { UpdatePasswordService } from '../../Services/UpdatePasswordService';
 
-function* updatePasswordSaga({ payload }) {
+function* updatePasswordSaga(payload) {
   try {
     console.log('payload',payload)
     const BookingResponse = yield call(UpdatePasswordService, payload);

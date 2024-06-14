@@ -4,11 +4,12 @@ import React, { useState } from 'react'
 import uploadIcon from '../../assets/Upload.svg'
 import './ProfileHeader.css'
 import Edit_Image  from '../../assets/profile_Edit.svg'
+import CountryFlag from '../Core-Components/CountryFlag';
 
-const ProfileHeader = ({setOpenEditModal,profiledata}) => {
+const ProfileHeader = ({setOpenEditModal,profileData}) => {
 
-  const userDetails = profiledata?.userdetails
-  console.log("pdata",userDetails)
+    const userDetails = profileData?.profileData
+    console.log(userDetails)
 
     //This is for ConvertBase64
     const getBase64 = (img, callback) => {
@@ -32,17 +33,20 @@ const ProfileHeader = ({setOpenEditModal,profiledata}) => {
     const [loading, setLoading] = useState(false);
     const [imageUrl, setImageUrl] = useState();
     const handleChange = (info) => {
-      if (info.file.status === 'uploading') {
-        setLoading(true);
-        return;
-      }
-      if (info.file.status === 'done') {
-        // Get this url from response in real world.
-        getBase64(info.file.originFileObj, (url) => {
-          setLoading(false);
-          setImageUrl(url);
-        });
-      }
+      // if (info.file.status === 'uploading') {
+      //   setLoading(true);
+      //   return;
+      // }
+      // if (info.file.status === 'done') {
+      //   // Get this url from response in real world.
+      //   getBase64(info.file.originFileObj, (url) => {
+      //     setLoading(false);
+      //     setImageUrl(url);
+      //   });
+      // }
+      // console.log(URL.createObjectURL(info))
+      setImageUrl(URL.createObjectURL(info.file.originFileObj))
+      console.log(info.file.originFileObj)
     }
 
     //This is for Upload Image
@@ -93,12 +97,12 @@ const ProfileHeader = ({setOpenEditModal,profiledata}) => {
             <div className="row profile_details">
                 <div className="col-2" style={{position:"relative"}}>
                     <Upload
-                        name="avatar"
+                        // name="avatar"
                         listType="picture-circle"
                         className="avatar-uploader"
                         showUploadList={false}
                         // action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
-                        beforeUpload={beforeUpload}
+                        // beforeUpload={beforeUpload}
                         onChange={handleChange}
                     >
                         {imageUrl ? (
@@ -107,10 +111,15 @@ const ProfileHeader = ({setOpenEditModal,profiledata}) => {
                                 alt="avatar"
                                 style={{
                                 width: '100%',
+                                borderRadius:"50%",
+                                height:"100%",
+                                objectFit:"cover",
                                 }}
                             />
                         ) : (
-                        uploadButton
+                          <div className='d-flex justify-content-center align-items-center' style={{fontSize:"32px",fontWeight:"700",color:"black",height:"100%",width:"100%",borderRadius:"50%"}}>
+                              F
+                          </div>
                         )}
                     </Upload>
                     <div className='horizontal_line' >
@@ -122,27 +131,28 @@ const ProfileHeader = ({setOpenEditModal,profiledata}) => {
                         <div className="name_field">
                             <p className='m-0'>Company Name</p>
                                 <p className='m-0'>
-                                {userDetails?.company.length <= 50 ? (
+                                {userDetails?.company?.length <= 50 ? (
                                     userDetails?.company
                                   ) : (
                                     <Tooltip placement="topLeft" zIndex={9999} title={userDetails?.company}>
                                       <span role="button">
-                                        {userDetails?.company.slice(49 ).trim().split("").join("") +
+                                        {userDetails?.company?.slice(49 ).trim().split("").join("") +
                                           "..."}
                                       </span>
                                     </Tooltip>
                                   )} 
-                                  </p>     
+                                  </p>
                         </div>
                         <div className="companyname_field">
                             <p className='m-0'>Country</p>
                             <p className='m-0'>
-                            {userDetails?.country_name.length <= 27 ? (
+                            <CountryFlag countryCode={userDetails?.country_code} />&nbsp;&nbsp;
+                            {userDetails?.country_name?.length <= 27 ? (
                                     userDetails?.country_name
                                   ) : (
                                     <Tooltip placement="topLeft" zIndex={9999} title={userDetails?.country_name}>
                                       <span role="button">
-                                        {userDetails?.country_name.slice(0,26 ).trim().split("").join("") +
+                                        {userDetails?.country_name?.slice(0,26 ).trim().split("").join("") +
                                           "..."}
                                       </span>
                                     </Tooltip>
@@ -153,12 +163,12 @@ const ProfileHeader = ({setOpenEditModal,profiledata}) => {
                     <div className="profile_box_2">
                         <div className="email_field">
                             <p className='m-0'>Email</p>
-                            <p className='m-0'>{userDetails?.email.length <= 27 ? (
+                            <p className='m-0'>{userDetails?.email?.length <= 27 ? (
                                     userDetails?.email
                                   ) : (
                                     <Tooltip placement="topLeft" zIndex={9999} title={userDetails?.email}>
                                       <span role="button">
-                                        {userDetails?.email.slice(0,26 ).trim().split("").join("") +
+                                        {userDetails?.email?.slice(0,26 ).trim().split("").join("") +
                                           "..."}
                                       </span>
                                     </Tooltip>
@@ -167,14 +177,14 @@ const ProfileHeader = ({setOpenEditModal,profiledata}) => {
                         </div>
                         <div className="companyprofile_field">
                             <p className='m-0'>Preferred currency</p>
-                            <p className='m-0'>Exporter</p>
+                            <p className='m-0'>{userDetails?.currency_code}</p>
                         </div>
                     </div>
                     <div className="profile_box_3">
                         <div className="workemail_field">
                             <p className='m-0'>Phone</p>
                             <p className='m-0'>
-                            <p className='m-0'>{userDetails?.mobile}</p>
+                            {userDetails?.phone_no}
                             {/* {userDetails?.email.length <= 27 ? (
                                     userDetails?.email
                                   ) : (

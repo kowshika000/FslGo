@@ -98,3 +98,14 @@
     max-height: 500px;
     border-radius: 8px;
 }
+
+/* .booking_summary .ant-input-outlined:focus-within{
+    border-color: #e5e5e5 !important;
+    box-shadow: none !important;
+}
+.booking_summary .ant-input{
+    caret-color: unset !important;
+}
+.booking_summary .ant-input-disabled:hover:not([disabled]){
+    background-color: unset !important;
+} */

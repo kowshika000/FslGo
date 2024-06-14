@@ -23,10 +23,10 @@
 }
 
 /* This is for profile_box */
-.profile_section .profile_box>div:not(:nth-child(4),:nth-child(5)){
+.profile_section .profile_box>div:not(:nth-child(3),:nth-child(4)){
     width: 100%;
 }
-.profile_section .profile_box .profile_box_4{
+.profile_section .profile_box .profile_box_3{
     width: 50%;
 }
 .profile_section .profile_box .edit_icon_box{

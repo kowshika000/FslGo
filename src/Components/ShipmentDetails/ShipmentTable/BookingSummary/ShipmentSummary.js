@@ -552,6 +552,7 @@ const ShipmentSummary = () => {
                   maxLength={1000}
                   readOnly
                   onChange={(e) => setTextInput(e.target.value)}
+                  style={{pointerEvents:"none"}}
                 />
               </div>
             </div>
