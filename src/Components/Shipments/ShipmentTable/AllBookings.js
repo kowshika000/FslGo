@@ -139,7 +139,7 @@ const AllBookings = ({
         return <span>{option.label}</span>; // Render full label if it's 14 characters or less
       } else {
         const truncatedText = option.label.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
-  
+
         return (
           <Tooltip placement="topLeft" title={option.label}>
             <span role="button">{truncatedText}</span>
@@ -164,7 +164,7 @@ const AllBookings = ({
         display="chip"
         placeholder="Select"
         itemTemplate={renderOption}
-        filterPlaceholder="Search"     
+        filterPlaceholder="Search"
       />
     );
   };
@@ -174,7 +174,7 @@ const AllBookings = ({
         return <span>{option.label}</span>; // Render full label if it's 12 characters or less
       } else {
         const truncatedText = option.label.slice(0, 12).trim() + ".."; // Truncate label and add ".." at the end
-  
+
         return (
           <Tooltip placement="topLeft" title={option.label}>
             <span role="button">{truncatedText}</span>
@@ -202,8 +202,7 @@ const AllBookings = ({
           display="chip"
           placeholder="Select "
           itemTemplate={renderOption}
-        filterPlaceholder="Search"     
-
+          filterPlaceholder="Search"
         />
       </div>
     );
@@ -214,7 +213,7 @@ const AllBookings = ({
         return <span>{option.label}</span>; // Render full label if it's 14 characters or less
       } else {
         const truncatedText = option.label.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
-  
+
         return (
           <Tooltip placement="topLeft" title={option.label}>
             <span role="button">{truncatedText}</span>
@@ -240,8 +239,7 @@ const AllBookings = ({
         display="chip"
         placeholder="Select"
         itemTemplate={renderOption}
-        filterPlaceholder="Search"     
-
+        filterPlaceholder="Search"
       />
     );
   };
@@ -251,7 +249,7 @@ const AllBookings = ({
         return <span>{option.label}</span>; // Render full label if it's 14 characters or less
       } else {
         const truncatedText = option.label.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
-  
+
         return (
           <Tooltip placement="topLeft" title={option.label}>
             <span role="button">{truncatedText}</span>
@@ -277,8 +275,7 @@ const AllBookings = ({
         display="chip"
         placeholder="Select"
         itemTemplate={renderOption}
-        filterPlaceholder="Search"     
-
+        filterPlaceholder="Search"
       />
     );
   };
@@ -288,7 +285,7 @@ const AllBookings = ({
         return <span>{option.label}</span>; // Render full label if it's 14 characters or less
       } else {
         const truncatedText = option.label.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
-  
+
         return (
           <Tooltip placement="topLeft" title={option.label}>
             <span role="button">{truncatedText}</span>
@@ -314,8 +311,7 @@ const AllBookings = ({
         display="chip"
         placeholder="Select"
         itemTemplate={renderOption}
-        filterPlaceholder="Search"     
-
+        filterPlaceholder="Search"
       />
     );
   };
@@ -325,7 +321,7 @@ const AllBookings = ({
         return <span>{option.label}</span>; // Render full label if it's 14 characters or less
       } else {
         const truncatedText = option.label.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
-  
+
         return (
           <Tooltip placement="topLeft" title={option.label}>
             <span role="button">{truncatedText}</span>
@@ -351,8 +347,7 @@ const AllBookings = ({
         display="chip"
         placeholder="Select"
         itemTemplate={renderOption}
-        filterPlaceholder="Search"     
-
+        filterPlaceholder="Search"
       />
     );
   };
@@ -362,7 +357,7 @@ const AllBookings = ({
         return <span>{option.label}</span>; // Render full label if it's 14 characters or less
       } else {
         const truncatedText = option.label.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
-  
+
         return (
           <Tooltip placement="topLeft" title={option.label}>
             <span role="button">{truncatedText}</span>
@@ -388,8 +383,7 @@ const AllBookings = ({
         display="chip"
         placeholder="Select"
         itemTemplate={renderOption}
-        filterPlaceholder="Search"     
-
+        filterPlaceholder="Search"
       />
     );
   };
@@ -399,7 +393,7 @@ const AllBookings = ({
         return <span>{option.label}</span>; // Render full label if it's 14 characters or less
       } else {
         const truncatedText = option.label.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
-  
+
         return (
           <Tooltip placement="topLeft" title={option.label}>
             <span role="button">{truncatedText}</span>
@@ -425,8 +419,7 @@ const AllBookings = ({
         display="chip"
         placeholder="Select"
         itemTemplate={renderOption}
-        filterPlaceholder="Search"     
-
+        filterPlaceholder="Search"
       />
     );
   };
@@ -565,15 +558,10 @@ const AllBookings = ({
     );
   };
   const bodyTemplate = (rowData) => {
-    const milestone = rowData?.milestones;
-    console.log("bodyTemplaterowData", rowData?.id);
-    console.log("bodyTemplateetdrowData", milestone);
-    const hasUpdated = milestone.some((data) => data?.is_updated !== "");
+    console.log("bodyTemplaterowData", rowData);
+    const hasUpdated =
+      rowData?.is_updated === "Y" ? rowData?.updated_message : "";
 
-    const TooltipMessage = milestone.filter((data) =>
-      data?.is_updated !== "" ? data?.updated_message : ""
-    );
-    console.log("TooltipMessage", TooltipMessage);
     return (
       <div className="message">
         <span className={hasUpdated ? "text-red" : ""}>
@@ -593,15 +581,8 @@ const AllBookings = ({
   };
 
   const bodyTemplateEtd = (rowData) => {
-    const milestone = rowData?.milestones;
-    console.log("bodyTemplaterowData", rowData?.id);
-    console.log("bodyTemplateetdrowData", milestone);
-    const hasUpdated = milestone.some((data) => data?.is_updated !== "");
-
-    const TooltipMessage = milestone.filter((data) =>
-      data?.is_updated !== "" ? data?.updated_message : ""
-    );
-    console.log("TooltipMessage", TooltipMessage?.updated_message);
+    const hasUpdated =
+      rowData?.is_updated === "Y" ? rowData?.updated_message : "";
     return (
       <div className="message">
         <span className={hasUpdated ? "text-red" : ""}>
@@ -754,18 +735,18 @@ const AllBookings = ({
     >
       <div className="d-flex justify-content-between ">
         <div>
-        {Object.entries(tblFilter).map(([field, filterValues]) => (
-          <FilterTag
-            key={field}
-            field={field}
-            filterValues={filterValues}
-            handleChangeFilter={handleChangeFilter}
-          />
-        ))}
+          {Object.entries(tblFilter).map(([field, filterValues]) => (
+            <FilterTag
+              key={field}
+              field={field}
+              filterValues={filterValues}
+              handleChangeFilter={handleChangeFilter}
+            />
+          ))}
         </div>
         <div
           className="d-flex justify-content-end"
-          style={{ position: "relative",top:"-8px"  }}
+          style={{ position: "relative", top: "-8px" }}
         >
           {Object.keys(tblFilter)?.some(
             (key) => tblFilter[key]?.length > 0
@@ -774,17 +755,19 @@ const AllBookings = ({
               style={{
                 backgroundColor: "#F01E1E",
                 cursor: "pointer",
-                borderRadius: "6px",
-                width: "20px",
-                height: "20px",
-                alignItems:"center",
-                color:"white",
-                textAlign:"center",
+                borderRadius: "10px",
+                width: "85px",
+                height: "23px",
+                alignItems: "center",
+                color: "white",
+                textAlign: "center",
+                padding:"2px 2px 0px 2px ",
+                fontSize:"12px"
                 // fontWeight:"bolder"
               }}
-            >
-              {" "}
-              <CloseOutlined  onClick={() => handleChangeFilter("all", [])} />
+            > 
+              Clear All &nbsp;&nbsp;
+              <CloseOutlined onClick={() => handleChangeFilter("all", [])} />
             </div>
           )}
         </div>

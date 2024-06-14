@@ -6,7 +6,7 @@ import ShipmentBase from "../../ShipmentDetails/ShipmentTable/ShipmentBase";
 import { Dialog, DialogContent } from "@mui/material";
 import { InputText } from "primereact/inputtext";
 
-export const SearchHeader = ({ bookingData, showText }) => {
+export const SearchHeader = ({ bookingData }) => {
   const [notfoundmodal, setNotfoundmodal] = useState(false);
   const [modal, setmodal] = useState(false);
   const [searchvalue, setSearchvalue] = useState("");
@@ -90,7 +90,7 @@ export const SearchHeader = ({ bookingData, showText }) => {
             
           </div>
         </Col> */}
-        {showText ? "" : modal && Shipmentpopup(filterdata)}
+        {modal && Shipmentpopup(filterdata)}
         {notfoundmodal && Notfoundpopup()}
       </Row>
     </>
