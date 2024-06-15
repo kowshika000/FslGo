@@ -1,21 +1,75 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import './Password.css'
-import { Checkbox, Flex } from 'antd'
+import { Checkbox, Flex, Form } from 'antd'
 import PasswordFields from './PasswordFields'
 import PasswordRules from './PasswordRules'
+import PasswordChangeSuccess from '../Modals/PasswordChangeSuccess'
+import PasswordMismatchModal from '../Modals/PasswordMismatchModal'
+import { UpdatePasswordService } from '../../../Services/UpdatePasswordService'
+import { useDispatch, useSelector } from 'react-redux'
+import { UpdatePasswordAction } from '../../../Redux/Actions/UpdatePasswordAction'
+import PasswordInvalidModal from '../Modals/PasswordInvalidModal'
+
 const Password = () => {
 
-  const [passwordInput, setPasswordInput] = useState(
-    {
-      old_password:"",
-      new_password:"",
-      confirm_password:"",
-  }
-)
+//   const [passwordInput, setPasswordInput] = useState(
+//     {
+//       old_password:"",
+//       new_password:"",
+//       confirm_password:"",
+//   }
+// )
 
-const onFinish = (values) => {
-  console.log('Success:', values);
+const [open,setOpen] = useState(false)
+const [openinvalid,setOpeninvalid] = useState(false)
+const [opensuccess,setOpensuccess] = useState(false)
+const dispatch = useDispatch();
+const [form] = Form.useForm();
+
+
+const Password = useSelector((state) => state.UpdatePassword);
+console.log("password",Password)
+const passwordResponse = Password?.uploadData
+console.log(passwordResponse)
+
+const hasPageBeenRendered = useRef(false)
+
+useEffect(() => {
+  console.log("call dispatch")
+  if(hasPageBeenRendered.current){
+    if(passwordResponse?.statuscode == "201"){
+      console.log("invalid")
+      setOpeninvalid(true)
+    }
+    else if(passwordResponse?.statuscode == "200"){
+      console.log("success")
+      form.resetFields()
+      setOpensuccess(true)
+      }
+  }
+    hasPageBeenRendered.current = true;
+}, [passwordResponse])
+
+
+
+const onFinish = ({old_password,confirm_password,new_password}) => {
+  console.log('Success:', old_password);
+  console.log('Success:', confirm_password);
+  const passwords = {
+    old_password: old_password,
+    confirm_password: confirm_password
+  }
+
+  if(new_password === confirm_password){
+    console.log("proceed")
+    dispatch(UpdatePasswordAction(passwords))
+  }
+  else{
+    console.log("mismatch")
+    setOpen(true)
+  }
 };
+
 const onFinishFailed = (errorInfo) => {
   console.log('Failed:', errorInfo);
 };
@@ -36,18 +90,18 @@ const onFinishFailed = (errorInfo) => {
   //   });
   // };
 
-  const handleChange =(e)=>{
-    setPasswordInput((prev)=>{
-        return {
-            ...prev,[e.target.name]:e.target.value
-        }
-    })
-}
+//   const handleChange =(e)=>{
+//     setPasswordInput((prev)=>{
+//         return {
+//             ...prev,[e.target.name]:e.target.value
+//         }
+//     })
+// }
 
-  const handleSubmit =(e)=>{
-    e.preventDefault()
-    console.log(passwordInput)
-  }
+  // const handleSubmit =(e)=>{
+  //   e.preventDefault()
+  //   console.log(passwordInput)
+  // }
 
   return (
     <>
@@ -84,9 +138,12 @@ const onFinishFailed = (errorInfo) => {
                                     </div>
      } */}
       <div className="row m-0 profile_password_row">
-                                        <PasswordFields handleChange={handleChange} passwordInput={passwordInput} handleSubmit={handleSubmit} onFinish={onFinish} onFinishFailed={onFinishFailed} />
-                                        <PasswordRules />
-                                    </div>
+                                        <PasswordFields onFinish={onFinish} onFinishFailed={onFinishFailed} form={form} />
+                                        {/* <PasswordRules /> */}
+      </div>
+      <PasswordMismatchModal open={open} close={()=>setOpen(false)} />
+      <PasswordInvalidModal open={openinvalid} close={()=>setOpeninvalid(false)} />
+      <PasswordChangeSuccess open={opensuccess} close={()=>setOpensuccess(false)} />
     </>
 
   )

@@ -23,8 +23,20 @@ import user from "../../../assets/Name.svg";
 import email from "../../../assets/Email.svg";
 import office from '../../../assets/Company Name.svg'
 import { CaretDownOutlined } from "@ant-design/icons";
+import { countries } from "./CountryPhoneCode";
+import { countriesOnly } from "./Countries";
+import { CloseFullscreen } from "@mui/icons-material";
+import { currencies } from "./CurrencyDatas";
 
-const EditProfileModal = ({ open, close }) => {
+const EditProfileModal = ({ open, close, profileData }) => {
+
+  const userDetails = profileData?.profileData
+  console.log(userDetails)
+
+  //currencies
+  // const currencies = require('currencies.json');
+  // console.log(currencies)
+
   //This is Custom InputwithCheck
 
   const InputWithCheck = ({ label }) => {
@@ -39,6 +51,7 @@ const EditProfileModal = ({ open, close }) => {
             letterSpacing: ".01em",
             fontSize: "13px",
           }}
+          checked={true}
         >
           Get updates here
         </Checkbox>
@@ -46,16 +59,6 @@ const EditProfileModal = ({ open, close }) => {
     );
   };
 
-  const options = [
-    {
-      value: "zhejiang",
-      label: "Zhejiang",
-    },
-    {
-      value: "jiangsu",
-      label: "Jiangsu",
-    },
-  ];
 
   //This is handleInputs
 
@@ -101,14 +104,15 @@ const EditProfileModal = ({ open, close }) => {
           <Form layout="vertical" autoComplete="off" style={{ width: "500px" }}>
             <Form.Item
               hasFeedback
-              label="Name"
-              name="Name"
+              label="Company Name"
+              name="Company Name"
               validateTrigger="onBlur"
             >
               <Input
                 size="large"
                 placeholder="Type here..."
-                prefix={<img src={user}></img>}
+                prefix={<img src={office}></img>}
+                defaultValue={userDetails?.company}
               />
               {/* disabled={isReadOnly} defaultValue={apiData?.name} value={shipperinputs.name} onChange={handleChange} */}
             </Form.Item>
@@ -123,10 +127,11 @@ const EditProfileModal = ({ open, close }) => {
                 size="large"
                 placeholder="Type here..."
                 prefix={<img src={email}></img>}
+                defaultValue={userDetails?.email}
               />
               {/* disabled={isReadOnly} defaultValue={apiData?.name} value={shipperinputs.name} onChange={handleChange} */}
             </Form.Item>
-            <Form.Item
+            {/* <Form.Item
               hasFeedback
               label={<InputWithCheck label={"Alternate Email"} />}
               name="AlternateEmail"
@@ -139,7 +144,7 @@ const EditProfileModal = ({ open, close }) => {
                 prefix={<img src={email}></img>}
               />
               {/* disabled={isReadOnly} defaultValue={apiData?.name} value={shipperinputs.name} onChange={handleChange} */}
-            </Form.Item>
+            {/* </Form.Item>  */}
             <Form.Item
               hasFeedback
               label="Phone Number"
@@ -163,26 +168,13 @@ const EditProfileModal = ({ open, close }) => {
                     dropdownStyle={{ zIndex: "99999" }}
                     suffixIcon={
                       <CaretDownOutlined
-                        style={{ fontSize: "16px", color: "#000" }}
+                        style={{ fontSize: "16px", color: "#000",pointerEvents:"unset" }}
                       />
                     }
-                    options={[
-                      {
-                        value: "India",
-                        label: "+91",
-                      },
-                      {
-                        value: "Canada",
-                        label: "+87",
-                      },
-                      {
-                        value: "England",
-                        label: "+63",
-                      },
-                    ]}
+                    options={countries}
                   />
                 }
-                defaultValue={100}
+                defaultValue={userDetails?.phone_no}
               />
               <Checkbox
                 style={{
@@ -196,7 +188,7 @@ const EditProfileModal = ({ open, close }) => {
               {/* <Input size="large" placeholder="Type here..." prefix={<GoLock />} /> */}
               {/* disabled={isReadOnly} defaultValue={apiData?.name} value={shipperinputs.name} onChange={handleChange} */}
             </Form.Item>
-            <Form.Item
+            {/* <Form.Item
               hasFeedback
               label="Company Name"
               name="Preferred Currency"
@@ -206,86 +198,52 @@ const EditProfileModal = ({ open, close }) => {
                 size="large"
                 placeholder="Type here..."
                 prefix={<img src={office}></img>}
-              />
+              /> */}
               {/* disabled={isReadOnly} defaultValue={apiData?.name} value={shipperinputs.name} onChange={handleChange} */}
-            </Form.Item>
+            {/* </Form.Item> */}
             <Flex horizontal justify="space-between">
               <Form.Item
                 hasFeedback
-                label="Company Profile"
-                name="CompanyProfile"
+                label="Country"
+                name="Country"
                 validateTrigger="onBlur"
               >
                 {/* <Input size="large" placeholder="Type here..." prefix={<img src={user}></img>} /> */}
                 <Select
-                  defaultValue="lucy"
+                  defaultValue={userDetails?.country_name}
                   // onChange={handleChange}
                   size="large"
                   dropdownStyle={{ zIndex: "99999" }}
                   id="dropStyle1"
+                  removeIcon
                   suffixIcon={
                     <CaretDownOutlined
-                      style={{ fontSize: "16px", color: "#000" }}
+                      style={{ fontSize: "16px", color: "#000",pointerEvents:"unset" }}
                     />
                   }
-                  options={[
-                    {
-                      value: "jack",
-                      label: "Jack",
-                    },
-                    {
-                      value: "lucy",
-                      label: "Lucy",
-                    },
-                    {
-                      value: "Yiminghe",
-                      label: "yiminghe",
-                    },
-                    {
-                      value: "disabled",
-                      label: "Disabled",
-                      disabled: true,
-                    },
-                  ]}
+                  options={countriesOnly}
                 />
+                
                 {/* disabled={isReadOnly} defaultValue={apiData?.name} value={shipperinputs.name} onChange={handleChange} */}
               </Form.Item>
               <Form.Item
                 hasFeedback
                 label="Preferred Currency"
-                name="CompanyName"
+                name="Preferred Currency"
                 validateTrigger="onBlur"
                 id="dropStyle2"
               >
                 <Select
-                  defaultValue="lucy"
+                  defaultValue={userDetails?.currency_code}
                   // onChange={handleChange}
                   size="large"
                   dropdownStyle={{ zIndex: "99999" }}
                   suffixIcon={
                     <CaretDownOutlined
-                      style={{ fontSize: "16px", color: "#000" }}
+                      style={{ fontSize: "16px", color: "#000",pointerEvents:"unset" }}
                     />
                   }
-                  options={[
-                    {
-                      value: "jack",
-                      label: "Jack",
-                    },
-                    {
-                      value: "lucy",
-                      label: "Lucy",
-                    },
-                    {
-                      value: "Yiminghe",
-                      label: "yiminghe",
-                    },
-                    {
-                      value: "disabled",
-                      label: "Disabled",
-                      disabled: true,
-                    },
-                  ]}
+                  options={currencies}
                 />
                 {/* disabled={isReadOnly} defaultValue={apiData?.name} value={shipperinputs.name} onChange={handleChange} */}
               </Form.Item>

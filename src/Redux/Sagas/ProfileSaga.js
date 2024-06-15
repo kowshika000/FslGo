@@ -2,7 +2,7 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import * as Types from "../ActionTypes";
 import { ProfileService } from '../../Services/ProfileService';
 
-function* ProfileSaga({ payload }) {
+function* ProfileSaga() {
   try {
     const BookingResponse = yield call(ProfileService);
     const response = BookingResponse.data;

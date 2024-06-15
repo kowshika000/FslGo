@@ -19,9 +19,9 @@
     border-radius: 4px 4px 0px 0px;
     overflow: hidden;
 }
-.profile_table_section  .ant-card-body>div{
+/* .profile_table_section  .ant-card-body>div{
     max-height: 950px !important;
-}
+} */
 .profile_table_section  .ant-card-body .ant-tabs-nav-list{
     padding-top: 20px ;
 }

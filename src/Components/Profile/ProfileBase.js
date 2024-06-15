@@ -30,10 +30,7 @@ const ProfileBase = () => {
   }, []);
 
   const profileData = useSelector((state) => state.ProfileData);
-  console.log("profileData", profileData);
-  const Profile = profileData?.profileData
-  console.log("Profile", Profile);
-
+  console.log(profileData)
 
   //This is for EditprofModal
   const [openEditModal, setOpenEditModal] = useState(false);
@@ -212,7 +209,7 @@ const ProfileBase = () => {
           </div>
         </div>
         <div className="row profile_header">
-          <ProfileHeader setOpenEditModal={setOpenEditModal}  profiledata={Profile} />
+          <ProfileHeader setOpenEditModal={setOpenEditModal}  profileData={profileData} />
           <ProfileTable
             contentListNoTitle={contentListNoTitle}
             tabListNoTitle={tabListNoTitle}
@@ -224,6 +221,7 @@ const ProfileBase = () => {
       <NotificationManagement open={open} modalref={modalref} />
       <EditProfileModal
         open={openEditModal}
+        profileData={profileData}
         close={() => setOpenEditModal(false)}
       />
     </div>

@@ -16,7 +16,7 @@ function ProfileReducer(state = initialState, action) {
         loading: true,
       };
     case PROFILE_SUCCESS:
-      console.log(' profileData:', action.payload);
+      console.log(' profileDatareducer:', action.payload);
       return {
         ...state,
         error: null,

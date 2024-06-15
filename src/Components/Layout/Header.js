@@ -5,6 +5,8 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
+import Cookies from 'js-cookie'
+
 
 // import { ReactComponent as Logo } from "../../assets/Logo.svg";
 import Logo from "../../assets/fresGoLogo.jpg";
@@ -23,6 +25,11 @@ const Header = ({ activePage }) => {
   const handleHeaderBlur = () => {
     setHeaderFocused(false);
   };
+
+  const handleLogout =()=>{
+    Cookies.remove('jwtToken');
+    window.location.href= 'http://www.freightsystems.com'
+  }
 
   const items = [
     {
@@ -53,14 +60,19 @@ const Header = ({ activePage }) => {
       label: (
         <Link
           className="text-decoration-none"
-          style={{
-            fontSize: "14px",
-            fontWeight: "400",
-            letterSpacing: ".01em",
-            color: "black",
-            marginRight: "70px",
-            lineHeight: "27px",
-          }}
+
+
+          style={
+            {
+              fontSize:"14px",
+              fontWeight:"400",
+              letterSpacing:".01em",
+              color:"black",
+              marginRight:"70px",
+              lineHeight:"27px",
+            }
+          }
+          onClick={()=>handleLogout()}
         >
           <LogoutIcon
             sx={{ fontSize: "23px", color: "#384656" }}

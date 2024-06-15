@@ -30,7 +30,7 @@ const rootReducer = combineReducers({
     CancelBooking: CancelBookingReducer,
     QuotationList: QuotationReducer,
     ProfileData: ProfileReducer,
-    UpdatePassword: UpdatePasswordReducer
+    UpdatePassword: UpdatePasswordReducer,
 });
 
 export default rootReducer;

@@ -43,7 +43,7 @@
   
   /* / When the checkbox is checked, add a white background / */
   .containers input:checked ~ .checkmark {
-    background-color:#D32D2F !important;
+    background-color:rgb(240, 30, 30) !important;
     border: none !important;
   }
   
