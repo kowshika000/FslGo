@@ -18,6 +18,8 @@ import { CircularProgress, Box } from "@mui/material";
 import ProfileBase from "./Components/Profile/ProfileBase";
 import FindNewRate from "./Components/Quotations/QuotaionTable/QModal/FindNewRate/FindNewRate";
 import Quick from "./Components/QuickBooking/Quick";
+import { ToastContainer} from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const dispatch = useDispatch();
@@ -94,6 +96,20 @@ function App() {
         </Routes>
       </div>
       <Footer />
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+{/* Same as */}
+<ToastContainer />
     </BrowserRouter>
   );
 }

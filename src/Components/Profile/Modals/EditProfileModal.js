@@ -23,10 +23,11 @@ import user from "../../../assets/Name.svg";
 import email from "../../../assets/Email.svg";
 import office from '../../../assets/Company Name.svg'
 import { CaretDownOutlined } from "@ant-design/icons";
-import { countries } from "./CountryPhoneCode";
+import { countriesphonecode } from "./CountryPhoneCode";
 import { countriesOnly } from "./Countries";
 import { CloseFullscreen } from "@mui/icons-material";
-import { currencies } from "./CurrencyDatas";
+import { countries_code, currencies } from "./CurrencyDatas";
+import { VscClose } from "react-icons/vsc";
 
 const EditProfileModal = ({ open, close, profileData }) => {
 
@@ -95,6 +96,7 @@ const EditProfileModal = ({ open, close, profileData }) => {
           >
             Edit Profile Info
           </Typography>
+          <VscClose size={22} color='#ffff' onClick={close} style={{position:"absolute",top:"0px",right:"-25px",cursor:"pointer"}} />
         </DialogTitle>
         <DialogContent>
           {/* <DialogContentText>
@@ -171,7 +173,7 @@ const EditProfileModal = ({ open, close, profileData }) => {
                         style={{ fontSize: "16px", color: "#000",pointerEvents:"unset" }}
                       />
                     }
-                    options={countries}
+                    options={countriesphonecode}
                   />
                 }
                 defaultValue={userDetails?.phone_no}
@@ -243,7 +245,7 @@ const EditProfileModal = ({ open, close, profileData }) => {
                       style={{ fontSize: "16px", color: "#000",pointerEvents:"unset" }}
                     />
                   }
-                  options={currencies}
+                  options={countries_code}
                 />
                 {/* disabled={isReadOnly} defaultValue={apiData?.name} value={shipperinputs.name} onChange={handleChange} */}
               </Form.Item>
