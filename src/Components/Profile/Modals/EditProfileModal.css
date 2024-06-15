@@ -41,3 +41,16 @@
 #edit_profile_modal_section .ant-form>.ant-flex .ant-select-single.ant-select-lg{
     height: 49px !important;
 }
+
+#edit_profile_modal_section .ant-input-group .ant-input-group-addon .ant-select{
+    width: 100px !important;
+    height: 50px !important;
+}
+
+#edit_profile_modal_section .css-1t1j96h-MuiPaper-root-MuiDialog-paper{
+    overflow-y: unset !important;
+}
+
+#edit_profile_modal_section .ant-select-selection-item{
+    max-width:200px !important;
+}

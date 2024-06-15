@@ -64,3 +64,10 @@
     line-height: 34px;
     color: #1E293B;
 }
+/* .Toastify__toast-theme--dark{
+    border: 1px solid white !important;
+} */
+
+.Toastify__progress-bar--error{
+    background-color: #F01E1E !important;
+}

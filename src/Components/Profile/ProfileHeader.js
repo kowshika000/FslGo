@@ -1,10 +1,11 @@
 import { LoadingOutlined, PlusOutlined } from '@ant-design/icons';
-import { Card, Tooltip, Upload } from 'antd'
+import { Alert, Card, Tooltip, Upload } from 'antd'
 import React, { useState } from 'react'
 import uploadIcon from '../../assets/Upload.svg'
 import './ProfileHeader.css'
 import Edit_Image  from '../../assets/profile_Edit.svg'
 import CountryFlag from '../Core-Components/CountryFlag';
+import { toast } from 'react-toastify';
 
 const ProfileHeader = ({setOpenEditModal,profileData}) => {
 
@@ -18,15 +19,16 @@ const ProfileHeader = ({setOpenEditModal,profileData}) => {
         reader.readAsDataURL(img);
       };
       const beforeUpload = (file) => {
-        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-        if (!isJpgOrPng) {
-          console.log('You can only upload JPG/PNG file!');
-        }
-        const isLt2M = file.size / 1024 / 1024 < 2;
-        if (!isLt2M) {
-         console.log('Image must smaller than 2MB!');
-        }
-        return isJpgOrPng && isLt2M;
+        // const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+        // if (!isJpgOrPng) {
+        //   console.log('You can only upload JPG/PNG file!');
+        // }
+        // const isLt2M = file.size / 1024 / 1024 < 2;
+        // if (!isLt2M) {
+        //  console.log('Image must smaller than 2MB!');
+        // }
+        // return isJpgOrPng && isLt2M;
+        return false;
       };
 
     //This is for Upload Handle Change
@@ -45,8 +47,20 @@ const ProfileHeader = ({setOpenEditModal,profileData}) => {
       //   });
       // }
       // console.log(URL.createObjectURL(info))
-      setImageUrl(URL.createObjectURL(info.file.originFileObj))
-      console.log(info.file.originFileObj)
+      console.log(info)
+      console.log(info.file)
+      const file = info.file
+      console.log(file.size)
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isLt2M) {
+        console.log('Image must smaller than 2MB!');
+        toast.error("Image must be smaller than 2MB!")
+      }
+      else{
+        setImageUrl(URL.createObjectURL(file))
+        console.log(file)
+      }
+      
     }
 
     //This is for Upload Image
@@ -102,8 +116,9 @@ const ProfileHeader = ({setOpenEditModal,profileData}) => {
                         className="avatar-uploader"
                         showUploadList={false}
                         // action="https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload"
-                        // beforeUpload={beforeUpload}
+                        beforeUpload={beforeUpload}
                         onChange={handleChange}
+                        accept='.svg,.png,.jpeg,.jpg'
                     >
                         {imageUrl ? (
                             <img

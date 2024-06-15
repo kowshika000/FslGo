@@ -5,11 +5,29 @@ import Modal from '../../ShipmentDetails/ShipmentTable/Modal/Modal'
 import CreatePasswordModal from '../Modals/CreatePasswordModal'
 import copyIcon from '../../../assets/profile_copy_icon.svg'
 import { useCopyToClipboard } from 'usehooks-ts'
+import { Button, Popover, Tooltip } from 'antd'
+import { IoCopy } from "react-icons/io5";
 
 const KeyAccountManagers = () => {
 
   const [open, setOpen] = useState(false) 
   const [value,copy] = useCopyToClipboard()
+  console.log("value",value)
+
+  const tableData = [
+    {
+      name:"Waseem",
+      designation:"Sales",
+      phone:"12345878802",
+      emailid:"waseem.freightsystems.com"
+    },
+    {
+      name:"Akram",
+      designation:"Customer Service",
+      phone:"12345678901",
+      emailid:"Akram.freightsystems.com"
+    }
+  ]
 
   return (
     // <>
@@ -32,9 +50,90 @@ const KeyAccountManagers = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>Waseem</td>
-              <td>Sales</td>
+            {
+              tableData?.map((item,index)=>{
+                return <tr key={index}>
+                        <td>{item?.name.length <= 20 ? (
+                              item?.name
+                            ) : (
+                              <Tooltip placement="topLeft" zIndex={9999} title={item?.name}>
+                                <span role="button">
+                                  {item?.name?.slice(0, 19).trim().split("").join("") +
+                                    "..."}
+                                </span>
+                              </Tooltip>
+                            )}</td>
+                        <td>{item?.designation.length <= 20 ? (
+                              item?.designation
+                            ) : (
+                              <Tooltip placement="topLeft" zIndex={9999} title={item?.designation}>
+                                <span role="button">
+                                  {item?.designation?.slice(0, 19).trim().split("").join("") +
+                                    "..."}
+                                </span>
+                              </Tooltip>
+                            )}</td>
+                        <td>{item?.phone.length <= 20 ? (
+                              item?.phone
+                            ) : (
+                              <Tooltip placement="topLeft" zIndex={9999} title={item?.phone}>
+                                <span role="button">
+                                  {item?.phone?.slice(0, 19).trim().split("").join("") +
+                                    "..."}
+                                </span>
+                              </Tooltip>
+                            )}
+                            {/* <Tooltip title={disabled ? '' : 'Text Copied !'}></Tooltip> */}
+                            {
+                              
+                              value===item?.phone ?
+                              <>
+                              {/* <IoCopy className='mx-1' style={{cursor:"pointer"}} onClick={()=>{copy(item?.emailid)}} color='black' /> */}
+                              
+                                {/* <IoCopy className='mx-1' style={{cursor:"pointer"}} onClick={()=>{copy(item?.phone)}} color='black' /> */}
+                                <Tooltip title={!value ? '' : 'Text Copied !'}><IoCopy className='mx-1' style={{cursor:"pointer"}} onClick={()=>{copy(item?.phone)}} color='black' /></Tooltip>
+                              
+                            </>:<IoCopy className='mx-1' style={{cursor:"pointer"}} onClick={()=>copy(item?.phone)} color='rgb(177 186 203)' />
+                            }
+                          {/* <img src={copyIcon} style={{cursor:"pointer"}} onClick={()=>copy(item?.phone)} className='mx-1'/> */}
+                        </td>
+                        <td>{item?.emailid.length <= 35 ? (
+                              item?.emailid
+                            ) : (
+                              <Tooltip placement="topLeft" zIndex={9999} title={item?.emailid}>
+                                <span role="button">
+                                  {item?.emailid?.slice(0, 34).trim().split("").join("") +
+                                    "..."}
+                                </span>
+                              </Tooltip>
+                            )}
+                            {
+                              value===item?.emailid ?
+                              <>
+                                {/* <IoCopy className='mx-1' style={{cursor:"pointer"}} onClick={()=>{copy(item?.emailid)}} color='black' /> */}
+                                <Tooltip title={!value ? '' : 'Text Copied !'}>
+                                  <IoCopy className='mx-1' style={{cursor:"pointer"}} onClick={()=>{copy(item?.emailid)}} color='black' />
+                                </Tooltip>
+                              </>
+                             :<IoCopy className='mx-1' style={{cursor:"pointer"}} onClick={()=>copy(item?.emailid)} color='rgb(177 186 203)' />
+                            }
+                            </td>
+                            {/* <img src={copyIcon} onClick={()=>copy(item?.emailid)} style={{cursor:"pointer",opacity:".2"}} className='mx-1'/> */}
+                      </tr>
+              })
+            }
+            {/* <tr> */}
+              {/* <td>{item?.billing_party_name.length <= 56 ? (
+                    item?.billing_party_name
+                  ) : (
+                    <Tooltip placement="topLeft" zIndex={9999} title={item?.billing_party_name}>
+                      <span role="button">
+                        {item?.billing_party_name?.slice(0, 57).trim().split("").join("") +
+                          "..."}
+                      </span>
+                    </Tooltip>
+                  )}</td> */}
+              {/* <td>Sales</td>
               <td>123456789015756767
                 <img src={copyIcon} style={{cursor:"pointer"}} onClick={()=>copy("123456789015756767")} className='mx-1'/>
               </td>
@@ -47,7 +146,7 @@ const KeyAccountManagers = () => {
                 <img src={copyIcon} onClick={()=>copy("12345678901")} style={{cursor:"pointer"}} alt="" className='mx-1'/>
               </td>
               <td>Akram.freightsystems.com<img src={copyIcon} onClick={()=>copy("Akram.freightsystems.com<img")} style={{cursor:"pointer"}} className='mx-1'/></td>
-            </tr>
+            </tr> */}
           </tbody>
       </div>
   )
