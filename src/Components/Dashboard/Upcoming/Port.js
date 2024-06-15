@@ -185,7 +185,7 @@ export const Port = () => {
               position: "relative",
             }}
             placeholder="Enter Port"
-            className="placeholder-color"
+            className="placeholder-color focusSearch-input"
             onChange={handleOriginPortChange}
             value={searchOriginPort}
             />
@@ -302,7 +302,7 @@ export const Port = () => {
               fontSize: "13px",
             }}
             placeholder="Enter Port"
-            className="placeholder-color"
+            className="placeholder-color focusSearch-input"
             onChange={handleDestPortChange}
             value={searchDestPort}
           />

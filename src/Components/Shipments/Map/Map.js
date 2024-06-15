@@ -14,7 +14,6 @@ import { mapRequest } from "../../../Redux/Actions/MapAction";
 import { CountryData } from "./CountryData";
 import "../ShipmentTable/Booking.css";
 
-
 // Define the position and coordinates
 const position = [10.586958, -34.623453];
 
@@ -31,13 +30,13 @@ export default function Americas() {
   const dispatch = useDispatch();
   const handleMarkerClick = (id) => {
     setShowModal(true);
-    setSelectedMarkerId(id)
-    console.log("id.",id);
+    setSelectedMarkerId(id);
+    console.log("id.", id);
   };
 
   const handleModalClose = () => {
     setShowModal(false);
-    setSelectedMarkerId(null)
+    setSelectedMarkerId(null);
   };
   useEffect(() => {
     dispatch(mapRequest());
@@ -79,7 +78,7 @@ export default function Americas() {
           console.log("datamap", markerId);
 
           const numberIcon = L.divIcon({
-            html: `<div style="color: white; font-size: 14px; background: red; border-radius: 50%; width: 24px; height: 24px; display: flex; justify-content: center; align-items: center;">${markerNumber}</div>`,
+            html: `<div style="color: white; font-size: 10px; background: red; border-radius: 50%; width: 35px; height: 35px; display: flex; justify-content: center; align-items: center;border:5px solid white">${markerNumber}</div>`,
             className: "",
             iconSize: [24, 24],
           });
@@ -95,7 +94,11 @@ export default function Americas() {
           );
         })}
       </MapContainer>
-      <MapMarker showModal={showModal} onClose={handleModalClose}  markerId={selectedMarkerId}/>
+      <MapMarker
+        showModal={showModal}
+        onClose={handleModalClose}
+        markerId={selectedMarkerId}
+      />
     </div>
   );
 }

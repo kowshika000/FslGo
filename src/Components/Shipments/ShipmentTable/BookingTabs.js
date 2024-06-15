@@ -9,6 +9,7 @@ import ButtonList from "../../../assets/Button.svg";
 import Buttonfade from "../../../assets/Buttonfade.svg";
 import Group1 from "../../../assets/CButton.svg";
 import Groupfade from "../../../assets/CButtonfade.svg";
+import button16 from "../../../assets/Button16.svg";
 import FilterDrawer from "./Filter";
 import Navbar from "../../Layout/Navbar";
 import image1 from "../../../assets/Shape.svg";
@@ -359,7 +360,7 @@ function BookingTabs({ showText, setShowText }) {
                     onClick={handleTableChange}
                   >
                     <img
-                      src={Groupfade}
+                      src={button16}
                       style={{ cursor: "pointer" }}
                     />
                   </div>
