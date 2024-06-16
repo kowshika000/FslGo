@@ -789,6 +789,7 @@ const AllBookings = ({
                 </span>
               </div>
             </Tag>
+
             // <div
             //   style={{
             //     backgroundColor: "#F01E1E",
