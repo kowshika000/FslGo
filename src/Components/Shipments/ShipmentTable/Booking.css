@@ -240,3 +240,6 @@
 .ant-input-affix-wrapper:hover .ant-input {
   transition: all 0.2s; 
 }
+.p-multiselect-filter-container{
+  display: flex !important;
+}

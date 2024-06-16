@@ -19,6 +19,7 @@ import { MultiSelect } from "primereact/multiselect";
 import { useSelector } from "react-redux";
 import { Tag } from "primereact/tag";
 import { CloseOutlined } from "@ant-design/icons";
+import { FilterOutlined } from "@ant-design/icons";
 
 const AllBookings = ({
   filterData,
@@ -63,29 +64,32 @@ const AllBookings = ({
     statusD: [],
   });
   const idd = useSelector((state) => state.Booking?.booking?.data);
-  const filteredDataa = filterData.filter((item) => {
-    return (
-      (tblFilter.shipmentidD?.length === 0 ||
-        tblFilter.shipmentidD?.includes(item.id)) &&
-      (tblFilter.order_no?.length === 0 ||
-        tblFilter.order_no?.includes(item.order_no)) &&
-      (tblFilter.modeD?.length === 0 || tblFilter.modeD?.includes(item.mode)) &&
-      (tblFilter.originD?.length === 0 ||
-        tblFilter.originD?.includes(item.origin)) &&
-      (tblFilter.DestD?.length === 0 ||
-        tblFilter.DestD?.includes(item.destination)) &&
-      (tblFilter.etaD?.length === 0 ||
-        tblFilter.etaD?.includes(item.eta_ata)) &&
-      (tblFilter.etdD?.length === 0 ||
-        tblFilter.etdD?.includes(item.etd_atd)) &&
-      (tblFilter.statusD?.length === 0 ||
-        tblFilter.statusD?.includes(item.status))
-    );
-  });
-  console.log("filter", filteredDataa);
+  const filterDatas = (data) => {
+    return data.filter((item) => {
+      return (
+        (tblFilter.shipmentidD?.length === 0 ||
+          tblFilter.shipmentidD?.includes(item.id)) &&
+        (tblFilter.order_no?.length === 0 ||
+          tblFilter.order_no?.includes(item.order_no)) &&
+        (tblFilter.modeD?.length === 0 ||
+          tblFilter.modeD?.includes(item.mode)) &&
+        (tblFilter.originD?.length === 0 ||
+          tblFilter.originD?.includes(item.origin)) &&
+        (tblFilter.DestD?.length === 0 ||
+          tblFilter.DestD?.includes(item.destination)) &&
+        (tblFilter.etaD?.length === 0 ||
+          tblFilter.etaD?.includes(item.eta_ata)) &&
+        (tblFilter.etdD?.length === 0 ||
+          tblFilter.etdD?.includes(item.etd_atd)) &&
+        (tblFilter.statusD?.length === 0 ||
+          tblFilter.statusD?.includes(item.status))
+      );
+    });
+  };
+  // console.log("filter", filteredDataa);
 
   useEffect(() => {
-    setFilteredData(filteredDataa);
+    setFilteredData(idd)
     setCurrentPage(1);
   }, [tblFilter, filterData]);
 
@@ -99,18 +103,23 @@ const AllBookings = ({
     }));
   };
 
-  const handleShowOption = idd;
+  const [idS, setIds] = useState(idd);
 
-  console.log("filterOption", handleShowOption);
+  const filterTable = () => {
+    const filterResult = filterDatas(idd);
+    setFilteredData(filterResult);
+    setIds(filterResult);
+    console.log("tableData", filterResult);
+  };
 
-  const ShipId = getUniqueOptions(handleShowOption, "id");
-  const orderId_ = getUniqueOptions(handleShowOption, "order_no");
-  const Mode_ = getUniqueOptions(handleShowOption, "mode");
-  const Org_ = getUniqueOptions(handleShowOption, "origin");
-  const dest_ = getUniqueOptions(handleShowOption, "destination");
-  const eta_ = getUniqueOptions(handleShowOption, "eta_ata");
-  const etd_ = getUniqueOptions(handleShowOption, "etd_atd");
-  const status_ = getUniqueOptions(handleShowOption, "status");
+  const ShipId = getUniqueOptions(idS, "id");
+  const orderId_ = getUniqueOptions(idS, "order_no");
+  const Mode_ = getUniqueOptions(idS, "mode");
+  const Org_ = getUniqueOptions(idS, "origin");
+  const dest_ = getUniqueOptions(idS, "destination");
+  const eta_ = getUniqueOptions(idS, "eta_ata");
+  const etd_ = getUniqueOptions(idS, "etd_atd");
+  const status_ = getUniqueOptions(idS, "status");
 
   const handleChangeFilter = (field, filterValues) => {
     if (field === "all") {
@@ -130,7 +139,10 @@ const AllBookings = ({
         [field]: filterValues,
       }));
     }
-    // console.log("selectId", value);
+    if (filterValues.length === 0) {
+      setFilteredData(idd);
+      setIds(idd)
+    }
   };
 
   const FilterIdRow = () => {
@@ -138,7 +150,7 @@ const AllBookings = ({
       if (option.label.length <= 14) {
         return <span>{option.label}</span>; // Render full label if it's 14 characters or less
       } else {
-        const truncatedText = option.label.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
+        const truncatedText = option.label?.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
 
         return (
           <Tooltip placement="topLeft" title={option.label}>
@@ -160,6 +172,7 @@ const AllBookings = ({
           fontSize: "10px",
         }}
         showSelectAll={false}
+        filterIcon={<FilterOutlined onClick={filterTable} />}
         onChange={(e) => handleChangeFilter("shipmentidD", e.value)}
         display="chip"
         placeholder="Select"
@@ -173,7 +186,7 @@ const AllBookings = ({
       if (option.label.length <= 12) {
         return <span>{option.label}</span>; // Render full label if it's 12 characters or less
       } else {
-        const truncatedText = option.label.slice(0, 12).trim() + ".."; // Truncate label and add ".." at the end
+        const truncatedText = option.label?.slice(0, 12).trim() + ".."; // Truncate label and add ".." at the end
 
         return (
           <Tooltip placement="topLeft" title={option.label}>
@@ -198,6 +211,7 @@ const AllBookings = ({
             left: "180px",
           }}
           showSelectAll={false}
+          filterIcon={<FilterOutlined onClick={filterTable} />}
           onChange={(e) => handleChangeFilter("order_no", e.value)}
           display="chip"
           placeholder="Select "
@@ -212,7 +226,7 @@ const AllBookings = ({
       if (option.label.length <= 14) {
         return <span>{option.label}</span>; // Render full label if it's 14 characters or less
       } else {
-        const truncatedText = option.label.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
+        const truncatedText = option.label?.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
 
         return (
           <Tooltip placement="topLeft" title={option.label}>
@@ -235,6 +249,7 @@ const AllBookings = ({
           // maxWidth:"100px"
         }}
         showSelectAll={false}
+        filterIcon={<FilterOutlined onClick={filterTable} />}
         onChange={(e) => handleChangeFilter("modeD", e.value)}
         display="chip"
         placeholder="Select"
@@ -248,7 +263,7 @@ const AllBookings = ({
       if (option.label.length <= 14) {
         return <span>{option.label}</span>; // Render full label if it's 14 characters or less
       } else {
-        const truncatedText = option.label.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
+        const truncatedText = option.label?.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
 
         return (
           <Tooltip placement="topLeft" title={option.label}>
@@ -271,6 +286,7 @@ const AllBookings = ({
           // maxWidth:"100px"
         }}
         showSelectAll={false}
+        filterIcon={<FilterOutlined onClick={filterTable} />}
         onChange={(e) => handleChangeFilter("originD", e.value)}
         display="chip"
         placeholder="Select"
@@ -284,7 +300,7 @@ const AllBookings = ({
       if (option.label.length <= 14) {
         return <span>{option.label}</span>; // Render full label if it's 14 characters or less
       } else {
-        const truncatedText = option.label.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
+        const truncatedText = option.label?.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
 
         return (
           <Tooltip placement="topLeft" title={option.label}>
@@ -307,6 +323,7 @@ const AllBookings = ({
           // maxWidth:"100px"
         }}
         showSelectAll={false}
+        filterIcon={<FilterOutlined onClick={filterTable} />}
         onChange={(e) => handleChangeFilter("DestD", e.value)}
         display="chip"
         placeholder="Select"
@@ -320,7 +337,7 @@ const AllBookings = ({
       if (option.label.length <= 14) {
         return <span>{option.label}</span>; // Render full label if it's 14 characters or less
       } else {
-        const truncatedText = option.label.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
+        const truncatedText = option.label?.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
 
         return (
           <Tooltip placement="topLeft" title={option.label}>
@@ -343,6 +360,7 @@ const AllBookings = ({
           // maxWidth:"100px"
         }}
         showSelectAll={false}
+        filterIcon={<FilterOutlined onClick={filterTable} />}
         onChange={(e) => handleChangeFilter("etdD", e.value)}
         display="chip"
         placeholder="Select"
@@ -356,7 +374,7 @@ const AllBookings = ({
       if (option.label.length <= 14) {
         return <span>{option.label}</span>; // Render full label if it's 14 characters or less
       } else {
-        const truncatedText = option.label.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
+        const truncatedText = option.label?.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
 
         return (
           <Tooltip placement="topLeft" title={option.label}>
@@ -379,6 +397,7 @@ const AllBookings = ({
           // maxWidth:"100px"
         }}
         showSelectAll={false}
+        filterIcon={<FilterOutlined onClick={filterTable} />}
         onChange={(e) => handleChangeFilter("etaD", e.value)}
         display="chip"
         placeholder="Select"
@@ -392,7 +411,7 @@ const AllBookings = ({
       if (option.label.length <= 14) {
         return <span>{option.label}</span>; // Render full label if it's 14 characters or less
       } else {
-        const truncatedText = option.label.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
+        const truncatedText = option.label?.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
 
         return (
           <Tooltip placement="topLeft" title={option.label}>
@@ -415,6 +434,7 @@ const AllBookings = ({
           // maxWidth:"100px"
         }}
         showSelectAll={false}
+        filterIcon={<FilterOutlined onClick={filterTable} />}
         onChange={(e) => handleChangeFilter("statusD", e.value)}
         display="chip"
         placeholder="Select"
@@ -484,7 +504,7 @@ const AllBookings = ({
           ) : (
             <Tooltip placement="topLeft" title={rowData?.order_no}>
               <span role="button">
-                {rowData?.order_no.slice(0, 20).trim().split(" ").join("") +
+                {rowData?.order_no?.slice(0, 20)?.trim()?.split(" ")?.join("") +
                   ".."}
               </span>
             </Tooltip>
@@ -503,7 +523,7 @@ const AllBookings = ({
           ) : (
             <Tooltip placement="topLeft" title={rowData?.id}>
               <span role="button">
-                {rowData?.id.slice(0, 20).trim().split(" ").join("") + ".."}
+                {rowData?.id?.slice(0, 20)?.trim()?.split(" ")?.join("") + ".."}
               </span>
             </Tooltip>
           )}
@@ -528,7 +548,7 @@ const AllBookings = ({
           ) : (
             <Tooltip placement="topLeft" title={rowData?.origin}>
               <span role="button">
-                {rowData?.origin.slice(0, 20).trim().split(" ").join("") + ".."}
+                {rowData?.origin?.slice(0, 20)?.trim()?.split(" ")?.join("") + ".."}
               </span>
             </Tooltip>
           )}
@@ -548,7 +568,7 @@ const AllBookings = ({
           ) : (
             <Tooltip placement="topLeft" title={rowData?.destination}>
               <span role="button">
-                {rowData?.destination.slice(0, 20).trim().split("").join("") +
+                {rowData?.destination?.slice(0, 20)?.trim()?.split("")?.join("") +
                   ".."}
               </span>
             </Tooltip>
@@ -570,13 +590,11 @@ const AllBookings = ({
               placement="topLeft"
               title={
                 <span>
-                  <div style={{fontSize:"13px"}}>
-                  ETD Changed
-                  </div>
-                   <div style={{fontSize:"10px"}}>
-                  {/* {rowData?.updated_message} */}
-                  Previous ETD  : 10/05/2024 <br/>
-                  New ETD  : 12/05/2024
+                  <div style={{ fontSize: "13px" }}>ETD Changed</div>
+                  <div style={{ fontSize: "10px" }}>
+                    {/* {rowData?.updated_message} */}
+                    Previous ETD : 10/05/2024 <br />
+                    New ETD : 12/05/2024
                   </div>
                 </span>
               }
@@ -599,20 +617,18 @@ const AllBookings = ({
         <span className={hasUpdated ? "text-red" : ""}>
           {hasUpdated ? (
             <Tooltip
-            placement="topLeft"
-            title={
-              <span>
-                <div style={{fontSize:"13px"}}>
-                ETA Changed
-                </div>
-                 <div style={{fontSize:"10px"}}>
-                {/* {rowData?.updated_message} */}
-                Previous ETA  : 10/05/2024 <br/>
-                New ETA  : 12/05/2024
-                </div>
-              </span>
-            }
-          >
+              placement="topLeft"
+              title={
+                <span>
+                  <div style={{ fontSize: "13px" }}>ETA Changed</div>
+                  <div style={{ fontSize: "10px" }}>
+                    {/* {rowData?.updated_message} */}
+                    Previous ETA : 10/05/2024 <br />
+                    New ETA : 12/05/2024
+                  </div>
+                </span>
+              }
+            >
               <span role="button">{rowData?.eta_ata}</span>
             </Tooltip>
           ) : (
@@ -679,7 +695,7 @@ const AllBookings = ({
     return new Date(parts[2], parts[1] - 1, parts[0]);
   };
 
-  const paginatedData = filteredData.slice(
+  const paginatedData = filteredData?.slice(
     startIndex,
     startIndex + itemsPerPage
   );
@@ -730,7 +746,9 @@ const AllBookings = ({
                   {field === "DestD" ? "Destination" : ""}
                   <span className="ms-2">
                     <CloseOutlined
-                      onClick={() => handleChangeFilter(field, [])}
+                      onClick={() => {
+                        handleChangeFilter(field, []);
+                      }}
                     />
                   </span>
                 </div>
@@ -739,12 +757,6 @@ const AllBookings = ({
           }
           return null;
         })}
-
-        {/* {anyFilterValuesPresent && (
-          <div className="d-flex justify-content-end">
-            <CloseOutlined onClick={() => handleChangeFilter("", [])} />
-          </div>
-        )} */}
       </>
     );
   };
