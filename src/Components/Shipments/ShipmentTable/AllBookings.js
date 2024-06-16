@@ -740,29 +740,47 @@ const AllBookings = ({
         </div>
         <div
           className="d-flex justify-content-end"
-          style={{ position: "relative", top: "-8px" }}
         >
           {Object.keys(tblFilter)?.some(
             (key) => tblFilter[key]?.length > 0
           ) && (
-            <div
-              style={{
-                backgroundColor: "#F01E1E",
-                cursor: "pointer",
-                borderRadius: "10px",
-                width: "85px",
-                height: "23px",
-                alignItems: "center",
-                color: "white",
-                textAlign: "center",
-                padding: "2px 2px 0px 2px ",
-                fontSize: "12px",
-                // fontWeight:"bolder"
-              }}
-            >
-              Clear All &nbsp;&nbsp;
-              <CloseOutlined onClick={() => handleChangeFilter("all", [])} />
+            <Tag
+            style={{
+              backgroundColor: "#F01E1E",
+              marginRight: "10px",
+              position: "relative",
+              top: "-11px",
+            }}
+            className="px-2 py-1"
+            rounded
+          >
+            <div>
+              Close All
+              <span className="ms-2">
+                <CloseOutlined
+                  onClick={() => handleChangeFilter("all", [])}
+                />
+              </span>
             </div>
+          </Tag>
+            // <div
+            //   style={{
+            //     backgroundColor: "#F01E1E",
+            //     cursor: "pointer",
+            //     borderRadius: "10px",
+            //     width: "85px",
+            //     height: "23px",
+            //     alignItems: "center",
+            //     color: "white",
+            //     textAlign: "center",
+            //     padding: "2px 2px 0px 2px ",
+            //     fontSize: "12px",
+            //     // fontWeight:"bolder"
+            //   }}
+            // >
+            //   Clear All &nbsp;&nbsp;
+            //   <CloseOutlined onClick={() => handleChangeFilter("all", [])} />
+            // </div>
           )}
         </div>
       </div>
