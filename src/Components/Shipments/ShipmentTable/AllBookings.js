@@ -566,7 +566,21 @@ const AllBookings = ({
       <div className="message">
         <span className={hasUpdated ? "text-red" : ""}>
           {hasUpdated ? (
-            <Tooltip placement="topLeft" title={rowData?.updated_message}>
+            <Tooltip
+              placement="topLeft"
+              title={
+                <span>
+                  <div style={{fontSize:"13px"}}>
+                  ETD Changed
+                  </div>
+                   <div style={{fontSize:"10px"}}>
+                  {/* {rowData?.updated_message} */}
+                  Previous ETD  : 10/05/2024 <br/>
+                  New ETD  : 12/05/2024
+                  </div>
+                </span>
+              }
+            >
               <span role="button">{rowData?.etd_atd}</span>
             </Tooltip>
           ) : (
@@ -584,7 +598,21 @@ const AllBookings = ({
       <div className="message">
         <span className={hasUpdated ? "text-red" : ""}>
           {hasUpdated ? (
-            <Tooltip placement="topLeft" title={rowData?.updated_message}>
+            <Tooltip
+            placement="topLeft"
+            title={
+              <span>
+                <div style={{fontSize:"13px"}}>
+                ETA Changed
+                </div>
+                 <div style={{fontSize:"10px"}}>
+                {/* {rowData?.updated_message} */}
+                Previous ETA  : 10/05/2024 <br/>
+                New ETA  : 12/05/2024
+                </div>
+              </span>
+            }
+          >
               <span role="button">{rowData?.eta_ata}</span>
             </Tooltip>
           ) : (
@@ -738,31 +766,29 @@ const AllBookings = ({
             />
           ))}
         </div>
-        <div
-          className="d-flex justify-content-end"
-        >
+        <div className="d-flex justify-content-end">
           {Object.keys(tblFilter)?.some(
             (key) => tblFilter[key]?.length > 0
           ) && (
             <Tag
-            style={{
-              backgroundColor: "#F01E1E",
-              marginRight: "10px",
-              position: "relative",
-              top: "-11px",
-            }}
-            className="px-2 py-1"
-            rounded
-          >
-            <div>
-              Close All
-              <span className="ms-2">
-                <CloseOutlined
-                  onClick={() => handleChangeFilter("all", [])}
-                />
-              </span>
-            </div>
-          </Tag>
+              style={{
+                backgroundColor: "#F01E1E",
+                marginRight: "10px",
+                position: "relative",
+                top: "-11px",
+              }}
+              className="px-2 py-1"
+              rounded
+            >
+              <div>
+                Close All
+                <span className="ms-2">
+                  <CloseOutlined
+                    onClick={() => handleChangeFilter("all", [])}
+                  />
+                </span>
+              </div>
+            </Tag>
             // <div
             //   style={{
             //     backgroundColor: "#F01E1E",
