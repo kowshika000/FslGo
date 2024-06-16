@@ -2,6 +2,7 @@
 .profile_section .ant-upload-wrapper.ant-upload-picture-circle-wrapper .ant-upload.ant-upload-select{
     background-color: #E7EAF0 !important;
     border-width: 2px !important;
+    margin-left: 22px !important;
 }
 
 .profile_header_section .ant-card-body {
