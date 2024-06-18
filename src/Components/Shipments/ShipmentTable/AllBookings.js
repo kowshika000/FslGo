@@ -89,7 +89,8 @@ const AllBookings = ({
   // console.log("filter", filteredDataa);
 
   useEffect(() => {
-    setFilteredData(idd)
+    setFilteredData(idd);
+    setIds(idd);
     setCurrentPage(1);
   }, [tblFilter, filterData]);
 

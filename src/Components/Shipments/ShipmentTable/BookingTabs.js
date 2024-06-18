@@ -265,7 +265,7 @@ function BookingTabs({ showText, setShowText }) {
                   />
                   <Tabs.TabPane
                     tab={`Delivered (${
-                      schedule?.arrived ? schedule?.arrived : 0
+                      schedule?.delivered ? schedule?.delivered : 0
                     })`}
                     key="5"
                   />
