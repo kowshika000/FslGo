@@ -6,7 +6,7 @@ export const Footer = () => {
     <div
       className="d-flex justify-content-between bg-dark text-white   "
       style={{
-        minWidth: "1440px",
+        // minWidth: "1440px",
         width: "100%",
         height: "55px",
         alignItems: "center",
