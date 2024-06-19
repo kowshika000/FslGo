@@ -181,6 +181,7 @@
 .custom-header1 {
   background-color: rgb(25, 25, 101);
   color: white;
+  /* position: fixed !important; */
 }
 .booked-cell {
   border-left: 1px solid #008000;
@@ -217,3 +218,9 @@
   height: 100%;
   align-self: center;
 }
+.p-datatable-custom thead tr {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
