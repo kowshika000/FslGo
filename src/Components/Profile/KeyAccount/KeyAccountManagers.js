@@ -8,11 +8,15 @@ import { useCopyToClipboard } from 'usehooks-ts'
 import { Button, Popover, Tooltip } from 'antd'
 import { IoCopy } from "react-icons/io5";
 
-const KeyAccountManagers = () => {
+const KeyAccountManagers = ({profileData}) => {
 
   const [open, setOpen] = useState(false) 
   const [value,copy] = useCopyToClipboard()
   console.log("value",value)
+
+  console.log("KeyAccount",profileData?.profileData?.userdetails?.managers)
+  const keyManagerArray = profileData?.profileData?.userdetails?.managers
+
 
   const tableData = [
     {
@@ -51,9 +55,9 @@ const KeyAccountManagers = () => {
           </thead>
           <tbody>
             {
-              tableData?.map((item,index)=>{
+              keyManagerArray?.map((item,index)=>{
                 return <tr key={index}>
-                        <td>{item?.name.length <= 20 ? (
+                        <td>{item?.name?.length <= 20 ? (
                               item?.name
                             ) : (
                               <Tooltip placement="topLeft" zIndex={9999} title={item?.name}>
@@ -63,7 +67,7 @@ const KeyAccountManagers = () => {
                                 </span>
                               </Tooltip>
                             )}</td>
-                        <td>{item?.designation.length <= 20 ? (
+                        <td>{item?.designation?.length <= 20 ? (
                               item?.designation
                             ) : (
                               <Tooltip placement="topLeft" zIndex={9999} title={item?.designation}>
@@ -73,7 +77,7 @@ const KeyAccountManagers = () => {
                                 </span>
                               </Tooltip>
                             )}</td>
-                        <td>{item?.phone.length <= 20 ? (
+                        <td>{item?.phone?.length <= 20 ? (
                               item?.phone
                             ) : (
                               <Tooltip placement="topLeft" zIndex={9999} title={item?.phone}>
@@ -91,34 +95,34 @@ const KeyAccountManagers = () => {
                               {/* <IoCopy className='mx-1' style={{cursor:"pointer"}} onClick={()=>{copy(item?.emailid)}} color='black' /> */}
                               
                                 {/* <IoCopy className='mx-1' style={{cursor:"pointer"}} onClick={()=>{copy(item?.phone)}} color='black' /> */}
-                                <Tooltip title={!value ? '' : 'Text Copied !'}><IoCopy className='mx-1' style={{cursor:"pointer"}} onClick={()=>{copy(item?.phone)}} color='black' /></Tooltip>
+                                <Tooltip title={!value ? '' : 'Text Copied !'}><IoCopy className='mx-1' style={{cursor:"pointer"}} onClick={()=>{copy(item?.phone)}} color='rgb(177 186 203)' /></Tooltip>
                               
                             </>:<IoCopy className='mx-1' style={{cursor:"pointer"}} onClick={()=>copy(item?.phone)} color='rgb(177 186 203)' />
                             }
                           {/* <img src={copyIcon} style={{cursor:"pointer"}} onClick={()=>copy(item?.phone)} className='mx-1'/> */}
                         </td>
-                        <td>{item?.emailid.length <= 35 ? (
-                              item?.emailid
+                        <td>{item?.mail_id?.length <= 35 ? (
+                              item?.mail_id
                             ) : (
-                              <Tooltip placement="topLeft" zIndex={9999} title={item?.emailid}>
+                              <Tooltip placement="topLeft" zIndex={9999} title={item?.mail_id}>
                                 <span role="button">
-                                  {item?.emailid?.slice(0, 34).trim().split("").join("") +
+                                  {item?.mail_id?.slice(0, 34).trim().split("").join("") +
                                     "..."}
                                 </span>
                               </Tooltip>
                             )}
                             {
-                              value===item?.emailid ?
+                              value===item?.mail_id ?
                               <>
-                                {/* <IoCopy className='mx-1' style={{cursor:"pointer"}} onClick={()=>{copy(item?.emailid)}} color='black' /> */}
+                                {/* <IoCopy className='mx-1' style={{cursor:"pointer"}} onClick={()=>{copy(item?.mail_id)}} color='black' /> */}
                                 <Tooltip title={!value ? '' : 'Text Copied !'}>
-                                  <IoCopy className='mx-1' style={{cursor:"pointer"}} onClick={()=>{copy(item?.emailid)}} color='black' />
+                                  <IoCopy className='mx-1' style={{cursor:"pointer"}} onClick={()=>{copy(item?.mail_id)}} color='rgb(177 186 203)' />
                                 </Tooltip>
                               </>
-                             :<IoCopy className='mx-1' style={{cursor:"pointer"}} onClick={()=>copy(item?.emailid)} color='rgb(177 186 203)' />
+                             :<IoCopy className='mx-1' style={{cursor:"pointer"}} onClick={()=>copy(item?.mail_id)} color='rgb(177 186 203)' />
                             }
                             </td>
-                            {/* <img src={copyIcon} onClick={()=>copy(item?.emailid)} style={{cursor:"pointer",opacity:".2"}} className='mx-1'/> */}
+                            {/* <img src={copyIcon} onClick={()=>copy(item?.mail_id)} style={{cursor:"pointer",opacity:".2"}} className='mx-1'/> */}
                       </tr>
               })
             }

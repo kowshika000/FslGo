@@ -96,8 +96,8 @@
     letter-spacing:.01em !important;
 }
 .step{
-    width: 21px;
-    height: 21px;
+    width: 20px;
+    height: 20px;
     display: flex;
     align-items: center;
     justify-content: center;

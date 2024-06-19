@@ -11,6 +11,7 @@ const ProfileHeader = ({setOpenEditModal,profileData}) => {
 
     const userDetails = profileData?.profileData
     console.log(userDetails)
+    const details = "TY"
 
     //This is for ConvertBase64
     const getBase64 = (img, callback) => {
@@ -146,23 +147,25 @@ const ProfileHeader = ({setOpenEditModal,profileData}) => {
                         <div className="name_field">
                             <p className='m-0'>Company Name</p>
                                 <p className='m-0'>
-                                {userDetails?.company?.length <= 50 ? (
+                                {userDetails?.company?.length <= 50 && userDetails?.company?.length>0 ? (
                                     userDetails?.company
-                                  ) : (
+                                  ) :userDetails?.company?.length >50? (
                                     <Tooltip placement="topLeft" zIndex={9999} title={userDetails?.company}>
                                       <span role="button">
-                                        {userDetails?.company?.slice(49 ).trim().split("").join("") +
+                                        {userDetails?.company?.slice(0,5 ).trim().split("").join("") +
                                           "..."}
                                       </span>
                                     </Tooltip>
-                                  )} 
+                                  ):
+                                    "-"
+                                  }
                                   </p>
                         </div>
                         <div className="companyname_field">
                             <p className='m-0'>Country</p>
                             <p className='m-0'>
                             <CountryFlag countryCode={userDetails?.country_code} />&nbsp;&nbsp;
-                            {userDetails?.country_name?.length <= 27 ? (
+                            {/* {userDetails?.country_name?.length <= 27 ? (
                                     userDetails?.country_name
                                   ) : (
                                     <Tooltip placement="topLeft" zIndex={9999} title={userDetails?.country_name}>
@@ -171,35 +174,50 @@ const ProfileHeader = ({setOpenEditModal,profileData}) => {
                                           "..."}
                                       </span>
                                     </Tooltip>
-                                  )} 
+                                  )}  */}
+                                {userDetails?.country_name?.length <= 27 && userDetails?.country_name?.length>0 ? (
+                                    userDetails?.country_name
+                                  ) :userDetails?.country_name?.length >27? (
+                                    <Tooltip placement="topLeft" zIndex={9999} title={userDetails?.country_name}>
+                                      <span role="button">
+                                        {userDetails?.country_name?.slice(0,26 ).trim().split("").join("") +
+                                          "..."}
+                                      </span>
+                                    </Tooltip>
+                                  ):
+                                    "-"
+                                  }
                             </p>
                         </div>
                     </div>
                     <div className="profile_box_2">
                         <div className="email_field">
                             <p className='m-0'>Email</p>
-                            <p className='m-0'>{userDetails?.email?.length <= 27 ? (
+                            <p className='m-0'>            
+                                {userDetails?.email?.length <= 27 && userDetails?.email?.length>0 ? (
                                     userDetails?.email
-                                  ) : (
+                                  ) :userDetails?.email?.length >27? (
                                     <Tooltip placement="topLeft" zIndex={9999} title={userDetails?.email}>
                                       <span role="button">
                                         {userDetails?.email?.slice(0,26 ).trim().split("").join("") +
                                           "..."}
                                       </span>
                                     </Tooltip>
-                                  )}
+                                  ):
+                                    "-"
+                                  }
                             </p>    
                         </div>
                         <div className="companyprofile_field">
                             <p className='m-0'>Preferred currency</p>
-                            <p className='m-0'>{userDetails?.currency_code}</p>
+                            <p className='m-0'>{userDetails?.currency_code?.length>0?(userDetails?.currency_code):"-"}</p>
                         </div>
                     </div>
                     <div className="profile_box_3">
                         <div className="workemail_field">
                             <p className='m-0'>Phone</p>
                             <p className='m-0'>
-                            {userDetails?.phone_no}
+                            {userDetails?.phone_no?.length>0?(userDetails?.phone_no):"-"}
                             {/* {userDetails?.email.length <= 27 ? (
                                     userDetails?.email
                                   ) : (
