@@ -174,12 +174,12 @@ const ShipmentHeader = ({rowDatas}) => {
                     } */}
             {fileteredMilestone?.map((item) => {
               return <h6 className="m-0">{/*4565655656*/}
-                {item?.hbl_number?.length <= 20 ? (
-                              item?.hbl_number
+                {item?.id?.length <= 20 ? (
+                              item?.id
                             ) : (
-                              <Tooltip placement="topLeft" zIndex={9999} title={item?.hbl_number}>
+                              <Tooltip placement="topLeft" zIndex={9999} title={item?.id}>
                                 <span role="button">
-                                  {item?.hbl_number
+                                  {item?.id
                                     .slice(0, 20)
                                     .trim()
                                     .split("")
@@ -200,12 +200,12 @@ const ShipmentHeader = ({rowDatas}) => {
             <h6 className="m-0 me-2">HBL :</h6>
             {fileteredMilestone?.map((item) => {
               return <h6 className="m-0">{/*456565677*/}
-                {item?.id?.length <= 20 ? (
-                              item?.id
+                {item?.hbl_number?.length <= 20 ? (
+                              item?.hbl_number
                             ) : (
-                              <Tooltip placement="topLeft" zIndex={9999} title={item?.id}>
+                              <Tooltip placement="topLeft" zIndex={9999} title={item?.hbl_number}>
                                 <span role="button">
-                                  {item?.id
+                                  {item?.hbl_number
                                     .slice(0, 20)
                                     .trim()
                                     .split("")
@@ -328,7 +328,7 @@ const ShipmentHeader = ({rowDatas}) => {
           <div className="booking_content">
             <p className="m-0 mb-1"><span style={{marginRight:"7px"}}><img src={co2}></img></span>Emission</p>
             {fileteredMilestone?.map((item) => {
-              return <p className="m-0 text-center">-</p>;
+              return <p className="m-0 text-center">{item.co_emission}</p>;
             })}
           </div>
         </div>

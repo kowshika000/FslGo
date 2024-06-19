@@ -45,7 +45,7 @@ const ShipmentTable = ({tabListNoTitle,contentListNoTitle,setVesselmodalopen,clo
             <div style={{overflow:"auto",maxHeight:"500px"}}>
               {contentListNoTitle[activeTabKey]}
             </div>
-            {
+            {/* {
               mode === "AIR" && 
                     <Link 
                         onClick={handleNextModal}
@@ -71,8 +71,8 @@ const ShipmentTable = ({tabListNoTitle,contentListNoTitle,setVesselmodalopen,clo
                     >
                         View Air Tracking
                     </Link>
-            }
-            {
+            } */}
+            {/* {
               mode === "LCL" || mode==='FCL'?
                     <Link 
                         onClick={handleNextModal}
@@ -98,7 +98,7 @@ const ShipmentTable = ({tabListNoTitle,contentListNoTitle,setVesselmodalopen,clo
                     >
                         View Vessel Tracking
                     </Link>:null
-            }
+            } */}
     </Card>
   )
 }

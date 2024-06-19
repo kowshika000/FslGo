@@ -68,9 +68,9 @@ console.log("filtered",fileteredMilestone)
         {
             fileteredMilestone[0]?.milestones?.map((step,i)=>{
                 return(
-                            <div key={i+1} className={`step-item step-item-${i+1} ${step.milestonestatus==="INPROGRESS" && "Inprogress"} ${step.milestonestatus==='REACHED' && 'Complete'}`}>
-                                <p className='m-0 step mb-1'>
-                                    <div style={{backgroundColor:"#ACB8C4",borderRadius:"50%",width:"10px",height:"10px"}}></div>
+                            <div key={i+1} className={`step-item step-item-${i+1} ${step.milestonestatus==="INPROGRESS" && "Inprogress"} ${step.status==='COMPLETED' && 'Complete'}`}>
+                                <p className='m-0 step mb-1 d-flex justify-content-center align-items-center'>
+                                    <div style={{backgroundColor:"#ACB8C4",borderRadius:"50%",width:"10.5px",height:"10.5px"}}></div>
                                 </p>
                                 <p className='m-0 ' style={{color:"#181E25"}}>{step.milestone.length<15?step.milestone:
                                 <Tooltip placement="topLeft" zIndex={9999} title={step.milestone} >
