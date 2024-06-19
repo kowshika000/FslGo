@@ -153,18 +153,18 @@ export default function MapMarker({
       style={{
         position: "absolute",
         width: "500px",
-        height: "300px",
+        height: "50px",
         marginLeft: "57%",
         marginTop: "-8%",
       }}
     >
       <div>
-        <div className="shadow">
+        <div className="shadow modalmap">
               <DataTable
                 value={filteredData}
                 // removableSort
                 className="p-0 p-datatable-custom"
-                style={{ height: "220px", overflowY: "auto" }}
+                style={{ height: "220px" }}
               >
                 <Column
                   field="hbl_no"
