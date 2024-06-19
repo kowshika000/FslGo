@@ -43,11 +43,14 @@ function BookingTabs({ showText, setShowText }) {
   // console.log(data);
 
   const [filteredData, setFilteredData] = useState(data);
+  const [selectedStatus, setSelectedStatus] = useState(null);
   const filterData = (status) => {
     if (status === "All") {
       setFilteredData(data);
+      setSelectedStatus("All");
     } else {
       setFilteredData(data.filter((item) => status.includes(item.status)));
+      setSelectedStatus(status);
     }
   };
 
@@ -166,7 +169,6 @@ function BookingTabs({ showText, setShowText }) {
   const onClose = () => {
     setVisible(false);
   };
-  console.log("filteredData", filteredData);
 
   const handleTableChange = () => {
     setShowText(true);
@@ -411,7 +413,7 @@ function BookingTabs({ showText, setShowText }) {
           {!showText ? (
             <AllBookings
               filterData={filteredData}
-              selectedStatus={filterData}
+              selectedStatus={selectedStatus}
               filterValue={filterValue}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
