@@ -29,6 +29,7 @@ const AllBookings = ({
   filterMonthValue,
 }) => {
   console.log("filterValue", filterValue);
+  console.log("fill",filterData)
 
   const itemsPerPage = 5; // Number of items per page
   const dispatch = useDispatch();
@@ -54,7 +55,7 @@ const AllBookings = ({
 
   const [filteredData, setFilteredData] = useState([]);
   const [tblFilter, setTblFilter] = useState({
-    shipmentidD: [],
+    shipmentfilterData: [],
     order_no: [],
     modeD: [],
     originD: [],
@@ -63,12 +64,12 @@ const AllBookings = ({
     etaD: [],
     statusD: [],
   });
-  const idd = useSelector((state) => state.Booking?.booking?.data);
+  // const filterdata = useSelector((state) => state.Booking?.booking?.data);
   const filterDatas = (data) => {
-    return data.filter((item) => {
+    return data?.filter((item) => {
       return (
-        (tblFilter.shipmentidD?.length === 0 ||
-          tblFilter.shipmentidD?.includes(item.id)) &&
+        (tblFilter.shipmentfilterData?.length === 0 ||
+          tblFilter.shipmentfilterData?.includes(item.id)) &&
         (tblFilter.order_no?.length === 0 ||
           tblFilter.order_no?.includes(item.order_no)) &&
         (tblFilter.modeD?.length === 0 ||
@@ -88,9 +89,11 @@ const AllBookings = ({
   };
   // console.log("filter", filteredDataa);
 
+  
+
   useEffect(() => {
-    setFilteredData(idd);
-    setIds(idd);
+    setFilteredData(filterData);
+    setIds(filterData);
     setCurrentPage(1);
   }, [tblFilter, filterData]);
 
@@ -104,10 +107,10 @@ const AllBookings = ({
     }));
   };
 
-  const [idS, setIds] = useState(idd);
+  const [idS, setIds] = useState(filterData);
 
   const filterTable = () => {
-    const filterResult = filterDatas(idd);
+    const filterResult = filterDatas(filterData);
     setFilteredData(filterResult);
     setIds(filterResult);
     console.log("tableData", filterResult);
@@ -125,7 +128,7 @@ const AllBookings = ({
   const handleChangeFilter = (field, filterValues) => {
     if (field === "all") {
       setTblFilter({
-        shipmentidD: [],
+        shipmentfilterData: [],
         order_no: [],
         modeD: [],
         originD: [],
@@ -141,8 +144,8 @@ const AllBookings = ({
       }));
     }
     if (filterValues.length === 0) {
-      setFilteredData(idd);
-      setIds(idd)
+      setFilteredData(filterData);
+      setIds(filterData)
     }
   };
 
@@ -163,8 +166,9 @@ const AllBookings = ({
     return (
       <MultiSelect
         className="custom-multi-select"
-        value={tblFilter.shipmentidD}
+        value={tblFilter.shipmentfilterData}
         options={ShipId}
+        name="ShipId"
         filter
         style={{
           position: "absolute",
@@ -173,12 +177,13 @@ const AllBookings = ({
           fontSize: "10px",
         }}
         showSelectAll={false}
-        filterIcon={<FilterOutlined onClick={filterTable} />}
-        onChange={(e) => handleChangeFilter("shipmentidD", e.value)}
+        // filterIcon={<FilterOutlined onClick={filterTable} />}
+        onChange={(e) => handleChangeFilter("shipmentfilterData", e.value)}
         display="chip"
         placeholder="Select"
         itemTemplate={renderOption}
         filterPlaceholder="Search"
+        panelFooterTemplate={(props,onPanelShow)=>actionOkTemplate(onPanelShow)}
       />
     );
   };
@@ -196,6 +201,7 @@ const AllBookings = ({
         );
       }
     };
+
     return (
       <div className="custom-multi-select-container">
         <MultiSelect
@@ -212,13 +218,15 @@ const AllBookings = ({
             left: "180px",
           }}
           showSelectAll={false}
-          filterIcon={<FilterOutlined onClick={filterTable} />}
+          // filterIcon={<FilterOutlined onClick={filterTable} />}
           onChange={(e) => handleChangeFilter("order_no", e.value)}
           display="chip"
           placeholder="Select "
           itemTemplate={renderOption}
           filterPlaceholder="Search"
-        />
+          panelFooterTemplate={(props,onPanelShow)=>actionOkTemplate(onPanelShow)}
+        >
+        </MultiSelect>
       </div>
     );
   };
@@ -250,12 +258,17 @@ const AllBookings = ({
           // maxWidth:"100px"
         }}
         showSelectAll={false}
-        filterIcon={<FilterOutlined onClick={filterTable} />}
-        onChange={(e) => handleChangeFilter("modeD", e.value)}
+        // filterIcon={<FilterOutlined onClick={filterTable} />}
+        onChange={(e) => {
+          // filterTable();
+          handleChangeFilter("modeD", e.value); 
+          console.log("changed")
+        }}
         display="chip"
         placeholder="Select"
         itemTemplate={renderOption}
         filterPlaceholder="Search"
+        panelFooterTemplate={(props,onPanelShow)=>actionOkTemplate(onPanelShow)}
       />
     );
   };
@@ -287,12 +300,13 @@ const AllBookings = ({
           // maxWidth:"100px"
         }}
         showSelectAll={false}
-        filterIcon={<FilterOutlined onClick={filterTable} />}
+        // filterIcon={<FilterOutlined onClick={filterTable} />}
         onChange={(e) => handleChangeFilter("originD", e.value)}
         display="chip"
         placeholder="Select"
         itemTemplate={renderOption}
         filterPlaceholder="Search"
+        panelFooterTemplate={(props,onPanelShow)=>actionOkTemplate(onPanelShow)}
       />
     );
   };
@@ -324,12 +338,13 @@ const AllBookings = ({
           // maxWidth:"100px"
         }}
         showSelectAll={false}
-        filterIcon={<FilterOutlined onClick={filterTable} />}
+        // filterIcon={<FilterOutlined onClick={filterTable} />}
         onChange={(e) => handleChangeFilter("DestD", e.value)}
         display="chip"
         placeholder="Select"
         itemTemplate={renderOption}
         filterPlaceholder="Search"
+        panelFooterTemplate={(props,onPanelShow)=>actionOkTemplate(onPanelShow)}
       />
     );
   };
@@ -361,12 +376,13 @@ const AllBookings = ({
           // maxWidth:"100px"
         }}
         showSelectAll={false}
-        filterIcon={<FilterOutlined onClick={filterTable} />}
+        // filterIcon={<FilterOutlined onClick={filterTable} />}
         onChange={(e) => handleChangeFilter("etdD", e.value)}
         display="chip"
         placeholder="Select"
         itemTemplate={renderOption}
         filterPlaceholder="Search"
+        panelFooterTemplate={(props,onPanelShow)=>actionOkTemplate(onPanelShow)}
       />
     );
   };
@@ -398,12 +414,13 @@ const AllBookings = ({
           // maxWidth:"100px"
         }}
         showSelectAll={false}
-        filterIcon={<FilterOutlined onClick={filterTable} />}
+        // filterIcon={<FilterOutlined onClick={filterTable} />}
         onChange={(e) => handleChangeFilter("etaD", e.value)}
         display="chip"
         placeholder="Select"
         itemTemplate={renderOption}
         filterPlaceholder="Search"
+        panelFooterTemplate={(props,onPanelShow)=>actionOkTemplate(onPanelShow)}
       />
     );
   };
@@ -435,12 +452,15 @@ const AllBookings = ({
           // maxWidth:"100px"
         }}
         showSelectAll={false}
-        filterIcon={<FilterOutlined onClick={filterTable} />}
+        // filterIcon={<FilterOutlined onClick={filterTable} />}
         onChange={(e) => handleChangeFilter("statusD", e.value)}
         display="chip"
         placeholder="Select"
         itemTemplate={renderOption}
         filterPlaceholder="Search"
+        panelFooterTemplate={(props,onPanelShow)=>actionOkTemplate(onPanelShow)}
+        
+        
       />
     );
   };
@@ -492,6 +512,55 @@ const AllBookings = ({
     );
   };
 
+  const actionOkTemplate = (onPanelShow) => {
+
+    console.log(onPanelShow)
+
+    const {setFocusedOptionIndex,
+      setOverlayVisibleState,
+      setClicked} = onPanelShow
+
+    const handle=()=>{
+      
+      filterTable()
+     return onPanelShow()
+      // setFocusedOptionIndex(-1);
+      // setOverlayVisibleState(false);
+      // setClicked(false);
+    }
+
+    return (
+      <Button
+        outlined
+        // className={btnClass}
+        style={{
+          background: "rgba(240, 30, 30, 1)",
+          color: "white",
+          borderRadius: "8px",
+          width: "80px",
+          height: "30px",
+          padding: "",
+          gap: "8px",
+          float:"end"
+          // marginLeft:"10px",
+          // marginRight:"10px"
+        }}
+        label={"Ok"}
+        onClick={
+          handle
+          // filterTable();
+          // setFocusedOptionIndex(-1);
+          // setOverlayVisibleState(false);
+          // setClicked(false);
+          // onPanelShow
+        }
+          // filterTable()
+        
+      />
+
+    );
+  };
+
   const rowClassName = () => {
     return "custom-row";
   };
@@ -514,7 +583,7 @@ const AllBookings = ({
       </div>
     );
   };
-  const shipmentTemplateIdd = (rowData) => {
+  const shipmentTemplateFilterData = (rowData) => {
     return (
       <div style={{ textAlign: "start" }}>
         {/* <span className=" px-2">{rowData?.order_no}</span> */}
@@ -732,13 +801,14 @@ const AllBookings = ({
                   marginRight: "10px",
                   position: "relative",
                   top: "-11px",
+                  fontSize:"10px"
                 }}
                 className="px-2 py-1"
                 rounded
               >
                 <div>
                   {field === "order_no" ? "Order No" : ""}
-                  {field === "shipmentidD" ? "Shipment Id" : ""}
+                  {field === "shipmentfilterData" ? "Shipment Id" : ""}
                   {field === "modeD" ? "Mode" : ""}
                   {field === "etdD" ? "ETD/ATD" : ""}
                   {field === "etaD" ? "ETA/ATA" : ""}
@@ -788,13 +858,13 @@ const AllBookings = ({
                 backgroundColor: "#F01E1E",
                 marginRight: "10px",
                 position: "relative",
-                top: "-11px",
+                top: "-11px"
               }}
               className="px-2 py-1"
               rounded
             >
-              <div>
-                Close All
+              <div style={{fontSize:"10px"}}>
+                Clear All
                 <span className="ms-2">
                   <CloseOutlined
                     onClick={() => handleChangeFilter("all", [])}
@@ -871,7 +941,7 @@ const AllBookings = ({
               </div>
             </span>
           }
-          body={shipmentTemplateIdd}
+          body={shipmentTemplateFilterData}
           // className="p-3"
           style={{ paddingRight: "10px", width: "170px" }}
         ></Column>

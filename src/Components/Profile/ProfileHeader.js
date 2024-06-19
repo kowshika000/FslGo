@@ -223,9 +223,9 @@ const ProfileHeader = ({setOpenEditModal,profileData}) => {
                             <p className='m-0'>{userDetails?.mobile}</p>    
                         </div>
                     </div> */}
-                    <div className="edit_icon_box">
+                    {/* <div className="edit_icon_box">
                         <img src={Edit_Image} alt="" role='button' onClick={()=>setOpenEditModal(true)} />
-                    </div>
+                    </div> */}
                 </div>
                 {/* <div className="col-1">
                         <img src={Edit_Image} alt="" />

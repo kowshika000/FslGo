@@ -162,7 +162,7 @@ const Header = ({ activePage }) => {
               Shipments
             </Typography>
           </Link>
-          <Link to="/quotation" style={{ textDecoration: "none" }}>
+          {/* <Link to="/quotation" style={{ textDecoration: "none" }}>
             <Typography
               sx={{
                 fontSize: "15px",
@@ -179,8 +179,8 @@ const Header = ({ activePage }) => {
             >
               Quotations
             </Typography>
-          </Link>
-          <Link to="/invoice" style={{ textDecoration: "none" }}>
+          </Link> */}
+          {/* <Link to="/invoice" style={{ textDecoration: "none" }}>
             <Typography
               sx={{
                 fontSize: "15px",
@@ -197,8 +197,8 @@ const Header = ({ activePage }) => {
             >
               Invoice
             </Typography>
-          </Link>
-          <Link to="/quick" style={{ textDecoration: "none" }}>
+          </Link> */}
+          {/* <Link to="/quick" style={{ textDecoration: "none" }}>
             <Typography
               sx={{
                 fontSize: "15px",
@@ -215,14 +215,14 @@ const Header = ({ activePage }) => {
             >
               Quick Booking
             </Typography>
-          </Link>
+          </Link> */}
         </Box>
       </div>
       <div
         className="d-flex align-items-center me-5"
         style={{ justifyContent: "space-between", gap: "25px" }}
       >
-        <div
+        {/* <div
           style={{
             border: "1px solid #D1D9D3",
             borderRadius: "20px",
@@ -261,9 +261,9 @@ const Header = ({ activePage }) => {
               }}
             >
               3{/* 3<sup>+</sup> */}
-            </Typography>
-          </div>
-        </div>
+            {/* </Typography>
+          </div> */}
+        {/* </div>  */}
         <Dropdown
           menu={{
             items,
@@ -295,7 +295,7 @@ const Header = ({ activePage }) => {
                 textAlign: "center",
               }}
             >
-              G
+              F
             </Typography>
           </div>
         </Dropdown>
