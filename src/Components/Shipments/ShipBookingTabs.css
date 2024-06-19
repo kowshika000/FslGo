@@ -146,7 +146,7 @@
   border: 1px solid var(--colors-style-base-base-200, #cfd6df) !important;
 }
 .ant-tabs .ant-tabs-ink-bar {
-  background: #F01E1E;
+  background: #f01e1e;
   height: 4px !important;
   border-radius: 4px 4px 0px 0px;
   margin-left: 3px;
@@ -218,9 +218,13 @@
   height: 100%;
   align-self: center;
 }
-.p-datatable-custom thead tr {
-  position: sticky;
-  top: 0;
-  z-index: 1;
+
+.modalmap .p-datatable-wrapper {
+  height: 200px !important;
 }
 
+.modalmap .custom-header1 {
+  position: sticky;
+  top: 0;
+  z-index: 0;
+}
