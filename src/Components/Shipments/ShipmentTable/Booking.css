@@ -197,7 +197,7 @@
   color: #4b5563 !important;
 }
 .p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight {
-  background-color: white !important;
+  background-color: #f3f4f6 !important;
 }
 
 .ant-input-affix-wrapper:hover {
@@ -242,4 +242,12 @@
 }
 .p-multiselect-filter-container{
   display: flex !important;
+}
+.p-multiselect-footer{
+  display: flex;
+  justify-content: end;
+}
+.p-multiselect-footer .p-button{
+  width: 40px !important;
+  height: 25px !important;
 }
