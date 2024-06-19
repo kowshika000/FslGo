@@ -174,12 +174,12 @@ const ShipmentHeader = ({rowDatas}) => {
                     } */}
             {fileteredMilestone?.map((item) => {
               return <h6 className="m-0">{/*4565655656*/}
-                {item?.id?.length <= 20 ? (
-                              item?.id
+                {item?.hbl_number?.length <= 20 ? (
+                              item?.hbl_number
                             ) : (
-                              <Tooltip placement="topLeft" zIndex={9999} title={item?.id}>
+                              <Tooltip placement="topLeft" zIndex={9999} title={item?.hbl_number}>
                                 <span role="button">
-                                  {item?.id
+                                  {item?.hbl_number
                                     .slice(0, 20)
                                     .trim()
                                     .split("")
