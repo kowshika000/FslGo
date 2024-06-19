@@ -328,7 +328,7 @@ const ShipmentHeader = ({rowDatas}) => {
           <div className="booking_content">
             <p className="m-0 mb-1"><span style={{marginRight:"7px"}}><img src={co2}></img></span>Emission</p>
             {fileteredMilestone?.map((item) => {
-              return <p className="m-0 text-center">-</p>;
+              return <p className="m-0 text-center">{item.co_emission}</p>;
             })}
           </div>
         </div>
