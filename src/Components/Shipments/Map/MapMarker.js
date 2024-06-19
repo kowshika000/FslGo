@@ -14,12 +14,27 @@ export default function MapMarker({ showModal, onClose, markerId }) {
 
   const dispatch = useDispatch();
   const ID = markerId;
+
   useEffect(() => {
     dispatch(mapRequest());
   }, [dispatch]);
 
   const mapData = useSelector((state) => state.Map);
   const mapMarkerData = mapData?.MapData?.countries;
+  // const code = mapMarkerData?.map(data=>data?.country_code)
+  // const dd = mapMarkerData?.map((data) => data.hbl_list);
+
+  // const datamap = dd?.map((data) => {
+  //   console.log(data,"data");
+  //   return data
+  // }); 
+  // console.log("markerData", markerId);
+  useEffect(() => {
+    if (mapMarkerData) {
+      const flattenedData = mapMarkerData.flatMap((country) => country.hbl_list);
+      setFilteredData(flattenedData);
+    }
+  }, [mapMarkerData]);
 
   const handleSort = (col) => {
     const sorted = [...filteredData].sort((a, b) => {
@@ -86,38 +101,30 @@ export default function MapMarker({ showModal, onClose, markerId }) {
       <div>
         <div className="shadow">
           {mapMarkerData?.map((data, index) => {
-            if (data?.hbl_no === ID) {
+           
               return (
                 <DataTable
-                  value={[data]}
-                  dataKey={index.toString()}
-                  paginator={false}
-                  rows={10}
-                  
-                  rowsPerPageOptions={[5, 10, 25]}
-                  currentPageReportTemplate="{first} to {last} out of {totalRecords}"
-                  removableSort
+                value={filteredData}
+                  // removableSort
                   className="p-0"
+                  style={{height:"220px",overflowY:"auto"}}
                 >
                   <Column
                     field="hbl_no"
                     align="left"
                     header={
-                      <span
-                        style={{ fontSize: "13px"}}
-                        className="d-flex"
-                      >
+                      <span style={{ fontSize: "13px" }} className="d-flex">
                         Booking ID
                         <div
                           className="d-flex sorticon"
-                          style={{ flexDirection: "column"}}
+                          style={{ flexDirection: "column" }}
                         >
                           <IconButton
                             onClick={() => {
                               handleSort("hbl_no");
                             }}
                             className="p-0"
-                            style={{color:"white"}}
+                            style={{ color: "white" }}
                           >
                             <ExpandLessIcon className="sortup" />
                           </IconButton>
@@ -126,8 +133,7 @@ export default function MapMarker({ showModal, onClose, markerId }) {
                               handleSortDown("hbl_no");
                             }}
                             className="p-0"
-                            style={{color:"white"}}
-
+                            style={{ color: "white" }}
                           >
                             <ExpandMoreIcon className="sortdown" />
                           </IconButton>
@@ -138,10 +144,10 @@ export default function MapMarker({ showModal, onClose, markerId }) {
                     className="p-1 text-start"
                   />
                   <Column
-                    field="mode"
+                    field="sea_air"
                     align="left"
                     header={
-                      <span style={{ fontSize: "13px"}}  className="d-flex">
+                      <span style={{ fontSize: "13px" }} className="d-flex">
                         Mode
                         <div
                           className="d-flex sorticon"
@@ -152,8 +158,7 @@ export default function MapMarker({ showModal, onClose, markerId }) {
                               handleSort("mode");
                             }}
                             className="p-0"
-                            style={{color:"white"}}
-
+                            style={{ color: "white" }}
                           >
                             <ExpandLessIcon className="sortup" />
                           </IconButton>
@@ -162,8 +167,7 @@ export default function MapMarker({ showModal, onClose, markerId }) {
                               handleSortDown("mode");
                             }}
                             className="p-0"
-                            style={{color:"white"}}
-
+                            style={{ color: "white" }}
                           >
                             <ExpandMoreIcon className="sortdown" />
                           </IconButton>
@@ -188,8 +192,7 @@ export default function MapMarker({ showModal, onClose, markerId }) {
                               handleSort("route");
                             }}
                             className="p-0"
-                            style={{color:"white"}}
-
+                            style={{ color: "white" }}
                           >
                             <ExpandLessIcon className="sortup" />
                           </IconButton>
@@ -198,8 +201,7 @@ export default function MapMarker({ showModal, onClose, markerId }) {
                               handleSortDown("route");
                             }}
                             className="p-0"
-                            style={{color:"white"}}
-
+                            style={{ color: "white" }}
                           >
                             <ExpandMoreIcon className="sortdown" />
                           </IconButton>
@@ -224,8 +226,7 @@ export default function MapMarker({ showModal, onClose, markerId }) {
                               handleSort("status");
                             }}
                             className="p-0"
-                            style={{color:"white"}}
-
+                            style={{ color: "white" }}
                           >
                             <ExpandLessIcon className="sortup" />
                           </IconButton>
@@ -234,8 +235,7 @@ export default function MapMarker({ showModal, onClose, markerId }) {
                               handleSortDown("status");
                             }}
                             className="p-0"
-                            style={{color:"white"}}
-
+                            style={{ color: "white" }}
                           >
                             <ExpandMoreIcon className="sortdown" />
                           </IconButton>
@@ -248,7 +248,7 @@ export default function MapMarker({ showModal, onClose, markerId }) {
                   />
                 </DataTable>
               );
-            }
+            // }
           })}
         </div>
       </div>
