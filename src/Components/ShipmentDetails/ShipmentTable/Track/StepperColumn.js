@@ -11,10 +11,10 @@ const StepperColumn = ({step}) => {
         {
             step?.map((step,i)=>(
                 <div className='d-flex flex-row step-item' >
-                     <div key={i} className={`me-5 ${activeYellow===i+1 && "ongoing"} ${activeGreen===i+1 && 'complete'}`} style={{zIndex:"1"}}>
+                     <div key={i} className={`me-5 ${step.milestone_status==="COMPLETED" && 'complete'}`} style={{zIndex:"1"}}>
                         <p className='m-0 step'>
                             {
-                                activeGreen==i+1?<TiTick size={20} color='white' />:
+                                step.milestone_status==="COMPLETED"?<TiTick size={20} color='white' />:
                             
                             <div style={{backgroundColor:"#ACB8C4",borderRadius:"50%",width:"10px",height:"10px"}}>
                                 

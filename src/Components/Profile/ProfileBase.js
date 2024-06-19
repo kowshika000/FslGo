@@ -86,7 +86,7 @@ const ProfileBase = () => {
   ];
 
   const contentListNoTitle = {
-    KeyAccount: <KeyAccountManagers />,
+    KeyAccount: <KeyAccountManagers profileData={profileData} />,
     // SavedAddresses: <Addresses />,
     // Transactions: <Transactions />,
     Password: <Password />,
