@@ -28,7 +28,7 @@ const ShipmentsHome = () => {
       }}
     >
       <div
-        style={{ maxWidth: "1255px" }}
+        style={{ width: "1255px" }}
         className="shipmentIndex mb-4 mx-auto"
       >
         {!showText ? (
