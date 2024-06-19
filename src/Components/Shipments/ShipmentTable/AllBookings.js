@@ -27,9 +27,10 @@ const AllBookings = ({
   currentPage,
   setCurrentPage,
   filterMonthValue,
+  selectedStatus,
 }) => {
   console.log("filterValue", filterValue);
-  console.log("fill", filterData);
+  console.log("fill", selectedStatus);
 
   const itemsPerPage = 5; // Number of items per page
   const dispatch = useDispatch();
@@ -53,7 +54,7 @@ const AllBookings = ({
     dispatch(bookingRequest({ payload }));
   }, [filterValue, filterMonthValue]);
 
-  const [filteredData, setFilteredData] = useState([]);
+  const [filteredData, setFilteredData] = useState(filterData);
   const [tblFilter, setTblFilter] = useState({
     shipmentfilterData: [],
     order_no: [],
@@ -64,27 +65,25 @@ const AllBookings = ({
     etaD: [],
     statusD: [],
   });
-  // const filterdata = useSelector((state) => state.Booking?.booking?.data);
-  const filterDatas =filterData.filter((item) => {
-      return (
-        (tblFilter.shipmentfilterData?.length === 0 ||
-          tblFilter.shipmentfilterData?.includes(item.id)) &&
-        (tblFilter.order_no?.length === 0 ||
-          tblFilter.order_no?.includes(item.order_no)) &&
-        (tblFilter.modeD?.length === 0 ||
-          tblFilter.modeD?.includes(item.mode)) &&
-        (tblFilter.originD?.length === 0 ||
-          tblFilter.originD?.includes(item.origin)) &&
-        (tblFilter.DestD?.length === 0 ||
-          tblFilter.DestD?.includes(item.destination)) &&
-        (tblFilter.etaD?.length === 0 ||
-          tblFilter.etaD?.includes(item.eta_ata)) &&
-        (tblFilter.etdD?.length === 0 ||
-          tblFilter.etdD?.includes(item.etd_atd)) &&
-        (tblFilter.statusD?.length === 0 ||
-          tblFilter.statusD?.includes(item.status))
-      );
-    });
+  const filterDatas = filterData.filter((item) => {
+    return (
+      (tblFilter.shipmentfilterData?.length === 0 ||
+        tblFilter.shipmentfilterData?.includes(item.id)) &&
+      (tblFilter.order_no?.length === 0 ||
+        tblFilter.order_no?.includes(item.order_no)) &&
+      (tblFilter.modeD?.length === 0 || tblFilter.modeD?.includes(item.mode)) &&
+      (tblFilter.originD?.length === 0 ||
+        tblFilter.originD?.includes(item.origin)) &&
+      (tblFilter.DestD?.length === 0 ||
+        tblFilter.DestD?.includes(item.destination)) &&
+      (tblFilter.etaD?.length === 0 ||
+        tblFilter.etaD?.includes(item.eta_ata)) &&
+      (tblFilter.etdD?.length === 0 ||
+        tblFilter.etdD?.includes(item.etd_atd)) &&
+      (tblFilter.statusD?.length === 0 ||
+        tblFilter.statusD?.includes(item.status))
+    );
+  });
   // console.log("filter", filteredDataa);
 
   useEffect(() => {
@@ -111,7 +110,7 @@ const AllBookings = ({
   //   setIds(filterResult);
   //   console.log("tableData", filterResult);
   // };
-  const idS=filterData
+  const idS = filterData;
 
   const ShipId = getUniqueOptions(idS, "id");
   const orderId_ = getUniqueOptions(idS, "order_no");
@@ -145,6 +144,21 @@ const AllBookings = ({
     //   setIds(filterData);
     // }
   };
+
+  useEffect(() => {
+    if (selectedStatus !== null) {
+      setTblFilter({
+        shipmentfilterData: [],
+        order_no: [],
+        modeD: [],
+        originD: [],
+        DestD: [],
+        etdD: [],
+        etaD: [],
+        statusD: [],
+      });
+    }
+  }, [selectedStatus]);
 
   const FilterIdRow = () => {
     const renderOption = (option) => {
