@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { Row, Col, Input } from "antd";
+import { Row, Col, Input, Image } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import "./Booking.css";
 import ShipmentBase from "../../ShipmentDetails/ShipmentTable/ShipmentBase";
 import { Dialog, DialogContent } from "@mui/material";
-import { InputText } from "primereact/inputtext";
+import Search from "../../../assets/SearchVector.svg";
 
 export const SearchHeader = ({ bookingData }) => {
   const [notfoundmodal, setNotfoundmodal] = useState(false);
@@ -48,14 +48,16 @@ export const SearchHeader = ({ bookingData }) => {
       </Dialog>
     );
   };
-  const icon = <SearchOutlined />;
   return (
     <>
       <Row justify="space-between" className="w-full mb-3">
         <Col>
           <Input
             placeholder="Search shipment by PO/ Booking / HBL / Invoice Number"
-            prefix={<SearchOutlined style={{ color: "#94A2B2" }} />}
+            // prefix={<SearchOutlined style={{ color: "#94A2B2" }} />}
+            prefix={
+              <Image src={Search} alt="search" style={{ marginTop: "-4px" }} className="pe-1"/>
+            }
             className="search-input"
             style={{
               width: "524px",
