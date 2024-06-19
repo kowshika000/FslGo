@@ -74,7 +74,7 @@ export default function Americas() {
             (data) => data.country_code === location.countryCode
           );
           const markerNumber = mapData?.no_of_shipments || 0;
-          const markerId = mapData.hbl_no;
+          const markerId = mapData.country_code;
           console.log("datamap", markerId);
 
           const numberIcon = L.divIcon({
@@ -98,6 +98,7 @@ export default function Americas() {
         showModal={showModal}
         onClose={handleModalClose}
         markerId={selectedMarkerId}
+        // mapDataa={MapDatas}
       />
     </div>
   );

@@ -146,7 +146,7 @@
   border: 1px solid var(--colors-style-base-base-200, #cfd6df) !important;
 }
 .ant-tabs .ant-tabs-ink-bar {
-  background: #F01E1E;
+  background: #f01e1e;
   height: 4px !important;
   border-radius: 4px 4px 0px 0px;
   margin-left: 3px;
@@ -181,6 +181,7 @@
 .custom-header1 {
   background-color: rgb(25, 25, 101);
   color: white;
+  /* position: fixed !important; */
 }
 .booked-cell {
   border-left: 1px solid #008000;
@@ -216,4 +217,14 @@
   align-items: center;
   height: 100%;
   align-self: center;
+}
+
+.modalmap .p-datatable-wrapper {
+  height: 210px !important;
+}
+
+.modalmap .custom-header1 {
+  position: sticky;
+  top: 0;
+  z-index: 0;
 }

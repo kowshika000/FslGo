@@ -27,9 +27,10 @@ const AllBookings = ({
   currentPage,
   setCurrentPage,
   filterMonthValue,
+  selectedStatus,
 }) => {
   console.log("filterValue", filterValue);
-  console.log("fill",filterData)
+  console.log("fill", selectedStatus);
 
   const itemsPerPage = 5; // Number of items per page
   const dispatch = useDispatch();
@@ -53,7 +54,7 @@ const AllBookings = ({
     dispatch(bookingRequest({ payload }));
   }, [filterValue, filterMonthValue]);
 
-  const [filteredData, setFilteredData] = useState([]);
+  const [filteredData, setFilteredData] = useState(filterData);
   const [tblFilter, setTblFilter] = useState({
     shipmentfilterData: [],
     order_no: [],
@@ -64,36 +65,30 @@ const AllBookings = ({
     etaD: [],
     statusD: [],
   });
-  // const filterdata = useSelector((state) => state.Booking?.booking?.data);
-  const filterDatas = (data) => {
-    return data?.filter((item) => {
-      return (
-        (tblFilter.shipmentfilterData?.length === 0 ||
-          tblFilter.shipmentfilterData?.includes(item.id)) &&
-        (tblFilter.order_no?.length === 0 ||
-          tblFilter.order_no?.includes(item.order_no)) &&
-        (tblFilter.modeD?.length === 0 ||
-          tblFilter.modeD?.includes(item.mode)) &&
-        (tblFilter.originD?.length === 0 ||
-          tblFilter.originD?.includes(item.origin)) &&
-        (tblFilter.DestD?.length === 0 ||
-          tblFilter.DestD?.includes(item.destination)) &&
-        (tblFilter.etaD?.length === 0 ||
-          tblFilter.etaD?.includes(item.eta_ata)) &&
-        (tblFilter.etdD?.length === 0 ||
-          tblFilter.etdD?.includes(item.etd_atd)) &&
-        (tblFilter.statusD?.length === 0 ||
-          tblFilter.statusD?.includes(item.status))
-      );
-    });
-  };
+  const filterDatas = filterData.filter((item) => {
+    return (
+      (tblFilter.shipmentfilterData?.length === 0 ||
+        tblFilter.shipmentfilterData?.includes(item.id)) &&
+      (tblFilter.order_no?.length === 0 ||
+        tblFilter.order_no?.includes(item.order_no)) &&
+      (tblFilter.modeD?.length === 0 || tblFilter.modeD?.includes(item.mode)) &&
+      (tblFilter.originD?.length === 0 ||
+        tblFilter.originD?.includes(item.origin)) &&
+      (tblFilter.DestD?.length === 0 ||
+        tblFilter.DestD?.includes(item.destination)) &&
+      (tblFilter.etaD?.length === 0 ||
+        tblFilter.etaD?.includes(item.eta_ata)) &&
+      (tblFilter.etdD?.length === 0 ||
+        tblFilter.etdD?.includes(item.etd_atd)) &&
+      (tblFilter.statusD?.length === 0 ||
+        tblFilter.statusD?.includes(item.status))
+    );
+  });
   // console.log("filter", filteredDataa);
 
-  
-
   useEffect(() => {
-    setFilteredData(filterData);
-    setIds(filterData);
+    setFilteredData(filterDatas);
+    // setIds(filterData);
     setCurrentPage(1);
   }, [tblFilter, filterData]);
 
@@ -107,14 +102,15 @@ const AllBookings = ({
     }));
   };
 
-  const [idS, setIds] = useState(filterData);
+  // const [idS, setIds] = useState(filterData);
 
-  const filterTable = () => {
-    const filterResult = filterDatas(filterData);
-    setFilteredData(filterResult);
-    setIds(filterResult);
-    console.log("tableData", filterResult);
-  };
+  // const filterTable = () => {
+  //   const filterResult = filterDatas(filterData);
+  //   setFilteredData(filterResult);
+  //   setIds(filterResult);
+  //   console.log("tableData", filterResult);
+  // };
+  const idS = filterData;
 
   const ShipId = getUniqueOptions(idS, "id");
   const orderId_ = getUniqueOptions(idS, "order_no");
@@ -143,11 +139,26 @@ const AllBookings = ({
         [field]: filterValues,
       }));
     }
-    if (filterValues.length === 0) {
-      setFilteredData(filterData);
-      setIds(filterData)
-    }
+    // if (filterValues.length === 0) {
+    //   setFilteredData(filterData);
+    //   setIds(filterData);
+    // }
   };
+
+  useEffect(() => {
+    if (selectedStatus !== null) {
+      setTblFilter({
+        shipmentfilterData: [],
+        order_no: [],
+        modeD: [],
+        originD: [],
+        DestD: [],
+        etdD: [],
+        etaD: [],
+        statusD: [],
+      });
+    }
+  }, [selectedStatus]);
 
   const FilterIdRow = () => {
     const renderOption = (option) => {
@@ -183,7 +194,9 @@ const AllBookings = ({
         placeholder="Select"
         itemTemplate={renderOption}
         filterPlaceholder="Search"
-        panelFooterTemplate={(props,onPanelShow)=>actionOkTemplate(onPanelShow)}
+        // panelFooterTemplate={(props, onPanelShow) =>
+        //   actionOkTemplate(onPanelShow)
+        // }
       />
     );
   };
@@ -224,9 +237,10 @@ const AllBookings = ({
           placeholder="Select "
           itemTemplate={renderOption}
           filterPlaceholder="Search"
-          panelFooterTemplate={(props,onPanelShow)=>actionOkTemplate(onPanelShow)}
-        >
-        </MultiSelect>
+          // panelFooterTemplate={(props, onPanelShow) =>
+          //   actionOkTemplate(onPanelShow)
+          // }
+        ></MultiSelect>
       </div>
     );
   };
@@ -261,14 +275,16 @@ const AllBookings = ({
         // filterIcon={<FilterOutlined onClick={filterTable} />}
         onChange={(e) => {
           // filterTable();
-          handleChangeFilter("modeD", e.value); 
-          console.log("changed")
+          handleChangeFilter("modeD", e.value);
+          console.log("changed");
         }}
         display="chip"
         placeholder="Select"
         itemTemplate={renderOption}
         filterPlaceholder="Search"
-        panelFooterTemplate={(props,onPanelShow)=>actionOkTemplate(onPanelShow)}
+        // panelFooterTemplate={(props, onPanelShow) =>
+        //   actionOkTemplate(onPanelShow)
+        // }
       />
     );
   };
@@ -306,7 +322,9 @@ const AllBookings = ({
         placeholder="Select"
         itemTemplate={renderOption}
         filterPlaceholder="Search"
-        panelFooterTemplate={(props,onPanelShow)=>actionOkTemplate(onPanelShow)}
+        // panelFooterTemplate={(props, onPanelShow) =>
+        //   actionOkTemplate(onPanelShow)
+        // }
       />
     );
   };
@@ -344,7 +362,9 @@ const AllBookings = ({
         placeholder="Select"
         itemTemplate={renderOption}
         filterPlaceholder="Search"
-        panelFooterTemplate={(props,onPanelShow)=>actionOkTemplate(onPanelShow)}
+        // panelFooterTemplate={(props, onPanelShow) =>
+        //   actionOkTemplate(onPanelShow)
+        // }
       />
     );
   };
@@ -382,7 +402,9 @@ const AllBookings = ({
         placeholder="Select"
         itemTemplate={renderOption}
         filterPlaceholder="Search"
-        panelFooterTemplate={(props,onPanelShow)=>actionOkTemplate(onPanelShow)}
+        // panelFooterTemplate={(props, onPanelShow) =>
+        //   actionOkTemplate(onPanelShow)
+        // }
       />
     );
   };
@@ -420,7 +442,9 @@ const AllBookings = ({
         placeholder="Select"
         itemTemplate={renderOption}
         filterPlaceholder="Search"
-        panelFooterTemplate={(props,onPanelShow)=>actionOkTemplate(onPanelShow)}
+        // panelFooterTemplate={(props, onPanelShow) =>
+        //   actionOkTemplate(onPanelShow)
+        // }
       />
     );
   };
@@ -458,9 +482,9 @@ const AllBookings = ({
         placeholder="Select"
         itemTemplate={renderOption}
         filterPlaceholder="Search"
-        panelFooterTemplate={(props,onPanelShow)=>actionOkTemplate(onPanelShow)}
-        
-        
+        // panelFooterTemplate={(props, onPanelShow) =>
+        //   actionOkTemplate(onPanelShow)
+        // }
       />
     );
   };
@@ -512,54 +536,49 @@ const AllBookings = ({
     );
   };
 
-  const actionOkTemplate = (onPanelShow) => {
+  // const actionOkTemplate = (onPanelShow) => {
+  //   console.log(onPanelShow);
 
-    console.log(onPanelShow)
+  //   const { setFocusedOptionIndex, setOverlayVisibleState, setClicked } =
+  //     onPanelShow;
 
-    const {setFocusedOptionIndex,
-      setOverlayVisibleState,
-      setClicked} = onPanelShow
+  //   const handle = () => {
+  //     filterTable();
+  //     return onPanelShow();
+  //     // setFocusedOptionIndex(-1);
+  //     // setOverlayVisibleState(false);
+  //     // setClicked(false);
+  //   };
 
-    const handle=()=>{
-      
-      filterTable()
-     return onPanelShow()
-      // setFocusedOptionIndex(-1);
-      // setOverlayVisibleState(false);
-      // setClicked(false);
-    }
-
-    return (
-      <Button
-        outlined
-        // className={btnClass}
-        style={{
-          background: "rgba(240, 30, 30, 1)",
-          color: "white",
-          borderRadius: "8px",
-          width: "80px",
-          height: "30px",
-          padding: "",
-          gap: "8px",
-          float:"end"
-          // marginLeft:"10px",
-          // marginRight:"10px"
-        }}
-        label={"Ok"}
-        onClick={
-          handle
-          // filterTable();
-          // setFocusedOptionIndex(-1);
-          // setOverlayVisibleState(false);
-          // setClicked(false);
-          // onPanelShow
-        }
-          // filterTable()
-        
-      />
-
-    );
-  };
+  //   return (
+  //     <Button
+  //       outlined
+  //       // className={btnClass}
+  //       style={{
+  //         background: "rgba(240, 30, 30, 1)",
+  //         color: "white",
+  //         borderRadius: "8px",
+  //         width: "80px",
+  //         height: "30px",
+  //         padding: "",
+  //         gap: "8px",
+  //         float: "end",
+  //         // marginLeft:"10px",
+  //         // marginRight:"10px"
+  //       }}
+  //       label={"Ok"}
+  //       onClick={
+  //         handle
+  //         // filterTable();
+  //         // setFocusedOptionIndex(-1);
+  //         // setOverlayVisibleState(false);
+  //         // setClicked(false);
+  //         // onPanelShow
+  //       }
+  //       // filterTable()
+  //     />
+  //   );
+  // };
 
   const rowClassName = () => {
     return "custom-row";
@@ -618,7 +637,8 @@ const AllBookings = ({
           ) : (
             <Tooltip placement="topLeft" title={rowData?.origin}>
               <span role="button">
-                {rowData?.origin?.slice(0, 20)?.trim()?.split(" ")?.join("") + ".."}
+                {rowData?.origin?.slice(0, 20)?.trim()?.split(" ")?.join("") +
+                  ".."}
               </span>
             </Tooltip>
           )}
@@ -638,8 +658,11 @@ const AllBookings = ({
           ) : (
             <Tooltip placement="topLeft" title={rowData?.destination}>
               <span role="button">
-                {rowData?.destination?.slice(0, 20)?.trim()?.split("")?.join("") +
-                  ".."}
+                {rowData?.destination
+                  ?.slice(0, 20)
+                  ?.trim()
+                  ?.split("")
+                  ?.join("") + ".."}
               </span>
             </Tooltip>
           )}
@@ -800,8 +823,7 @@ const AllBookings = ({
                   backgroundColor: "#F01E1E",
                   marginRight: "10px",
                   position: "relative",
-                  top: "-11px",
-                  fontSize:"10px"
+                  fontSize: "10px",
                 }}
                 className="px-2 py-1"
                 rounded
@@ -838,8 +860,16 @@ const AllBookings = ({
         backgroundColor: "white",
       }}
     >
-      <div className="d-flex justify-content-between ">
-        <div>
+      {Object.keys(tblFilter)?.some((key) => tblFilter[key]?.length > 0) && (
+        <div
+          className="d-flex ps-2"
+          style={{
+            backgroundColor: "#F8FAFC",
+            marginBottom: "9px",
+            padding: "5px 0px",
+            marginTop: "-11px",
+          }}
+        >
           {Object.entries(tblFilter).map(([field, filterValues]) => (
             <FilterTag
               key={field}
@@ -848,8 +878,6 @@ const AllBookings = ({
               handleChangeFilter={handleChangeFilter}
             />
           ))}
-        </div>
-        <div className="d-flex justify-content-end">
           {Object.keys(tblFilter)?.some(
             (key) => tblFilter[key]?.length > 0
           ) && (
@@ -858,12 +886,13 @@ const AllBookings = ({
                 backgroundColor: "#F01E1E",
                 marginRight: "10px",
                 position: "relative",
-                top: "-11px"
+                fontSize: "10px",
+                marginLeft: "auto",
               }}
               className="px-2 py-1"
               rounded
             >
-              <div style={{fontSize:"10px"}}>
+              <div>
                 Clear All
                 <span className="ms-2">
                   <CloseOutlined
@@ -872,28 +901,9 @@ const AllBookings = ({
                 </span>
               </div>
             </Tag>
-
-            // <div
-            //   style={{
-            //     backgroundColor: "#F01E1E",
-            //     cursor: "pointer",
-            //     borderRadius: "10px",
-            //     width: "85px",
-            //     height: "23px",
-            //     alignItems: "center",
-            //     color: "white",
-            //     textAlign: "center",
-            //     padding: "2px 2px 0px 2px ",
-            //     fontSize: "12px",
-            //     // fontWeight:"bolder"
-            //   }}
-            // >
-            //   Clear All &nbsp;&nbsp;
-            //   <CloseOutlined onClick={() => handleChangeFilter("all", [])} />
-            // </div>
           )}
         </div>
-      </div>
+      )}
       <DataTable
         value={paginatedData}
         dataKey="shipmentId"

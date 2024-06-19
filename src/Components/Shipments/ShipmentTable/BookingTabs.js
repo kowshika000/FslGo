@@ -17,6 +17,7 @@ import image2 from "../../../assets/Shape1.svg";
 import image3 from "../../../assets/Shape2.svg";
 import DailyReportTable from "./DailyReportTable";
 import { CalendarOutlined, CaretDownOutlined } from "@ant-design/icons";
+import cal from "../../../assets/calVector.svg";
 
 function BookingTabs({ showText, setShowText }) {
   const [searchQuery] = useState("");
@@ -42,11 +43,14 @@ function BookingTabs({ showText, setShowText }) {
   // console.log(data);
 
   const [filteredData, setFilteredData] = useState(data);
+  const [selectedStatus, setSelectedStatus] = useState(null);
   const filterData = (status) => {
     if (status === "All") {
       setFilteredData(data);
+      setSelectedStatus("All");
     } else {
       setFilteredData(data.filter((item) => status.includes(item.status)));
+      setSelectedStatus(status);
     }
   };
 
@@ -165,7 +169,6 @@ function BookingTabs({ showText, setShowText }) {
   const onClose = () => {
     setVisible(false);
   };
-  console.log("filteredData", filteredData);
 
   const handleTableChange = () => {
     setShowText(true);
@@ -176,7 +179,16 @@ function BookingTabs({ showText, setShowText }) {
   const valueTemplate = () => {
     return (
       <div>
-        <CalendarOutlined className="me-2" />
+        <Image
+          src={cal}
+          alt="cal"
+          style={{
+            width: "12px",
+            height: "12px",
+            marginTop: "-2px",
+            marginRight: "7px",
+          }}
+        />
         <span
           style={{
             color: "#495A6E",
@@ -359,10 +371,7 @@ function BookingTabs({ showText, setShowText }) {
                     className="ms-1 me-2"
                     onClick={handleTableChange}
                   >
-                    <img
-                      src={button16}
-                      style={{ cursor: "pointer" }}
-                    />
+                    <img src={button16} style={{ cursor: "pointer" }} />
                   </div>
                 </>
               )}
@@ -404,7 +413,7 @@ function BookingTabs({ showText, setShowText }) {
           {!showText ? (
             <AllBookings
               filterData={filteredData}
-              selectedStatus={filterData}
+              selectedStatus={selectedStatus}
               filterValue={filterValue}
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
