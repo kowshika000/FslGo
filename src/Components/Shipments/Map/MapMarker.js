@@ -162,9 +162,7 @@ export default function MapMarker({
         <div className="shadow modalmap">
               <DataTable
                 value={filteredData}
-                // removableSort
                 className="p-0 p-datatable-custom"
-                style={{ height: "220px" }}
               >
                 <Column
                   field="hbl_no"
