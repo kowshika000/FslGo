@@ -4,6 +4,7 @@ import { HiArrowDownTray } from "react-icons/hi2";
 import CustomCheckBox from "../Track/CustomCheckBox";
 import { useSelector } from "react-redux";
 import { Button } from "antd";
+import { Link } from "react-router-dom";
 
 const ShipmentDocuments = () => {
   const bookingData = useSelector((state) => state.ViewBooking);
@@ -63,11 +64,11 @@ const ShipmentDocuments = () => {
               <tr>
                 <th>
                   <div className="checkbox d-inline">
-                    <CustomCheckBox
+                    {/* <CustomCheckBox
                       value={allcheck}
                       checked={allcheck}
                       onChange={handleAllCheckBoxes}
-                    />
+                    /> */}
                   </div>
                   <span style={{ marginLeft: "29px" }}>Document/Type</span>
                 </th>
@@ -75,17 +76,17 @@ const ShipmentDocuments = () => {
                 <th>Last Update</th>
                 <th>
                   Action{" "}
-                  <span
+                  {/* <span
                     className="ms-4"
                     style={{
-                      visibility: checkinputs.length > 0 ? "visible" : "hidden",
+                      visibility: checkinputs?.length > 1 ? "visible" : "hidden",
                       background: "rgba(243, 245, 247, 1)",
                       borderRadius: "4px",
                       padding: "8px"
                     }}
                   >
                     <HiArrowDownTray size={16} />
-                  </span>
+                  </span> */}
                 </th>
                 {/* {
                   checkinputs.length>1 ?  <th><span className="px-1 py-1">
@@ -103,13 +104,13 @@ const ShipmentDocuments = () => {
                       <div className="d-flex justify-content-start align-items-center">
                         <div
                           className="checkbox"
-                          style={{ marginRight: "5px"}}
+                          style={{ marginRight: "5px",marginLeft:"23px"}}
                         >
-                          <CustomCheckBox
+                          {/* <CustomCheckBox
                             checked={checkinputs.includes(item.file_name)}
                             value={item.file_name}
                             onChange={handleCheckInputs}
-                          />
+                          /> */}
                         </div>
                         <div>
                           <span>{item.document_name}</span>
@@ -122,11 +123,14 @@ const ShipmentDocuments = () => {
                     <td>{item.id}</td>
                     <td>{item.document_date}</td>
                     <td>
-                      <button  style={{opacity:allcheck ? ".5":"1",border:"none"}} disabled={allcheck}>
-                      <span className="px-1 py-1" >
-                        <HiArrowDownTray size={16} />
-                      </span>
-                      </button>
+                      <Link to={item.link}>
+                        <button  style={{opacity:checkinputs.length>1 ? ".5":"1",border:"none"}} disabled={checkinputs.length>1 &&true}  >
+                        <span className="px-1 py-1" >
+                          <HiArrowDownTray size={16} />
+                        </span>
+                        </button>
+                      </Link>
+                      
                     </td>
                   </tr>
                 );

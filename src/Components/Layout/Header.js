@@ -219,7 +219,7 @@ const Header = ({ activePage }) => {
         </Box>
       </div>
       <div
-        className="d-flex align-items-center me-5"
+        className="d-flex align-items-center"
         style={{ justifyContent: "space-between", gap: "25px" }}
       >
         {/* <div
@@ -278,8 +278,8 @@ const Header = ({ activePage }) => {
             style={{
               backgroundColor: "#FB450C",
               width: "43px",
-              height: "35px",
-              borderRadius: "50px",
+              height: "41px",
+              borderRadius: "50%",
               alignSelf:"center",
               alignContent:"center"
             }}

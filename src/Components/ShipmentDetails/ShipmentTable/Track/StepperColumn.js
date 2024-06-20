@@ -24,7 +24,7 @@ const StepperColumn = ({step}) => {
                     </div>
                     <div className="step_body">
                         <p className='m-0' style={{color:"#181E25"}}>{step.header_text}</p>
-                        <p className='m-0' >{step.description} {step.header_text && "on"} {step.remarks_date}</p>
+                        <p className='m-0' >{step.description} {step.remarks_date}</p>
                     </div>
                 </div>
             ))

@@ -12,6 +12,9 @@ const ShipmentSummary = () => {
   const ViewBooking = bookingData?.viewBookingData?.customercode;
   console.log("ShipmentSummary", ViewBooking);
 
+  const conatinerno = bookingData?.viewBookingData?.customercode[0]?.container_no
+  const conatiner_array = conatinerno.split(",")
+
   const requirementDescription =
     "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatem, labore facere nisi a placeat impedit aliquam unde. Ab fugiat consequuntur aperiam error? Veritatis dolor aliquid nihil perspiciatis cumque sed nulla quidem quisquam iure sit quibusdam mollitia quis, deleniti eius tempore asperiores fugiat nam key at omnis hic. Libero ipsum officiis exercitationem atque quidem asperiores voluptatum accusantium impedit. Dignissimos saepe mollitia earum, numquam, id doloremque velit obcaecati rem molestias praesentium, aspernatur nostrum temporibus dolor neque! Deserunt aspernatur, architecto recusandae id consequatur cumque enim numquam aliquam hic beatae natus autem placeat dignissimos blanditiis modi harum debitis consectetur perferendis similique, perspiciatis laborum. Inventore.";
 
@@ -87,9 +90,26 @@ const ShipmentSummary = () => {
     },
   ];
 
-  const MinContainer = containerLists.filter((item) => item.key <= 4);
+  // const getOptions = (array, key) => {
+  //   if (!Array.isArray(array) || !array?.length) {
+  //     return [];
+  //   }
+  //   return Array.from(new Set(array.map((data) => data[key]))).map((value,index) => ({
+  //     key: index+1,
+  //     value,
+  //   }));
+  // };
+
+  // console.log(getOptions(conatiner_array,"conatiner"))
+  const newContainerArray = conatiner_array.map((value,index)=>{
+    return {key:index+1,container:value}
+  })
+
+  console.log(newContainerArray)
+
+  const MinContainer = newContainerArray.filter((item) => item.key <= 4);
   console.log(MinContainer);
-  const MoreContainer = containerLists.filter((item) => item.key > 4);
+  const MoreContainer = newContainerArray.filter((item) => item.key > 4);
   console.log(MoreContainer);
 
   //container_details_modal
@@ -480,10 +500,10 @@ const ShipmentSummary = () => {
               <p className="Header">Container Details</p>
             </div>
             <div className="card-body" style={{ height: "160px" }}>
-              {/* {containerLists.length <= 4 ? (
+              {newContainerArray.length <= 4 ? (
                 <>
-                  {containerLists.map((item) => {
-                    return <p className="container_para">{item}</p>;
+                  {newContainerArray.map((item) => {
+                    return <p className="container_para">{item.container}</p>;
                   })}
                 </>
               ) : (
@@ -500,7 +520,7 @@ const ShipmentSummary = () => {
                     Show more...
                   </span>
                 </>
-              )} */}
+              )}
             </div>
           </div>
         </div>
