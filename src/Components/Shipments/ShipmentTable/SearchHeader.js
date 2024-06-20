@@ -17,8 +17,12 @@ export const SearchHeader = ({ bookingData }) => {
     if (e.key === "Enter") {
       console.log(searchvalue);
       const filteredId = bookingData?.data?.filter(
-        (item) => searchvalue === item.id
+        (item) =>
+          searchvalue === item?.id ||
+          searchvalue === item?.order_no ||
+          searchvalue === item?.hbl_number
       );
+      console.log(filteredId, "item");
       if (filteredId.length) {
         setFilterData(filteredId);
         setmodal(true);
@@ -56,7 +60,12 @@ export const SearchHeader = ({ bookingData }) => {
             placeholder="Search shipment by PO/ Booking / HBL / Invoice Number"
             // prefix={<SearchOutlined style={{ color: "#94A2B2" }} />}
             prefix={
-              <Image src={Search} alt="search" style={{ marginTop: "-4px" }} className="pe-1"/>
+              <Image
+                src={Search}
+                alt="search"
+                style={{ marginTop: "-4px" }}
+                className="pe-1"
+              />
             }
             className="search-input"
             style={{

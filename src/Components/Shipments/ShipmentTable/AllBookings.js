@@ -20,6 +20,7 @@ import { useSelector } from "react-redux";
 import { Tag } from "primereact/tag";
 import { CloseOutlined } from "@ant-design/icons";
 import { FilterOutlined } from "@ant-design/icons";
+import { CircularProgress, Box } from "@mui/material";
 
 const AllBookings = ({
   filterData,
@@ -34,7 +35,7 @@ const AllBookings = ({
 
   const itemsPerPage = 5; // Number of items per page
   const dispatch = useDispatch();
-
+  const { loading, error } = useSelector((state) => state.Booking);
   const payload = {
     filter_month: filterMonthValue ? filterMonthValue : "",
     booking_type: "",
@@ -802,15 +803,26 @@ const AllBookings = ({
       </div>
     );
   };
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "353px",
+          // alignSelf:"center"
+        }}
+      >
+        <CircularProgress style={{ color: "red" }} />
+      </Box>
+    );
+  }
   const FilterTag = ({ field, filterValues, handleChangeFilter }) => {
     if (!Array.isArray(filterValues)) {
       return null;
     }
     const renderedColumns = new Set();
-    const anyFilterValuesPresent = filterValues.some(
-      (values) => values?.length > 0
-    );
-
     return (
       <>
         {filterValues.map((option) => {
