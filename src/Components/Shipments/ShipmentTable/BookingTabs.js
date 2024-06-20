@@ -84,8 +84,8 @@ function BookingTabs({ showText, setShowText }) {
       setFilterValue(60);
       setFilterMonthValue(null);
     } else if (selectedDropdownItem === "Past 6 Months") {
-      setFilterMonthValue(6);
-      setFilterValue(null);
+      setFilterMonthValue(null);
+      setFilterValue(180);
     }
   }, [selectedDropdownItem]);
 
