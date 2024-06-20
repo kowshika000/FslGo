@@ -9,24 +9,41 @@ const Login = () => {
   const dispatch = useDispatch();
   const [authenticated, setAuthenticated] = useState(false);
   const [tokenReceived, setTokenReceived] = useState(false);
+  const [loading, setLoading] = useState(true);
   const LoginData = useSelector((state) => state.Login);
   const jwtToken = LoginData?.booking?.Token;
+  const [requestSent, setRequestSent] = useState(false);
 
   useEffect(() => {
     const sUsername = id; // Assuming id is the username
     const spassword = token; // Assuming token is the password
-    dispatch(LoginRequest({ sUsername, spassword }));
-  }, [id, token, dispatch]);
+    if (sUsername && spassword  && !requestSent) {
+      dispatch(LoginRequest({ sUsername, spassword }));
+      setRequestSent(true);
+    }
+  }, [id, token, dispatch, requestSent])
+  
+  // useEffect(() => {
+  //   if (jwtToken) {
+  //     localStorage.setItem("token", jwtToken);
+  //     setAuthenticated(true);
+  //     setTokenReceived(true);
+  //   }
+  // }, [jwtToken]);
 
   useEffect(() => {
     if (jwtToken) {
       localStorage.setItem("token", jwtToken);
-      setAuthenticated(true);
-      setTokenReceived(true);
+      setLoading(false);
+    } else {
+      const timeout = setTimeout(() => {
+        setLoading(false);
+      }, 5000);
+      return () => clearTimeout(timeout);
     }
-  }, [jwtToken]);
+  }, [jwtToken, requestSent]);
 
-  if (!tokenReceived) {
+  if (loading) {
     return (
       <Box
         sx={{
@@ -41,7 +58,7 @@ const Login = () => {
     );
   }
 
-  if (!authenticated) {
+  if (!jwtToken) {
     return <p>Login failed. Please try again.</p>;
   }
 
