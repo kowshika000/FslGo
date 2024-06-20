@@ -95,7 +95,7 @@ const Header = ({ activePage }) => {
       style={{
         position: "fixed",
         top: 0,
-        minWidth: "1330px",
+        minWidth: "1255px",
         width: "100%",
         height: "76px",
         zIndex: "1000",

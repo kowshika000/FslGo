@@ -4,9 +4,9 @@ import React from "react";
 export const Footer = () => {
   return (
     <div
-      className="d-flex justify-content-between bg-dark text-white   "
+      className="d-flex justify-content-between bg-dark text-white"
       style={{
-        // minWidth: "1440px",
+        minWidth: "1255px",
         width: "100%",
         height: "55px",
         alignItems: "center",
