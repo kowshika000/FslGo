@@ -19,7 +19,6 @@ import { MultiSelect } from "primereact/multiselect";
 import { useSelector } from "react-redux";
 import { Tag } from "primereact/tag";
 import { CloseOutlined } from "@ant-design/icons";
-import { FilterOutlined } from "@ant-design/icons";
 import { CircularProgress, Box } from "@mui/material";
 
 const AllBookings = ({
@@ -30,12 +29,10 @@ const AllBookings = ({
   filterMonthValue,
   selectedStatus,
 }) => {
-  console.log("filterValue", filterValue);
-  console.log("fill", selectedStatus);
 
-  const itemsPerPage = 5; // Number of items per page
+  const itemsPerPage = 5; 
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.Booking);
+  const { loading } = useSelector((state) => state.Booking);
   const payload = {
     filter_month: filterMonthValue ? filterMonthValue : "",
     booking_type: "",
@@ -66,7 +63,7 @@ const AllBookings = ({
     etaD: [],
     statusD: [],
   });
-  const filterDatas = filterData.filter((item) => {
+  const filterDataTable = filterData.filter((item) => {
     return (
       (tblFilter.shipmentfilterData?.length === 0 ||
         tblFilter.shipmentfilterData?.includes(item.id)) &&
@@ -85,11 +82,9 @@ const AllBookings = ({
         tblFilter.statusD?.includes(item.status))
     );
   });
-  // console.log("filter", filteredDataa);
 
   useEffect(() => {
-    setFilteredData(filterDatas);
-    // setIds(filterData);
+    setFilteredData(filterDataTable);
     setCurrentPage(1);
   }, [tblFilter, filterData]);
 
@@ -103,24 +98,14 @@ const AllBookings = ({
     }));
   };
 
-  // const [idS, setIds] = useState(filterData);
-
-  // const filterTable = () => {
-  //   const filterResult = filterDatas(filterData);
-  //   setFilteredData(filterResult);
-  //   setIds(filterResult);
-  //   console.log("tableData", filterResult);
-  // };
-  const idS = filterData;
-
-  const ShipId = getUniqueOptions(idS, "id");
-  const orderId_ = getUniqueOptions(idS, "order_no");
-  const Mode_ = getUniqueOptions(idS, "mode");
-  const Org_ = getUniqueOptions(idS, "origin");
-  const dest_ = getUniqueOptions(idS, "destination");
-  const eta_ = getUniqueOptions(idS, "eta_ata");
-  const etd_ = getUniqueOptions(idS, "etd_atd");
-  const status_ = getUniqueOptions(idS, "status");
+  const ShipId = getUniqueOptions(filterData, "id");
+  const orderId_ = getUniqueOptions(filterData, "order_no");
+  const Mode_ = getUniqueOptions(filterData, "mode");
+  const Org_ = getUniqueOptions(filterData, "origin");
+  const dest_ = getUniqueOptions(filterData, "destination");
+  const eta_ = getUniqueOptions(filterData, "eta_ata");
+  const etd_ = getUniqueOptions(filterData, "etd_atd");
+  const status_ = getUniqueOptions(filterData, "status");
 
   const handleChangeFilter = (field, filterValues) => {
     if (field === "all") {
@@ -140,10 +125,6 @@ const AllBookings = ({
         [field]: filterValues,
       }));
     }
-    // if (filterValues.length === 0) {
-    //   setFilteredData(filterData);
-    //   setIds(filterData);
-    // }
   };
 
   useEffect(() => {
@@ -164,9 +145,9 @@ const AllBookings = ({
   const FilterIdRow = () => {
     const renderOption = (option) => {
       if (option.label.length <= 14) {
-        return <span>{option.label}</span>; // Render full label if it's 14 characters or less
+        return <span>{option.label}</span>;
       } else {
-        const truncatedText = option.label?.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
+        const truncatedText = option.label?.slice(0, 14).trim() + "..";
 
         return (
           <Tooltip placement="topLeft" title={option.label}>
@@ -189,25 +170,20 @@ const AllBookings = ({
           fontSize: "10px",
         }}
         showSelectAll={false}
-        // filterIcon={<FilterOutlined onClick={filterTable} />}
         onChange={(e) => handleChangeFilter("shipmentfilterData", e.value)}
         display="chip"
         placeholder="Select"
         itemTemplate={renderOption}
         filterPlaceholder="Search"
-        // panelFooterTemplate={(props, onPanelShow) =>
-        //   actionOkTemplate(onPanelShow)
-        // }
       />
     );
   };
   const FilterOrderRow = () => {
     const renderOption = (option) => {
       if (option.label.length <= 12) {
-        return <span>{option.label}</span>; // Render full label if it's 12 characters or less
+        return <span>{option.label}</span>;
       } else {
-        const truncatedText = option.label?.slice(0, 12).trim() + ".."; // Truncate label and add ".." at the end
-
+        const truncatedText = option.label?.slice(0, 12).trim() + "..";
         return (
           <Tooltip placement="topLeft" title={option.label}>
             <span role="button">{truncatedText}</span>
@@ -232,15 +208,11 @@ const AllBookings = ({
             left: "180px",
           }}
           showSelectAll={false}
-          // filterIcon={<FilterOutlined onClick={filterTable} />}
           onChange={(e) => handleChangeFilter("order_no", e.value)}
           display="chip"
           placeholder="Select "
           itemTemplate={renderOption}
           filterPlaceholder="Search"
-          // panelFooterTemplate={(props, onPanelShow) =>
-          //   actionOkTemplate(onPanelShow)
-          // }
         ></MultiSelect>
       </div>
     );
@@ -248,10 +220,9 @@ const AllBookings = ({
   const FilterModeRow = () => {
     const renderOption = (option) => {
       if (option.label.length <= 14) {
-        return <span>{option.label}</span>; // Render full label if it's 14 characters or less
+        return <span>{option.label}</span>;
       } else {
-        const truncatedText = option.label?.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
-
+        const truncatedText = option.label?.slice(0, 14).trim() + "..";
         return (
           <Tooltip placement="topLeft" title={option.label}>
             <span role="button">{truncatedText}</span>
@@ -273,9 +244,7 @@ const AllBookings = ({
           // maxWidth:"100px"
         }}
         showSelectAll={false}
-        // filterIcon={<FilterOutlined onClick={filterTable} />}
         onChange={(e) => {
-          // filterTable();
           handleChangeFilter("modeD", e.value);
           console.log("changed");
         }}
@@ -283,19 +252,15 @@ const AllBookings = ({
         placeholder="Select"
         itemTemplate={renderOption}
         filterPlaceholder="Search"
-        // panelFooterTemplate={(props, onPanelShow) =>
-        //   actionOkTemplate(onPanelShow)
-        // }
       />
     );
   };
   const FilterOrgRow = () => {
     const renderOption = (option) => {
       if (option.label.length <= 14) {
-        return <span>{option.label}</span>; // Render full label if it's 14 characters or less
+        return <span>{option.label}</span>;
       } else {
-        const truncatedText = option.label?.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
-
+        const truncatedText = option.label?.slice(0, 14).trim() + "..";
         return (
           <Tooltip placement="topLeft" title={option.label}>
             <span role="button">{truncatedText}</span>
@@ -317,25 +282,20 @@ const AllBookings = ({
           // maxWidth:"100px"
         }}
         showSelectAll={false}
-        // filterIcon={<FilterOutlined onClick={filterTable} />}
         onChange={(e) => handleChangeFilter("originD", e.value)}
         display="chip"
         placeholder="Select"
         itemTemplate={renderOption}
         filterPlaceholder="Search"
-        // panelFooterTemplate={(props, onPanelShow) =>
-        //   actionOkTemplate(onPanelShow)
-        // }
       />
     );
   };
   const FilterDestRow = () => {
     const renderOption = (option) => {
       if (option.label.length <= 14) {
-        return <span>{option.label}</span>; // Render full label if it's 14 characters or less
+        return <span>{option.label}</span>;
       } else {
-        const truncatedText = option.label?.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
-
+        const truncatedText = option.label?.slice(0, 14).trim() + "..";
         return (
           <Tooltip placement="topLeft" title={option.label}>
             <span role="button">{truncatedText}</span>
@@ -357,25 +317,20 @@ const AllBookings = ({
           // maxWidth:"100px"
         }}
         showSelectAll={false}
-        // filterIcon={<FilterOutlined onClick={filterTable} />}
         onChange={(e) => handleChangeFilter("DestD", e.value)}
         display="chip"
         placeholder="Select"
         itemTemplate={renderOption}
         filterPlaceholder="Search"
-        // panelFooterTemplate={(props, onPanelShow) =>
-        //   actionOkTemplate(onPanelShow)
-        // }
       />
     );
   };
   const FilterETDRow = () => {
     const renderOption = (option) => {
       if (option.label.length <= 14) {
-        return <span>{option.label}</span>; // Render full label if it's 14 characters or less
+        return <span>{option.label}</span>;
       } else {
-        const truncatedText = option.label?.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
-
+        const truncatedText = option.label?.slice(0, 14).trim() + "..";
         return (
           <Tooltip placement="topLeft" title={option.label}>
             <span role="button">{truncatedText}</span>
@@ -397,25 +352,20 @@ const AllBookings = ({
           // maxWidth:"100px"
         }}
         showSelectAll={false}
-        // filterIcon={<FilterOutlined onClick={filterTable} />}
         onChange={(e) => handleChangeFilter("etdD", e.value)}
         display="chip"
         placeholder="Select"
         itemTemplate={renderOption}
         filterPlaceholder="Search"
-        // panelFooterTemplate={(props, onPanelShow) =>
-        //   actionOkTemplate(onPanelShow)
-        // }
       />
     );
   };
   const FilterETARow = () => {
     const renderOption = (option) => {
       if (option.label.length <= 14) {
-        return <span>{option.label}</span>; // Render full label if it's 14 characters or less
+        return <span>{option.label}</span>;
       } else {
-        const truncatedText = option.label?.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
-
+        const truncatedText = option.label?.slice(0, 14).trim() + "..";
         return (
           <Tooltip placement="topLeft" title={option.label}>
             <span role="button">{truncatedText}</span>
@@ -437,25 +387,20 @@ const AllBookings = ({
           // maxWidth:"100px"
         }}
         showSelectAll={false}
-        // filterIcon={<FilterOutlined onClick={filterTable} />}
         onChange={(e) => handleChangeFilter("etaD", e.value)}
         display="chip"
         placeholder="Select"
         itemTemplate={renderOption}
         filterPlaceholder="Search"
-        // panelFooterTemplate={(props, onPanelShow) =>
-        //   actionOkTemplate(onPanelShow)
-        // }
       />
     );
   };
   const FilterStatusRow = () => {
     const renderOption = (option) => {
       if (option.label.length <= 14) {
-        return <span>{option.label}</span>; // Render full label if it's 14 characters or less
+        return <span>{option.label}</span>;
       } else {
-        const truncatedText = option.label?.slice(0, 14).trim() + ".."; // Truncate label and add ".." at the end
-
+        const truncatedText = option.label?.slice(0, 14).trim() + "..";
         return (
           <Tooltip placement="topLeft" title={option.label}>
             <span role="button">{truncatedText}</span>
@@ -477,25 +422,17 @@ const AllBookings = ({
           // maxWidth:"100px"
         }}
         showSelectAll={false}
-        // filterIcon={<FilterOutlined onClick={filterTable} />}
         onChange={(e) => handleChangeFilter("statusD", e.value)}
         display="chip"
         placeholder="Select"
         itemTemplate={renderOption}
         filterPlaceholder="Search"
-        // panelFooterTemplate={(props, onPanelShow) =>
-        //   actionOkTemplate(onPanelShow)
-        // }
       />
     );
   };
 
-  // console.log("booking", filteredData);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, filteredData?.length);
-
-  // Extract the data for the current page
-  // const currentPageData = filteredData?.slice(startIndex, endIndex) ;
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalRowData, setModalRowData] = useState(null);
@@ -537,57 +474,12 @@ const AllBookings = ({
     );
   };
 
-  // const actionOkTemplate = (onPanelShow) => {
-  //   console.log(onPanelShow);
-
-  //   const { setFocusedOptionIndex, setOverlayVisibleState, setClicked } =
-  //     onPanelShow;
-
-  //   const handle = () => {
-  //     filterTable();
-  //     return onPanelShow();
-  //     // setFocusedOptionIndex(-1);
-  //     // setOverlayVisibleState(false);
-  //     // setClicked(false);
-  //   };
-
-  //   return (
-  //     <Button
-  //       outlined
-  //       // className={btnClass}
-  //       style={{
-  //         background: "rgba(240, 30, 30, 1)",
-  //         color: "white",
-  //         borderRadius: "8px",
-  //         width: "80px",
-  //         height: "30px",
-  //         padding: "",
-  //         gap: "8px",
-  //         float: "end",
-  //         // marginLeft:"10px",
-  //         // marginRight:"10px"
-  //       }}
-  //       label={"Ok"}
-  //       onClick={
-  //         handle
-  //         // filterTable();
-  //         // setFocusedOptionIndex(-1);
-  //         // setOverlayVisibleState(false);
-  //         // setClicked(false);
-  //         // onPanelShow
-  //       }
-  //       // filterTable()
-  //     />
-  //   );
-  // };
-
   const rowClassName = () => {
     return "custom-row";
   };
   const shipmentTemplateId = (rowData) => {
     return (
       <div style={{ textAlign: "start" }}>
-        {/* <span className=" px-2">{rowData?.order_no}</span> */}
         <span className="">
           {rowData?.order_no?.length <= 20 ? (
             rowData?.order_no
@@ -606,7 +498,6 @@ const AllBookings = ({
   const shipmentTemplateFilterData = (rowData) => {
     return (
       <div style={{ textAlign: "start" }}>
-        {/* <span className=" px-2">{rowData?.order_no}</span> */}
         <span className="">
           {rowData?.id?.length <= 20 ? (
             rowData?.id
@@ -716,7 +607,6 @@ const AllBookings = ({
                 <span>
                   <div style={{ fontSize: "13px" }}>ETA Changed</div>
                   <div style={{ fontSize: "10px" }}>
-                    {/* {rowData?.updated_message} */}
                     Previous ETA : 10/05/2024 <br />
                     New ETA : 12/05/2024
                   </div>
@@ -764,29 +654,18 @@ const AllBookings = ({
       const valA = a[col];
       const valB = b[col];
 
-      // Check if the values are numbers
       if (!isNaN(valA) && !isNaN(valB)) {
         return valB - valA;
       }
 
-      // Handle date strings
       if (col === "etd/atd" || col === "eta/ata") {
         const dateA = parseDate2(valA);
         const dateB = parseDate2(valB);
         return dateB - dateA;
       }
-
-      // Default string comparison
       return valA < valB ? 1 : -1;
     });
     setFilteredData(sorted);
-  };
-
-  // Function to parse dates in the "dd/mm/yyyy" format
-  const parseDate = (dateString) => {
-    const parts = dateString.split("/");
-    // month is 0-based, so subtract 1 from the month
-    return new Date(parts[2], parts[1] - 1, parts[0]);
   };
 
   const paginatedData = filteredData?.slice(
@@ -919,12 +798,6 @@ const AllBookings = ({
       <DataTable
         value={paginatedData}
         dataKey="shipmentId"
-        paginator={false}
-        rows={10}
-        rowsPerPageOptions={[5, 10, 25]}
-        currentPageReportTemplate="{first} to {last} out of {totalRecords} "
-        // paginatorTemplate=" PrevPageLink PageLinks NextPageLink  CurrentPageReport "
-        removableSort
         rowClassName={rowClassName}
         className={`${filteredData?.length === 0 ? "text-center" : ""}`}
         style={{ height: "353px" }}
@@ -932,7 +805,6 @@ const AllBookings = ({
       >
         <Column
           field="id"
-          // headerStyle={{ width: "150px" }}
           header={
             <span
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
@@ -964,7 +836,6 @@ const AllBookings = ({
             </span>
           }
           body={shipmentTemplateFilterData}
-          // className="p-3"
           style={{ paddingRight: "10px", width: "170px" }}
         ></Column>
         <Column
@@ -1005,7 +876,6 @@ const AllBookings = ({
         ></Column>
         <Column
           field="mode"
-          // headerStyle={{width:"50px"}}
           header={
             <span
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
@@ -1036,7 +906,6 @@ const AllBookings = ({
               </div>
             </span>
           }
-          // body={shipmentTemplate}
           style={{ paddingLeft: "10px", paddingRight: "10px" }}
         ></Column>
 
@@ -1074,7 +943,6 @@ const AllBookings = ({
           }
           body={originBodyTemplate}
           headerClassName="custom-header"
-          // className="p-3"
           style={{ width: "185px", paddingLeft: "10px", paddingRight: "10px" }}
         ></Column>
         <Column
@@ -1110,13 +978,11 @@ const AllBookings = ({
             </span>
           }
           body={destinationBodyTemplate}
-          // className="p-3"
           style={{ width: "185px", paddingLeft: "10px", paddingRight: "10px" }}
         ></Column>
 
         <Column
           field="etd/atd"
-          // headerStyle={{width:"80px"}}
           header={
             <span className=" d-flex" style={{ position: "relative" }}>
               ETD/ATD
@@ -1146,12 +1012,10 @@ const AllBookings = ({
           }
           body={bodyTemplate}
           bodyClassName="custom-cell"
-          // className="p-3"
           style={{ paddingLeft: "10px", paddingRight: "10px" }}
         ></Column>
         <Column
           field="eta/ata"
-          // headerStyle={{width:"80px"}}
           header={
             <span className=" d-flex">
               ETA/ATA
@@ -1181,7 +1045,6 @@ const AllBookings = ({
           }
           body={bodyTemplateEta}
           bodyClassName="custom-cell"
-          // className="p-3"
           style={{ paddingLeft: "10px", paddingRight: "10px" }}
         ></Column>
         <Column
@@ -1240,11 +1103,6 @@ const AllBookings = ({
         totalItems={filteredData?.length}
         onPageChange={() => setCurrentPage(1)}
       />
-      {/* <Steppertrack
-        isModalOpen={isModalOpen}
-        handleCancel={handleCancel}
-        rowData={modalRowData}
-      /> */}
       <ShipmentBase
         open={isModalOpen}
         close={setIsModalOpen}

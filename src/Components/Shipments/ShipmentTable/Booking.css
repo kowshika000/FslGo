@@ -256,3 +256,6 @@
   width: 40px !important;
   height: 25px !important;
 }
+.p-inputtext:enabled:hover{
+  border-color: #d1d5db !important;
+}
