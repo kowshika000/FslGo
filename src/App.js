@@ -44,16 +44,33 @@ function App() {
     const token = params["token"];
     console.log(token);
 
-    if (id && token) {
-      dispatch(LoginRequest({ sUsername: id, spassword: token }));
-      setRequestSent(true);
-    } else {
+    dispatch(LoginRequest({ sUsername: id, spassword: token }));
+  }, [])
+
+  
+
+  useEffect(() => {
+    // const currentUrl = window.location.href;
+    // const queryString = currentUrl?.split("?")[1];
+    // const paramsArray = queryString?.split("&");
+    // const params = {};
+
+    // if (paramsArray) {
+    //   paramsArray.forEach((param) => {
+    //     const [key, value] = param?.split("=");
+    //     params[key] = value;
+    //   });
+    // }
+
+    // const id = params["id"];
+    // const token = params["token"];
+    // console.log(token);
+
+    // dispatch(LoginRequest({ sUsername: id, spassword: token }));
+
+    if (jwtToken) {
       setLoading(false);
     }
-
-    // if (jwtToken) {
-    //   setLoading(false);
-    // }
 
     const timeout = setTimeout(() => {
       if (!jwtToken) {
@@ -62,14 +79,10 @@ function App() {
     }, 5000);
 
     return () => clearTimeout(timeout);
-  }, [dispatch, jwtToken, requestSent]);
+  }, [dispatch, jwtToken]);
 
-  useEffect(() => {
-    if (jwtToken) {
-      setLoading(false);
-      Cookies.set("jwtToken", jwtToken, { expires: 7 });
-    }
-  }, [jwtToken]);
+  
+  
 
   if (loading) {
     return (
@@ -86,9 +99,10 @@ function App() {
     );
   }
 
-  // if (jwtToken) {
-  //   Cookies.set("jwtToken", jwtToken, { expires: 7 });
-  // }
+  if (jwtToken) {
+    Cookies.set("jwtToken", jwtToken, { expires: 7 });
+  }
+
 
   return (
     <BrowserRouter>
