@@ -25,7 +25,7 @@ function App() {
   const dispatch = useDispatch();
   const jwtToken = useSelector((state) => state.Login?.booking?.Token);
   const [loading, setLoading] = useState(true);
-  let isTokenReceived = false;  
+  const [requestSent, setRequestSent] = useState(false);
 
   useEffect(() => {
     const currentUrl = window.location.href;
@@ -44,11 +44,16 @@ function App() {
     const token = params["token"];
     console.log(token);
 
-    dispatch(LoginRequest({ sUsername: id, spassword: token }));
-
-    if (jwtToken) {
+    if (id && token) {
+      dispatch(LoginRequest({ sUsername: id, spassword: token }));
+      setRequestSent(true);
+    } else {
       setLoading(false);
     }
+
+    // if (jwtToken) {
+    //   setLoading(false);
+    // }
 
     const timeout = setTimeout(() => {
       if (!jwtToken) {
@@ -57,7 +62,14 @@ function App() {
     }, 5000);
 
     return () => clearTimeout(timeout);
-  }, [dispatch, jwtToken]);
+  }, [dispatch, jwtToken, requestSent]);
+
+  useEffect(() => {
+    if (jwtToken) {
+      setLoading(false);
+      Cookies.set("jwtToken", jwtToken, { expires: 7 });
+    }
+  }, [jwtToken]);
 
   if (loading) {
     return (
@@ -74,9 +86,9 @@ function App() {
     );
   }
 
-  if (jwtToken) {
-    Cookies.set("jwtToken", jwtToken, { expires: 7 });
-  }
+  // if (jwtToken) {
+  //   Cookies.set("jwtToken", jwtToken, { expires: 7 });
+  // }
 
   return (
     <BrowserRouter>
@@ -114,4 +126,4 @@ function App() {
   );
 }
 
-export default App;
+export default React.memo(App)
