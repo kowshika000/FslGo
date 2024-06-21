@@ -18,57 +18,42 @@ import { CircularProgress, Box } from "@mui/material";
 import ProfileBase from "./Components/Profile/ProfileBase";
 import FindNewRate from "./Components/Quotations/QuotaionTable/QModal/FindNewRate/FindNewRate";
 import Quick from "./Components/QuickBooking/Quick";
-import { ToastContainer} from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   const dispatch = useDispatch();
   const jwtToken = useSelector((state) => state.Login?.booking?.Token);
   const [loading, setLoading] = useState(true);
-  const [requestSent, setRequestSent] = useState(false);
 
-  useEffect(() => {
+  const parseUrlParams = () => {
     const currentUrl = window.location.href;
-    const queryString = currentUrl?.split("?")[1];
-    const paramsArray = queryString?.split("&");
+    const queryString = currentUrl.split("?")[1];
     const params = {};
-
-    if (paramsArray) {
-      paramsArray.forEach((param) => {
-        const [key, value] = param?.split("=");
+    
+    if (queryString) {
+      queryString.split("&").forEach((param) => {
+        const [key, value] = param.split("=");
         params[key] = value;
       });
     }
-
-    const id = params["id"];
-    const token = params["token"];
-    console.log(token);
-
-    dispatch(LoginRequest({ sUsername: id, spassword: token }));
-  }, [])
-
-  
+    
+    return params;
+  };
 
   useEffect(() => {
-    // const currentUrl = window.location.href;
-    // const queryString = currentUrl?.split("?")[1];
-    // const paramsArray = queryString?.split("&");
-    // const params = {};
+    const savedToken = Cookies.get("jwtToken");
 
-    // if (paramsArray) {
-    //   paramsArray.forEach((param) => {
-    //     const [key, value] = param?.split("=");
-    //     params[key] = value;
-    //   });
-    // }
+    if (savedToken) {
+      setLoading(false);
+      return;
+    }
 
-    // const id = params["id"];
-    // const token = params["token"];
-    // console.log(token);
+    const { id, token } = parseUrlParams();
 
-    // dispatch(LoginRequest({ sUsername: id, spassword: token }));
-
-    if (jwtToken) {
+    if (id && token) {
+      dispatch(LoginRequest({ sUsername: id, spassword: token }));
+    } else {
       setLoading(false);
     }
 
@@ -81,8 +66,12 @@ function App() {
     return () => clearTimeout(timeout);
   }, [dispatch, jwtToken]);
 
-  
-  
+  useEffect(() => {
+    if (jwtToken) {
+      setLoading(false);
+      Cookies.set("jwtToken", jwtToken, { expires: 7 });
+    }
+  }, [jwtToken]);
 
   if (loading) {
     return (
@@ -94,31 +83,25 @@ function App() {
           height: "100vh",
         }}
       >
-    <CircularProgress style={{ color: "red" }} />
+        <CircularProgress style={{ color: "red" }} />
       </Box>
     );
   }
-
-  if (jwtToken) {
-    Cookies.set("jwtToken", jwtToken, { expires: 7 });
-  }
-
 
   return (
     <BrowserRouter>
       <Header />
       <div style={{ marginTop: "4rem" }}>
         <Routes>
-          {/* <Route path="/" element={<Dashboard />} /> */}
-          <Route path="/" element={<ShipmentsHome/>} />
+          <Route path="/" element={<ShipmentsHome />} />
           <Route path="/recentBooking" element={<RecentBooking />} />
           <Route path="/inbox" element={<Inbox />} />
           <Route path="/invoice" element={<Invoice />} />
           <Route path="/quotation" element={<Quotation />} />
           <Route path="/shipmentdetails" element={<ShipmentBase />} />
-          <Route path="/findnewrate" element={<FindNewRate/>} />
+          <Route path="/findnewrate" element={<FindNewRate />} />
           <Route path="/profile" element={<ProfileBase />} />
-          <Route path="/quick" element={<Quick/>}/>
+          <Route path="/quick" element={<Quick />} />
         </Routes>
       </div>
       <Footer />
@@ -134,10 +117,9 @@ function App() {
         pauseOnHover
         theme="dark"
       />
-{/* Same as */}
-<ToastContainer />
+      <ToastContainer />
     </BrowserRouter>
   );
 }
 
-export default React.memo(App)
+export default React.memo(App);
