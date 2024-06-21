@@ -29,8 +29,7 @@ const AllBookings = ({
   filterMonthValue,
   selectedStatus,
 }) => {
-
-  const itemsPerPage = 5; 
+  const itemsPerPage = 5;
   const dispatch = useDispatch();
   const { loading } = useSelector((state) => state.Booking);
   const payload = {
@@ -63,27 +62,27 @@ const AllBookings = ({
     etaD: [],
     statusD: [],
   });
-  const filterDataTable = filterData.filter((item) => {
-    return (
-      (tblFilter.shipmentfilterData?.length === 0 ||
-        tblFilter.shipmentfilterData?.includes(item.id)) &&
-      (tblFilter.order_no?.length === 0 ||
-        tblFilter.order_no?.includes(item.order_no)) &&
-      (tblFilter.modeD?.length === 0 || tblFilter.modeD?.includes(item.mode)) &&
-      (tblFilter.originD?.length === 0 ||
-        tblFilter.originD?.includes(item.origin)) &&
-      (tblFilter.DestD?.length === 0 ||
-        tblFilter.DestD?.includes(item.destination)) &&
-      (tblFilter.etaD?.length === 0 ||
-        tblFilter.etaD?.includes(item.eta_ata)) &&
-      (tblFilter.etdD?.length === 0 ||
-        tblFilter.etdD?.includes(item.etd_atd)) &&
-      (tblFilter.statusD?.length === 0 ||
-        tblFilter.statusD?.includes(item.status))
-    );
-  });
-
   useEffect(() => {
+    const filterDataTable = filterData.filter((item) => {
+      return (
+        (tblFilter.shipmentfilterData?.length === 0 ||
+          tblFilter.shipmentfilterData?.includes(item.id)) &&
+        (tblFilter.order_no?.length === 0 ||
+          tblFilter.order_no?.includes(item.order_no)) &&
+        (tblFilter.modeD?.length === 0 ||
+          tblFilter.modeD?.includes(item.mode)) &&
+        (tblFilter.originD?.length === 0 ||
+          tblFilter.originD?.includes(item.origin)) &&
+        (tblFilter.DestD?.length === 0 ||
+          tblFilter.DestD?.includes(item.destination)) &&
+        (tblFilter.etaD?.length === 0 ||
+          tblFilter.etaD?.includes(item.eta_ata)) &&
+        (tblFilter.etdD?.length === 0 ||
+          tblFilter.etdD?.includes(item.etd_atd)) &&
+        (tblFilter.statusD?.length === 0 ||
+          tblFilter.statusD?.includes(item.status))
+      );
+    });
     setFilteredData(filterDataTable);
     setCurrentPage(1);
   }, [tblFilter, filterData]);
@@ -142,13 +141,12 @@ const AllBookings = ({
     }
   }, [selectedStatus]);
 
-  const FilterIdRow = () => {
+  function MultiSelectFilter(filterKey, options, value, additionalStyles) {
     const renderOption = (option) => {
       if (option.label.length <= 14) {
         return <span>{option.label}</span>;
       } else {
         const truncatedText = option.label?.slice(0, 14).trim() + "..";
-
         return (
           <Tooltip placement="topLeft" title={option.label}>
             <span role="button">{truncatedText}</span>
@@ -156,11 +154,12 @@ const AllBookings = ({
         );
       }
     };
+
     return (
       <MultiSelect
         className="custom-multi-select"
-        value={tblFilter.shipmentfilterData}
-        options={ShipId}
+        value={value}
+        options={options}
         name="ShipId"
         filter
         style={{
@@ -168,268 +167,17 @@ const AllBookings = ({
           opacity: "0",
           width: "20px",
           fontSize: "10px",
+          ...additionalStyles,
         }}
         showSelectAll={false}
-        onChange={(e) => handleChangeFilter("shipmentfilterData", e.value)}
+        onChange={(e) => handleChangeFilter(filterKey, e.value)}
         display="chip"
         placeholder="Select"
         itemTemplate={renderOption}
         filterPlaceholder="Search"
       />
     );
-  };
-  const FilterOrderRow = () => {
-    const renderOption = (option) => {
-      if (option.label.length <= 12) {
-        return <span>{option.label}</span>;
-      } else {
-        const truncatedText = option.label?.slice(0, 12).trim() + "..";
-        return (
-          <Tooltip placement="topLeft" title={option.label}>
-            <span role="button">{truncatedText}</span>
-          </Tooltip>
-        );
-      }
-    };
-
-    return (
-      <div className="custom-multi-select-container">
-        <MultiSelect
-          className="custom-multi-select"
-          value={tblFilter.order_no}
-          options={orderId_}
-          filter
-          style={{
-            position: "absolute",
-            opacity: "0",
-            width: "50px",
-            fontSize: "10px",
-            // maxWidth:"100px"
-            left: "180px",
-          }}
-          showSelectAll={false}
-          onChange={(e) => handleChangeFilter("order_no", e.value)}
-          display="chip"
-          placeholder="Select "
-          itemTemplate={renderOption}
-          filterPlaceholder="Search"
-        ></MultiSelect>
-      </div>
-    );
-  };
-  const FilterModeRow = () => {
-    const renderOption = (option) => {
-      if (option.label.length <= 14) {
-        return <span>{option.label}</span>;
-      } else {
-        const truncatedText = option.label?.slice(0, 14).trim() + "..";
-        return (
-          <Tooltip placement="topLeft" title={option.label}>
-            <span role="button">{truncatedText}</span>
-          </Tooltip>
-        );
-      }
-    };
-    return (
-      <MultiSelect
-        className="custom-multi-select"
-        value={tblFilter.modeD}
-        options={Mode_}
-        filter
-        style={{
-          position: "absolute",
-          opacity: "0",
-          width: "20px",
-          fontSize: "10px",
-          // maxWidth:"100px"
-        }}
-        showSelectAll={false}
-        onChange={(e) => {
-          handleChangeFilter("modeD", e.value);
-          console.log("changed");
-        }}
-        display="chip"
-        placeholder="Select"
-        itemTemplate={renderOption}
-        filterPlaceholder="Search"
-      />
-    );
-  };
-  const FilterOrgRow = () => {
-    const renderOption = (option) => {
-      if (option.label.length <= 14) {
-        return <span>{option.label}</span>;
-      } else {
-        const truncatedText = option.label?.slice(0, 14).trim() + "..";
-        return (
-          <Tooltip placement="topLeft" title={option.label}>
-            <span role="button">{truncatedText}</span>
-          </Tooltip>
-        );
-      }
-    };
-    return (
-      <MultiSelect
-        className="custom-multi-select"
-        value={tblFilter.originD}
-        options={Org_}
-        filter
-        style={{
-          position: "absolute",
-          opacity: "0",
-          width: "20px",
-          fontSize: "10px",
-          // maxWidth:"100px"
-        }}
-        showSelectAll={false}
-        onChange={(e) => handleChangeFilter("originD", e.value)}
-        display="chip"
-        placeholder="Select"
-        itemTemplate={renderOption}
-        filterPlaceholder="Search"
-      />
-    );
-  };
-  const FilterDestRow = () => {
-    const renderOption = (option) => {
-      if (option.label.length <= 14) {
-        return <span>{option.label}</span>;
-      } else {
-        const truncatedText = option.label?.slice(0, 14).trim() + "..";
-        return (
-          <Tooltip placement="topLeft" title={option.label}>
-            <span role="button">{truncatedText}</span>
-          </Tooltip>
-        );
-      }
-    };
-    return (
-      <MultiSelect
-        className="custom-multi-select"
-        value={tblFilter.DestD}
-        options={dest_}
-        filter
-        style={{
-          position: "absolute",
-          opacity: "0",
-          width: "20px",
-          fontSize: "10px",
-          // maxWidth:"100px"
-        }}
-        showSelectAll={false}
-        onChange={(e) => handleChangeFilter("DestD", e.value)}
-        display="chip"
-        placeholder="Select"
-        itemTemplate={renderOption}
-        filterPlaceholder="Search"
-      />
-    );
-  };
-  const FilterETDRow = () => {
-    const renderOption = (option) => {
-      if (option.label.length <= 14) {
-        return <span>{option.label}</span>;
-      } else {
-        const truncatedText = option.label?.slice(0, 14).trim() + "..";
-        return (
-          <Tooltip placement="topLeft" title={option.label}>
-            <span role="button">{truncatedText}</span>
-          </Tooltip>
-        );
-      }
-    };
-    return (
-      <MultiSelect
-        className="custom-multi-select"
-        value={tblFilter.etdD}
-        options={etd_}
-        filter
-        style={{
-          position: "absolute",
-          opacity: "0",
-          width: "20px",
-          fontSize: "10px",
-          // maxWidth:"100px"
-        }}
-        showSelectAll={false}
-        onChange={(e) => handleChangeFilter("etdD", e.value)}
-        display="chip"
-        placeholder="Select"
-        itemTemplate={renderOption}
-        filterPlaceholder="Search"
-      />
-    );
-  };
-  const FilterETARow = () => {
-    const renderOption = (option) => {
-      if (option.label.length <= 14) {
-        return <span>{option.label}</span>;
-      } else {
-        const truncatedText = option.label?.slice(0, 14).trim() + "..";
-        return (
-          <Tooltip placement="topLeft" title={option.label}>
-            <span role="button">{truncatedText}</span>
-          </Tooltip>
-        );
-      }
-    };
-    return (
-      <MultiSelect
-        className="custom-multi-select"
-        value={tblFilter.etaD}
-        options={eta_}
-        filter
-        style={{
-          position: "absolute",
-          opacity: "0",
-          width: "20px",
-          fontSize: "10px",
-          // maxWidth:"100px"
-        }}
-        showSelectAll={false}
-        onChange={(e) => handleChangeFilter("etaD", e.value)}
-        display="chip"
-        placeholder="Select"
-        itemTemplate={renderOption}
-        filterPlaceholder="Search"
-      />
-    );
-  };
-  const FilterStatusRow = () => {
-    const renderOption = (option) => {
-      if (option.label.length <= 14) {
-        return <span>{option.label}</span>;
-      } else {
-        const truncatedText = option.label?.slice(0, 14).trim() + "..";
-        return (
-          <Tooltip placement="topLeft" title={option.label}>
-            <span role="button">{truncatedText}</span>
-          </Tooltip>
-        );
-      }
-    };
-    return (
-      <MultiSelect
-        className="custom-multi-select"
-        value={tblFilter.statusD}
-        options={status_}
-        filter
-        style={{
-          position: "absolute",
-          opacity: "0",
-          width: "20px",
-          fontSize: "10px",
-          // maxWidth:"100px"
-        }}
-        showSelectAll={false}
-        onChange={(e) => handleChangeFilter("statusD", e.value)}
-        display="chip"
-        placeholder="Select"
-        itemTemplate={renderOption}
-        filterPlaceholder="Search"
-      />
-    );
-  };
+  }
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, filteredData?.length);
@@ -811,7 +559,11 @@ const AllBookings = ({
               className=" d-flex"
             >
               Shipment ID
-              {FilterIdRow()}
+              {MultiSelectFilter(
+                "shipmentfilterData",
+                ShipId,
+                tblFilter.shipmentfilterData
+              )}
               <div
                 className="d-flex sorticon"
                 style={{ flexDirection: "column" }}
@@ -846,7 +598,7 @@ const AllBookings = ({
               className="py-3 d-flex "
             >
               Order No
-              {FilterOrderRow()}
+              {MultiSelectFilter("order_no", orderId_, tblFilter.order_no)}
               <div
                 className="d-flex sorticon"
                 style={{ flexDirection: "column" }}
@@ -882,7 +634,7 @@ const AllBookings = ({
               className=" d-flex"
             >
               Mode
-              {FilterModeRow()}
+              {MultiSelectFilter("modeD", Mode_, tblFilter.modeD)}
               <div
                 className="d-flex sorticon"
                 style={{ flexDirection: "column" }}
@@ -917,7 +669,7 @@ const AllBookings = ({
               className="d-flex"
             >
               Origin
-              {FilterOrgRow()}
+              {MultiSelectFilter("originD", Org_, tblFilter.originD)}
               <div
                 className="d-flex sorticon"
                 style={{ flexDirection: "column" }}
@@ -953,7 +705,7 @@ const AllBookings = ({
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
             >
               Destination
-              {FilterDestRow()}
+              {MultiSelectFilter("DestD", dest_, tblFilter.DestD)}
               <div
                 className="d-flex sorticon"
                 style={{ flexDirection: "column" }}
@@ -986,7 +738,7 @@ const AllBookings = ({
           header={
             <span className=" d-flex" style={{ position: "relative" }}>
               ETD/ATD
-              {FilterETDRow()}
+              {MultiSelectFilter("etdD", etd_, tblFilter.etdD)}
               <div
                 className="d-flex sorticon"
                 style={{ flexDirection: "column" }}
@@ -1019,7 +771,7 @@ const AllBookings = ({
           header={
             <span className=" d-flex">
               ETA/ATA
-              {FilterETARow()}
+              {MultiSelectFilter("etaD", eta_, tblFilter.etaD)}
               <div
                 className="d-flex sorticon"
                 style={{ flexDirection: "column" }}
@@ -1052,7 +804,7 @@ const AllBookings = ({
           header={
             <span className=" d-flex">
               Status
-              {FilterStatusRow()}
+              {MultiSelectFilter("statusD", status_, tblFilter.statusD)}
               <div
                 className="d-flex sorticon"
                 style={{ flexDirection: "column" }}
