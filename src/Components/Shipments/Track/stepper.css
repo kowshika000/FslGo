@@ -39,12 +39,12 @@
     left: 12px;
     background-color: none;
 }
- p{
+ /* p{
     font-weight: 400;
     font-size: 14px;
     line-height: 24px;
     letter-spacing: 1%;
-}
+} */
 .step{
     width: 25px;
     height: 25px;
