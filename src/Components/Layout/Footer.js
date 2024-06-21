@@ -11,6 +11,8 @@ export const Footer = () => {
         height: "55px",
         alignItems: "center",
         padding: "20px 24px 20px 24px",
+        position: "relative",
+        bottom: "-1px"
       }}
     >
       <div
