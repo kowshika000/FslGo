@@ -1,0 +1,22 @@
+.dsr_section .p-datatable .p-datatable-thead > tr > th{
+    padding:15px !important;
+    background-color: #F8FAFC !important;
+}
+.dsr_section{
+    overflow: auto;
+}
+.dsr_section .p-column-title{
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 19px;
+    letter-spacing: .01em;
+    color: #181E25;
+}
+.dsr_section .p-menu-list{
+    padding: 0px !important;
+    margin: 0 !important;
+}
+.dsr_section .p-menu-list a{
+    padding: 15px !important;
+    text-decoration: none;
+}

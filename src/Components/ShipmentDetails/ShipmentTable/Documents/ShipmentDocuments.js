@@ -39,7 +39,7 @@ const ShipmentDocuments = () => {
   const handleAllCheckBoxes = (e) => {
     setAllcheck(e.target.checked);
     if (e.target.checked) {
-      const document_names = Documents?.map((item) => item?.file_name);
+      const document_names = Documents?.map((item) => item?.link);
       setCheckInputs(document_names);
     } else {
       setCheckInputs([]);
@@ -55,6 +55,16 @@ const ShipmentDocuments = () => {
     }
   };
 
+  //This is for handle AllDownloadFiles
+  const handleAllDownload=()=>{
+    for(let i = 0; i < checkinputs.length; i++) {
+      var frame = document.createElement("iframe");
+      frame.src = checkinputs[i];
+      frame["download"] = 1
+      document.body.appendChild(frame);
+    }
+  }
+
   return (
     <>
       <div className="shipment_documents container-fluid">
@@ -64,11 +74,11 @@ const ShipmentDocuments = () => {
               <tr>
                 <th>
                   <div className="checkbox d-inline">
-                    {/* <CustomCheckBox
+                    <CustomCheckBox
                       value={allcheck}
                       checked={allcheck}
                       onChange={handleAllCheckBoxes}
-                    /> */}
+                    />
                   </div>
                   <span style={{ marginLeft: "29px" }}>Document/Type</span>
                 </th>
@@ -76,8 +86,9 @@ const ShipmentDocuments = () => {
                 <th>Last Update</th>
                 <th>
                   Action{" "}
-                  {/* <span
+                  <span
                     className="ms-4"
+                    onClick={handleAllDownload}
                     style={{
                       visibility: checkinputs?.length > 1 ? "visible" : "hidden",
                       background: "rgba(243, 245, 247, 1)",
@@ -86,7 +97,7 @@ const ShipmentDocuments = () => {
                     }}
                   >
                     <HiArrowDownTray size={16} />
-                  </span> */}
+                  </span>
                 </th>
                 {/* {
                   checkinputs.length>1 ?  <th><span className="px-1 py-1">
@@ -104,13 +115,13 @@ const ShipmentDocuments = () => {
                       <div className="d-flex justify-content-start align-items-center">
                         <div
                           className="checkbox"
-                          style={{ marginRight: "5px",marginLeft:"23px"}}
+                          style={{ marginRight: "5px"}}
                         >
-                          {/* <CustomCheckBox
-                            checked={checkinputs.includes(item.file_name)}
-                            value={item.file_name}
+                          <CustomCheckBox
+                            checked={checkinputs.includes(item.link)}
+                            value={item.link}
                             onChange={handleCheckInputs}
-                          /> */}
+                          />
                         </div>
                         <div>
                           <span>{item.document_name}</span>
