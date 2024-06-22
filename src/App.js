@@ -18,8 +18,8 @@ import { CircularProgress, Box } from "@mui/material";
 import ProfileBase from "./Components/Profile/ProfileBase";
 import FindNewRate from "./Components/Quotations/QuotaionTable/QModal/FindNewRate/FindNewRate";
 import Quick from "./Components/QuickBooking/Quick";
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const dispatch = useDispatch();
@@ -30,14 +30,14 @@ function App() {
     const currentUrl = window.location.href;
     const queryString = currentUrl.split("?")[1];
     const params = {};
-    
+
     if (queryString) {
       queryString.split("&").forEach((param) => {
         const [key, value] = param.split("=");
         params[key] = value;
       });
     }
-    
+
     return params;
   };
 
@@ -51,12 +51,12 @@ function App() {
 
     const { id, token } = parseUrlParams();
 
-    if (id && token) {
+    if (id && token && !jwtToken) {
       dispatch(LoginRequest({ sUsername: id, spassword: token }));
     } else {
       setLoading(false);
     }
-
+    
     const timeout = setTimeout(() => {
       if (!jwtToken) {
         window.location.href = "http://www.freightsystems.com";
@@ -68,8 +68,8 @@ function App() {
 
   useEffect(() => {
     if (jwtToken) {
-      setLoading(false);
       Cookies.set("jwtToken", jwtToken, { expires: 7 });
+      setLoading(false);
     }
   }, [jwtToken]);
 
