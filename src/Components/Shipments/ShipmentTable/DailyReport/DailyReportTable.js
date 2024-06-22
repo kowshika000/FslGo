@@ -15,6 +15,8 @@ import { reportData } from "./ReportData";
 import Columns from "./Columns";
 import { Tooltip } from "antd";
 import { MultiSelect } from "primereact/multiselect";
+import { Tag } from "primereact/tag";
+import { CloseOutlined } from "@ant-design/icons";
 import {
   Box,
   Checkbox,
@@ -24,21 +26,6 @@ import {
   Switch,
   TextField,
 } from "@mui/material";
-
-const itemRenderer = (item) => (
-  <div className="p-menuitem-content">
-    <a className="flex align-items-center p-menuitem-link">
-      <span className={item.icon} />
-      <span className="mx-2">{item.label}</span>
-      {item.badge && <badge className="ml-auto" value={item.badge} />}
-      {item.shortcut && (
-        <span className="ml-auto border-1 surface-border border-round surface-100 text-xs p-1">
-          {item.shortcut}
-        </span>
-      )}
-    </a>
-  </div>
-);
 
 function DailyReportTable() {
   //Hooks
@@ -71,7 +58,7 @@ function DailyReportTable() {
     );
     setFilterReport(filterReportTbl);
     setCurrentPage(1);
-  });
+  },[dsrFilter]);
 
   const getUniqueOptions = (array, key) => {
     if (!Array.isArray(array) || !array?.length) {
@@ -167,6 +154,59 @@ function DailyReportTable() {
       />
     );
   }
+  const FilterTag = ({ field, filterValues, handleChangeFilter }) => {
+    if (!Array.isArray(filterValues)) {
+      return null;
+    }
+    const renderedColumns = new Set();
+    return (
+      <>
+        {filterValues.map((option) => {
+          if (!renderedColumns.has(field)) {
+            renderedColumns.add(field);
+            return (
+              <Tag
+                key={field}
+                style={{
+                  backgroundColor: "#F01E1E",
+                  marginRight: "10px",
+                  position: "relative",
+                  fontSize: "10px",
+                }}
+                className="px-2 py-1"
+                rounded
+              >
+                <div>
+                  {field === "service" ? "Service" : ""}
+                  {field === "order_no" ? "Order No" : ""}
+                  {field === "status" ? "Status" : ""}
+                  {field === "booking_no" ? "Booking No" : ""}
+                  {field === "booking_date" ? "Booking Date" : ""}
+                  {field === "origin" ? "Origin" : ""}
+                  {field === "POL1" ? "POL" : ""}
+                  {field === "POL2" ? "POL" : ""}
+                  {field === "final_destination" ? "Final Destination" : ""}
+                  {field === "cargo_received" ? "Cargo Received" : ""}
+                  {field === "pickup_date" ? "Pickup Date" : ""}
+                  {field === "cargo_received2" ? "Cargo Received" : ""}
+                  {field === "etd_origin" ? "ETD Origin" : ""}
+
+                  <span className="ms-2">
+                    <CloseOutlined
+                      onClick={() => {
+                        handleChangeFilter(field, []);
+                      }}
+                    />
+                  </span>
+                </div>
+              </Tag>
+            );
+          }
+          return null;
+        })}
+      </>
+    );
+  };
   //This is for sort ascending order
   const handleSort = (col) => {
     const sorted = [...report].sort((a, b) => {
@@ -235,6 +275,49 @@ function DailyReportTable() {
   return (
     <>
       <div className="dsr_section mb-2">
+      {Object.keys(dsrFilter)?.some((key) => dsrFilter[key]?.length > 0) && (
+        <div
+          className="d-flex ps-2"
+          style={{
+            backgroundColor: "#F8FAFC",
+            marginBottom: "20px",
+            padding: "5px 0px",
+          }}
+        >
+          {Object.entries(dsrFilter).map(([field, filterValues]) => (
+            <FilterTag
+              key={field}
+              field={field}
+              filterValues={filterValues}
+              handleChangeFilter={handleChangeFilter}
+            />
+          ))}
+          {Object.keys(dsrFilter)?.some(
+            (key) => dsrFilter[key]?.length > 0
+          ) && (
+            <Tag
+              style={{
+                backgroundColor: "#F01E1E",
+                marginRight: "10px",
+                position: "relative",
+                fontSize: "10px",
+                marginLeft: "auto",
+              }}
+              className="px-2 py-1"
+              rounded
+            >
+              <div>
+                Clear All
+                <span className="ms-2">
+                  <CloseOutlined
+                    onClick={() => handleChangeFilter("all", [])}
+                  />
+                </span>
+              </div>
+            </Tag>
+          )}
+        </div>
+      )}
         <DataTable
           value={paginatedData}
           style={{ height: "380px", width: "1500px" }}
