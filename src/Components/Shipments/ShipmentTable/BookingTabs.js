@@ -15,7 +15,7 @@ import Navbar from "../../Layout/Navbar";
 import image1 from "../../../assets/Shape.svg";
 import image2 from "../../../assets/Shape1.svg";
 import image3 from "../../../assets/Shape2.svg";
-import DailyReportTable from "./DailyReportTable";
+import DailyReportTable from "./DailyReport/DailyReportTable";
 import { CalendarOutlined, CaretDownOutlined } from "@ant-design/icons";
 import cal from "../../../assets/calVector.svg";
 
