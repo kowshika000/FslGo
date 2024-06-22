@@ -20,6 +20,7 @@ import { useSelector } from "react-redux";
 import { Tag } from "primereact/tag";
 import { CloseOutlined } from "@ant-design/icons";
 import { CircularProgress, Box } from "@mui/material";
+import { FilterService } from "primereact/api";
 
 const AllBookings = ({
   filterData,
@@ -53,36 +54,22 @@ const AllBookings = ({
 
   const [filteredData, setFilteredData] = useState(filterData);
   const [tblFilter, setTblFilter] = useState({
-    shipmentfilterData: [],
+    id: [],
     order_no: [],
-    modeD: [],
-    originD: [],
-    DestD: [],
-    etdD: [],
-    etaD: [],
-    statusD: [],
+    mode: [],
+    origin: [],
+    destination: [],
+    eta_ata: [],
+    etd_atd: [],
+    status: [],
   });
   useEffect(() => {
-    const filterDataTable = filterData.filter((item) => {
-      return (
-        (tblFilter.shipmentfilterData?.length === 0 ||
-          tblFilter.shipmentfilterData?.includes(item.id)) &&
-        (tblFilter.order_no?.length === 0 ||
-          tblFilter.order_no?.includes(item.order_no)) &&
-        (tblFilter.modeD?.length === 0 ||
-          tblFilter.modeD?.includes(item.mode)) &&
-        (tblFilter.originD?.length === 0 ||
-          tblFilter.originD?.includes(item.origin)) &&
-        (tblFilter.DestD?.length === 0 ||
-          tblFilter.DestD?.includes(item.destination)) &&
-        (tblFilter.etaD?.length === 0 ||
-          tblFilter.etaD?.includes(item.eta_ata)) &&
-        (tblFilter.etdD?.length === 0 ||
-          tblFilter.etdD?.includes(item.etd_atd)) &&
-        (tblFilter.statusD?.length === 0 ||
-          tblFilter.statusD?.includes(item.status))
-      );
-    });
+    const filterDataTable = filterData.filter((item) =>
+      Object.keys(tblFilter).every(
+        (key) =>
+          tblFilter[key]?.length === 0 || tblFilter[key]?.includes(item[key])
+      )
+    );
     setFilteredData(filterDataTable);
     setCurrentPage(1);
   }, [tblFilter, filterData]);
@@ -96,27 +83,36 @@ const AllBookings = ({
       value,
     }));
   };
+  const [clicked, setClicked] = useState(false);
+  const [data, setData] = useState(filteredData);
+  useEffect(() => {
+    if (clicked) {
+      setData(filteredData);
+      console.log("MultiSelect input was clicked");
+      // Perform any additional actions here
+    }
+  }, [clicked]);
 
-  const ShipId = getUniqueOptions(filterData, "id");
-  const orderId_ = getUniqueOptions(filterData, "order_no");
-  const Mode_ = getUniqueOptions(filterData, "mode");
-  const Org_ = getUniqueOptions(filterData, "origin");
-  const dest_ = getUniqueOptions(filterData, "destination");
-  const eta_ = getUniqueOptions(filterData, "eta_ata");
-  const etd_ = getUniqueOptions(filterData, "etd_atd");
-  const status_ = getUniqueOptions(filterData, "status");
+  const ShipId = getUniqueOptions(data, "id");
+  const orderId_ = getUniqueOptions(data, "order_no");
+  const Mode_ = getUniqueOptions(data, "mode");
+  const Org_ = getUniqueOptions(data, "origin");
+  const dest_ = getUniqueOptions(data, "destination");
+  const eta_ = getUniqueOptions(data, "eta_ata");
+  const etd_ = getUniqueOptions(data, "etd_atd");
+  const status_ = getUniqueOptions(data, "status");
 
   const handleChangeFilter = (field, filterValues) => {
     if (field === "all") {
       setTblFilter({
-        shipmentfilterData: [],
+        id: [],
         order_no: [],
-        modeD: [],
-        originD: [],
-        DestD: [],
-        etdD: [],
-        etaD: [],
-        statusD: [],
+        mode: [],
+        origin: [],
+        destination: [],
+        eta_ata: [],
+        etd_atd: [],
+        status: [],
       });
     } else {
       setTblFilter((prevFilters) => ({
@@ -129,14 +125,14 @@ const AllBookings = ({
   useEffect(() => {
     if (selectedStatus !== null) {
       setTblFilter({
-        shipmentfilterData: [],
+        id: [],
         order_no: [],
-        modeD: [],
-        originD: [],
-        DestD: [],
-        etdD: [],
-        etaD: [],
-        statusD: [],
+        mode: [],
+        origin: [],
+        destination: [],
+        eta_ata: [],
+        etd_atd: [],
+        status: [],
       });
     }
   }, [selectedStatus]);
@@ -171,6 +167,8 @@ const AllBookings = ({
         }}
         showSelectAll={false}
         onChange={(e) => handleChangeFilter(filterKey, e.value)}
+        onFocus={() => setClicked(true)} // Track when the MultiSelect gains focus
+        onBlur={() => setClicked(false)}
         display="chip"
         placeholder="Select"
         itemTemplate={renderOption}
@@ -469,13 +467,13 @@ const AllBookings = ({
               >
                 <div>
                   {field === "order_no" ? "Order No" : ""}
-                  {field === "shipmentfilterData" ? "Shipment Id" : ""}
-                  {field === "modeD" ? "Mode" : ""}
-                  {field === "etdD" ? "ETD/ATD" : ""}
-                  {field === "etaD" ? "ETA/ATA" : ""}
-                  {field === "statusD" ? "Status" : ""}
-                  {field === "originD" ? "Origin" : ""}
-                  {field === "DestD" ? "Destination" : ""}
+                  {field === "id" ? "Shipment Id" : ""}
+                  {field === "mode" ? "Mode" : ""}
+                  {field === "eta_ata" ? "ETD/ATD" : ""}
+                  {field === "etd_atd" ? "ETA/ATA" : ""}
+                  {field === "status" ? "Status" : ""}
+                  {field === "origin" ? "Origin" : ""}
+                  {field === "destination" ? "Destination" : ""}
                   <span className="ms-2">
                     <CloseOutlined
                       onClick={() => {
@@ -560,9 +558,9 @@ const AllBookings = ({
             >
               Shipment ID
               {MultiSelectFilter(
-                "shipmentfilterData",
+                "id",
                 ShipId,
-                tblFilter.shipmentfilterData
+                tblFilter.id
               )}
               <div
                 className="d-flex sorticon"
@@ -634,7 +632,7 @@ const AllBookings = ({
               className=" d-flex"
             >
               Mode
-              {MultiSelectFilter("modeD", Mode_, tblFilter.modeD)}
+              {MultiSelectFilter("mode", Mode_, tblFilter.mode)}
               <div
                 className="d-flex sorticon"
                 style={{ flexDirection: "column" }}
@@ -669,7 +667,7 @@ const AllBookings = ({
               className="d-flex"
             >
               Origin
-              {MultiSelectFilter("originD", Org_, tblFilter.originD)}
+              {MultiSelectFilter("origin", Org_, tblFilter.origin)}
               <div
                 className="d-flex sorticon"
                 style={{ flexDirection: "column" }}
@@ -705,7 +703,7 @@ const AllBookings = ({
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
             >
               Destination
-              {MultiSelectFilter("DestD", dest_, tblFilter.DestD)}
+              {MultiSelectFilter("destination", dest_, tblFilter.destination)}
               <div
                 className="d-flex sorticon"
                 style={{ flexDirection: "column" }}
@@ -738,7 +736,7 @@ const AllBookings = ({
           header={
             <span className=" d-flex" style={{ position: "relative" }}>
               ETD/ATD
-              {MultiSelectFilter("etdD", etd_, tblFilter.etdD)}
+              {MultiSelectFilter("eta_ata", etd_, tblFilter.eta_ata)}
               <div
                 className="d-flex sorticon"
                 style={{ flexDirection: "column" }}
@@ -771,7 +769,7 @@ const AllBookings = ({
           header={
             <span className=" d-flex">
               ETA/ATA
-              {MultiSelectFilter("etaD", eta_, tblFilter.etaD)}
+              {MultiSelectFilter("etd_atd", eta_, tblFilter.etd_atd)}
               <div
                 className="d-flex sorticon"
                 style={{ flexDirection: "column" }}
@@ -804,7 +802,7 @@ const AllBookings = ({
           header={
             <span className=" d-flex">
               Status
-              {MultiSelectFilter("statusD", status_, tblFilter.statusD)}
+              {MultiSelectFilter("status", status_, tblFilter.status)}
               <div
                 className="d-flex sorticon"
                 style={{ flexDirection: "column" }}
