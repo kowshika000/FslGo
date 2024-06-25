@@ -263,40 +263,34 @@ const Columns = ({setfiltercolumn,ColumnObject,DsrColumns}) => {
   };
 
   let items = [
-    {
-      template: <PivotSwitchTemplate />,
-    },
-    {
-      separator: true,
-    },
+    // {
+    //   template: <PivotSwitchTemplate />,
+    // },
     {
       template: <SearchTemplate />
     },
-    // {
-    //   separator: true,
-    // },
     
     // {
     //   template:<CheckboxesTemplate />
     // },
-    {
-      separator: true,
-    },
-    {
-      template:<RowGroupsTemplate />
-    },
-    {
-      separator: true,
-    },
-    {
-      template:<ValuesTemplate />
-    },
-    {
-      separator: true,
-    },
-    {
-      template:<ColumnLabelsTemplate />
-    },
+    // {
+    //   separator: true,
+    // },
+    // {
+    //   template:<RowGroupsTemplate />
+    // },
+    // {
+    //   separator: true,
+    // },
+    // {
+    //   template:<ValuesTemplate />
+    // },
+    // {
+    //   separator: true,
+    // },
+    // {
+    //   template:<ColumnLabelsTemplate />
+    // },
   ];
 
   return (
