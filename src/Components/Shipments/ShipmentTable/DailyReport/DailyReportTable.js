@@ -4,14 +4,8 @@ import { Column } from "primereact/column";
 import "./DailyReportTable.css";
 import Pagination from "../../../Core-Components/Pagination";
 import group from "../../../../assets/Group 20851.svg";
-import { Menu } from "primereact/menu";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import { badge } from "primereact/badge";
-import { Avatar } from "primereact/avatar";
-import { Toast } from "primereact/toast";
-import { classNames } from "primereact/utils";
-import { reportData } from "./ReportData";
 import Columns from "./Columns";
 import { Tooltip } from "antd";
 import { MultiSelect } from "primereact/multiselect";
@@ -162,7 +156,6 @@ function DailyReportTable() {
   }, [dsrFilter]);
 
   const getUniqueOptions = (array, key) => {
-    console.log(array[key], key);
     if (!Array?.isArray(array) || !array?.length) {
       return [];
     }

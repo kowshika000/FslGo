@@ -39,6 +39,19 @@
 
 }
 
+.css-ypiqx9-MuiDialogContent-root::-webkit-scrollbar{
+    width:10px !important
+  }
+.css-ypiqx9-MuiDialogContent-root::-webkit-scrollbar-thumb {
+    background: rgb(220, 220, 220) !important; 
+    border-radius: 10px !important;
+    max-height: 5px !important;
+  }
+  
+.css-ypiqx9-MuiDialogContent-root::-webkit-scrollbar-track {
+    background-color: #f1f1f1 !important; 
+  }
+
 /* .shipment_details_section .breadCrumb ol li:nth-child(1){
     font-weight: 400;
     font-size: 14px;
