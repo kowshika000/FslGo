@@ -15,6 +15,7 @@ import { sailingRequest } from "../../../Redux/Actions/SailingAction";
 import CountryFlag from "../../Core-Components/CountryFlag";
 import { Port } from "./Port";
 import { opensailingRequest } from "../../../Redux/Actions/OpneSailingAction";
+import { profileRequest } from "../../../Redux/Actions/ProfileAction";
 
 const UpcomingSailings = () => {
   const [displayedSchedules, setDisplayedSchedules] = useState(4);
@@ -27,6 +28,11 @@ const UpcomingSailings = () => {
   console.log(UpcomingData);
   useEffect(() => {
     dispatch(sailingRequest());
+  }, []);
+   //This is for call profile_data api
+  // const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(profileRequest());
   }, []);
 
   useEffect(() => {
@@ -155,7 +161,7 @@ const UpcomingSailings = () => {
                   </Typography>
                 </div>
               </div>
-              <button
+              {/* <button
                 className="book-now justify-content-end align-content-center ms-2 me-0"
                 style={{
                   backgroundColor: "#F01E1E",
@@ -168,7 +174,7 @@ const UpcomingSailings = () => {
                 }}
               >
                 <span style={{ fontSize: "13px" }}>Book Now</span>
-              </button>
+              </button> */}
             </div>
           </AccordionSummary>
           <AccordionDetails sx={{ display: "flex" }}>

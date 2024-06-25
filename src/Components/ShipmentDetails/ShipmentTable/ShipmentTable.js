@@ -42,7 +42,7 @@ const ShipmentTable = ({tabListNoTitle,contentListNoTitle,setVesselmodalopen,clo
           }}
         >
 
-            <div style={{overflow:"auto",maxHeight:"500px"}}>
+            <div >
               {contentListNoTitle[activeTabKey]}
             </div>
             {/* {
