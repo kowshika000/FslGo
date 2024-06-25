@@ -186,6 +186,21 @@ a{
   width: fit-content !important;
 }
 
+::-webkit-scrollbar{
+  width:10px !important
+}
+::-webkit-scrollbar-thumb {
+  background: #384656 !important; 
+  border-radius: 10px !important;
+  max-height: 5px !important;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1 !important; 
+  /* border-radius: 10px; */
+  /* box-shadow: 1px 2px 5px rgb(239, 239, 239); */
+}
+
 @media screen and (max-width: 768px) {
   .table th,
   .table td {

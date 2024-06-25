@@ -4,8 +4,34 @@
 }
  .shipment_table_section  .ant-card-body{
     padding: 0px 20px 0px 20px;
+    overflow: auto;
+    max-height: 500px;
     /* position: relative; */
 }
+.shipment_table_section  .ant-card-body::-webkit-scrollbar{
+    width:10px !important
+  }
+  .shipment_table_section  .ant-card-body::-webkit-scrollbar-thumb {
+    background: rgb(220, 220, 220) !important; 
+    border-radius: 10px !important;
+    max-height: 5px !important;
+  }
+  
+.shipment_table_section  .ant-card-body::-webkit-scrollbar-track {
+    background-color: #f1f1f1 !important; 
+  }
+.css-ypiqx9-MuiDialogContent-root::-webkit-scrollbar{
+    width:10px !important
+  }
+.css-ypiqx9-MuiDialogContent-root::-webkit-scrollbar-thumb {
+    background: rgb(220, 220, 220) !important; 
+    border-radius: 10px !important;
+    max-height: 5px !important;
+  }
+  
+.css-ypiqx9-MuiDialogContent-root::-webkit-scrollbar-track {
+    background-color: #f1f1f1 !important; 
+  }
 .shipment_table_section .ant-card-contain-tabs >.ant-card-head {
     position: relative !important;
 }
@@ -51,7 +77,7 @@
     padding: 20px 0px 20px 20px !important;
 }
 .shipment_table_section .ant-card-body>div::-webkit-scrollbar{
-    display: none !important;
+    /* display: none !important; */
     max-height: 8px !important;
     max-width: 10px !important;
 }
