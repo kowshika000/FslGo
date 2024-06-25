@@ -28,6 +28,7 @@ function BookingTabs({ showText, setShowText }) {
   const [visible, setVisible] = useState(false);
   const [selectedButton, setSelectedButton] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [activeTab, setActiveTab] = useState("1");
 
   let schedule;
   if (tabCount && tabCount.length > 0) {
@@ -77,19 +78,24 @@ function BookingTabs({ showText, setShowText }) {
     if (selectedDropdownItem === "Past 90 Days") {
       setFilterValue(90);
       setFilterMonthValue(null);
+      setActiveTab("1"); 
     } else if (selectedDropdownItem === "Past 30 Days") {
       setFilterValue(30);
       setFilterMonthValue(null);
+      setActiveTab("1"); 
     } else if (selectedDropdownItem === "Past 60 Days") {
       setFilterValue(60);
       setFilterMonthValue(null);
+      setActiveTab("1"); 
     } else if (selectedDropdownItem === "Past 6 Months") {
       setFilterMonthValue(null);
       setFilterValue(180);
+      setActiveTab("1"); 
     }
   }, [selectedDropdownItem]);
 
   const onChange = (key) => {
+    setActiveTab(key);
     switch (key) {
       case "1":
         filterData("All");
@@ -250,7 +256,7 @@ function BookingTabs({ showText, setShowText }) {
           <Row justify="between" style={{ height: "57px" }}>
             <Col span={19}>
               {!showText ? (
-                <Tabs defaultActiveKey="1" onChange={onChange}>
+                <Tabs activeKey={activeTab} onChange={onChange} >
                   <Tabs.TabPane
                     tab={`All Bookings (${schedule?.all ? schedule?.all : 0})`}
                     key="1"
