@@ -375,23 +375,23 @@ const AllBookings = ({
       if (!isNaN(valA) && !isNaN(valB)) {
         return valA - valB;
       }
-      if (col === "etd/atd" || col === "eta/ata") {
-        const dateA = parseDate1(valA);
-        const dateB = parseDate1(valB);
-        return dateA - dateB;
-      }
+      // if (col === "etd/atd" || col === "eta/ata") {
+      //   const dateA = parseDate1(valA);
+      //   const dateB = parseDate1(valB);
+      //   return dateA - dateB;
+      // }
       return valA > valB ? 1 : -1;
     });
     setFilteredData(sorted);
   };
-  const parseDate1 = (dateString) => {
-    const parts = dateString.split("/");
-    return new Date(parts[2], parts[1] - 1, parts[0]);
-  };
-  const parseDate2 = (dateString) => {
-    const parts = dateString.split("/");
-    return new Date(parts[2], parts[1] - 1, parts[0]);
-  };
+  // const parseDate1 = (dateString) => {
+  //   const parts = dateString.split("/");
+  //   return new Date(parts[2], parts[1] - 1, parts[0]);
+  // };
+  // const parseDate2 = (dateString) => {
+  //   const parts = dateString.split("/");
+  //   return new Date(parts[2], parts[1] - 1, parts[0]);
+  // };
 
   const handleSortDown = (col) => {
     console.log("Descending");
@@ -403,11 +403,11 @@ const AllBookings = ({
         return valB - valA;
       }
 
-      if (col === "etd/atd" || col === "eta/ata") {
-        const dateA = parseDate2(valA);
-        const dateB = parseDate2(valB);
-        return dateB - dateA;
-      }
+      // if (col === "etd/atd" || col === "eta/ata") {
+      //   const dateA = parseDate2(valA);
+      //   const dateB = parseDate2(valB);
+      //   return dateB - dateA;
+      // }
       return valA < valB ? 1 : -1;
     });
     setFilteredData(sorted);
