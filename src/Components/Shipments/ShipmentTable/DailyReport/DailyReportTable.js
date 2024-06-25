@@ -63,8 +63,31 @@ function DailyReportTable() {
   const DsrReportData = useSelector((state) => state.DsrReport.dsrData);
   const DsrColumns = DsrReportData?.columns;
   const DsrDatas = DsrReportData?.data;
+  const clonednewArray = DsrDatas?.map(a => ({...a})) || [];
 
   console.log(DsrDatas);
+ 
+
+  //This function is used to change the 
+  function changeKey(arr){
+  var newArr = [];
+  for(var i = 0; i < arr.length; i++)
+  {
+    var obj = arr[i];
+    const altObj = Object.fromEntries(
+      Object.entries(obj).map(([key, value]) => 
+        // Modify key here
+        [key.split(" ").join("_"), value]
+      )
+    )
+    newArr.push(altObj);
+  }
+  return newArr;
+}
+
+  const datasArray = changeKey(clonednewArray);
+  console.log(datasArray)
+
 
   // var ModifiedDataArray = []
 
@@ -96,7 +119,7 @@ function DailyReportTable() {
   // console.log(availablecolumns)
   const dsrfilter = DsrColumns?.reduce((o, key) => ({ ...o, [key]: [] }), {});
   console.log(dsrfilter);
-  const report = DsrDatas;
+  const report = datasArray;
   console.log(report);
   const [currentPage, setCurrentPage] = useState(1);
   const [sidebaropen, setSidebaropen] = useState(false);
@@ -395,12 +418,13 @@ function DailyReportTable() {
           style={{ height: "380px", width: "fit-content" }}
           emptyMessage={noData()}
         >
-          {arrayOfObj?.map((item) => {
+          {arrayOfObj?.map((item,index) => {
             // filtercolumn['SERVICE'] &&
             console.log(item?.header);
             if (filtercolumn[item?.header]) {
               return (
                 <Column
+                key={index}
                   field={item?.modifyheader}
                   header={
                     <span className=" d-flex">
