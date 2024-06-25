@@ -20,7 +20,7 @@
 .shipment_table_section  .ant-card-body::-webkit-scrollbar-track {
     background-color: #f1f1f1 !important; 
   }
-.css-ypiqx9-MuiDialogContent-root::-webkit-scrollbar{
+/* .css-ypiqx9-MuiDialogContent-root::-webkit-scrollbar{
     width:10px !important
   }
 .css-ypiqx9-MuiDialogContent-root::-webkit-scrollbar-thumb {
@@ -31,7 +31,7 @@
   
 .css-ypiqx9-MuiDialogContent-root::-webkit-scrollbar-track {
     background-color: #f1f1f1 !important; 
-  }
+  } */
 .shipment_table_section .ant-card-contain-tabs >.ant-card-head {
     position: relative !important;
 }
