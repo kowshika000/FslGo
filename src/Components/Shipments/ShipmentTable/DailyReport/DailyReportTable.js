@@ -114,9 +114,9 @@ function DailyReportTable() {
     if (!Array?.isArray(array) || !array?.length) {
       return [];
     }
-    if (!array[0][key]) {
-      return [];
-    }
+    // if (!array[0][key]) {
+    //   return [];
+    // }
     return Array?.from(new Set(array?.map((data) => data[key])))?.map(
       (value) => ({
         label: value,
@@ -229,15 +229,15 @@ function DailyReportTable() {
       if (!isNaN(valA) && !isNaN(valB)) {
         return valA - valB;
       }
-      if (
-        col === "BOOKING_DATE" ||
-        col === "PICKUP_DATE" ||
-        col === "ETD_ORIGIN"
-      ) {
-        const dateA = parseDate1(valA);
-        const dateB = parseDate1(valB);
-        return dateA - dateB;
-      }
+      // if (
+      //   col === "BOOKING_DATE" ||
+      //   col === "PICKUP_DATE" ||
+      //   col === "ETD_ORIGIN"
+      // ) {
+      //   const dateA = parseDate1(valA);
+      //   const dateB = parseDate1(valB);
+      //   return dateA - dateB;
+      // }
       return valA > valB ? 1 : -1;
     });
     setFilterReport(sorted);
@@ -261,15 +261,15 @@ function DailyReportTable() {
         return valB - valA;
       }
 
-      if (
-        col === "booking_date" ||
-        col === "pickup_date" ||
-        col === "etd_origin"
-      ) {
-        const dateA = parseDate2(valA);
-        const dateB = parseDate2(valB);
-        return dateB - dateA;
-      }
+      // if (
+      //   col === "booking_date" ||
+      //   col === "pickup_date" ||
+      //   col === "etd_origin"
+      // ) {
+      //   const dateA = parseDate2(valA);
+      //   const dateB = parseDate2(valB);
+      //   return dateB - dateA;
+      // }
       return valA < valB ? 1 : -1;
     });
     setFilterReport(sorted);
