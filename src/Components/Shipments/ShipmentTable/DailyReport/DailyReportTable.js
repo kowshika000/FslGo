@@ -162,8 +162,11 @@ function DailyReportTable() {
   }, [dsrFilter]);
 
   const getUniqueOptions = (array, key) => {
-    console.log(array, key);
+    console.log(array[key], key);
     if (!Array?.isArray(array) || !array?.length) {
+      return [];
+    }
+    if(!array[0][key]){
       return [];
     }
     return Array?.from(new Set(array?.map((data) => data[key])))?.map(
@@ -204,6 +207,7 @@ function DailyReportTable() {
     }
   };
   function MultiSelectFilter(filterKey, options, value, additionalStyles) {
+    console.log(options)
     const renderOption = (option) => {
       if (option?.label?.length <= 14) {
         return <span>{option?.label}</span>;
