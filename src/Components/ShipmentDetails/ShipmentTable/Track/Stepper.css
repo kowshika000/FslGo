@@ -60,11 +60,12 @@
     background-color: white !important;
 }
 .Inprogress .step{
-    background-color: gray;
-    box-shadow: 0px 0px 4px 0px #F1C21B4D;
+    background-color: white;
+    color: rgb(172, 184, 196) !important;
+    box-shadow: 0px 0px 4px 0px white;
 }
  .Inprogress .step>div{
-    background-color: white !important;
+    background-color: rgb(172, 184, 196) !important;
 }
 
 /* //This is Stepper Column Styling */

@@ -89,6 +89,7 @@ const ShipmentDocuments = () => {
                   <span
                     className="ms-4"
                     onClick={handleAllDownload}
+                    role="button"
                     style={{
                       visibility: checkinputs?.length > 1 ? "visible" : "hidden",
                       background: "rgba(243, 245, 247, 1)",

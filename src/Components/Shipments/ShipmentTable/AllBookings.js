@@ -156,7 +156,6 @@ const AllBookings = ({
         className="custom-multi-select"
         value={value}
         options={options}
-        name="ShipId"
         filter
         style={{
           position: "absolute",

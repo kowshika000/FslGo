@@ -26,88 +26,153 @@ import {
   Switch,
   TextField,
 } from "@mui/material";
+import { useDispatch, useSelector } from "react-redux";
+import { DsrReportRequest } from "../../../../Redux/Actions/DsrReportAction";
+// import { DsrReportdatas } from "./ApiStaticData";
 
 function DailyReportTable() {
+  //get user_token from profile_datas
+  const Profileusertoken = useSelector(
+    (state) => state.ProfileData?.profileData?.usertoken
+  );
+  console.log(Profileusertoken);
+  const payload = {
+    sl_no: Profileusertoken,
+    sorigin: "",
+    sdest: "",
+    sstatus: "",
+    sshipper: "",
+    sconsignee: "",
+    sfrmdate: "",
+    stodate: "",
+    sshipmentby: "",
+    simport_export: "",
+    setafrmdate: "",
+    setatodate: "",
+  };
+
+  // This is get dsr api call
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (Profileusertoken) {
+      dispatch(DsrReportRequest({ payload }));
+    }
+  }, [Profileusertoken, dispatch]);
+
   //Hooks
-  const itemsPerPage = 6;
+  const DsrReportData = useSelector((state) => state.DsrReport.dsrData);
+  const DsrColumns = DsrReportData?.columns;
+  const DsrDatas = DsrReportData?.data;
+
+  console.log(DsrDatas);
+
+  // var ModifiedDataArray = []
+
+  //function_for_modified api response key
+  // const ModifyData =(DsrDatas)=> {
+  //   console.log(DsrDatas?.map((item)=>{
+  //     const keysToChange = Object.entries(item)?.map((e)=>({[e[0].split(" ").join("_")]: e[1]}))
+  //     const changeSingleObject = Object.assign({}, ...keysToChange);
+  //     console.log(keysToChange)
+  //     console.log(changeSingleObject)
+  //     ModifiedDataArray.push(changeSingleObject)
+  //   }))
+  // };
+  // console.log(ModifiedDataArray)
+
+  // useEffect(() => {
+
+  //   ModifyData(DsrDatas)
+
+  // }, [DsrDatas])
+
+  const ColumnObject = DsrColumns?.reduce(
+    (o, key) => ({ ...o, [key]: true }),
+    {}
+  );
+  console.log(ColumnObject);
+  // const availablecolumns = DsrReportdatas?.columns
+  console.log(DsrColumns);
+  // console.log(availablecolumns)
+  const dsrfilter = DsrColumns?.reduce((o, key) => ({ ...o, [key]: [] }), {});
+  console.log(dsrfilter);
+  const report = DsrDatas;
+  console.log(report);
   const [currentPage, setCurrentPage] = useState(1);
   const [sidebaropen, setSidebaropen] = useState(false);
-  const report = reportData.map((item) => item);
+  const [filtercolumn, setfiltercolumn] = useState();
+  const [dsrFilter, setDsrFilter] = useState();
+  const [filterReport, setFilterReport] = useState();
+  const [clicked, setClicked] = useState(false);
+  const [data, setData] = useState();
+  const itemsPerPage = 6;
 
-  const [dsrFilter, setDsrFilter] = useState({
-    service: [],
-    order_no: [],
-    status: [],
-    booking_no: [],
-    booking_date: [],
-    origin: [],
-    POL1: [],
-    POL2: [],
-    final_destination: [],
-    cargo_received: [],
-    pickup_date: [],
-    cargo_received2: [],
-    etd_origin: [],
-  });
-  const [filterReport, setFilterReport] = useState(report);
   useEffect(() => {
-    const filterReportTbl = report.filter((items) =>
-      Object.keys(dsrFilter).every(
-        (key) => dsrFilter[key]?.length === 0 || dsrFilter[key]?.includes(items[key])
+    setfiltercolumn(ColumnObject);
+  }, [DsrColumns]);
+  useEffect(() => {
+    setFilterReport(report);
+  }, [DsrDatas]);
+
+  console.log(filtercolumn);
+  // const arrayOfObj = Object.entries(filtercolumn || {}).map((e) => ( { [e[0]]: e[1],modifyheader:e[0].split(' ').join("_"),header:e[0] } ));
+  // console.log(arrayOfObj)
+  // const availablecolumns = DsrReportdatas?.columns
+  // console.log(availablecolumns)
+
+  const arrayOfObj = Object.entries(filtercolumn || {})?.map((e) => ({
+    [e[0]]: e[1],
+    modifyheader: e[0]?.split(" ")?.join("_"),
+    header: e[0],
+  }));
+  // console.log(arrayOfObj)
+
+  useEffect(() => {
+    const filterReportTbl = report?.filter((items) =>
+      Object.keys(dsrFilter || {})?.every(
+        (key) =>
+          dsrFilter[key]?.length === 0 || dsrFilter[key]?.includes(items[key])
       )
     );
     setFilterReport(filterReportTbl);
     setCurrentPage(1);
-  },[dsrFilter]);
+  }, [dsrFilter]);
 
   const getUniqueOptions = (array, key) => {
-    if (!Array.isArray(array) || !array?.length) {
+    console.log(array, key);
+    if (!Array?.isArray(array) || !array?.length) {
       return [];
     }
-    return Array.from(new Set(array.map((data) => data[key]))).map((value) => ({
-      label: value,
-      value,
-    }));
+    return Array?.from(new Set(array?.map((data) => data[key])))?.map(
+      (value) => ({
+        label: value,
+        value,
+      })
+    );
   };
-  const [clicked, setClicked] = useState(false);
-  const [data, setData] = useState(filterReport);
   useEffect(() => {
     if (clicked) {
       setData(filterReport);
     }
   }, [clicked]);
 
-  const service_ = getUniqueOptions(data, "service");
-  const orderId_ = getUniqueOptions(data, "order_no");
-  const status_ = getUniqueOptions(data, "status");
-  const bNo_ = getUniqueOptions(data, "booking_no");
-  const bData_ = getUniqueOptions(data, "booking_date");
-  const org_ = getUniqueOptions(data, "origin");
-  const pol1 = getUniqueOptions(data, "POL1");
-  const pol2 = getUniqueOptions(data, "POL2");
-  const finalDest_ = getUniqueOptions(data, "final_destination");
-  const cargoR1_ = getUniqueOptions(data, "cargo_received");
-  const pickupDate_ = getUniqueOptions(data, "pickup_date");
-  const cargoR2_ = getUniqueOptions(data, "cargo_received2");
-  const etdOrg_ = getUniqueOptions(data, "etd_origin");
+  const SERVICE = getUniqueOptions(data, "SERVICE");
+  const ORDER_NO_ = getUniqueOptions(data, "ORDER_NO ");
+  const status_ = getUniqueOptions(data, "STATUS");
+  const bNo_ = getUniqueOptions(data, "Booking_NO");
+  const bData_ = getUniqueOptions(data, "BOOKING_DATE");
+  const org_ = getUniqueOptions(data, "ORIGIN");
+  const pol1 = getUniqueOptions(data, "POL");
+  const pol2 = getUniqueOptions(data, "POD");
+  const finalDest_ = getUniqueOptions(data, "FINAL_DESTINATION");
+  const cargoR1_ = getUniqueOptions(data, "CARGO_RECEIVED");
+  const pickupDate_ = getUniqueOptions(data, "PICKUP_DATE");
+  const cargoR2_ = getUniqueOptions(data, "CARGO_RECEIVED");
+  const etdOrg_ = getUniqueOptions(data, "ETD_ORIGIN");
 
   const handleChangeFilter = (field, filterValues) => {
     if (field === "all") {
-      setDsrFilter({
-        service: [],
-        order_no: [],
-        status: [],
-        booking_no: [],
-        booking_date: [],
-        origin: [],
-        POL1: [],
-        POL2: [],
-        final_destination: [],
-        cargo_received: [],
-        pickup_date: [],
-        cargo_received2: [],
-        etd_origin: [],
-      });
+      setDsrFilter(dsrfilter);
     } else {
       setDsrFilter((prevFilters) => ({
         ...prevFilters,
@@ -117,12 +182,12 @@ function DailyReportTable() {
   };
   function MultiSelectFilter(filterKey, options, value, additionalStyles) {
     const renderOption = (option) => {
-      if (option.label.length <= 14) {
-        return <span>{option.label}</span>;
+      if (option?.label?.length <= 14) {
+        return <span>{option?.label}</span>;
       } else {
-        const truncatedText = option.label?.slice(0, 14).trim() + "..";
+        const truncatedText = option?.label?.slice(0, 14)?.trim() + "..";
         return (
-          <Tooltip placement="topLeft" title={option.label}>
+          <Tooltip placement="topLeft" title={option?.label}>
             <span role="button">{truncatedText}</span>
           </Tooltip>
         );
@@ -132,7 +197,7 @@ function DailyReportTable() {
     return (
       <MultiSelect
         className="custom-multi-select"
-        value={value}
+        value={value?.[filterKey]}
         options={options}
         name="ShipId"
         filter
@@ -155,15 +220,16 @@ function DailyReportTable() {
     );
   }
   const FilterTag = ({ field, filterValues, handleChangeFilter }) => {
-    if (!Array.isArray(filterValues)) {
-      return null;
+    if (!Array?.isArray(filterValues)) {
+      return "";
     }
     const renderedColumns = new Set();
+    console.log(renderedColumns);
     return (
       <>
-        {filterValues.map((option) => {
-          if (!renderedColumns.has(field)) {
-            renderedColumns.add(field);
+        {filterValues?.map((option) => {
+          if (!renderedColumns?.has(field)) {
+            renderedColumns?.add(field);
             return (
               <Tag
                 key={field}
@@ -177,19 +243,20 @@ function DailyReportTable() {
                 rounded
               >
                 <div>
-                  {field === "service" ? "Service" : ""}
-                  {field === "order_no" ? "Order No" : ""}
-                  {field === "status" ? "Status" : ""}
-                  {field === "booking_no" ? "Booking No" : ""}
-                  {field === "booking_date" ? "Booking Date" : ""}
-                  {field === "origin" ? "Origin" : ""}
-                  {field === "POL1" ? "POL" : ""}
-                  {field === "POL2" ? "POL" : ""}
-                  {field === "final_destination" ? "Final Destination" : ""}
-                  {field === "cargo_received" ? "Cargo Received" : ""}
-                  {field === "pickup_date" ? "Pickup Date" : ""}
-                  {field === "cargo_received2" ? "Cargo Received" : ""}
-                  {field === "etd_origin" ? "ETD Origin" : ""}
+                  {field ? field.split("_").join(" ") : ""}
+                  {/* {field === "SERVICE" ? "SERVICE" : ""}
+                  {field === "ORDER_NO" ? "Order No" : ""}
+                  {field === "STATUS" ? "Status" : ""}
+                  {field === "Booking_NO" ? "Booking No" : ""}
+                  {field === "BOOKING_DATE" ? "Booking Date" : ""}
+                  {field === "ORIGIN" ? "Origin" : ""}
+                  {field === "POL" ? "POL" : ""}
+                  {field === "POD" ? "POD" : ""}
+                  {field === "FINAL_DESTINATION" ? "Final Destination" : ""}
+                  {field === "CARGO_RECEIVED" ? "Cargo Received" : ""}
+                  {field === "PICKUP_DATE" ? "Pickup Date" : ""}
+                  {field === "CARGO_RECEIVED" ? "Cargo Received" : ""}
+                  {field === "ETD_ORIGIN" ? "ETD Origin" : ""} */}
 
                   <span className="ms-2">
                     <CloseOutlined
@@ -202,23 +269,23 @@ function DailyReportTable() {
               </Tag>
             );
           }
-          return null;
+          return "";
         })}
       </>
     );
   };
   //This is for sort ascending order
   const handleSort = (col) => {
-    const sorted = [...report].sort((a, b) => {
+    const sorted = [...report]?.sort((a, b) => {
       const valA = a[col];
       const valB = b[col];
       if (!isNaN(valA) && !isNaN(valB)) {
         return valA - valB;
       }
       if (
-        col === "booking_date" ||
-        col === "pickup_date" ||
-        col === "etd_origin"
+        col === "BOOKING_DATE" ||
+        col === "PICKUP_DATE" ||
+        col === "ETD_ORIGIN"
       ) {
         const dateA = parseDate1(valA);
         const dateB = parseDate1(valB);
@@ -229,12 +296,12 @@ function DailyReportTable() {
     setFilterReport(sorted);
   };
   const parseDate1 = (dateString) => {
-    const parts = dateString.split("/");
+    const parts = dateString?.split("/");
     return new Date(parts[2], parts[1] - 1, parts[0]);
   };
   parseDate1("12/05/2020");
   const parseDate2 = (dateString) => {
-    const parts = dateString.split("/");
+    const parts = dateString?.split("/");
     return new Date(parts[2], parts[1] - 1, parts[0]);
   };
 
@@ -275,548 +342,603 @@ function DailyReportTable() {
   return (
     <>
       <div className="dsr_section mb-2">
-      {Object.keys(dsrFilter)?.some((key) => dsrFilter[key]?.length > 0) && (
-        <div
-          className="d-flex ps-2"
-          style={{
-            backgroundColor: "#F8FAFC",
-            marginBottom: "20px",
-            padding: "5px 0px",
-          }}
-        >
-          {Object.entries(dsrFilter).map(([field, filterValues]) => (
-            <FilterTag
-              key={field}
-              field={field}
-              filterValues={filterValues}
-              handleChangeFilter={handleChangeFilter}
-            />
-          ))}
-          {Object.keys(dsrFilter)?.some(
-            (key) => dsrFilter[key]?.length > 0
-          ) && (
-            <Tag
-              style={{
-                backgroundColor: "#F01E1E",
-                marginRight: "10px",
-                position: "relative",
-                fontSize: "10px",
-                marginLeft: "auto",
-              }}
-              className="px-2 py-1"
-              rounded
-            >
-              <div>
-                Clear All
-                <span className="ms-2">
-                  <CloseOutlined
-                    onClick={() => handleChangeFilter("all", [])}
-                  />
-                </span>
-              </div>
-            </Tag>
-          )}
-        </div>
-      )}
+        {Object?.keys(dsrFilter || {})?.some(
+          (key) => dsrFilter[key]?.length > 0
+        ) && (
+          <div
+            className="d-flex ps-2"
+            style={{
+              backgroundColor: "#F8FAFC",
+              marginBottom: "20px",
+              padding: "5px 0px",
+              position: "sticky",
+              top: "0px",
+              left: "0px",
+            }}
+          >
+            {Object.entries(dsrFilter)?.map(([field, filterValues]) => (
+              <FilterTag
+                key={field}
+                field={field}
+                filterValues={filterValues}
+                handleChangeFilter={handleChangeFilter}
+              />
+            ))}
+            {Object.keys(dsrFilter)?.some(
+              (key) => dsrFilter[key]?.length > 0
+            ) && (
+              <Tag
+                style={{
+                  backgroundColor: "#F01E1E",
+                  marginRight: "10px",
+                  position: "relative",
+                  fontSize: "10px",
+                  marginLeft: "auto",
+                }}
+                className="px-2 py-1"
+                rounded
+              >
+                <div>
+                  Clear All
+                  <span className="ms-2">
+                    <CloseOutlined
+                      onClick={() => handleChangeFilter("all", [])}
+                    />
+                  </span>
+                </div>
+              </Tag>
+            )}
+          </div>
+        )}
         <DataTable
           value={paginatedData}
-          style={{ height: "380px", width: "1500px" }}
+          style={{ height: "380px", width: "fit-content" }}
           emptyMessage={noData()}
         >
-          <Column
-            field="service"
-            header={
-              <span className=" d-flex">
-                Service
-                {MultiSelectFilter("service", service_ , dsrFilter.service)}
-                <div
-                  className="d-flex sorticon"
-                  style={{ flexDirection: "column" }}
-                >
-                  <IconButton
-                    onClick={() => {
-                      handleSort("service");
-                    }}
-                    className="p-0"
-                  >
-                    <ExpandLessIcon className="sortup" />
-                  </IconButton>
-                  <IconButton
-                    onClick={() => {
-                      handleSortDown("service");
-                    }}
-                    className="p-0"
-                  >
-                    <ExpandMoreIcon className="sortdown" />
-                  </IconButton>
-                </div>
-              </span>
+          {arrayOfObj?.map((item) => {
+            // filtercolumn['SERVICE'] &&
+            console.log(item?.header);
+            if (filtercolumn[item?.header]) {
+              return (
+                <Column
+                  field={item?.modifyheader}
+                  header={
+                    <span className=" d-flex">
+                      {item?.header}
+                      {MultiSelectFilter(
+                        item?.modifyheader,
+                        getUniqueOptions(data, item?.modifyheader),
+                        dsrFilter
+                      )}
+                      <div
+                        className="d-flex sorticon"
+                        style={{ flexDirection: "column" }}
+                      >
+                        <IconButton
+                          onClick={() => {
+                            handleSort(item?.modifyheader);
+                          }}
+                          className="p-0"
+                        >
+                          <ExpandLessIcon className="sortup" />
+                        </IconButton>
+                        <IconButton
+                          onClick={() => {
+                            handleSortDown(item?.modifyheader);
+                          }}
+                          className="p-0"
+                        >
+                          <ExpandMoreIcon className="sortdown" />
+                        </IconButton>
+                      </div>
+                    </span>
+                  }
+                  style={{
+                    padding: "15px",
+                    fontWeight: "400",
+                    fontSize: "13px",
+                    lineHeight: "19px",
+                    letterSpacing: ".01em",
+                    color: "#181E25",
+                    whiteSpace: "nowrap",
+                  }}
+                />
+              );
             }
-            style={{
-              padding: "15px",
-              fontWeight: "400",
-              fontSize: "13px",
-              lineHeight: "19px",
-              letterSpacing: ".01em",
-              color: "#181E25",
-            }}
+          })}
+
+          {/* {
+            filtercolumn.map((item)=>item.includes('order_no') && 
+            <Column
+              field="order_no"
+              header={
+                <span className=" d-flex">
+                  Order No.
+                  {MultiSelectFilter("order_no", orderId_ , dsrFilter.order_no)}
+                  <div
+                    className="d-flex sorticon"
+                    style={{ flexDirection: "column" }}
+                  >
+                    <IconButton
+                      onClick={() => {
+                        handleSort("order_no");
+                      }}
+                      className="p-0"
+                    >
+                      <ExpandLessIcon className="sortup" />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => {
+                        handleSortDown("order_no");
+                      }}
+                      className="p-0"
+                    >
+                      <ExpandMoreIcon className="sortdown" />
+                    </IconButton>
+                  </div>
+                </span>
+              }
+              className="p-3"
+              style={{
+                fontWeight: "400",
+                fontSize: "13px",
+                lineHeight: "19px",
+                letterSpacing: ".01em",
+                color: "#181E25",
+              }}
+            />
+          )}
+          {
+            filtercolumn.map((item)=>item.includes('status') && 
+            <Column
+              field="status"
+              header={
+                <span className=" d-flex">
+                  Status
+                  {MultiSelectFilter("status", status_, dsrFilter.status)}
+                  <div
+                    className="d-flex sorticon"
+                    style={{ flexDirection: "column" }}
+                  >
+                    <IconButton
+                      onClick={() => {
+                        handleSort("status");
+                      }}
+                      className="p-0"
+                    >
+                      <ExpandLessIcon className="sortup" />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => {
+                        handleSortDown("status");
+                      }}
+                      className="p-0"
+                    >
+                      <ExpandMoreIcon className="sortdown" />
+                    </IconButton>
+                  </div>
+                </span>
+              }
+              className="p-3"
+              style={{
+                fontWeight: "400",
+                fontSize: "13px",
+                lineHeight: "19px",
+                letterSpacing: ".01em",
+                color: "#181E25",
+              }}
+            />
+          )}
+          {
+            filtercolumn.map((item)=>item.includes('booking_no') && 
+            <Column
+              field="booking_no"
+              header={
+                <span className=" d-flex">
+                  Booking No.
+                  {MultiSelectFilter("booking_no", bNo_ , dsrFilter.booking_no)}
+                  <div
+                    className="d-flex sorticon"
+                    style={{ flexDirection: "column" }}
+                  >
+                    <IconButton
+                      onClick={() => {
+                        handleSort("booking_no");
+                      }}
+                      className="p-0"
+                    >
+                      <ExpandLessIcon className="sortup" />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => {
+                        handleSortDown("booking_no");
+                      }}
+                      className="p-0"
+                    >
+                      <ExpandMoreIcon className="sortdown" />
+                    </IconButton>
+                  </div>
+                </span>
+              }
+              className="p-3"
+              style={{
+                fontWeight: "400",
+                fontSize: "13px",
+                lineHeight: "19px",
+                letterSpacing: ".01em",
+                color: "#181E25",
+              }}
           />
-          <Column
-            field="order_no"
-            header={
-              <span className=" d-flex">
-                Order No.
-                {MultiSelectFilter("order_no", orderId_ , dsrFilter.order_no)}
-                <div
-                  className="d-flex sorticon"
-                  style={{ flexDirection: "column" }}
-                >
-                  <IconButton
-                    onClick={() => {
-                      handleSort("order_no");
-                    }}
-                    className="p-0"
+            )}
+            {
+              filtercolumn.map((item)=>item.includes('booking_date') && 
+              <Column
+                field="booking_date"
+                header={
+                  <span className=" d-flex">
+                    Booking Date
+                    {MultiSelectFilter("booking_date", bData_ , dsrFilter.booking_date)}
+                    <div
+                      className="d-flex sorticon"
+                      style={{ flexDirection: "column" }}
+                    >
+                      <IconButton
+                        onClick={() => {
+                          handleSort("booking_date");
+                        }}
+                        className="p-0"
+                      >
+                        <ExpandLessIcon className="sortup" />
+                      </IconButton>
+                      <IconButton
+                        onClick={() => {
+                          handleSortDown("booking_date");
+                        }}
+                        className="p-0"
+                      >
+                        <ExpandMoreIcon className="sortdown" />
+                      </IconButton>
+                    </div>
+                  </span>
+                }
+                className="p-3"
+                style={{
+                  fontWeight: "400",
+                  fontSize: "13px",
+                  lineHeight: "19px",
+                  letterSpacing: ".01em",
+                  color: "#181E25",
+                }}
+              />
+            )}
+          {
+            filtercolumn.map((item)=>item.includes('origin') && 
+            <Column
+              field="origin"
+              header={
+                <span className=" d-flex">
+                  Origin
+                  {MultiSelectFilter("origin", org_ , dsrFilter.origin)}
+                  <div
+                    className="d-flex sorticon"
+                    style={{ flexDirection: "column" }}
                   >
-                    <ExpandLessIcon className="sortup" />
-                  </IconButton>
-                  <IconButton
-                    onClick={() => {
-                      handleSortDown("order_no");
-                    }}
-                    className="p-0"
-                  >
-                    <ExpandMoreIcon className="sortdown" />
-                  </IconButton>
-                </div>
-              </span>
-            }
-            className="p-3"
-            style={{
-              fontWeight: "400",
-              fontSize: "13px",
-              lineHeight: "19px",
-              letterSpacing: ".01em",
-              color: "#181E25",
-            }}
+                    <IconButton
+                      onClick={() => {
+                        handleSort("origin");
+                      }}
+                      className="p-0"
+                    >
+                      <ExpandLessIcon className="sortup" />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => {
+                        handleSortDown("storiginatus");
+                      }}
+                      className="p-0"
+                    >
+                      <ExpandMoreIcon className="sortdown" />
+                    </IconButton>
+                  </div>
+                </span>
+              }
+              className="p-3"
+              style={{
+                fontWeight: "400",
+                fontSize: "13px",
+                lineHeight: "19px",
+                letterSpacing: ".01em",
+                color: "#181E25",
+              }}
           />
-          <Column
-            field="status"
-            header={
-              <span className=" d-flex">
-                Status
-                {MultiSelectFilter("status", status_, dsrFilter.status)}
-                <div
-                  className="d-flex sorticon"
-                  style={{ flexDirection: "column" }}
-                >
-                  <IconButton
-                    onClick={() => {
-                      handleSort("status");
-                    }}
-                    className="p-0"
+           )}
+          {
+            filtercolumn.map((item)=>item.includes('POL1') && 
+            <Column
+              field="POL1"
+              header={
+                <span className=" d-flex">
+                  POL
+                  {MultiSelectFilter("POL1", pol1 , dsrFilter.POL1)}
+                  <div
+                    className="d-flex sorticon"
+                    style={{ flexDirection: "column" }}
                   >
-                    <ExpandLessIcon className="sortup" />
-                  </IconButton>
-                  <IconButton
-                    onClick={() => {
-                      handleSortDown("status");
-                    }}
-                    className="p-0"
+                    <IconButton
+                      onClick={() => {
+                        handleSort("POL1");
+                      }}
+                      className="p-0"
+                    >
+                      <ExpandLessIcon className="sortup" />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => {
+                        handleSortDown("POL1");
+                      }}
+                      className="p-0"
+                    >
+                      <ExpandMoreIcon className="sortdown" />
+                    </IconButton>
+                  </div>
+                </span>
+              }
+              className="p-3"
+              style={{
+                fontWeight: "400",
+                fontSize: "13px",
+                lineHeight: "19px",
+                letterSpacing: ".01em",
+                color: "#181E25",
+              }}
+            />
+           )}
+          {
+            filtercolumn.map((item)=>item.includes('POL2') && 
+            <Column
+              field="POL2"
+              header={
+                <span className=" d-flex">
+                  POL
+                  {MultiSelectFilter("POL2", pol2, dsrFilter.POL2)}
+                  <div
+                    className="d-flex sorticon"
+                    style={{ flexDirection: "column" }}
                   >
-                    <ExpandMoreIcon className="sortdown" />
-                  </IconButton>
-                </div>
-              </span>
-            }
-            className="p-3"
-            style={{
-              fontWeight: "400",
-              fontSize: "13px",
-              lineHeight: "19px",
-              letterSpacing: ".01em",
-              color: "#181E25",
-            }}
-          />
-          <Column
-            field="booking_no"
-            header={
-              <span className=" d-flex">
-                Booking No.
-                {MultiSelectFilter("booking_no", bNo_ , dsrFilter.booking_no)}
-                <div
-                  className="d-flex sorticon"
-                  style={{ flexDirection: "column" }}
-                >
-                  <IconButton
-                    onClick={() => {
-                      handleSort("booking_no");
-                    }}
-                    className="p-0"
+                    <IconButton
+                      onClick={() => {
+                        handleSort("POL2");
+                      }}
+                      className="p-0"
+                    >
+                      <ExpandLessIcon className="sortup" />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => {
+                        handleSortDown("POL2");
+                      }}
+                      className="p-0"
+                    >
+                      <ExpandMoreIcon className="sortdown" />
+                    </IconButton>
+                  </div>
+                </span>
+              }
+              className="p-3"
+              style={{
+                fontWeight: "400",
+                fontSize: "13px",
+                lineHeight: "19px",
+                letterSpacing: ".01em",
+                color: "#181E25",
+              }}
+            />
+           )}
+          {
+            filtercolumn.map((item)=>item.includes('final_destination') && 
+            <Column
+              field="final_destination"
+              header={
+                <span className=" d-flex">
+                  Final Destination
+                  {MultiSelectFilter("final_destination", finalDest_ , dsrFilter.final_destination)}
+                  <div
+                    className="d-flex sorticon"
+                    style={{ flexDirection: "column" }}
                   >
-                    <ExpandLessIcon className="sortup" />
-                  </IconButton>
-                  <IconButton
-                    onClick={() => {
-                      handleSortDown("booking_no");
-                    }}
-                    className="p-0"
+                    <IconButton
+                      onClick={() => {
+                        handleSort("final_destination");
+                      }}
+                      className="p-0"
+                    >
+                      <ExpandLessIcon className="sortup" />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => {
+                        handleSortDown("final_destination");
+                      }}
+                      className="p-0"
+                    >
+                      <ExpandMoreIcon className="sortdown" />
+                    </IconButton>
+                  </div>
+                </span>
+              }
+              className="p-3"
+              style={{
+                fontWeight: "400",
+                fontSize: "13px",
+                lineHeight: "19px",
+                letterSpacing: ".01em",
+                color: "#181E25",
+              }}
+            />
+           )}
+          {
+            filtercolumn.map((item)=>item.includes('cargo_received') && 
+            <Column
+              field="cargo_received"
+              header={
+                <span className=" d-flex">
+                  Cargo Received
+                  {MultiSelectFilter("cargo_received", cargoR1_, dsrFilter.cargo_received)}
+                  <div
+                    className="d-flex sorticon"
+                    style={{ flexDirection: "column" }}
                   >
-                    <ExpandMoreIcon className="sortdown" />
-                  </IconButton>
-                </div>
-              </span>
-            }
-            className="p-3"
-            style={{
-              fontWeight: "400",
-              fontSize: "13px",
-              lineHeight: "19px",
-              letterSpacing: ".01em",
-              color: "#181E25",
-            }}
-          />
-          <Column
-            field="booking_date"
-            header={
-              <span className=" d-flex">
-                Booking Date
-                {MultiSelectFilter("booking_date", bData_ , dsrFilter.booking_date)}
-                <div
-                  className="d-flex sorticon"
-                  style={{ flexDirection: "column" }}
-                >
-                  <IconButton
-                    onClick={() => {
-                      handleSort("booking_date");
-                    }}
-                    className="p-0"
+                    <IconButton
+                      onClick={() => {
+                        handleSort("cargo_received");
+                      }}
+                      className="p-0"
+                    >
+                      <ExpandLessIcon className="sortup" />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => {
+                        handleSortDown("cargo_received");
+                      }}
+                      className="p-0"
+                    >
+                      <ExpandMoreIcon className="sortdown" />
+                    </IconButton>
+                  </div>
+                </span>
+              }
+              className="p-3"
+              style={{
+                fontWeight: "400",
+                fontSize: "13px",
+                lineHeight: "19px",
+                letterSpacing: ".01em",
+                color: "#181E25",
+              }}
+            />
+           )}
+          {
+            filtercolumn.map((item)=>item.includes('pickup_date') && 
+            <Column
+              field="pickup_date"
+              header={
+                <span className=" d-flex">
+                  Pickup Date
+                  {MultiSelectFilter("pickup_date", pickupDate_, dsrFilter.pickup_date)}
+                  <div
+                    className="d-flex sorticon"
+                    style={{ flexDirection: "column" }}
                   >
-                    <ExpandLessIcon className="sortup" />
-                  </IconButton>
-                  <IconButton
-                    onClick={() => {
-                      handleSortDown("booking_date");
-                    }}
-                    className="p-0"
+                    <IconButton
+                      onClick={() => {
+                        handleSort("pickup_date");
+                      }}
+                      className="p-0"
+                    >
+                      <ExpandLessIcon className="sortup" />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => {
+                        handleSortDown("pickup_date");
+                      }}
+                      className="p-0"
+                    >
+                      <ExpandMoreIcon className="sortdown" />
+                    </IconButton>
+                  </div>
+                </span>
+              }
+              className="p-3"
+              style={{
+                fontWeight: "400",
+                fontSize: "13px",
+                lineHeight: "19px",
+                letterSpacing: ".01em",
+                color: "#181E25",
+              }}
+            />
+           )}
+          {
+            filtercolumn.map((item)=>item.includes('cargo_received2') && 
+            <Column
+              field="cargo_received2"
+              header={
+                <span className=" d-flex">
+                  Cargo Received
+                  {MultiSelectFilter("cargo_received2", cargoR2_, dsrFilter.cargo_received2)}
+                  <div
+                    className="d-flex sorticon"
+                    style={{ flexDirection: "column" }}
                   >
-                    <ExpandMoreIcon className="sortdown" />
-                  </IconButton>
-                </div>
-              </span>
-            }
-            className="p-3"
-            style={{
-              fontWeight: "400",
-              fontSize: "13px",
-              lineHeight: "19px",
-              letterSpacing: ".01em",
-              color: "#181E25",
-            }}
-          />
-          <Column
-            field="origin"
-            header={
-              <span className=" d-flex">
-                Origin
-                {MultiSelectFilter("origin", org_ , dsrFilter.origin)}
-                <div
-                  className="d-flex sorticon"
-                  style={{ flexDirection: "column" }}
-                >
-                  <IconButton
-                    onClick={() => {
-                      handleSort("origin");
-                    }}
-                    className="p-0"
+                    <IconButton
+                      onClick={() => {
+                        handleSort("cargo_received2");
+                      }}
+                      className="p-0"
+                    >
+                      <ExpandLessIcon className="sortup" />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => {
+                        handleSortDown("cargo_received2");
+                      }}
+                      className="p-0"
+                    >
+                      <ExpandMoreIcon className="sortdown" />
+                    </IconButton>
+                  </div>
+                </span>
+              }
+              className="p-3"
+              style={{
+                fontWeight: "400",
+                fontSize: "13px",
+                lineHeight: "19px",
+                letterSpacing: ".01em",
+                color: "#181E25",
+              }}
+            />
+           )}
+          {
+            filtercolumn.map((item)=>item.includes('etd_origin') && 
+            <Column
+              field="etd_origin"
+              header={
+                <span className=" d-flex">
+                  ETD Origin
+                  {MultiSelectFilter("etd_origin", etdOrg_ , dsrFilter.etd_origin)}
+                  <div
+                    className="d-flex sorticon"
+                    style={{ flexDirection: "column" }}
                   >
-                    <ExpandLessIcon className="sortup" />
-                  </IconButton>
-                  <IconButton
-                    onClick={() => {
-                      handleSortDown("storiginatus");
-                    }}
-                    className="p-0"
-                  >
-                    <ExpandMoreIcon className="sortdown" />
-                  </IconButton>
-                </div>
-              </span>
-            }
-            className="p-3"
-            style={{
-              fontWeight: "400",
-              fontSize: "13px",
-              lineHeight: "19px",
-              letterSpacing: ".01em",
-              color: "#181E25",
-            }}
-          />
-          <Column
-            field="POL1"
-            header={
-              <span className=" d-flex">
-                POL
-                {MultiSelectFilter("POL1", pol1 , dsrFilter.POL1)}
-                <div
-                  className="d-flex sorticon"
-                  style={{ flexDirection: "column" }}
-                >
-                  <IconButton
-                    onClick={() => {
-                      handleSort("POL1");
-                    }}
-                    className="p-0"
-                  >
-                    <ExpandLessIcon className="sortup" />
-                  </IconButton>
-                  <IconButton
-                    onClick={() => {
-                      handleSortDown("POL1");
-                    }}
-                    className="p-0"
-                  >
-                    <ExpandMoreIcon className="sortdown" />
-                  </IconButton>
-                </div>
-              </span>
-            }
-            className="p-3"
-            style={{
-              fontWeight: "400",
-              fontSize: "13px",
-              lineHeight: "19px",
-              letterSpacing: ".01em",
-              color: "#181E25",
-            }}
-          />
-          <Column
-            field="POL2"
-            header={
-              <span className=" d-flex">
-                POL
-                {MultiSelectFilter("POL2", pol2, dsrFilter.POL2)}
-                <div
-                  className="d-flex sorticon"
-                  style={{ flexDirection: "column" }}
-                >
-                  <IconButton
-                    onClick={() => {
-                      handleSort("POL2");
-                    }}
-                    className="p-0"
-                  >
-                    <ExpandLessIcon className="sortup" />
-                  </IconButton>
-                  <IconButton
-                    onClick={() => {
-                      handleSortDown("POL2");
-                    }}
-                    className="p-0"
-                  >
-                    <ExpandMoreIcon className="sortdown" />
-                  </IconButton>
-                </div>
-              </span>
-            }
-            className="p-3"
-            style={{
-              fontWeight: "400",
-              fontSize: "13px",
-              lineHeight: "19px",
-              letterSpacing: ".01em",
-              color: "#181E25",
-            }}
-          />
-          <Column
-            field="final_destination"
-            header={
-              <span className=" d-flex">
-                Final Destination
-                {MultiSelectFilter("final_destination", finalDest_ , dsrFilter.final_destination)}
-                <div
-                  className="d-flex sorticon"
-                  style={{ flexDirection: "column" }}
-                >
-                  <IconButton
-                    onClick={() => {
-                      handleSort("final_destination");
-                    }}
-                    className="p-0"
-                  >
-                    <ExpandLessIcon className="sortup" />
-                  </IconButton>
-                  <IconButton
-                    onClick={() => {
-                      handleSortDown("final_destination");
-                    }}
-                    className="p-0"
-                  >
-                    <ExpandMoreIcon className="sortdown" />
-                  </IconButton>
-                </div>
-              </span>
-            }
-            className="p-3"
-            style={{
-              fontWeight: "400",
-              fontSize: "13px",
-              lineHeight: "19px",
-              letterSpacing: ".01em",
-              color: "#181E25",
-            }}
-          />
-          <Column
-            field="cargo_received"
-            header={
-              <span className=" d-flex">
-                Cargo Received
-                {MultiSelectFilter("cargo_received", cargoR1_, dsrFilter.cargo_received)}
-                <div
-                  className="d-flex sorticon"
-                  style={{ flexDirection: "column" }}
-                >
-                  <IconButton
-                    onClick={() => {
-                      handleSort("cargo_received");
-                    }}
-                    className="p-0"
-                  >
-                    <ExpandLessIcon className="sortup" />
-                  </IconButton>
-                  <IconButton
-                    onClick={() => {
-                      handleSortDown("cargo_received");
-                    }}
-                    className="p-0"
-                  >
-                    <ExpandMoreIcon className="sortdown" />
-                  </IconButton>
-                </div>
-              </span>
-            }
-            className="p-3"
-            style={{
-              fontWeight: "400",
-              fontSize: "13px",
-              lineHeight: "19px",
-              letterSpacing: ".01em",
-              color: "#181E25",
-            }}
-          />
-          <Column
-            field="pickup_date"
-            header={
-              <span className=" d-flex">
-                Pickup Date
-                {MultiSelectFilter("pickup_date", pickupDate_, dsrFilter.pickup_date)}
-                <div
-                  className="d-flex sorticon"
-                  style={{ flexDirection: "column" }}
-                >
-                  <IconButton
-                    onClick={() => {
-                      handleSort("pickup_date");
-                    }}
-                    className="p-0"
-                  >
-                    <ExpandLessIcon className="sortup" />
-                  </IconButton>
-                  <IconButton
-                    onClick={() => {
-                      handleSortDown("pickup_date");
-                    }}
-                    className="p-0"
-                  >
-                    <ExpandMoreIcon className="sortdown" />
-                  </IconButton>
-                </div>
-              </span>
-            }
-            className="p-3"
-            style={{
-              fontWeight: "400",
-              fontSize: "13px",
-              lineHeight: "19px",
-              letterSpacing: ".01em",
-              color: "#181E25",
-            }}
-          />
-          <Column
-            field="cargo_received2"
-            header={
-              <span className=" d-flex">
-                Cargo Received
-                {MultiSelectFilter("cargo_received2", cargoR2_, dsrFilter.cargo_received2)}
-                <div
-                  className="d-flex sorticon"
-                  style={{ flexDirection: "column" }}
-                >
-                  <IconButton
-                    onClick={() => {
-                      handleSort("cargo_received2");
-                    }}
-                    className="p-0"
-                  >
-                    <ExpandLessIcon className="sortup" />
-                  </IconButton>
-                  <IconButton
-                    onClick={() => {
-                      handleSortDown("cargo_received2");
-                    }}
-                    className="p-0"
-                  >
-                    <ExpandMoreIcon className="sortdown" />
-                  </IconButton>
-                </div>
-              </span>
-            }
-            className="p-3"
-            style={{
-              fontWeight: "400",
-              fontSize: "13px",
-              lineHeight: "19px",
-              letterSpacing: ".01em",
-              color: "#181E25",
-            }}
-          />
-          <Column
-            field="etd_origin"
-            header={
-              <span className=" d-flex">
-                ETD Origin
-                {MultiSelectFilter("etd_origin", etdOrg_ , dsrFilter.etd_origin)}
-                <div
-                  className="d-flex sorticon"
-                  style={{ flexDirection: "column" }}
-                >
-                  <IconButton
-                    onClick={() => {
-                      handleSort("etd_origin");
-                    }}
-                    className="p-0"
-                  >
-                    <ExpandLessIcon className="sortup" />
-                  </IconButton>
-                  <IconButton
-                    onClick={() => {
-                      handleSortDown("etd_origin");
-                    }}
-                    className="p-0"
-                  >
-                    <ExpandMoreIcon className="sortdown" />
-                  </IconButton>
-                </div>
-              </span>
-            }
-            className="p-3"
-            style={{
-              fontWeight: "400",
-              fontSize: "13px",
-              lineHeight: "19px",
-              letterSpacing: ".01em",
-              color: "#181E25",
-            }}
-          />
+                    <IconButton
+                      onClick={() => {
+                        handleSort("etd_origin");
+                      }}
+                      className="p-0"
+                    >
+                      <ExpandLessIcon className="sortup" />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => {
+                        handleSortDown("etd_origin");
+                      }}
+                      className="p-0"
+                    >
+                      <ExpandMoreIcon className="sortdown" />
+                    </IconButton>
+                  </div>
+                </span>
+              }
+              className="p-3"
+              style={{
+                fontWeight: "400",
+                fontSize: "13px",
+                lineHeight: "19px",
+                letterSpacing: ".01em",
+                color: "#181E25",
+              }}
+            />
+            )} */}
         </DataTable>
         <div
           style={{
@@ -840,7 +962,13 @@ function DailyReportTable() {
             <img className="me-2" src={group}></img>Columns
           </p>
         </div>
-        {sidebaropen && <Columns />}
+        {sidebaropen && (
+          <Columns
+            setfiltercolumn={setfiltercolumn}
+            ColumnObject={ColumnObject}
+            DsrColumns={DsrColumns}
+          />
+        )}
       </div>
       <Pagination
         currentPage={currentPage}
