@@ -5,17 +5,17 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
-import Cookies from 'js-cookie'
-
+import Cookies from "js-cookie";
 
 // import { ReactComponent as Logo } from "../../assets/Logo.svg";
 import Logo from "../../assets/fresGoLogo.jpg";
 import { ReactComponent as Bell } from "../../assets/bell.svg";
 import { Dropdown } from "antd";
 
-const Header = ({ activePage }) => {
+const Header = ({ setShowText }) => {
   const navigate = useNavigate();
   const location = useLocation();
+  const pathname = location.pathname;
   const [headerFocused, setHeaderFocused] = useState(true);
 
   const handleHeaderFocus = () => {
@@ -26,10 +26,10 @@ const Header = ({ activePage }) => {
     setHeaderFocused(false);
   };
 
-  const handleLogout =()=>{
-    Cookies.remove('jwtToken');
-    window.location.href= 'http://www.freightsystems.com'
-  }
+  const handleLogout = () => {
+    Cookies.remove("jwtToken");
+    window.location.href = "http://www.freightsystems.com";
+  };
 
   const items = [
     {
@@ -60,19 +60,15 @@ const Header = ({ activePage }) => {
       label: (
         <Link
           className="text-decoration-none"
-
-
-          style={
-            {
-              fontSize:"14px",
-              fontWeight:"400",
-              letterSpacing:".01em",
-              color:"black",
-              marginRight:"70px",
-              lineHeight:"27px",
-            }
-          }
-          onClick={()=>handleLogout()}
+          style={{
+            fontSize: "14px",
+            fontWeight: "400",
+            letterSpacing: ".01em",
+            color: "black",
+            marginRight: "70px",
+            lineHeight: "27px",
+          }}
+          onClick={() => handleLogout()}
         >
           <LogoutIcon
             sx={{ fontSize: "23px", color: "#384656" }}
@@ -84,8 +80,7 @@ const Header = ({ activePage }) => {
     },
   ];
   const handleRedirectToShipments = () => {
-    console.log("redirect Clicked");
-    navigate("/#/login?id=FRESCONV2&token=e1745a907281400e938a8203a1004c5f");
+    navigate("/");
   };
   return (
     <div
@@ -113,7 +108,7 @@ const Header = ({ activePage }) => {
             height="35px"
             alt="Logo"
             onClick={handleRedirectToShipments}
-            style={{cursor:"pointer"}}
+            style={{ cursor: "pointer" }}
           />
         </div>
         <Box
@@ -261,7 +256,7 @@ const Header = ({ activePage }) => {
               }}
             >
               3{/* 3<sup>+</sup> */}
-            {/* </Typography>
+        {/* </Typography>
           </div> */}
         {/* </div>  */}
         <Dropdown
@@ -280,8 +275,8 @@ const Header = ({ activePage }) => {
               width: "43px",
               height: "41px",
               borderRadius: "50%",
-              alignSelf:"center",
-              alignContent:"center"
+              alignSelf: "center",
+              alignContent: "center",
             }}
             role="button"
             className="justify-text-center align-content-center"

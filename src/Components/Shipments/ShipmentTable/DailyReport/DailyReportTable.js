@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import "./DailyReportTable.css";
@@ -10,10 +10,11 @@ import Columns from "./Columns";
 import { Tooltip } from "antd";
 import { MultiSelect } from "primereact/multiselect";
 import { Tag } from "primereact/tag";
-import { CloseOutlined } from "@ant-design/icons";
+import { CloseOutlined, LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { IconButton } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { DsrReportRequest } from "../../../../Redux/Actions/DsrReportAction";
+import { CircularProgress, Box } from "@mui/material";
 
 function DailyReportTable() {
   const Profileusertoken = useSelector(
@@ -42,6 +43,7 @@ function DailyReportTable() {
   }, [Profileusertoken, dispatch]);
 
   //Hooks
+  const { loading } = useSelector((state) => state.DsrReport);
   const DsrReportData = useSelector((state) => state.DsrReport.dsrData);
   const DsrColumns = DsrReportData?.columns;
   const DsrDatas = DsrReportData?.data;
@@ -283,18 +285,26 @@ function DailyReportTable() {
     startIndex + itemsPerPage
   );
 
-  const noData = () => {
-    return <div className="no-options ">No Data Found</div>;
-  };
+  // const noData = () => {
+  //   return (
+  //     <div
+  //       className="no-options"
+  //       style={{ alignSelf: "center", height: "353px" }}
+  //     >
+  //       No Data Found
+  //     </div>
+  //   );
+  // };
   const columnValueData = (fieldName) => (rowData) => {
     const fieldValue = rowData[fieldName];
+
     return (
       <div style={{ width: "120px" }} className="px-1">
         {fieldValue?.length <= 14 ? (
           fieldValue
         ) : (
           <Tooltip placement="topLeft" title={fieldValue}>
-            <span role="button">
+            <span>
               {fieldValue?.slice(0, 14)?.trim()?.split(" ")?.join("") + ".."}
             </span>
           </Tooltip>
@@ -302,6 +312,69 @@ function DailyReportTable() {
       </div>
     );
   };
+  const scrollRef = useRef(null);
+  const [showLeftArrow, setShowLeftArrow] = useState(false);
+  const [showRightArrow, setShowRightArrow] = useState(false);
+
+  const checkArrows = () => {
+    if (scrollRef.current) {
+      const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
+      setShowLeftArrow(scrollLeft > 0);
+      setShowRightArrow(scrollLeft + clientWidth < scrollWidth);
+    }
+  };
+
+  const scrollLeft = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: -200, behavior: "smooth" });
+    }
+  };
+
+  const scrollRight = () => {
+    if (scrollRef.current) {
+      scrollRef.current.scrollBy({ left: 200, behavior: "smooth" });
+    }
+  };
+
+  useEffect(() => {
+    checkArrows();
+    if (scrollRef.current) {
+      scrollRef.current.addEventListener("scroll", checkArrows);
+    }
+    return () => {
+      if (scrollRef.current) {
+        scrollRef.current.removeEventListener("scroll", checkArrows);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => {
+      checkArrows();
+    };
+
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "353px",
+          // alignSelf:"center"
+        }}
+      >
+        <CircularProgress style={{ color: "red" }} />
+      </Box>
+    );
+  }
+
   return (
     <>
       <div className="dsr_section mb-2">
@@ -319,47 +392,73 @@ function DailyReportTable() {
               left: "0px",
             }}
           >
-            {Object.entries(dsrFilter)?.map(([field, filterValues]) => (
-              <FilterTag
-                key={field}
-                field={field}
-                filterValues={filterValues}
-                handleChangeFilter={handleChangeFilter}
-              />
-            ))}
-            {Object.keys(dsrFilter)?.some(
-              (key) => dsrFilter[key]?.length > 0
-            ) && (
-              <Tag
-                style={{
-                  backgroundColor: "#F01E1E",
-                  marginRight: "10px",
-                  position: "relative",
-                  fontSize: "10px",
-                  marginLeft: "auto",
-                }}
-                className="px-2 py-1"
-                rounded
+            <div
+              className="scroll-content mt-1"
+              style={{
+                maxWidth: "1225px",
+                overflow: "hidden",
+                whiteSpace: "nowrap",
+              }}
+            >
+              <div
+                className={`arrow ${showLeftArrow ? "show" : ""}`}
+                onClick={scrollLeft}
               >
-                <div>
-                  Clear All
-                  <span className="ms-2">
-                    <CloseOutlined
-                      onClick={() => handleChangeFilter("all", [])}
-                    />
-                  </span>
-                </div>
-              </Tag>
-            )}
+                <LeftOutlined />
+              </div>
+              <div className="scroll-content" ref={scrollRef}>
+                {Object.entries(dsrFilter)?.map(([field, filterValues]) => (
+                  <FilterTag
+                    key={field}
+                    field={field}
+                    filterValues={filterValues}
+                    handleChangeFilter={handleChangeFilter}
+                  />
+                ))}
+              </div>
+              <div
+                className={`arrow ${showRightArrow ? "show" : ""}`}
+                onClick={scrollRight}
+              >
+                <RightOutlined />
+              </div>
+            </div>
+            <div className="ms-auto">
+              {Object.keys(dsrFilter)?.some(
+                (key) => dsrFilter[key]?.length > 0
+              ) && (
+                <Tag
+                  style={{
+                    backgroundColor: "#F01E1E",
+                    marginRight: "10px",
+                    position: "relative",
+                    fontSize: "10px",
+                    width: "80px",
+                    marginLeft: "20px",
+                  }}
+                  className="px-2 py-1"
+                  rounded
+                >
+                  <div>
+                    Clear All
+                    <span className="ms-2">
+                      <CloseOutlined
+                        onClick={() => handleChangeFilter("all", [])}
+                      />
+                    </span>
+                  </div>
+                </Tag>
+              )}
+            </div>
           </div>
         )}
         <DataTable
           value={paginatedData}
           style={{ height: "380px", width: "fit-content" }}
-          emptyMessage={noData()}
+          // emptyMessage={noData()}
         >
           {arrayOfObj?.map((item, index) => {
-           
+            console.log(item?.header);
             if (filtercolumn[item?.header]) {
               return (
                 <Column
@@ -399,16 +498,15 @@ function DailyReportTable() {
                   }
                   style={{
                     paddingTop: "15px",
-                    paddingBottom:"15px",
-                    paddingLeft:"5px",
-                    paddingRight:"5px",
                     fontWeight: "400",
                     fontSize: "13px",
                     lineHeight: "19px",
                     letterSpacing: ".01em",
                     color: "#181E25",
                     whiteSpace: "nowrap",
-                   
+                    paddingBottom: "15px",
+                    paddingLeft: "10px",
+                    paddingRight: "10px",
                   }}
                 />
               );

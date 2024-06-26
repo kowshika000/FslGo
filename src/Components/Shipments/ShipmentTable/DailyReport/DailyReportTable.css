@@ -56,3 +56,28 @@
     border-color: red;
     background-color: red;
   }
+  
+  .scroll-content {
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none; 
+  }
+  
+  /* .scroll-content::-webkit-scrollbar {
+    display: none;
+  } */
+  
+  .arrow {
+    cursor: pointer;
+    user-select: none;
+    /* padding: 10px; */
+    font-size: 13px;
+    margin:0px 3px;
+    visibility: hidden; /* Hide by default */
+  }
+
+  .arrow.show {
+    visibility: visible; /* Show when needed */
+  }
