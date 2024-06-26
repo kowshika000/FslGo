@@ -393,19 +393,21 @@ function DailyReportTable() {
             }}
           >
             <div
-              className="scroll-content mt-1"
+              className="mt-1"
               style={{
-                maxWidth: "1225px",
+                display: "flex",
+                alignItems: "center",
                 overflow: "hidden",
                 whiteSpace: "nowrap",
+                position: "relative",
               }}
             >
-              <div
+              {/* <div
                 className={`arrow ${showLeftArrow ? "show" : ""}`}
                 onClick={scrollLeft}
               >
                 <LeftOutlined />
-              </div>
+              </div> */}
               <div className="scroll-content" ref={scrollRef}>
                 {Object.entries(dsrFilter)?.map(([field, filterValues]) => (
                   <FilterTag
@@ -416,12 +418,12 @@ function DailyReportTable() {
                   />
                 ))}
               </div>
-              <div
+              {/* <div
                 className={`arrow ${showRightArrow ? "show" : ""}`}
                 onClick={scrollRight}
               >
                 <RightOutlined />
-              </div>
+              </div> */}
             </div>
             <div className="ms-auto">
               {Object.keys(dsrFilter)?.some(
