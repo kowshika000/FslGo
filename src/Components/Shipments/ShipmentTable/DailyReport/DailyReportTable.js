@@ -288,15 +288,17 @@ function DailyReportTable() {
   };
   const columnValueData = (fieldName) => (rowData) => {
     const fieldValue = rowData[fieldName];
-    console.log("row", rowData, "fieldname", fieldName, "value", fieldValue);
-    const matchingReportEntry = report.find(
-      (entry) => entry.ORDER_NO === rowData.ORDER_NO
-    );
     return (
-      <div>
-        {fieldValue}
-        {fieldName === "FINAL_DESTINATION" && matchingReportEntry?.DESTINATION}
-        {fieldName === "PCS" && matchingReportEntry?.ORDER_PCS}
+      <div style={{ width: "120px" }} className="px-1">
+        {fieldValue?.length <= 14 ? (
+          fieldValue
+        ) : (
+          <Tooltip placement="topLeft" title={fieldValue}>
+            <span role="button">
+              {fieldValue?.slice(0, 14)?.trim()?.split(" ")?.join("") + ".."}
+            </span>
+          </Tooltip>
+        )}
       </div>
     );
   };
@@ -357,7 +359,7 @@ function DailyReportTable() {
           emptyMessage={noData()}
         >
           {arrayOfObj?.map((item, index) => {
-            console.log(item?.header);
+           
             if (filtercolumn[item?.header]) {
               return (
                 <Column
@@ -396,13 +398,17 @@ function DailyReportTable() {
                     </span>
                   }
                   style={{
-                    padding: "15px",
+                    paddingTop: "15px",
+                    paddingBottom:"15px",
+                    paddingLeft:"5px",
+                    paddingRight:"5px",
                     fontWeight: "400",
                     fontSize: "13px",
                     lineHeight: "19px",
                     letterSpacing: ".01em",
                     color: "#181E25",
                     whiteSpace: "nowrap",
+                   
                   }}
                 />
               );
