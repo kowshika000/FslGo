@@ -18,10 +18,12 @@ import image3 from "../../../assets/Shape2.svg";
 import DailyReportTable from "./DailyReport/DailyReportTable";
 import { CalendarOutlined, CaretDownOutlined } from "@ant-design/icons";
 import cal from "../../../assets/calVector.svg";
+import ScheduleDsrModal from "./DailyReport/DailyReportModal/ScheduleDsrModal";
 
 function BookingTabs({ showText, setShowText }) {
   const [searchQuery] = useState("");
   const [data, setData] = useState([]);
+  const [schedulemodal,setSchedulemodal] = useState(false);
   const ShipmentData = useSelector((state) => state.Booking);
   const bookingData = ShipmentData?.booking;
   const tabCount = ShipmentData?.booking?.statuswise_count;
@@ -390,6 +392,7 @@ function BookingTabs({ showText, setShowText }) {
                     alt="img"
                     className="me-1"
                     style={{ width: "12px", height: "13.5px" }}
+                    onClick={()=>setSchedulemodal(true)}
                   />
                   <img
                     src={image2}
@@ -431,6 +434,7 @@ function BookingTabs({ showText, setShowText }) {
         </Col>
       </Row>
       <FilterDrawer visible={visible} onClose={onClose} />
+      <ScheduleDsrModal open={schedulemodal} close={()=>setSchedulemodal(false)} />
     </div>
   );
 }
