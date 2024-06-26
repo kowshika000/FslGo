@@ -20,6 +20,17 @@ import ChipsSchedule from './ChipsSchedule';
 
 const ScheduleDsrModal = ({open, close}) => {
 
+  const [forminputs, setforminputs] = useState([
+    {
+      emails:[],
+      schedulebasis:"",
+      booked:false,
+      intransit:false,
+      closed:false,
+      arrived:false,
+    }
+  ])
+console.log(forminputs)
   return (
     <Dialog
     open= {open}
@@ -51,7 +62,7 @@ const ScheduleDsrModal = ({open, close}) => {
               color:"#6666"
             }}
           >Email List</p>
-          <ChipsSchedule />
+          <ChipsSchedule setforminputs={setforminputs} forminputs={forminputs}  />
           <FormControl>
             <RadioGroup
               row
@@ -137,9 +148,9 @@ const ScheduleDsrModal = ({open, close}) => {
               />
             </div>
          </FormControl>
-        </DialogContent>
-        <DialogActions>
-          <div className="button_propety" style={{marginRight:"90px"}}>
+        {/* </DialogContent>
+        // <DialogActions> */}
+          <div className="button_propety d-flex mt-4" >
             <button className='dsr_btn me-5'
               style={{
                 padding:"5px 22px",
@@ -186,9 +197,11 @@ const ScheduleDsrModal = ({open, close}) => {
             >
               Update
             </button>
+            {/* <Form /> */}
           </div>
-        </DialogActions>
-
+        {/* </DialogActions> */}
+        {/* </Form> */}
+        </DialogContent>
     </Dialog>
   )
 }
