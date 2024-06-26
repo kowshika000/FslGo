@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Autocomplete, Chip, Input, Stack, TextField } from '@mui/material'
 
-const ChipsSchedule = () => {
+const ChipsSchedule = ({setforminputs,forminputs}) => {
     const [receivers, setReceivers] = useState([]);
 
     const top100Films = []
@@ -10,10 +10,10 @@ const ChipsSchedule = () => {
     <Autocomplete
         multiple
         limitTags={2}
-        onChange={(e, value) => setReceivers((state) => value)}
+        // onChange={(e, value) => setforminputs((prev)=>[{...prev,emails:[value]}])}
+        style={{marginBottom:"10px"}}
         id="multiple-limit-tags"
-        options={top100Films.map((option) => option)}
-        defaultValue={[top100Films]}
+        // options={forminputs.emails?.map((option) => option)}
         freeSolo
         renderTags={(value, getTagProps) =>
           value.map((option, index) => (
