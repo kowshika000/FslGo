@@ -14,6 +14,7 @@ import { CloseOutlined, LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { IconButton } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { DsrReportRequest } from "../../../../Redux/Actions/DsrReportAction";
+import { CircularProgress, Box } from "@mui/material";
 
 function DailyReportTable() {
   const Profileusertoken = useSelector(
@@ -42,6 +43,7 @@ function DailyReportTable() {
   }, [Profileusertoken, dispatch]);
 
   //Hooks
+  const { loading } = useSelector((state) => state.DsrReport);
   const DsrReportData = useSelector((state) => state.DsrReport.dsrData);
   const DsrColumns = DsrReportData?.columns;
   const DsrDatas = DsrReportData?.data;
@@ -283,20 +285,30 @@ function DailyReportTable() {
     startIndex + itemsPerPage
   );
 
-  const noData = () => {
-    return <div className="no-options ">No Data Found</div>;
-  };
+  // const noData = () => {
+  //   return (
+  //     <div
+  //       className="no-options"
+  //       style={{ alignSelf: "center", height: "353px" }}
+  //     >
+  //       No Data Found
+  //     </div>
+  //   );
+  // };
   const columnValueData = (fieldName) => (rowData) => {
     const fieldValue = rowData[fieldName];
-    console.log("row", rowData, "fieldname", fieldName, "value", fieldValue);
-    const matchingReportEntry = report.find(
-      (entry) => entry.ORDER_NO === rowData.ORDER_NO
-    );
+
     return (
-      <div>
-        {fieldValue}
-        {fieldName === "FINAL_DESTINATION" && matchingReportEntry?.DESTINATION}
-        {fieldName === "PCS" && matchingReportEntry?.ORDER_PCS}
+      <div style={{ width: "120px" }} className="px-1">
+        {fieldValue?.length <= 14 ? (
+          fieldValue
+        ) : (
+          <Tooltip placement="topLeft" title={fieldValue}>
+            <span>
+              {fieldValue?.slice(0, 14)?.trim()?.split(" ")?.join("") + ".."}
+            </span>
+          </Tooltip>
+        )}
       </div>
     );
   };
@@ -314,24 +326,24 @@ function DailyReportTable() {
 
   const scrollLeft = () => {
     if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: -200, behavior: 'smooth' });
+      scrollRef.current.scrollBy({ left: -200, behavior: "smooth" });
     }
   };
 
   const scrollRight = () => {
     if (scrollRef.current) {
-      scrollRef.current.scrollBy({ left: 200, behavior: 'smooth' });
+      scrollRef.current.scrollBy({ left: 200, behavior: "smooth" });
     }
   };
 
   useEffect(() => {
     checkArrows();
     if (scrollRef.current) {
-      scrollRef.current.addEventListener('scroll', checkArrows);
+      scrollRef.current.addEventListener("scroll", checkArrows);
     }
     return () => {
       if (scrollRef.current) {
-        scrollRef.current.removeEventListener('scroll', checkArrows);
+        scrollRef.current.removeEventListener("scroll", checkArrows);
       }
     };
   }, []);
@@ -341,12 +353,28 @@ function DailyReportTable() {
       checkArrows();
     };
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
-  
+
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "353px",
+          // alignSelf:"center"
+        }}
+      >
+        <CircularProgress style={{ color: "red" }} />
+      </Box>
+    );
+  }
+
   return (
     <>
       <div className="dsr_section mb-2">
@@ -367,7 +395,7 @@ function DailyReportTable() {
             <div
               className="scroll-content mt-1"
               style={{
-                maxWidth: "1100px",
+                maxWidth: "1225px",
                 overflow: "hidden",
                 whiteSpace: "nowrap",
               }}
@@ -405,6 +433,8 @@ function DailyReportTable() {
                     marginRight: "10px",
                     position: "relative",
                     fontSize: "10px",
+                    width: "80px",
+                    marginLeft: "20px",
                   }}
                   className="px-2 py-1"
                   rounded
@@ -425,7 +455,7 @@ function DailyReportTable() {
         <DataTable
           value={paginatedData}
           style={{ height: "380px", width: "fit-content" }}
-          emptyMessage={noData()}
+          // emptyMessage={noData()}
         >
           {arrayOfObj?.map((item, index) => {
             console.log(item?.header);
@@ -467,13 +497,16 @@ function DailyReportTable() {
                     </span>
                   }
                   style={{
-                    padding: "15px",
+                    paddingTop: "15px",
                     fontWeight: "400",
                     fontSize: "13px",
                     lineHeight: "19px",
                     letterSpacing: ".01em",
                     color: "#181E25",
                     whiteSpace: "nowrap",
+                    paddingBottom: "15px",
+                    paddingLeft: "10px",
+                    paddingRight: "10px",
                   }}
                 />
               );
