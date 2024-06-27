@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Tabs, Row, Col, Image } from "antd";
 import AllBookings from "./AllBookings";
+import { DsrDownloadRequest } from "../../../Redux/Actions/DsrDownloadAction";
 import "../ShipBookingTabs.css";
 import { useDispatch, useSelector } from "react-redux";
 import { SearchHeader } from "./SearchHeader";
@@ -100,6 +101,10 @@ function BookingTabs({ showText, setShowText }) {
   const Profileusertoken = useSelector(
     (state) => state.ProfileData?.profileData?.usertoken
   );
+  const payloadofdsrdownload = {
+    sl_no: Profileusertoken,
+
+  };
   let sselectcolumn = "";
   if (filtercolumn && typeof filtercolumn === 'object') {
     sselectcolumn = Object.keys(filtercolumn).join(","); 
@@ -420,6 +425,9 @@ function BookingTabs({ showText, setShowText }) {
                     alt="img"
                     className="mx-1"
                     style={{ width: "12px", height: "13.5px" }}
+                    // role="button"
+                    onClick={()=>{dispatch(DsrDownloadRequest({payloadofdsrdownload}));
+                    console.log("dispatched")}}
                   />
                   <img
                     src={image3}
