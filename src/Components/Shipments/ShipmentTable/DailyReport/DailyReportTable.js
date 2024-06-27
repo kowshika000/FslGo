@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { DsrReportRequest } from "../../../../Redux/Actions/DsrReportAction";
 import { CircularProgress, Box } from "@mui/material";
 
-function DailyReportTable() {
+function DailyReportTable({ filtercolumn, setfiltercolumn }) {
   const Profileusertoken = useSelector(
     (state) => state.ProfileData?.profileData?.usertoken
   );
@@ -36,11 +36,13 @@ function DailyReportTable() {
   };
   // This is get dsr api call
   const dispatch = useDispatch();
+  const successRsp = useSelector((state) => state?.SaveDsr?.savedsr);
+  console.log(successRsp, "scsrsp");
   useEffect(() => {
     if (Profileusertoken) {
       dispatch(DsrReportRequest({ payload }));
     }
-  }, [Profileusertoken, dispatch]);
+  }, [Profileusertoken, dispatch, successRsp]);
 
   //Hooks
   const { loading } = useSelector((state) => state.DsrReport);
@@ -79,7 +81,7 @@ function DailyReportTable() {
   console.log(report);
   const [currentPage, setCurrentPage] = useState(1);
   const [sidebaropen, setSidebaropen] = useState(false);
-  const [filtercolumn, setfiltercolumn] = useState();
+  // const [filtercolumn, setfiltercolumn] = useState();
   const [dsrFilter, setDsrFilter] = useState();
   const [filterReport, setFilterReport] = useState();
   const [clicked, setClicked] = useState(false);
@@ -312,6 +314,7 @@ function DailyReportTable() {
       </div>
     );
   };
+
   const scrollRef = useRef(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(false);
@@ -319,10 +322,13 @@ function DailyReportTable() {
   const checkArrows = () => {
     if (scrollRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-      setShowLeftArrow(scrollLeft > 0);
+      console.log("clientWidth", scrollLeft, scrollWidth, clientWidth);
       setShowRightArrow(scrollLeft + clientWidth < scrollWidth);
     }
   };
+  useEffect(() => {
+    setShowLeftArrow(showRightArrow === true);
+  }, [checkArrows]);
 
   const scrollLeft = () => {
     if (scrollRef.current) {
@@ -338,25 +344,44 @@ function DailyReportTable() {
 
   useEffect(() => {
     checkArrows();
-    if (scrollRef.current) {
-      scrollRef.current.addEventListener("scroll", checkArrows);
+    const handleScroll = () => checkArrows();
+    const scrollElement = scrollRef.current;
+
+    if (scrollElement) {
+      scrollElement.addEventListener("scroll", handleScroll);
     }
+
     return () => {
-      if (scrollRef.current) {
-        scrollRef.current.removeEventListener("scroll", checkArrows);
+      if (scrollElement) {
+        scrollElement.removeEventListener("scroll", handleScroll);
       }
     };
   }, []);
 
   useEffect(() => {
-    const handleResize = () => {
-      checkArrows();
-    };
-
+    const handleResize = () => checkArrows();
     window.addEventListener("resize", handleResize);
+
+    // Using ResizeObserver to handle dynamic content changes
+    const resizeObserver = new ResizeObserver(() => {
+      checkArrows();
+    });
+
+    if (scrollRef.current) {
+      resizeObserver.observe(scrollRef.current);
+    }
+
     return () => {
       window.removeEventListener("resize", handleResize);
+      if (scrollRef.current) {
+        resizeObserver.unobserve(scrollRef.current);
+      }
     };
+  }, [dsrFilter]);
+
+  useEffect(() => {
+    // Check arrows initially after the first render
+    checkArrows();
   }, []);
 
   if (loading) {
@@ -392,16 +417,9 @@ function DailyReportTable() {
               left: "0px",
             }}
           >
-            <div
-              className="scroll-content mt-1"
-              style={{
-                maxWidth: "1225px",
-                overflow: "hidden",
-                whiteSpace: "nowrap",
-              }}
-            >
+            <div className="mt-1 scroll-container">
               <div
-                className={`arrow ${showLeftArrow ? "show" : ""}`}
+                className={`arrow left-arrow ${showLeftArrow ? "show" : ""}`}
                 onClick={scrollLeft}
               >
                 <LeftOutlined />
@@ -417,7 +435,7 @@ function DailyReportTable() {
                 ))}
               </div>
               <div
-                className={`arrow ${showRightArrow ? "show" : ""}`}
+                className={`arrow right-arrow ${showRightArrow ? "show" : ""}`}
                 onClick={scrollRight}
               >
                 <RightOutlined />
