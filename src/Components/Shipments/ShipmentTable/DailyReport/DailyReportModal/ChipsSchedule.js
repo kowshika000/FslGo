@@ -1,35 +1,66 @@
-import React, { useState } from 'react'
-import { Autocomplete, Chip, Input, Stack, TextField } from '@mui/material'
+import React, { useState } from "react";
+import { Autocomplete, Chip, Input, Stack, TextField } from "@mui/material";
 
-const ChipsSchedule = ({setforminputs,forminputs}) => {
-    const [receivers, setReceivers] = useState([]);
+const ChipsSchedule = ({ setforminputs, forminputs,selected,setSelected }) => {
+  
+  const [inputValue, setInputValue] = useState("");
+  const regex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  const [error, setError] = useState(false);
 
-    const top100Films = []
-    
+
+  function onChange(e, value) {
+    // error
+    const errorEmail = value.find((email) => !regex.test(email));
+    if (errorEmail) {
+      // set value displayed in the textbox
+      setInputValue(errorEmail);
+      setError(true);
+    } else {
+      setError(false);
+    }
+    // Update state
+    setSelected(value.filter((email) => regex.test(email)));
+  }
+
+  function onDelete(value) {
+    setSelected(selected.filter((e) => e !== value));
+  }
+
+  function onInputChange(e, newValue) {
+    setInputValue(newValue);
+  }
+
   return (
     <Autocomplete
-        multiple
-        limitTags={2}
-        // onChange={(e, value) => setforminputs((prev)=>[{...prev,emails:[value]}])}
-        style={{marginBottom:"10px"}}
-        id="multiple-limit-tags"
-        // options={forminputs.emails?.map((option) => option)}
-        freeSolo
-        renderTags={(value, getTagProps) =>
-          value.map((option, index) => (
-            <Chip variant="outlined" label={option} {...getTagProps({ index })} />
-          ))
-        }
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            variant="standard"
-            placeholder="New email"
-            sx={{width:"500px"}}
-          />
-        )}
-      />
-  )
-}
+      multiple
+      // limitTags={2}
+      onChange={onChange}
+      style={{ marginBottom: "10px" }}
+      id="multiple-limit-tags"
+      value={selected}
+      inputValue={inputValue}
+      onInputChange={onInputChange}
+      options={[]}
+      freeSolo
+      renderTags={(value, getTagProps) =>
+        value.map((option, index) => (
+          <Chip variant="outlined" label={option} {...getTagProps({ index })} onDelete={()=>onDelete(option)} />
+        ))
+      }
+      renderInput={(params) => (
+        <TextField
+          {...params}
+          variant="standard"
+          placeholder="New email"
+          sx={{ width: "500px" }}
+          type="email"
+          label="Email Addresses"
+          error={error}
+          helperText={error && "Please enter a valid email address"}
+        />
+      )}
+    />
+  );
+};
 
-export default ChipsSchedule
+export default ChipsSchedule;

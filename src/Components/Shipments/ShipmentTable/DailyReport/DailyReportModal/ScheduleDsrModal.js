@@ -20,17 +20,52 @@ import ChipsSchedule from './ChipsSchedule';
 
 const ScheduleDsrModal = ({open, close}) => {
 
-  const [forminputs, setforminputs] = useState([
+  const [selected, setSelected] = useState([]);
+  const [forminputs, setforminputs] = useState(
     {
-      emails:[],
       schedulebasis:"",
-      booked:false,
-      intransit:false,
-      closed:false,
-      arrived:false,
+      weeklydates:{
+        mon:false,
+        tue:false,
+        wed:false,
+        thu:false,
+        fri:false,
+        sat:false,
+        sun:false,
+      },
+      
     }
-  ])
-console.log(forminputs)
+  )
+  const [status,setStatus] = useState({
+    booked:false,
+    intransit:false,
+    closed:false,
+    arrived:false,
+  })
+
+
+const handleDays =(e)=>{
+  setforminputs((prev)=>{
+    console.log(prev)
+    return {...prev,weeklydates:{...prev.weeklydates,[e.target.value]:e.target.checked}}
+  })
+}
+
+const handleStatus =(e)=>{
+  console.log(e.target.checked)
+  setStatus((prev)=>{
+    return {...prev,[e.target.value]:e.target.checked}
+  })
+}
+
+
+const handleSubmit=(e)=>{
+  e.preventDefault()
+  console.log("selected",selected)
+  console.log("forminputs",forminputs)
+  console.log("status",status)
+}
+
   return (
     <Dialog
     open= {open}
@@ -62,7 +97,8 @@ console.log(forminputs)
               color:"#6666"
             }}
           >Email List</p>
-          <ChipsSchedule setforminputs={setforminputs} forminputs={forminputs}  />
+          <form>
+          <ChipsSchedule selected={selected} setSelected={setSelected}  />
           <FormControl>
             <RadioGroup
               row
@@ -71,7 +107,11 @@ console.log(forminputs)
             >
               <FormControlLabel 
                 value="Daily" 
+                
                 control={<Radio
+                  name='schedulebasis'
+                  value='Daily'
+                  onChange={(e)=>setforminputs((prev)=>{return {...prev,schedulebasis:e.target.value}})}
                   sx={{
                     color: brown[400],
                     '&.Mui-checked': {
@@ -83,6 +123,9 @@ console.log(forminputs)
               <FormControlLabel
                value="weekly" 
                control={<Radio 
+                name='schedulebasis'
+                value='Weekly'
+                onChange={(e)=>setforminputs((prev)=>{return {...prev,schedulebasis:e.target.value}})}
                 sx={{
                   color: brown[400],
                   '&.Mui-checked': {
@@ -92,11 +135,123 @@ console.log(forminputs)
               />}
                label="Weekly" />
             </RadioGroup>
-            <div className='checkbox'>
+            {
+              forminputs?.schedulebasis === "Weekly" &&
+             <div className='checkbox'>
               {/*<Checkbox control={<Checkbox />} label="Booked" style={{color:"red"}}/> */}
               <FormControlLabel
                 value="end"
                 control={<Checkbox 
+                  value="mon"
+                  onChange={handleDays}
+                  sx={{
+                    color:  brown[400],
+                    '&.Mui-checked': {
+                      color: red[600],
+                    },
+                  }}
+                  />}
+                label="Mon"
+                labelPlacement="end"
+              />
+              <FormControlLabel
+                value="end"
+                control={<Checkbox 
+                  value="tue"
+                  onChange={handleDays}
+                  sx={{
+                    color:  brown[400],
+                    '&.Mui-checked': {
+                      color: red[600],
+                    },
+                  }}
+                  />}
+                label="Tue"
+                labelPlacement="end"
+              />
+              <FormControlLabel
+                value="end"
+                control={<Checkbox 
+                  value="wed"
+                  onChange={handleDays}
+                  sx={{
+                    color: brown[400],
+                    '&.Mui-checked': {
+                      color: red[600],
+                    },
+                  }}
+                />}
+                label="Wed"
+                labelPlacement="end"
+              />
+              <FormControlLabel
+                value="end"
+                control={<Checkbox 
+                  value="thu"
+                  onChange={handleDays}
+                   sx={{
+                  color: brown[400],
+                  '&.Mui-checked': {
+                    color: red[600],
+                  },
+                }}
+                />}
+                label="Thu"
+                labelPlacement="end"
+              />
+              <FormControlLabel
+                value="end"
+                control={<Checkbox 
+                  value="fri"
+                  onChange={handleDays}
+                   sx={{
+                  color: brown[400],
+                  '&.Mui-checked': {
+                    color: red[600],
+                  },
+                }}
+                />}
+                label="Fri"
+                labelPlacement="end"
+              />
+              <FormControlLabel
+                value="end"
+                control={<Checkbox 
+                  value="sat"
+                  onChange={handleDays}
+                   sx={{
+                  color: brown[400],
+                  '&.Mui-checked': {
+                    color: red[600],
+                  },
+                }}
+                />}
+                label="Sat"
+                labelPlacement="end"
+              />
+              <FormControlLabel
+                value="end"
+                control={<Checkbox 
+                  value="sun"
+                  onChange={handleDays}
+                   sx={{
+                  color: brown[400],
+                  '&.Mui-checked': {
+                    color: red[600],
+                  },
+                }}
+                />}
+                label="Sun"
+                labelPlacement="end"
+              />
+            </div>}
+            <div className='checkbox'>
+              {/*<Checkbox control={<Checkbox />} label="Booked" style={{color:"red"}}/> */}
+              <FormControlLabel
+                value="end"
+                control={<Checkbox
+                  value="booked"
+                  onChange={handleStatus} 
                   sx={{
                     color:  brown[400],
                     '&.Mui-checked': {
@@ -109,7 +264,9 @@ console.log(forminputs)
               />
               <FormControlLabel
                 value="end"
-                control={<Checkbox 
+                control={<Checkbox
+                  value="intransit"
+                  onChange={handleStatus} 
                   sx={{
                     color:  brown[400],
                     '&.Mui-checked': {
@@ -122,7 +279,9 @@ console.log(forminputs)
               />
               <FormControlLabel
                 value="end"
-                control={<Checkbox 
+                control={<Checkbox
+                  value="closed"
+                  onChange={handleStatus} 
                   sx={{
                     color: brown[400],
                     '&.Mui-checked': {
@@ -135,7 +294,9 @@ console.log(forminputs)
               />
               <FormControlLabel
                 value="end"
-                control={<Checkbox 
+                control={<Checkbox
+                  value="arrived"
+                  onChange={handleStatus} 
                    sx={{
                   color: brown[400],
                   '&.Mui-checked': {
@@ -167,6 +328,7 @@ console.log(forminputs)
               Unsubscribe DSR
             </button>
             <button 
+            onClick={close}
               style={{
                 padding:"5px 26px",
                 border:"2px solid #F01E1E",
@@ -183,6 +345,7 @@ console.log(forminputs)
               Cancel
             </button>
             <button
+            onClick={handleSubmit}
               style={{
                 padding:"5px 26px",
                 backgroundColor:"#F01E1E",
@@ -200,7 +363,7 @@ console.log(forminputs)
             {/* <Form /> */}
           </div>
         {/* </DialogActions> */}
-        {/* </Form> */}
+        </form>
         </DialogContent>
     </Dialog>
   )
