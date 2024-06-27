@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { DsrReportRequest } from "../../../../Redux/Actions/DsrReportAction";
 import { CircularProgress, Box } from "@mui/material";
 
-function DailyReportTable() {
+function DailyReportTable({ filtercolumn, setfiltercolumn }) {
   const Profileusertoken = useSelector(
     (state) => state.ProfileData?.profileData?.usertoken
   );
@@ -36,11 +36,13 @@ function DailyReportTable() {
   };
   // This is get dsr api call
   const dispatch = useDispatch();
+  const successRsp = useSelector((state) => state?.SaveDsr?.savedsr);
+  console.log(successRsp, "scsrsp");
   useEffect(() => {
     if (Profileusertoken) {
       dispatch(DsrReportRequest({ payload }));
     }
-  }, [Profileusertoken, dispatch]);
+  }, [Profileusertoken, dispatch, successRsp]);
 
   //Hooks
   const { loading } = useSelector((state) => state.DsrReport);
@@ -79,7 +81,7 @@ function DailyReportTable() {
   console.log(report);
   const [currentPage, setCurrentPage] = useState(1);
   const [sidebaropen, setSidebaropen] = useState(false);
-  const [filtercolumn, setfiltercolumn] = useState();
+  // const [filtercolumn, setfiltercolumn] = useState();
   const [dsrFilter, setDsrFilter] = useState();
   const [filterReport, setFilterReport] = useState();
   const [clicked, setClicked] = useState(false);

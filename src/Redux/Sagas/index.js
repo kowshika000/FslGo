@@ -15,6 +15,7 @@ import watchQuotation from "./QuotationSaga";
 import watchProfile from "./ProfileSaga";
 import watchUpdatePassword from "./UpdatePasswordSaga";
 import watchDsr from "./DsrSaga";
+import watchSaveDsr from "./SaveDsrSaga";
 
 export default function* rootSaga() {
   yield all([
@@ -34,5 +35,6 @@ export default function* rootSaga() {
     watchProfile(),
     watchUpdatePassword(),
     watchDsr(),
+    watchSaveDsr(),
   ]);
 }
