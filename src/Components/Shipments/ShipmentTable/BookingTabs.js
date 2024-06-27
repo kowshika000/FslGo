@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Tabs, Row, Col, Image } from "antd";
 import AllBookings from "./AllBookings";
 import "../ShipBookingTabs.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SearchHeader } from "./SearchHeader";
 import { Dropdown } from "primereact/dropdown";
 import ButtonList from "../../../assets/Button.svg";
@@ -19,11 +19,12 @@ import DailyReportTable from "./DailyReport/DailyReportTable";
 import { CalendarOutlined, CaretDownOutlined } from "@ant-design/icons";
 import cal from "../../../assets/calVector.svg";
 import ScheduleDsrModal from "./DailyReport/DailyReportModal/ScheduleDsrModal";
+import { SaveDsrReqeust } from "../../../Redux/Actions/SaveDsrAction";
 
 function BookingTabs({ showText, setShowText }) {
   const [searchQuery] = useState("");
   const [data, setData] = useState([]);
-  const [schedulemodal,setSchedulemodal] = useState(false);
+  const [schedulemodal, setSchedulemodal] = useState(false);
   const ShipmentData = useSelector((state) => state.Booking);
   const bookingData = ShipmentData?.booking;
   const tabCount = ShipmentData?.booking?.statuswise_count;
@@ -31,6 +32,8 @@ function BookingTabs({ showText, setShowText }) {
   const [selectedButton, setSelectedButton] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [activeTab, setActiveTab] = useState("1");
+  const dispatch = useDispatch();
+  const [filtercolumn, setfiltercolumn] = useState();
 
   let schedule;
   if (tabCount && tabCount.length > 0) {
@@ -42,8 +45,6 @@ function BookingTabs({ showText, setShowText }) {
       setData(bookingData?.data);
     }
   }, [bookingData]);
-
-  // console.log(data);
 
   const [filteredData, setFilteredData] = useState(data);
   const [selectedStatus, setSelectedStatus] = useState(null);
@@ -80,21 +81,41 @@ function BookingTabs({ showText, setShowText }) {
     if (selectedDropdownItem === "Past 90 Days") {
       setFilterValue(90);
       setFilterMonthValue(null);
-      setActiveTab("1"); 
+      setActiveTab("1");
     } else if (selectedDropdownItem === "Past 30 Days") {
       setFilterValue(30);
       setFilterMonthValue(null);
-      setActiveTab("1"); 
+      setActiveTab("1");
     } else if (selectedDropdownItem === "Past 60 Days") {
       setFilterValue(60);
       setFilterMonthValue(null);
-      setActiveTab("1"); 
+      setActiveTab("1");
     } else if (selectedDropdownItem === "Past 6 Months") {
       setFilterMonthValue(null);
       setFilterValue(180);
-      setActiveTab("1"); 
+      setActiveTab("1");
     }
   }, [selectedDropdownItem]);
+
+  const Profileusertoken = useSelector(
+    (state) => state.ProfileData?.profileData?.usertoken
+  );
+  let sselectcolumn = "";
+  if (filtercolumn && typeof filtercolumn === 'object') {
+    sselectcolumn = Object.keys(filtercolumn).join(","); 
+  } else {
+    console.error("filtercolumn is not defined or not an object:", filtercolumn);
+  }
+  const payload = {
+    sserialno: Profileusertoken,
+    sselectcolumn: sselectcolumn,
+    spresetname: "test2",
+    spresetcol: "null",
+    sftype: "new",
+  };
+  const handleSaveDsr = () => {
+    dispatch(SaveDsrReqeust({ payload }));
+  };
 
   const onChange = (key) => {
     setActiveTab(key);
@@ -258,7 +279,7 @@ function BookingTabs({ showText, setShowText }) {
           <Row justify="between" style={{ height: "57px" }}>
             <Col span={19}>
               {!showText ? (
-                <Tabs activeKey={activeTab} onChange={onChange} >
+                <Tabs activeKey={activeTab} onChange={onChange}>
                   <Tabs.TabPane
                     tab={`All Bookings (${schedule?.all ? schedule?.all : 0})`}
                     key="1"
@@ -392,7 +413,7 @@ function BookingTabs({ showText, setShowText }) {
                     alt="img"
                     className="me-1"
                     style={{ width: "12px", height: "13.5px" }}
-                    onClick={()=>setSchedulemodal(true)}
+                    onClick={() => setSchedulemodal(true)}
                   />
                   <img
                     src={image2}
@@ -404,7 +425,12 @@ function BookingTabs({ showText, setShowText }) {
                     src={image3}
                     alt="img"
                     className="ms-1 me-3"
-                    style={{ width: "12px", height: "13.5px" }}
+                    style={{
+                      width: "12px",
+                      height: "13.5px",
+                      cursor: "pointer",
+                    }}
+                    onClick={handleSaveDsr}
                   />
                 </div>
               )}
@@ -429,12 +455,18 @@ function BookingTabs({ showText, setShowText }) {
               filterMonthValue={filterMonthValue}
             />
           ) : (
-            <DailyReportTable />
+            <DailyReportTable
+              filtercolumn={filtercolumn}
+              setfiltercolumn={setfiltercolumn}
+            />
           )}
         </Col>
       </Row>
       <FilterDrawer visible={visible} onClose={onClose} />
-      <ScheduleDsrModal open={schedulemodal} close={()=>setSchedulemodal(false)} />
+      <ScheduleDsrModal
+        open={schedulemodal}
+        close={() => setSchedulemodal(false)}
+      />
     </div>
   );
 }

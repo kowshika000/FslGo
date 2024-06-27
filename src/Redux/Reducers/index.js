@@ -15,6 +15,7 @@ import QuotationReducer from './QuotationReducer';
 import ProfileReducer from './ProfileReducer';
 import UpdatePasswordReducer from './UpdatePasswordReducer';
 import DsrReportReducer from './DsrReportReducer';
+import saveDsrReducer from './SaveDstReducer';
 
 const rootReducer = combineReducers({
     ShipmentCount: shipmentCountReducer,
@@ -33,6 +34,7 @@ const rootReducer = combineReducers({
     ProfileData: ProfileReducer,
     UpdatePassword: UpdatePasswordReducer,
     DsrReport: DsrReportReducer,
+    SaveDsr: saveDsrReducer,
 });
 
 export default rootReducer;
