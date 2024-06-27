@@ -312,6 +312,7 @@ function DailyReportTable() {
       </div>
     );
   };
+
   const scrollRef = useRef(null);
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(false);
@@ -319,10 +320,13 @@ function DailyReportTable() {
   const checkArrows = () => {
     if (scrollRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = scrollRef.current;
-      setShowLeftArrow(scrollLeft > 0);
+      console.log("clientWidth", scrollLeft, scrollWidth, clientWidth);
       setShowRightArrow(scrollLeft + clientWidth < scrollWidth);
     }
   };
+  useEffect(() => {
+    setShowLeftArrow(showRightArrow === true);
+  }, [checkArrows]);
 
   const scrollLeft = () => {
     if (scrollRef.current) {
@@ -338,25 +342,44 @@ function DailyReportTable() {
 
   useEffect(() => {
     checkArrows();
-    if (scrollRef.current) {
-      scrollRef.current.addEventListener("scroll", checkArrows);
+    const handleScroll = () => checkArrows();
+    const scrollElement = scrollRef.current;
+
+    if (scrollElement) {
+      scrollElement.addEventListener("scroll", handleScroll);
     }
+
     return () => {
-      if (scrollRef.current) {
-        scrollRef.current.removeEventListener("scroll", checkArrows);
+      if (scrollElement) {
+        scrollElement.removeEventListener("scroll", handleScroll);
       }
     };
   }, []);
 
   useEffect(() => {
-    const handleResize = () => {
-      checkArrows();
-    };
-
+    const handleResize = () => checkArrows();
     window.addEventListener("resize", handleResize);
+
+    // Using ResizeObserver to handle dynamic content changes
+    const resizeObserver = new ResizeObserver(() => {
+      checkArrows();
+    });
+
+    if (scrollRef.current) {
+      resizeObserver.observe(scrollRef.current);
+    }
+
     return () => {
       window.removeEventListener("resize", handleResize);
+      if (scrollRef.current) {
+        resizeObserver.unobserve(scrollRef.current);
+      }
     };
+  }, [dsrFilter]);
+
+  useEffect(() => {
+    // Check arrows initially after the first render
+    checkArrows();
   }, []);
 
   if (loading) {
@@ -392,22 +415,13 @@ function DailyReportTable() {
               left: "0px",
             }}
           >
-            <div
-              className="mt-1"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                overflow: "hidden",
-                whiteSpace: "nowrap",
-                position: "relative",
-              }}
-            >
-              {/* <div
-                className={`arrow ${showLeftArrow ? "show" : ""}`}
+            <div className="mt-1 scroll-container">
+              <div
+                className={`arrow left-arrow ${showLeftArrow ? "show" : ""}`}
                 onClick={scrollLeft}
               >
                 <LeftOutlined />
-              </div> */}
+              </div>
               <div className="scroll-content" ref={scrollRef}>
                 {Object.entries(dsrFilter)?.map(([field, filterValues]) => (
                   <FilterTag
@@ -418,12 +432,12 @@ function DailyReportTable() {
                   />
                 ))}
               </div>
-              {/* <div
-                className={`arrow ${showRightArrow ? "show" : ""}`}
+              <div
+                className={`arrow right-arrow ${showRightArrow ? "show" : ""}`}
                 onClick={scrollRight}
               >
                 <RightOutlined />
-              </div> */}
+              </div>
             </div>
             <div className="ms-auto">
               {Object.keys(dsrFilter)?.some(
