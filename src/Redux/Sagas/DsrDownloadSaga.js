@@ -10,10 +10,10 @@ function* DsrDownloadSaga({payload}) {
     console.log('Saga received response:', response);
     console.log(response)
     yield put({
-      type: Types.DSR_REPORT_SUCCESS,
+      type: Types.DSR_DOWNLOAD_SUCCESS,
       payload: response})
   } catch (error) {
-    yield put({ type: Types.DSR_REPORT_FAILURE, error: alert.error(error.response.data.error.message) })
+    yield put({ type: Types.DSR_DOWNLOAD_FAILURE, error: alert.error(error.response.data.error.message) })
   };
 }
 
