@@ -1,5 +1,7 @@
 import * as Types from '../ActionTypes'
-export const DsrDownloadRequest = ({payload}) => ({
+export const DsrDownloadRequest = ({payloadofdsrdownload}) => (
+  {
     type: Types.DSR_DOWNLOAD_REQUEST,
-    payload:{payload}
-  });
+    payload:payloadofdsrdownload
+  }
+);

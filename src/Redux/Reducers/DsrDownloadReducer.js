@@ -1,9 +1,9 @@
-import {DSR_REPORT_REQUEST, DSR_REPORT_SUCCESS, DSR_REPORT_FAILURE, DSR_DOWNLOAD_FAILURE, DSR_DOWNLOAD_SUCCESS, DSR_DOWNLOAD_REQUEST} from '../ActionTypes'
+import { DSR_DOWNLOAD_FAILURE, DSR_DOWNLOAD_SUCCESS, DSR_DOWNLOAD_REQUEST} from '../ActionTypes'
 
 const initialState = {
   error: null,
   loading: false,
-  dsrData: {},
+  DsrDownloadData: {},
 };
 
 function DsrDownloadReducer(state = initialState, action) {
@@ -16,12 +16,12 @@ function DsrDownloadReducer(state = initialState, action) {
         loading: true,
       };
     case DSR_DOWNLOAD_SUCCESS:
-      console.log(' DsrProfilePayload:', action.payload);
+      console.log(' DsrDownloadPayload:', action.payload);
       return {
         ...state,
         error: null,
         loading: false,
-        dsrData: action.payload,
+        DsrDownloadData: action.payload,
       };
     case DSR_DOWNLOAD_FAILURE:
       return {

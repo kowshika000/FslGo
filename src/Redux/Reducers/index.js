@@ -17,6 +17,7 @@ import UpdatePasswordReducer from './UpdatePasswordReducer';
 import DsrReportReducer from './DsrReportReducer';
 import saveDsrReducer from './SaveDstReducer';
 import DsrDownloadReducer from './DsrDownloadReducer';
+import DsrScheduleReducer from './DsrScheduleReducer';
 
 const rootReducer = combineReducers({
     ShipmentCount: shipmentCountReducer,
@@ -37,6 +38,7 @@ const rootReducer = combineReducers({
     DsrReport: DsrReportReducer,
     SaveDsr: saveDsrReducer,
     DsrDownload:DsrDownloadReducer,
+    DsrSchedule:DsrScheduleReducer,
 });
 
 export default rootReducer;

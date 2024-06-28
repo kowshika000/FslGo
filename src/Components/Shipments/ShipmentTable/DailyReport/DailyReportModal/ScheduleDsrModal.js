@@ -7,6 +7,7 @@ import {
     DialogTitle, 
     FormControl,
     FormControlLabel, 
+    FormHelperText, 
     FormLabel, 
     RadioGroup, 
     Stack 
@@ -16,11 +17,19 @@ import { VscClose } from 'react-icons/vsc'
 import Radio from '@mui/material/Radio';
 import { red, brown } from '@mui/material/colors';
 import ChipsSchedule from './ChipsSchedule';
+import { useDispatch } from 'react-redux';
+import { DsrScheduleRequest } from '../../../../../Redux/Actions/DsrScheduleAction';
 
 
 const ScheduleDsrModal = ({open, close}) => {
 
+  const dispatch = useDispatch()
   const [selected, setSelected] = useState([]);
+  const [error, setError] = useState({
+    email:false,
+    radiochecked:false,
+  })
+  // const [first, setfirst] = useState(second)
   const [forminputs, setforminputs] = useState(
     {
       schedulebasis:"",
@@ -58,12 +67,41 @@ const handleStatus =(e)=>{
   })
 }
 
-
+// const payload={
+//   sreport_id:"",
+//   spreset_name:"TEST",
+//   sl_no:"",
+//   link_type:"Link",
+//   sDaily:"Yes",
+//   sWeekly:"",
+//   sMonthly:"",	
+//   sEmail:"rajasekar@newage-global.com"
+// }
+console.log(forminputs)
 const handleSubmit=(e)=>{
   e.preventDefault()
   console.log("selected",selected)
   console.log("forminputs",forminputs)
   console.log("status",status)
+  if(!selected.length){
+    setError((prev)=>{return {...prev,email:true}})
+  }
+  if(!forminputs.schedulebasis){
+    setError((prev)=>{return {...prev,radiochecked:true}})
+  }
+  const payload={
+    sreport_id:"",
+    spreset_name:"TEST",
+    sl_no:"",
+    link_type:"Link",
+    sDaily:forminputs.schedulebasis === "Daily" ?"Yes":"",
+    sWeekly:forminputs.schedulebasis === "Weekly" ?"Yes":"",
+    sMonthly:"",	
+    sEmail:selected
+  }
+  if(selected.length && forminputs.schedulebasis){
+    dispatch(DsrScheduleRequest({payload}))
+  }
 }
 
   return (
@@ -87,7 +125,7 @@ const handleSubmit=(e)=>{
          {/* <VscClose size={22} color='red' onClick={close} style={{position:"absolute",top:"0px",right:"0px",cursor:"pointer"}} /> */}
         </DialogTitle>
         <DialogContent>
-          <p className='m-0'
+          {/* <p className='m-0'
             style={{
               fontWeight:"500",
               fontSize:"13px",
@@ -96,22 +134,23 @@ const handleSubmit=(e)=>{
               // padding:"0px 10px",
               color:"#6666"
             }}
-          >Email List</p>
+          >Email List</p> */}
           <form>
-          <ChipsSchedule selected={selected} setSelected={setSelected}  />
+          <ChipsSchedule selected={selected} setSelected={setSelected} errorEmail={error}  />
           <FormControl>
             <RadioGroup
               row
               aria-labelledby="demo-row-radio-buttons-group-label"
               name="row-radio-buttons-group"
+              onChange={(e)=>setforminputs((prev)=>{return {...prev,schedulebasis:e.target.value}})}
+              
             >
               <FormControlLabel 
                 value="Daily" 
-                
                 control={<Radio
                   name='schedulebasis'
                   value='Daily'
-                  onChange={(e)=>setforminputs((prev)=>{return {...prev,schedulebasis:e.target.value}})}
+                  // onChange={(e)=>setforminputs((prev)=>{return {...prev,schedulebasis:e.target.value}})}
                   sx={{
                     color: brown[400],
                     '&.Mui-checked': {
@@ -125,7 +164,7 @@ const handleSubmit=(e)=>{
                control={<Radio 
                 name='schedulebasis'
                 value='Weekly'
-                onChange={(e)=>setforminputs((prev)=>{return {...prev,schedulebasis:e.target.value}})}
+                // onChange={(e)=>setforminputs((prev)=>{return {...prev,schedulebasis:e.target.value}})}
                 sx={{
                   color: brown[400],
                   '&.Mui-checked': {
@@ -135,6 +174,9 @@ const handleSubmit=(e)=>{
               />}
                label="Weekly" />
             </RadioGroup>
+            {
+                     error.radiochecked && <FormHelperText style={{color:"#d32f2f",marginLeft:"0px"}}>Please Select Daily / Weekly</FormHelperText>
+            }
             {
               forminputs?.schedulebasis === "Weekly" &&
              <div className='checkbox'>

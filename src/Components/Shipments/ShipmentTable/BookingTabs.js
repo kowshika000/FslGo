@@ -21,10 +21,13 @@ import { CalendarOutlined, CaretDownOutlined } from "@ant-design/icons";
 import cal from "../../../assets/calVector.svg";
 import ScheduleDsrModal from "./DailyReport/DailyReportModal/ScheduleDsrModal";
 import { SaveDsrReqeust } from "../../../Redux/Actions/SaveDsrAction";
+import { toast } from "react-toastify";
 
 function BookingTabs({ showText, setShowText }) {
   const [searchQuery] = useState("");
   const [data, setData] = useState([]);
+  const saveSuccess = useSelector((state)=>state?.SaveDsr?.savedsr?.Response)
+  console.log(saveSuccess)
   const [schedulemodal, setSchedulemodal] = useState(false);
   const ShipmentData = useSelector((state) => state.Booking);
   const bookingData = ShipmentData?.booking;
@@ -35,6 +38,7 @@ function BookingTabs({ showText, setShowText }) {
   const [activeTab, setActiveTab] = useState("1");
   const dispatch = useDispatch();
   const [filtercolumn, setfiltercolumn] = useState();
+  console.log(filtercolumn)
 
   let schedule;
   if (tabCount && tabCount.length > 0) {
@@ -103,13 +107,20 @@ function BookingTabs({ showText, setShowText }) {
   );
   const payloadofdsrdownload = {
     sl_no: Profileusertoken,
-
   };
+  const handleDownloadDsr=(e)=>{
+    e.preventDefault()
+    dispatch(DsrDownloadRequest({payloadofdsrdownload}))
+  }
+
   let sselectcolumn = "";
-  if (filtercolumn && typeof filtercolumn === 'object') {
-    sselectcolumn = Object.keys(filtercolumn).join(","); 
+  const filteredCol =  Object?.keys(filtercolumn || {})?.filter(k => filtercolumn[k])
+  const filteredColCopy = {...filteredCol}
+  if (filteredColCopy && typeof filteredColCopy === 'object') {
+    sselectcolumn = Object?.values(filteredColCopy)?.join(","); 
+    console.log(sselectcolumn)
   } else {
-    console.error("filtercolumn is not defined or not an object:", filtercolumn);
+    console.error("filtercolumn is not defined or not an object:", filteredColCopy);
   }
   const payload = {
     sserialno: Profileusertoken,
@@ -118,8 +129,13 @@ function BookingTabs({ showText, setShowText }) {
     spresetcol: "null",
     sftype: "new",
   };
-  const handleSaveDsr = () => {
+  const handleSaveDsr = (e) => {
+    e.preventDefault()
     dispatch(SaveDsrReqeust({ payload }));
+    if(saveSuccess === "SUCCESS"){
+        toast.success("DSR Saved Successfully")
+        console.log("success")
+    }
   };
 
   const onChange = (key) => {
@@ -425,9 +441,8 @@ function BookingTabs({ showText, setShowText }) {
                     alt="img"
                     className="mx-1"
                     style={{ width: "12px", height: "13.5px" }}
-                    // role="button"
-                    onClick={()=>{dispatch(DsrDownloadRequest({payloadofdsrdownload}));
-                    console.log("dispatched")}}
+                    role="button"
+                    onClick={handleDownloadDsr}
                   />
                   <img
                     src={image3}
