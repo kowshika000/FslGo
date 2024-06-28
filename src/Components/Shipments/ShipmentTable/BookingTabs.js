@@ -26,8 +26,8 @@ import { toast } from "react-toastify";
 function BookingTabs({ showText, setShowText }) {
   const [searchQuery] = useState("");
   const [data, setData] = useState([]);
-  const saveSuccess = useSelector((state)=>state?.SaveDsr?.savedsr?.Response)
-  console.log(saveSuccess)
+  const saveSuccess = useSelector((state) => state?.SaveDsr?.savedsr?.Response);
+  console.log(saveSuccess);
   const [schedulemodal, setSchedulemodal] = useState(false);
   const ShipmentData = useSelector((state) => state.Booking);
   const bookingData = ShipmentData?.booking;
@@ -38,7 +38,7 @@ function BookingTabs({ showText, setShowText }) {
   const [activeTab, setActiveTab] = useState("1");
   const dispatch = useDispatch();
   const [filtercolumn, setfiltercolumn] = useState();
-  console.log(filtercolumn)
+  console.log(filtercolumn);
 
   let schedule;
   if (tabCount && tabCount.length > 0) {
@@ -108,19 +108,24 @@ function BookingTabs({ showText, setShowText }) {
   const payloadofdsrdownload = {
     sl_no: Profileusertoken,
   };
-  const handleDownloadDsr=(e)=>{
-    e.preventDefault()
-    dispatch(DsrDownloadRequest({payloadofdsrdownload}))
-  }
+  const handleDownloadDsr = (e) => {
+    e.preventDefault();
+    dispatch(DsrDownloadRequest({ payloadofdsrdownload }));
+  };
 
   let sselectcolumn = "";
-  const filteredCol =  Object?.keys(filtercolumn || {})?.filter(k => filtercolumn[k])
-  const filteredColCopy = {...filteredCol}
-  if (filteredColCopy && typeof filteredColCopy === 'object') {
-    sselectcolumn = Object?.values(filteredColCopy)?.join(","); 
-    console.log(sselectcolumn)
+  const filteredCol = Object?.keys(filtercolumn || {})?.filter(
+    (k) => filtercolumn[k]
+  );
+  const filteredColCopy = { ...filteredCol };
+  if (filteredColCopy && typeof filteredColCopy === "object") {
+    sselectcolumn = Object?.values(filteredColCopy)?.join(",");
+    console.log(sselectcolumn);
   } else {
-    console.error("filtercolumn is not defined or not an object:", filteredColCopy);
+    console.error(
+      "filtercolumn is not defined or not an object:",
+      filteredColCopy
+    );
   }
   const payload = {
     sserialno: Profileusertoken,
@@ -130,14 +135,14 @@ function BookingTabs({ showText, setShowText }) {
     sftype: "new",
   };
   const handleSaveDsr = (e) => {
-    e.preventDefault()
+    e.preventDefault();
     dispatch(SaveDsrReqeust({ payload }));
-    if(saveSuccess === "SUCCESS"){
-        toast.success("DSR Saved Successfully")
-        console.log("success")
-    }
   };
-
+  useEffect(() => {
+    if (saveSuccess === "SUCCESS") {
+      toast.success("DSR Saved Successfully");
+    }
+  }, [saveSuccess]);
   const onChange = (key) => {
     setActiveTab(key);
     switch (key) {
