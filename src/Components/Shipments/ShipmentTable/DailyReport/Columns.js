@@ -38,13 +38,16 @@ const Android12Switch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-const Columns = ({setfiltercolumn,ColumnObject,DsrColumns}) => {
+const Columns = ({ setfiltercolumn, ColumnObject, DsrColumns }) => {
   // const DsrColumns = DsrReportdatas?.columns
   // console.log(DsrColumns)
   // const ColumnObject = DsrColumns.reduce((o, key) => ({ ...o, [key]: true}), {})
-  console.log("ColumnObject",ColumnObject)
+  console.log("ColumnObject", ColumnObject);
   const [check, setcheck] = useState(false);
-  const [checked, setChecked] = useState(ColumnObject);
+  const [checked, setChecked] = useState(() => {
+    const savedChecked = localStorage.getItem("checkedColumns");
+    return savedChecked ? JSON.parse(savedChecked) : ColumnObject;
+  });
   // const [search, setsearch] = useState("")
   // console.log(search)
   // const handleSearch =(e)=>{
@@ -52,32 +55,38 @@ const Columns = ({setfiltercolumn,ColumnObject,DsrColumns}) => {
   //   setsearch(e.target.value)
   // }
   useEffect(() => {
-    setfiltercolumn(checked)
-  }, [checked])
+    setChecked(checked);
+    setfiltercolumn(checked);
+  }, [checked , DsrColumns]);
+  // useEffect(() => {
+  //   setfiltercolumn(ColumnObject);
+  // }, [DsrColumns]);
   useEffect(() => {
-    setChecked(ColumnObject)
-  }, [DsrColumns])
-  
+    localStorage.setItem("checkedColumns", JSON.stringify(checked));
+  }, [checked]);
 
   //This is for seperate checkbox change handler
   const handleChange = (event) => {
-    const {checked,name} = event.target
-    setChecked((prev)=>{
+    const { checked, name } = event.target;
+    setChecked((prev) => {
       return {
-        ...prev,[name]:checked
-      }
+        ...prev,
+        [name]: checked,
+      };
     });
   };
-  console.log(checked)
+  console.log(checked);
 
   //This is for selectall checkbox change handler
   const handleChange1 = (event) => {
-    if(event.target.checked){
-      setChecked(ColumnObject)
-    }
-    else{
-      const newObj = DsrColumns?.reduce((o, key) => ({ ...o, [key]: false}), {})
-      setChecked(newObj)
+    if (event.target.checked) {
+      setChecked(ColumnObject);
+    } else {
+      const newObj = DsrColumns?.reduce(
+        (o, key) => ({ ...o, [key]: false }),
+        {}
+      );
+      setChecked(newObj);
     }
   };
 
@@ -97,27 +106,34 @@ const Columns = ({setfiltercolumn,ColumnObject,DsrColumns}) => {
     );
   };
   const SearchTemplate = () => {
-
-    const allCheck = Object.values(checked || {}).every(item => item === true)
-    const showCheckValues = Object.entries(checked || {}).filter(([, val]) => val !== true).length
-    const showUnCheckValues = Object.entries(checked || {}).filter(([, val]) => val === true).length
-    console.log(allCheck)
-    console.log(showUnCheckValues)
-    console.log(showCheckValues)
-    const [search, setsearch] = useState("")
-    console.log(search)
-    const handleSearch =(e)=>{
-      e.preventDefault()
-      setsearch(e.target.value)
-    }
+    const allCheck = Object.values(checked || {}).every(
+      (item) => item === true
+    );
+    const showCheckValues = Object.entries(checked || {}).filter(
+      ([, val]) => val !== true
+    ).length;
+    const showUnCheckValues = Object.entries(checked || {}).filter(
+      ([, val]) => val === true
+    ).length;
+    console.log(allCheck);
+    console.log(showUnCheckValues);
+    console.log(showCheckValues);
+    const [search, setsearch] = useState("");
+    console.log(search);
+    const handleSearch = (e) => {
+      e.preventDefault();
+      setsearch(e.target.value);
+    };
     const renderOption = (option) => {
       if (option?.length <= 11) {
-        return <span style={{fontSize:"13px"}}>=&nbsp;&nbsp;{option}</span>;
+        return <span style={{ fontSize: "13px" }}>=&nbsp;&nbsp;{option}</span>;
       } else {
         const truncatedText = option?.slice(0, 10).trim() + "..";
         return (
-          <Tooltip style={{zIndex:"-1"}} title={option}>
-            <span style={{fontSize:"13px"}} role="button">=&nbsp;&nbsp;{truncatedText}</span>
+          <Tooltip style={{ zIndex: "-1" }} title={option}>
+            <span style={{ fontSize: "13px" }} role="button">
+              =&nbsp;&nbsp;{truncatedText}
+            </span>
           </Tooltip>
         );
       }
@@ -126,13 +142,21 @@ const Columns = ({setfiltercolumn,ColumnObject,DsrColumns}) => {
     return (
       <>
         <FormControlLabel
-        style={{position:"sticky",top:"0px",zIndex:"199",backgroundColor:"#fbfbfb"}}
-            // label={}
-            control={
-              <>
-                <Checkbox
+          style={{
+            position: "sticky",
+            top: "0px",
+            zIndex: "199",
+            backgroundColor: "#fbfbfb",
+          }}
+          // label={}
+          control={
+            <>
+              <Checkbox
                 checked={allCheck}
-                indeterminate={showCheckValues !== 63 && showUnCheckValues !== 63}
+                indeterminate={
+                  showCheckValues !== DsrColumns.length &&
+                  showUnCheckValues !== DsrColumns.length
+                }
                 onChange={handleChange1}
                 sx={{
                   color: "black",
@@ -141,15 +165,19 @@ const Columns = ({setfiltercolumn,ColumnObject,DsrColumns}) => {
                   },
                 }}
               />
-              <Input placeholder="Search..." value={search} onChange={handleSearch}  />
-              </>
-            }
-          />
-    {/* );
+              <Input
+                placeholder="Search..."
+                value={search}
+                onChange={handleSearch}
+              />
+            </>
+          }
+        />
+        {/* );
   }; */}
 
-  {/* const CheckboxesTemplate = ()=>{ */}
-    {/* const renderOption = (option) => {
+        {/* const CheckboxesTemplate = ()=>{ */}
+        {/* const renderOption = (option) => {
       if (option.length <= 10) {
         return <span style={{fontSize:"13px"}}>{option}</span>;
       } else {
@@ -161,104 +189,122 @@ const Columns = ({setfiltercolumn,ColumnObject,DsrColumns}) => {
         );
       }
     }; */}
-     
-    
-      <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>
-        {
-          DsrColumns?.filter((item)=>item?.includes(search.toUpperCase()))?.map((item,index)=>{ 
 
-        return <FormControlLabel
+        <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>
+          {DsrColumns?.filter((item) =>
+            item?.includes(search.toUpperCase())
+          )?.map((item, index) => {
+            return (
+              <FormControlLabel
                 key={index}
-                  label={ renderOption(item)}
-                  control={
-                    <Checkbox
-                      checked={checked && checked[item]}
-                      onChange={handleChange}
-                      name={item}
-                      sx={{
-                        color: "black",
-                        "&.Mui-checked": {
-                          color: "red",
-                        },
-                      }}
-                    />
-                  }
-                />
-    
-                })}
-      </Box>
-    </>
-  );
-  }
+                label={renderOption(item)}
+                control={
+                  <Checkbox
+                    checked={checked && checked[item]}
+                    onChange={handleChange}
+                    name={item}
+                    sx={{
+                      color: "black",
+                      "&.Mui-checked": {
+                        color: "red",
+                      },
+                    }}
+                  />
+                }
+              />
+            );
+          })}
+        </Box>
+      </>
+    );
+  };
   const RowGroupsTemplate = () => {
     return (
       <div className="d-flex flex-column align-items-start">
-          <div className="d-flex align-items-center">
-              <FaArrowUpWideShort size={14} style={{marginRight:"6px"}} />
-              <p
-              className="m-0 mx-auto"
-              style={{
-                fontSize: "14px",
-                letterSpacing: ".01em"
-              }}
-            >
-              Row Groups
-            </p>
-          </div>    
-              <p
-                style={{ fontSize: "11px", letterSpacing: ".01em",textAlign:"center",margin:"0px",marginLeft:"22px" }}
-              >
-                Drag here to set row groups
-              </p>
+        <div className="d-flex align-items-center">
+          <FaArrowUpWideShort size={14} style={{ marginRight: "6px" }} />
+          <p
+            className="m-0 mx-auto"
+            style={{
+              fontSize: "14px",
+              letterSpacing: ".01em",
+            }}
+          >
+            Row Groups
+          </p>
         </div>
+        <p
+          style={{
+            fontSize: "11px",
+            letterSpacing: ".01em",
+            textAlign: "center",
+            margin: "0px",
+            marginLeft: "22px",
+          }}
+        >
+          Drag here to set row groups
+        </p>
+      </div>
     );
   };
 
   const ValuesTemplate = () => {
     return (
       <div className="d-flex flex-column align-items-start">
-          <div className="d-flex align-items-center">
-              <LuSigma size={14} style={{marginRight:"6px"}} />
-              <p
-              className="m-0 mx-auto"
-              style={{
-                fontSize: "14px",
-                letterSpacing: ".01em"
-              }}
-            >
-              Values
-            </p>
-          </div>    
-              <p
-                style={{ fontSize: "11px", letterSpacing: ".01em",textAlign:"center",margin:"0px",marginLeft:"22px" }}
-              >
-                Drag here to aggregate
-              </p>
+        <div className="d-flex align-items-center">
+          <LuSigma size={14} style={{ marginRight: "6px" }} />
+          <p
+            className="m-0 mx-auto"
+            style={{
+              fontSize: "14px",
+              letterSpacing: ".01em",
+            }}
+          >
+            Values
+          </p>
         </div>
+        <p
+          style={{
+            fontSize: "11px",
+            letterSpacing: ".01em",
+            textAlign: "center",
+            margin: "0px",
+            marginLeft: "22px",
+          }}
+        >
+          Drag here to aggregate
+        </p>
+      </div>
     );
   };
 
   const ColumnLabelsTemplate = () => {
     return (
       <div className="d-flex flex-column align-items-start">
-          <div className="d-flex align-items-center">
-              <LuSigma size={14} style={{marginRight:"6px"}} />
-              <p
-              className="m-0 mx-auto"
-              style={{
-                fontSize: "14px",
-                letterSpacing: ".01em"
-              }}
-            >
-              Column Labels
-            </p>
-          </div>    
-              <p
-                style={{ fontSize: "11px", letterSpacing: ".01em",textAlign:"center",margin:"0px",marginLeft:"22px" }}
-              >
-                Drag here to set column labels
-              </p>
+        <div className="d-flex align-items-center">
+          <LuSigma size={14} style={{ marginRight: "6px" }} />
+          <p
+            className="m-0 mx-auto"
+            style={{
+              fontSize: "14px",
+              letterSpacing: ".01em",
+            }}
+          >
+            Column Labels
+          </p>
         </div>
+        <p
+          style={{
+            fontSize: "11px",
+            letterSpacing: ".01em",
+            textAlign: "center",
+            margin: "0px",
+            marginLeft: "22px",
+          }}
+        >
+          Drag here to set column labels
+        </p>
+      </div>
     );
   };
 
@@ -267,9 +313,9 @@ const Columns = ({setfiltercolumn,ColumnObject,DsrColumns}) => {
     //   template: <PivotSwitchTemplate />,
     // },
     {
-      template: <SearchTemplate />
+      template: <SearchTemplate />,
     },
-    
+
     // {
     //   template:<CheckboxesTemplate />
     // },
@@ -297,7 +343,12 @@ const Columns = ({setfiltercolumn,ColumnObject,DsrColumns}) => {
     <Menu
       model={items}
       className="w-full md:w-15rem"
-      style={{ position: "absolute", top: "20px", right: "20px",zIndex:"999" }}
+      style={{
+        position: "absolute",
+        top: "20px",
+        right: "20px",
+        zIndex: "999",
+      }}
     />
   );
 };
