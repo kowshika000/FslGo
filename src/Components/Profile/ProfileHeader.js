@@ -89,17 +89,23 @@ const ProfileHeader = ({setOpenEditModal,profileData}) => {
     );
 
     //This is profile data
-    const [profileinputs, setProfileinputs] = useState([
-      {
-        name:"Jhon Doe",
-        email:"email@email.com",
-        workemail:"email@email.com",
-        phonenumber:"+91 7878786767",
-        companyname:"Abc Enterprise",
-        companyprofile:"Exporter",
-        preferredcurrency:"USD"
+    // const [profileinputs, setProfileinputs] = useState([
+    //   {
+    //     name:"Jhon Doe",
+    //     email:"email@email.com",
+    //     workemail:"email@email.com",
+    //     phonenumber:"+91 7878786767",
+    //     companyname:"Abc Enterprise",
+    //     companyprofile:"Exporter",
+    //     preferredcurrency:"USD"
+    //   }
+    // ])
+    const getFirstLetter = (str) => {
+      if (str && str.length > 0) {
+        return str.charAt(0); // or str[0]
       }
-    ])
+      return "";
+    };
 
   return (
     <Card
@@ -134,7 +140,7 @@ const ProfileHeader = ({setOpenEditModal,profileData}) => {
                             />
                         ) : (
                           <div className='d-flex justify-content-center align-items-center' style={{fontSize:"32px",fontWeight:"700",color:"black",height:"100%",width:"100%",borderRadius:"50%"}}>
-                              F
+                             {getFirstLetter(userDetails?.company)}
                           </div>
                         )}
                     </Upload>

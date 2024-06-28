@@ -25,6 +25,8 @@ function App() {
   const dispatch = useDispatch();
   const jwtToken = useSelector((state) => state.Login?.booking?.Token);
   const [loading, setLoading] = useState(true);
+  const [showmap, setShowmap] = useState(false);
+  const [showText, setShowText] = useState(false);
 
   const parseUrlParams = () => {
     const currentUrl = window.location.href;
@@ -56,7 +58,7 @@ function App() {
     } else {
       setLoading(false);
     }
-    
+
     const timeout = setTimeout(() => {
       if (!jwtToken) {
         window.location.href = "http://www.freightsystems.com";
@@ -90,10 +92,20 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Header />
+      <Header setShowmap={setShowmap} setShowText={setShowText} />
       <div style={{ marginTop: "4rem" }}>
         <Routes>
-          <Route path="/" element={<ShipmentsHome />} />
+          <Route
+            path="/"
+            element={
+              <ShipmentsHome
+                showmap={showmap}
+                setShowmap={setShowmap}
+                showText={showText}
+                setShowText={setShowText}
+              />
+            }
+          />
           <Route path="/recentBooking" element={<RecentBooking />} />
           <Route path="/inbox" element={<Inbox />} />
           <Route path="/invoice" element={<Invoice />} />

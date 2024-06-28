@@ -6,17 +6,18 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Cookies from "js-cookie";
-
 // import { ReactComponent as Logo } from "../../assets/Logo.svg";
 import Logo from "../../assets/fresGoLogo.jpg";
 import { ReactComponent as Bell } from "../../assets/bell.svg";
 import { Dropdown } from "antd";
+import { useSelector } from "react-redux";
 
-const Header = ({ setShowText }) => {
+const Header = ({ setShowText, setShowmap }) => {
   const navigate = useNavigate();
   const location = useLocation();
   const pathname = location.pathname;
   const [headerFocused, setHeaderFocused] = useState(true);
+  const FirstLetter = useSelector((state) => state.ProfileData?.profileData?.company?.charAt(0));
 
   const handleHeaderFocus = () => {
     setHeaderFocused(true);
@@ -81,6 +82,8 @@ const Header = ({ setShowText }) => {
   ];
   const handleRedirectToShipments = () => {
     navigate("/");
+    setShowmap(false);
+    setShowText(false);
   };
   return (
     <div
@@ -290,7 +293,7 @@ const Header = ({ setShowText }) => {
                 textAlign: "center",
               }}
             >
-              F
+              {FirstLetter}
             </Typography>
           </div>
         </Dropdown>

@@ -7,24 +7,22 @@ import ForumIcon from "@mui/icons-material/Forum";
 import CallIcon from "@mui/icons-material/Call";
 import MailIcon from "@mui/icons-material/Mail";
 
-const Navbar = ({ setShowText }) => {
+const Navbar = ({ setShowText, setShowmap }) => {
   const location = useLocation();
   const pathname = location.pathname;
   const navigate = useNavigate();
-  console.log("path",pathname);
+  console.log("path", pathname);
   const handleClick = () => {
     // setShowText(false);
   };
   const handleNavHome = () => {
-    if (
-      pathname ==="/"
-    ) {
+    if (pathname === "/") {
       setShowText(false);
+      setShowmap(false);
+      
     } else {
-      // navigate("/#/login?id=FRESCONV2&token=e1745a907281400e938a8203a1004c5f");
       navigate("/");
     }
-  
   };
   const homeBreadcrumb = (
     <Link

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Map from "./Map/Map";
 import BookingTabs from "./ShipmentTable/BookingTabs";
 import "./ShipBookingTabs.css";
@@ -8,10 +8,7 @@ import ph_table from "../../assets/NewListB.svg";
 import globBlack from "../../assets/NewGlobeB.svg";
 import listGray from "../../assets/NewListG.svg";
 
-const ShipmentsHome = () => {
-  const [showText, setShowText] = useState(false);
-  const [showmap, setShowmap] = useState(false);
-
+const ShipmentsHome = ({ showmap, setShowmap, showText, setShowText }) => {
   const haddleShowMap = () => {
     setShowmap(true);
   };
@@ -23,51 +20,69 @@ const ShipmentsHome = () => {
     <div
       style={{
         width: "100%",
-        background:
-          "linear-gradient(to bottom, white 49%,  rgb(248, 250, 252) 45%)",
+        backgroundColor: "rgb(248, 250, 252)",
       }}
     >
-      <div
-        style={{ width: "1255px" }}
-        className="shipmentIndex mb-4 mx-auto"
-      >
-        {!showText ? (
-          showmap ? (
-            <div className="py-4 d-flex justify-content-end gap-1">
-              <div style={{ cursor: "pointer" }}>
-                <img
-                  src={listGray}
-                  onClick={haddleCloseMap}
-                  width="18px"
-                  height="14px"
-                />
+      <div style={{ backgroundColor: "white" }}>
+        <div style={{ width: "1255px" }} className="shipmentIndex pb-4 mx-auto">
+          {!showText ? (
+            showmap ? (
+              <div className="py-4 d-flex justify-content-end gap-1">
+                <div style={{ cursor: "pointer" }}>
+                  <img
+                    src={listGray}
+                    onClick={haddleCloseMap}
+                    width="18px"
+                    height="14px"
+                  />
+                </div>
+                <div style={{ cursor: "pointer" }}>
+                  <img
+                    src={globBlack}
+                    onClick={haddleShowMap}
+                    width="15px"
+                    height="15px"
+                  />
+                </div>
               </div>
-              <div style={{ cursor: "pointer" }}>
-                <img
-                  src={globBlack}
-                  onClick={haddleShowMap}
-                  width="15px"
-                  height="15px"
-                />
+            ) : (
+              <div className="py-4 d-flex justify-content-end gap-1">
+                <div style={{ cursor: "pointer" }}>
+                  <img src={ph_table} onClick={haddleCloseMap} />
+                </div>
+                <div style={{ cursor: "pointer" }}>
+                  <img src={uil_globe} onClick={haddleShowMap} />
+                </div>
               </div>
-            </div>
+            )
           ) : (
-            <div className="py-4 d-flex justify-content-end gap-1">
-              <div style={{ cursor: "pointer" }}>
-                <img src={ph_table} onClick={haddleCloseMap} />
-              </div>
-              <div style={{ cursor: "pointer" }}>
-                <img src={uil_globe} onClick={haddleShowMap} />
-              </div>
-            </div>
-          )
-        ) : (
-          ""
-        )}
-        {showText ? "" : showmap && <Map />}
-        {/* <Map/> */}
-        {/* <br /> */}
-        <BookingTabs showText={showText} setShowText={setShowText} />
+            ""
+          )}
+          {showText ? "" : showmap && <Map />}
+        </div>
+      </div>
+
+      {!showText ? (
+        <div style={{ backgroundColor: "white", height: "175px" }}></div>
+      ) : (
+        <div style={{ backgroundColor: "white", height: "145px" }}></div>
+      )}
+      {!showText ? (
+        <div
+          style={{ width: "1255px", marginTop: "-177px" }}
+          className="mb-4 mx-auto"
+        >
+          <BookingTabs showText={showText} setShowText={setShowText} />
+        </div>
+      ) : (
+        <div
+          style={{ width: "1255px", marginTop: "-235px" }}
+          className="mb-4 mx-auto"
+        >
+          <BookingTabs showText={showText} setShowText={setShowText} setShowmap={setShowmap}/>
+        </div>
+      )}
+      <div style={{ width: "1255px" }} className="shipmentIndex pb-4 mx-auto">
         {showText ? (
           ""
         ) : (
