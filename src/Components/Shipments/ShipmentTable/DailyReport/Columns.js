@@ -105,119 +105,119 @@ const Columns = ({ setfiltercolumn, ColumnObject, DsrColumns }) => {
       />
     );
   };
-  const SearchTemplate = () => {
-    const allCheck = Object.values(checked || {}).every(
-      (item) => item === true
-    );
-    const showCheckValues = Object.entries(checked || {}).filter(
-      ([, val]) => val !== true
-    ).length;
-    const showUnCheckValues = Object.entries(checked || {}).filter(
-      ([, val]) => val === true
-    ).length;
-    console.log(allCheck);
-    console.log(showUnCheckValues);
-    console.log(showCheckValues);
-    const [search, setsearch] = useState("");
-    console.log(search);
-    const handleSearch = (e) => {
-      e.preventDefault();
-      setsearch(e.target.value);
-    };
-    const renderOption = (option) => {
-      if (option?.length <= 11) {
-        return <span style={{ fontSize: "13px" }}>=&nbsp;&nbsp;{option}</span>;
-      } else {
-        const truncatedText = option?.slice(0, 10).trim() + "..";
-        return (
-          <Tooltip style={{ zIndex: "-1" }} title={option}>
-            <span style={{ fontSize: "13px" }} role="button">
-              =&nbsp;&nbsp;{truncatedText}
-            </span>
-          </Tooltip>
-        );
-      }
-    };
-    // console.log(DsrColumns?.filter((item)=>item.includes(search.toUpperCase())))
-    return (
-      <>
-        <FormControlLabel
-          style={{
-            position: "sticky",
-            top: "0px",
-            zIndex: "199",
-            backgroundColor: "#fbfbfb",
-          }}
-          // label={}
-          control={
-            <>
-              <Checkbox
-                checked={allCheck}
-                indeterminate={
-                  showCheckValues !== DsrColumns.length &&
-                  showUnCheckValues !== DsrColumns.length
-                }
-                onChange={handleChange1}
-                sx={{
-                  color: "black",
-                  "&.Mui-checked": {
-                    color: "black",
-                  },
-                }}
-              />
-              <Input
-                placeholder="Search..."
-                value={search}
-                onChange={handleSearch}
-              />
-            </>
-          }
-        />
-        {/* );
-  }; */}
+  // const SearchTemplate = () => {
+  //   const allCheck = Object.values(checked || {}).every(
+  //     (item) => item === true
+  //   );
+  //   const showCheckValues = Object.entries(checked || {}).filter(
+  //     ([, val]) => val !== true
+  //   ).length;
+  //   const showUnCheckValues = Object.entries(checked || {}).filter(
+  //     ([, val]) => val === true
+  //   ).length;
+  //   console.log(allCheck);
+  //   console.log(showUnCheckValues);
+  //   console.log(showCheckValues);
+  //   const [search, setsearch] = useState("");
+  //   console.log(search);
+  //   const handleSearch = (e) => {
+  //     e.preventDefault();
+  //     setsearch(e.target.value);
+  //   };
+  //   const renderOption = (option) => {
+  //     if (option?.length <= 11) {
+  //       return <span style={{ fontSize: "13px" }}>=&nbsp;&nbsp;{option}</span>;
+  //     } else {
+  //       const truncatedText = option?.slice(0, 10).trim() + "..";
+  //       return (
+  //         <Tooltip style={{ zIndex: "-1" }} title={option}>
+  //           <span style={{ fontSize: "13px" }} role="button">
+  //             =&nbsp;&nbsp;{truncatedText}
+  //           </span>
+  //         </Tooltip>
+  //       );
+  //     }
+  //   };
+  //   // console.log(DsrColumns?.filter((item)=>item.includes(search.toUpperCase())))
+  //   return (
+  //     <>
+  //       <FormControlLabel
+  //         style={{
+  //           position: "sticky",
+  //           top: "0px",
+  //           zIndex: "199",
+  //           backgroundColor: "#fbfbfb",
+  //         }}
+  //         // label={}
+  //         control={
+  //           <>
+  //             <Checkbox
+  //               checked={allCheck}
+  //               indeterminate={
+  //                 showCheckValues !== DsrColumns.length &&
+  //                 showUnCheckValues !== DsrColumns.length
+  //               }
+  //               onChange={handleChange1}
+  //               sx={{
+  //                 color: "black",
+  //                 "&.Mui-checked": {
+  //                   color: "black",
+  //                 },
+  //               }}
+  //             />
+  //             <Input
+  //               placeholder="Search..."
+  //               value={search}
+  //               onChange={handleSearch}
+  //             />
+  //           </>
+  //         }
+  //       />
+  //       {/* );
+  // }; */}
 
-        {/* const CheckboxesTemplate = ()=>{ */}
-        {/* const renderOption = (option) => {
-      if (option.length <= 10) {
-        return <span style={{fontSize:"13px"}}>{option}</span>;
-      } else {
-        const truncatedText = option?.slice(0, 9).trim() + "..";
-        return (
-          <Tooltip style={{zIndex:"-1"}} title={option}>
-            <span style={{fontSize:"13px"}} role="button">{truncatedText}</span>
-          </Tooltip>
-        );
-      }
-    }; */}
+  //       {/* const CheckboxesTemplate = ()=>{ */}
+  //       {/* const renderOption = (option) => {
+  //     if (option.length <= 10) {
+  //       return <span style={{fontSize:"13px"}}>{option}</span>;
+  //     } else {
+  //       const truncatedText = option?.slice(0, 9).trim() + "..";
+  //       return (
+  //         <Tooltip style={{zIndex:"-1"}} title={option}>
+  //           <span style={{fontSize:"13px"}} role="button">{truncatedText}</span>
+  //         </Tooltip>
+  //       );
+  //     }
+  //   }; */}
 
-        <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>
-          {DsrColumns?.filter((item) =>
-            item?.includes(search.toUpperCase())
-          )?.map((item, index) => {
-            return (
-              <FormControlLabel
-                key={index}
-                label={renderOption(item)}
-                control={
-                  <Checkbox
-                    checked={checked && checked[item]}
-                    onChange={handleChange}
-                    name={item}
-                    sx={{
-                      color: "black",
-                      "&.Mui-checked": {
-                        color: "red",
-                      },
-                    }}
-                  />
-                }
-              />
-            );
-          })}
-        </Box>
-      </>
-    );
-  };
+  //       <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>
+  //         {DsrColumns?.filter((item) =>
+  //           item?.includes(search.toUpperCase())
+  //         )?.map((item, index) => {
+  //           return (
+  //             <FormControlLabel
+  //               key={index}
+  //               label={renderOption(item)}
+  //               control={
+  //                 <Checkbox
+  //                   checked={checked && checked[item]}
+  //                   onChange={handleChange}
+  //                   name={item}
+  //                   sx={{
+  //                     color: "black",
+  //                     "&.Mui-checked": {
+  //                       color: "red",
+  //                     },
+  //                   }}
+  //                 />
+  //               }
+  //             />
+  //           );
+  //         })}
+  //       </Box>
+  //     </>
+  //   );
+  // };
   const RowGroupsTemplate = () => {
     return (
       <div className="d-flex flex-column align-items-start">
@@ -313,7 +313,7 @@ const Columns = ({ setfiltercolumn, ColumnObject, DsrColumns }) => {
     //   template: <PivotSwitchTemplate />,
     // },
     {
-      template: <SearchTemplate />,
+      template: <SearchTemplate handleChange1={handleChange1} handleChange={handleChange} checked={checked} DsrColumns={DsrColumns} />,
     },
 
     // {
@@ -354,3 +354,120 @@ const Columns = ({ setfiltercolumn, ColumnObject, DsrColumns }) => {
 };
 
 export default Columns;
+
+const SearchTemplate = ({checked,DsrColumns,handleChange1,handleChange}) => {
+  const allCheck = Object.values(checked || {}).every(
+    (item) => item === true
+  );
+  const showCheckValues = Object.entries(checked || {}).filter(
+    ([, val]) => val !== true
+  ).length;
+  const showUnCheckValues = Object.entries(checked || {}).filter(
+    ([, val]) => val === true
+  ).length;
+  console.log(allCheck);
+  console.log(showUnCheckValues);
+  console.log(showCheckValues);
+  const [search, setsearch] = useState();
+  console.log(search);
+  const handleSearch = (e) => {
+    e.preventDefault();
+    setsearch(e.target.value);
+  };
+  const renderOption = (option) => {
+    if (option?.length <= 11) {
+      return <span style={{ fontSize: "13px" }}>=&nbsp;&nbsp;{option}</span>;
+    } else {
+      const truncatedText = option?.slice(0, 10).trim() + "..";
+      return (
+        <Tooltip style={{ zIndex: "-1" }} title={option}>
+          <span style={{ fontSize: "13px" }} role="button">
+            =&nbsp;&nbsp;{truncatedText}
+          </span>
+        </Tooltip>
+      );
+    }
+  };
+  console.log(DsrColumns)
+  return (
+    <>
+      <FormControlLabel
+        style={{
+          position: "sticky",
+          top: "0px",
+          zIndex: "199",
+          backgroundColor: "#fbfbfb",
+        }}
+        // label={}
+        control={
+          <>
+            <Checkbox
+              checked={allCheck}
+              indeterminate={
+                showCheckValues !== DsrColumns.length &&
+                showUnCheckValues !== DsrColumns.length
+              }
+              onChange={handleChange1}
+              sx={{
+                color: "black",
+                "&.Mui-checked": {
+                  color: "black",
+                },
+              }}
+            />
+            <Input
+              placeholder="Search..."
+              value={search}
+              onChange={handleSearch}
+            />
+          </>
+        }
+      />
+
+      <Box sx={{ display: "flex", flexDirection: "column", ml: 3 }}>
+        {!search && DsrColumns?.map((item, index) => {
+          return (
+            <FormControlLabel
+              key={index}
+              label={renderOption(item)}
+              control={
+                <Checkbox
+                  checked={checked && checked[item]}
+                  onChange={handleChange}
+                  name={item}
+                  sx={{
+                    color: "black",
+                    "&.Mui-checked": {
+                      color: "red",
+                    },
+                  }}
+                />
+              }
+            />
+          );
+        })}
+        {search && DsrColumns?.filter((item)=>item.includes(search?.toUpperCase()))?.map((item, index) => {
+          return (
+            <FormControlLabel
+              key={index}
+              label={renderOption(item)}
+              control={
+                <Checkbox
+                  checked={checked && checked[item]}
+                  onChange={handleChange}
+                  name={item}
+                  sx={{
+                    color: "black",
+                    "&.Mui-checked": {
+                      color: "red",
+                    },
+                  }}
+                />
+              }
+            />
+          );
+        })}
+      </Box>
+    </>
+  );
+};

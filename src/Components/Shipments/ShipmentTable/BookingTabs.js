@@ -438,6 +438,7 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
                     src={image1}
                     alt="img"
                     className="me-1"
+                    role="button"
                     style={{ width: "12px", height: "13.5px" }}
                     onClick={() => setSchedulemodal(true)}
                   />
@@ -494,6 +495,7 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
       <ScheduleDsrModal
         open={schedulemodal}
         close={() => setSchedulemodal(false)}
+        setSchedulemodal={setSchedulemodal}
       />
     </div>
   );
