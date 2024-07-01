@@ -8,7 +8,7 @@
     max-height: 500px;
     /* position: relative; */
 }
-.shipment_table_section  .ant-card-body::-webkit-scrollbar{
+/* .shipment_table_section  .ant-card-body::-webkit-scrollbar{
     width:10px !important
   }
   .shipment_table_section  .ant-card-body::-webkit-scrollbar-thumb {
@@ -19,7 +19,7 @@
   
 .shipment_table_section  .ant-card-body::-webkit-scrollbar-track {
     background-color: #f1f1f1 !important; 
-  }
+  } */
 /* .css-ypiqx9-MuiDialogContent-root::-webkit-scrollbar{
     width:10px !important
   }

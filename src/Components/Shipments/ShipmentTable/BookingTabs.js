@@ -23,7 +23,7 @@ import ScheduleDsrModal from "./DailyReport/DailyReportModal/ScheduleDsrModal";
 import { SaveDsrReqeust } from "../../../Redux/Actions/SaveDsrAction";
 import { toast } from "react-toastify";
 
-function BookingTabs({ showText, setShowText }) {
+function BookingTabs({ showText, setShowText, setShowmap }) {
   const [searchQuery] = useState("");
   const [data, setData] = useState([]);
   const saveSuccess = useSelector((state) => state?.SaveDsr?.savedsr?.Response);
@@ -286,7 +286,7 @@ function BookingTabs({ showText, setShowText }) {
           >
             Daily Status Report
           </p>
-          <Navbar setShowText={setShowText} />
+          <Navbar setShowText={setShowText} setShowmap={setShowmap}/>
         </div>
       ) : (
         <SearchHeader

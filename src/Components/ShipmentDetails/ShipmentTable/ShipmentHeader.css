@@ -5,6 +5,7 @@
     height: 39px;
     margin:0px -2px 20px -2px; 
     background-color: #F3F5F7 !important;
+    border-radius: 8px;
 }
 .ship_section .reference_row>div{
     display: flex;
