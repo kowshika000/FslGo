@@ -50,34 +50,48 @@ function DailyReportTable({ filtercolumn, setfiltercolumn }) {
   const DsrColumns = DsrReportData?.columns;
   const DsrDatas = DsrReportData?.data;
   const clonednewArray = DsrDatas?.map((a) => ({ ...a })) || [];
+  //my try
+  const DsrDataObj = DsrReportData?.data?.[0]
+  const DsrCopied = {...DsrDataObj}
+  const DsrModifiedArray = Object?.keys(DsrCopied || {})
+  console.log(DsrModifiedArray)
 
   //This function is used to change the
-  function changeKey(arr) {
-    var newArr = [];
-    for (var i = 0; i < arr.length; i++) {
-      var obj = arr[i];
-      const altObj = Object.fromEntries(
-        Object.entries(obj).map(([key, value]) => [
-          key.split(" ").join("_"),
-          value,
-        ])
-      );
-      newArr.push(altObj);
-    }
-    return newArr;
-  }
+  // function changeKey(arr) {
+  //   var newArr = [];
+  //   for (var i = 0; i < arr.length; i++) {
+  //     var obj = arr[i];
+  //     const altObj = Object.fromEntries(
+  //       Object.entries(obj).map(([key, value]) => [
+  //         key.split(" ").join("_"),
+  //         value,
+  //       ])
+  //     );
+  //     newArr.push(altObj);
+  //   }
+  //   return newArr;
+  // }
 
-  const datasArray = changeKey(clonednewArray);
-  console.log(datasArray);
+  // const datasArray = changeKey(clonednewArray);
+  // console.log(datasArray);
 
-  const ColumnObject = DsrColumns?.reduce(
+  // const ColumnObject = DsrColumns?.reduce(
+  //   (o, key) => ({ ...o, [key]: true }),
+  //   {}
+  // );
+  const ColumnObject = DsrModifiedArray?.reduce(
     (o, key) => ({ ...o, [key]: true }),
     {}
   );
+  console.log(ColumnObject)
 
-  const dsrfilter = DsrColumns?.reduce((o, key) => ({ ...o, [key]: [] }), {});
+  // const dsrfilter = DsrColumns?.reduce((o, key) => ({ ...o, [key]: [] }), {});
+  // console.log(dsrfilter);
+  // const report = datasArray;
+  // console.log(report);
+  const dsrfilter = DsrModifiedArray?.reduce((o, key) => ({ ...o, [key]: [] }), {});
   console.log(dsrfilter);
-  const report = datasArray;
+  const report = DsrDatas;
   console.log(report);
   const [currentPage, setCurrentPage] = useState(1);
   const [sidebaropen, setSidebaropen] = useState(false);
@@ -476,19 +490,19 @@ function DailyReportTable({ filtercolumn, setfiltercolumn }) {
           // emptyMessage={noData()}
         >
           {arrayOfObj?.map((item, index) => {
-            console.log(item?.header);
-            if (filtercolumn[item?.header]) {
+            console.log(item);
+            if (filtercolumn[item.header]) {
               return (
                 <Column
                   key={index}
-                  field={item?.modifyheader}
-                  body={columnValueData(item?.modifyheader)}
+                  field={item?.header}
+                  body={columnValueData(item?.header)}
                   header={
                     <span className=" d-flex">
                       {item?.header}
                       {MultiSelectFilter(
-                        item?.modifyheader,
-                        getUniqueOptions(data, item?.modifyheader),
+                        item?.header,
+                        getUniqueOptions(data, item?.header),
                         dsrFilter
                       )}
                       <div
@@ -497,7 +511,7 @@ function DailyReportTable({ filtercolumn, setfiltercolumn }) {
                       >
                         <IconButton
                           onClick={() => {
-                            handleSort(item?.modifyheader);
+                            handleSort(item?.header);
                           }}
                           className="p-0"
                         >
@@ -505,7 +519,7 @@ function DailyReportTable({ filtercolumn, setfiltercolumn }) {
                         </IconButton>
                         <IconButton
                           onClick={() => {
-                            handleSortDown(item?.modifyheader);
+                            handleSortDown(item?.header);
                           }}
                           className="p-0"
                         >
@@ -557,7 +571,7 @@ function DailyReportTable({ filtercolumn, setfiltercolumn }) {
           <Columns
             setfiltercolumn={setfiltercolumn}
             ColumnObject={ColumnObject}
-            DsrColumns={DsrColumns}
+            DsrColumns={DsrModifiedArray}
           />
         )}
       </div>
