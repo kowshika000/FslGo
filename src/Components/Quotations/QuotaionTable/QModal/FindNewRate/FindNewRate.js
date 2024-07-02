@@ -98,7 +98,7 @@ function FindNewRate() {
   ];
 
   return (
-    <div className="container-fluid p-0" style={{ backgroundColor: "#F8FAFC" }}>
+    <div className="container-fluid p-0" style={{ backgroundColor: "#F8FAFC",Width:"100%",minWidth:"1255px"}} >
       <div style={{ backgroundColor: "white" }}>
         <div
           style={{ maxWidth: "1255px", padding: "26px 0px 20px 0px" }}
