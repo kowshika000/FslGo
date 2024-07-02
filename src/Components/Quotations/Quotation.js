@@ -3,6 +3,7 @@ import Navbar from '../Layout/Navbar'
 import { Typography } from '@mui/material';
 import QuotationTabs from './QuotaionTable/QuotationTabs';
 import "./Quotation.css";
+import ShipmentCard from '../ShipmentBooking/ShipmentCard';
 
 const Quotation = () => {
   return (
@@ -12,6 +13,7 @@ const Quotation = () => {
      <div>
      <Navbar/>
      </div>
+     <ShipmentCard/>
      <QuotationTabs/>
      </div>
     </div>
