@@ -91,7 +91,9 @@
 /* #customers tr:hover {
   background-color: #ddd;
 } */
-
+.p-dropdown .p-dropdown-trigger{
+  display: none !important;
+}
 #customers th {
   height: 36px;
   text-align: center;
