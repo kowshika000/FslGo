@@ -13,7 +13,7 @@ export function QuotationService(request) {
   return axios({
     method: "POST",
     url: baseURL+"quotations_list",
-    params: request,
+    data: request,
     headers: {
         auth_token: authToken 
       }

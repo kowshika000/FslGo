@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 import "./shipmentDetails.css";
 import { Link } from "react-router-dom";
-import RecentBooking from "../../QuickBooking/RecentBooking";
+// import RecentBooking from "../../QuickBooking/RecentBooking";
 import { Dropdown } from "primereact/dropdown";
 import ShipmentHistory from "../ShipmentHistory/ShipmentHistory";
 import ToDo from "./ToDo";

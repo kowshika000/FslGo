@@ -1,0 +1,18 @@
+.Service-Included .ant-card-body .Service-card1 {
+  padding: 0px 18px !important;
+  border-bottom: 1px solid #f3f5f7;
+}
+
+.Service-card1 .ant-checkbox-wrapper .ant-checkbox-checked .ant-checkbox-inner {
+  background-color: #d32d2f !important;
+  border: none;
+}
+.service-title {
+  font-size: 14px !important;
+  color: #212121 !important;
+  font-weight: 500 !important;
+}
+.ant-checkbox + span {
+  font-size: 12px !important;
+  font-weight: 400 !important;
+}

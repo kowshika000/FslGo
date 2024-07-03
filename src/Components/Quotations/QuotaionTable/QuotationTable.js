@@ -26,12 +26,13 @@ import { QData } from "./QuotationData";
 import BookFor from "./QModal/BookFor";
 import Requested from "./QModal/Requested";
 import { useNavigate } from "react-router-dom";
+import { QuotationRequest } from "../../../Redux/Actions/QuotationAction";
 
 const QuotationTable = ({ filterData, selectedStatus }) => {
   const [bookForModal, setbookForModal] = useState(false);
   const [requstedModal, setrequstedModal] = useState(false);
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const [filters, setFilters] = useState({
     global: { value: null, matchMode: FilterMatchMode.CONTAINS },
     id: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
@@ -48,9 +49,28 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10; // Number of items per page
   const dispatch = useDispatch();
+  const payload = {
+    filter_month: "",
+    quotation_type: "",
+    spagesize: "",
+    sperpage: "",
+    quotation_no: "",
+    origin: "",
+    destination: "",
+    mode: "",
+    etd: "",
+    eta: "",
+  };
+  useEffect(() => {
+    dispatch(QuotationRequest({ payload }));
+  }, [dispatch]);
+  const quotationData = useSelector(
+    (state) => state?.QuotationList?.Quotation?.data
+  );
+  const quotation = useSelector((state) => state?.QuotationList?.Quotation);
 
-  const quotationData = QData ? QData.filter((data) => data) : [];
-  console.log(quotationData);
+  // const quotationData = QData ? QData.filter((data) => data) : [];
+  console.log(quotation, "qudata");
   const [filteredData, setFilteredData] = useState([]);
 
   useEffect(() => {
@@ -78,7 +98,7 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
     let buttonLabel;
     let btnClass;
     btnClass = "cargo-picked-up";
-    if (rowData.action === "Requested") {
+    if (rowData.status === "Requested") {
       buttonLabel = (
         <>
           Requested{" "}
@@ -89,10 +109,13 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
         </>
       );
       btnClass = "waringBtn";
-    } else if (rowData.action === "Book For $300") {
+    } else if (rowData.status === "Book For $300") {
       buttonLabel = "Book For $300";
       btnClass = "dangerBtn";
-    } else if (rowData.action === "Find New Rates") {
+    } else if (rowData.status === "Active") {
+      buttonLabel = "Book For $300";
+      btnClass = "dangerBtn";
+    } else if (rowData.status === "Find New Rates" || "Expired") {
       buttonLabel = (
         <>
           Find New Rates{" "}
@@ -100,7 +123,7 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
         </>
       );
       btnClass = "waringBtn";
-    } else if (rowData.action === "Booked") {
+    } else if (rowData.status === "Booked") {
       buttonLabel = (
         <>
           <img
@@ -113,16 +136,15 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
       btnClass = "booked";
     }
     const hadleModalOpen = () => {
-      if (rowData.action === "Requested") {
+      if (rowData.status === "Requested") {
         setrequstedModal(true);
-        
+
         setbookForModal(false);
-      } else if (rowData.action === "Book For $300") {
+      } else if (rowData.status === "Active") {
         setbookForModal(true);
         setrequstedModal(false);
-        
-      } else if (rowData.action === "Find New Rates") {
-       navigate("/findnewrate")
+      } else if (rowData.status === "Expired") {
+        navigate("/findnewrate");
       }
     };
     return (
@@ -150,7 +172,7 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
   const shipmentTemplate = (rowData) => {
     return (
       <div style={{ textAlign: "start" }}>
-        <div className="bold px-4">{rowData?.id}</div>
+        <div className="bold px-4">{rowData?.ref_id}</div>
       </div>
     );
   };
@@ -406,7 +428,7 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
         rowClassName={rowClassName}
       >
         <Column
-          field="id"
+          field="ref_id"
           header={
             <span
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
@@ -509,7 +531,7 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
           className="p-3"
         ></Column>
         <Column
-          field="Load"
+          field="load"
           header={
             <span className="p-3 d-flex">
               Load
@@ -637,7 +659,7 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
           className="text-start p-3"
         ></Column>
         <Column
-          field="action"
+          field="status"
           body={actionBodyTemplate}
           header={<span className="p-3">Action</span>}
           className="p-3 text-start"
