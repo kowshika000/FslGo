@@ -6,51 +6,177 @@ import Pagination1 from "../../Core-Components/Pagination1";
 import { useDispatch, useSelector } from "react-redux";
 import { Tooltip } from "antd";
 import CountryFlag from "../../Core-Components/CountryFlag";
-// import Steppertrack from "../Track/StepperTrack";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
-import { FilterMatchMode } from "primereact/api";
 import { Row, Col, Input, Image } from "antd";
-import { SearchOutlined, CaretDownFilled } from "@ant-design/icons";
+import { SearchOutlined, CaretDownOutlined } from "@ant-design/icons";
 import FilterDrawer from "./Fillter";
 import filter from "../../../assets/Filter 2.png";
-import calendar from "../../../assets/calendar.png";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { IconButton } from "@mui/material";
 import { Dropdown } from "primereact/dropdown";
 import Vector from "../../../assets/Vector1.png";
 import Verified from "../../../assets/Verified.png";
-import { QData } from "./QuotationData";
 import BookFor from "./QModal/BookFor";
 import Requested from "./QModal/Requested";
 import { useNavigate } from "react-router-dom";
 import { QuotationRequest } from "../../../Redux/Actions/QuotationAction";
+import cal from "../../../assets/calVector.svg";
+import { CircularProgress, Box } from "@mui/material";
+import { MultiSelect } from "primereact/multiselect";
 
-const QuotationTable = ({ filterData, selectedStatus }) => {
+const QuotationTable = ({
+  filterData,
+  selectedStatus,
+  currentPage,
+  setCurrentPage,
+}) => {
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
   const [bookForModal, setbookForModal] = useState(false);
   const [requstedModal, setrequstedModal] = useState(false);
-
-  const navigate = useNavigate();
-  const [filters, setFilters] = useState({
-    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    id: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    origin: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    destination: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    booked_on: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    // etd/atd: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    // eta/ata: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    status: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+  const [filterValue, setFilterValue] = useState(30);
+  const [selectedDropdownItem, setSelectedDropdownItem] =
+    useState("Past 30 Days");
+  const [filteredData, setFilteredData] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalRowData, setModalRowData] = useState(null);
+  const [visible, setVisible] = useState(false);
+  const [globalFilter, setGlobalFilter] = useState("");
+  const items = [
+    "Past 30 Days",
+    "Past 3 Months",
+    "Past 6 Months",
+    "Past 1 Year",
+  ];
+  const itemsPerPage = 10;
+  const quotationData = useSelector(
+    (state) => state?.QuotationList?.Quotation?.data
+  );
+  const { loading } = useSelector((state) => state?.QuotationList);
+  const [tblFilter, setTblFilter] = useState({
+    ref_id: [],
+    origin: [],
+    destination: [],
+    load: [],
+    eta: [],
+    etd: [],
+    rate_validity: [],
+    status: [],
   });
-  const [globalFilterValue, setGlobalFilterValue] = useState("");
-  const [filterValue, setFilterValue] = useState(15);
+  useEffect(() => {
+    const filterDataTable = quotationData?.filter((item) =>
+      Object.keys(tblFilter).every(
+        (key) =>
+          tblFilter[key]?.length === 0 || tblFilter[key]?.includes(item[key])
+      )
+    );
+    setFilteredData(filterDataTable);
+    setCurrentPage(1);
+  }, [tblFilter, filterData]);
+  const getUniqueOptions = (array, key) => {
+    if (!Array.isArray(array) || !array?.length) {
+      return [];
+    }
+    return Array.from(new Set(array.map((data) => data[key]))).map((value) => ({
+      label: value,
+      value,
+    }));
+  };
+  const [clicked, setClicked] = useState(false);
+  const [data, setData] = useState(filteredData);
+  useEffect(() => {
+    if (clicked) {
+      setData(filteredData);
+    }
+  }, [clicked]);
+  const refId_ = getUniqueOptions(data, "ref_id");
+  const Org_ = getUniqueOptions(data, "origin");
+  const dest_ = getUniqueOptions(data, "destination");
+  const load_ = getUniqueOptions(data, "load");
+  const eta_ = getUniqueOptions(data, "eta");
+  const etd_ = getUniqueOptions(data, "etd");
+  const rate_ = getUniqueOptions(data, "rate_validity");
+  const status_ = getUniqueOptions(data, "status");
+  const handleChangeFilter = (field, filterValues) => {
+    if (field === "all") {
+      setTblFilter({
+        ref_id: [],
+        origin: [],
+        destination: [],
+        load: [],
+        eta: [],
+        etd: [],
+        rate_validity: [],
+        status: [],
+      });
+    } else {
+      setTblFilter((prevFilters) => ({
+        ...prevFilters,
+        [field]: filterValues,
+      }));
+    }
+  };
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; // Number of items per page
-  const dispatch = useDispatch();
+  useEffect(() => {
+    if (selectedStatus !== null) {
+      setTblFilter({
+        ref_id: [],
+        origin: [],
+        destination: [],
+        load: [],
+        eta: [],
+        etd: [],
+        rate_validity: [],
+        status: [],
+      });
+    }
+  }, [selectedStatus]);
+
+  function MultiSelectFilter(filterKey, options, value, additionalStyles) {
+    const renderOption = (option) => {
+      if (option.label.length <= 14) {
+        return <span>{option.label}</span>;
+      } else {
+        const truncatedText = option.label?.slice(0, 14).trim() + "..";
+        return (
+          <Tooltip placement="topLeft" title={option.label}>
+            <span role="button">{truncatedText}</span>
+          </Tooltip>
+        );
+      }
+    };
+
+    return (
+      <MultiSelect
+        className="custom-multi-select"
+        value={value}
+        options={options}
+        filter
+        style={{
+          position: "absolute",
+          opacity: "0",
+          width: "20px",
+          fontSize: "10px",
+          ...additionalStyles,
+        }}
+        showSelectAll={false}
+        onChange={(e) => handleChangeFilter(filterKey, e.value)}
+        onFocus={() => setClicked(true)} // Track when the MultiSelect gains focus
+        onBlur={() => setClicked(false)}
+        display="chip"
+        placeholder="Select"
+        itemTemplate={renderOption}
+        filterPlaceholder="Search"
+      />
+    );
+  }
+
   const payload = {
-    filter_month: "",
+    filter_month: filterValue,
     quotation_type: "",
     spagesize: "",
     sperpage: "",
@@ -63,20 +189,32 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
   };
   useEffect(() => {
     dispatch(QuotationRequest({ payload }));
-  }, [dispatch]);
-  const quotationData = useSelector(
-    (state) => state?.QuotationList?.Quotation?.data
-  );
-  const quotation = useSelector((state) => state?.QuotationList?.Quotation);
-
-  // const quotationData = QData ? QData.filter((data) => data) : [];
-  console.log(quotation, "qudata");
-  const [filteredData, setFilteredData] = useState([]);
+  }, [dispatch, filterValue]);
 
   useEffect(() => {
     setFilteredData(filterData.length ? filterData : quotationData);
   }, [selectedStatus]);
-  console.log("q booking", filteredData);
+
+  useEffect(() => {
+    const lowercasedFilter = globalFilter.toLowerCase();
+    const filteredData = quotationData?.filter((item) =>
+      Object.keys(item).some((key) =>
+        String(item[key]).toLowerCase().includes(lowercasedFilter)
+      )
+    );
+    setFilteredData(filteredData);
+    setCurrentPage(1)
+  }, [globalFilter, quotationData]);
+
+  useEffect(() => {
+    const filterDaysMap = {
+      "Past 30 Days": 30,
+      "Past 3 Months": 91,
+      "Past 6 Months": 182,
+      "Past 1 Year": 365,
+    };
+    setFilterValue(filterDaysMap[selectedDropdownItem]);
+  }, [selectedDropdownItem]);
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
@@ -84,8 +222,6 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
   // Extract the data for the current page
   const currentPageData = filteredData?.slice(startIndex, endIndex);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalRowData, setModalRowData] = useState(null);
   const showModal = (rowData) => {
     setModalRowData(rowData);
     setIsModalOpen(true);
@@ -102,9 +238,6 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
       buttonLabel = (
         <>
           Requested{" "}
-          {/* <ReportIcon
-            style={{ width: "15px", height: "15px", marginTop: "-2px" }}
-          /> */}
           <img src={Vector} style={{ marginTop: "-2px", marginLeft: "4px" }} />
         </>
       );
@@ -165,10 +298,6 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
       />
     );
   };
-
-  const rowClassName = () => {
-    return "custom-row";
-  };
   const shipmentTemplate = (rowData) => {
     return (
       <div style={{ textAlign: "start" }}>
@@ -221,97 +350,40 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
       </div>
     );
   };
-  const handleSort = (col) => {
-    console.log("Ascending");
-    const sorted = [...filteredData].sort((a, b) => {
-      const valA = a[col];
-      const valB = b[col];
-      if (!isNaN(valA) && !isNaN(valB)) {
-        return valA - valB;
-      }
-      if (col === "etd" || col === "eta") {
-        const dateA = parseDate1(valA);
-        const dateB = parseDate1(valB);
-        return dateA - dateB;
-      }
-      return valA > valB ? 1 : -1;
-    });
-    setFilteredData(sorted);
+
+  const valueTemplate = () => {
+    return (
+      <div>
+        <Image
+          src={cal}
+          alt="cal"
+          style={{
+            width: "12px",
+            height: "12px",
+            marginTop: "-2px",
+            marginRight: "7px",
+          }}
+        />
+        <span
+          style={{
+            color: "#495A6E",
+            fontWeight: "400",
+            fontSize: "13px",
+            lineHeight: "19px",
+            letterSpacing: "1%",
+            textAlign: "center",
+          }}
+        >
+          {selectedDropdownItem}
+        </span>
+        <CaretDownOutlined className="ms-1" style={{ color: "#67788E" }} />
+      </div>
+    );
   };
-  const parseDate1 = (dateString) => {
-    const parts = dateString.split("/");
-    return new Date(parts[2], parts[1] - 1, parts[0]);
-  };
-  const parseDate2 = (dateString) => {
-    const parts = dateString.split("/");
-    return new Date(parts[2], parts[1] - 1, parts[0]);
-  };
-
-  const handleSortDown = (col) => {
-    console.log("Descending");
-    const sorted = [...filteredData].sort((a, b) => {
-      const valA = a[col];
-      const valB = b[col];
-
-      // Check if the values are numbers
-      if (!isNaN(valA) && !isNaN(valB)) {
-        return valB - valA;
-      }
-
-      // Handle date strings
-      if (col === "etd" || col === "eta") {
-        const dateA = parseDate2(valA);
-        const dateB = parseDate2(valB);
-        return dateB - dateA;
-      }
-
-      // Default string comparison
-      return valA < valB ? 1 : -1;
-    });
-    setFilteredData(sorted);
-  };
-
-  // Function to parse dates in the "dd/mm/yyyy" format
-  const parseDate = (dateString) => {
-    const parts = dateString.split("/");
-    // month is 0-based, so subtract 1 from the month
-    return new Date(parts[2], parts[1] - 1, parts[0]);
-  };
-
-  const [visible, setVisible] = useState(false);
-
-  const showDrawer = () => {
-    setVisible(true);
-  };
-
-  const onClose = () => {
-    setVisible(false);
-  };
-  const onGlobalFilterChange = (e) => {
-    const value = e.target.value;
-    let _filters = { ...filters };
-
-    _filters["global"].value = value;
-
-    setFilters(_filters);
-    setGlobalFilterValue(value);
-  };
-
-  const [selectedDropdownItem, setSelectedDropdownItem] =
-    useState("Past 15 Days");
-
-  const items = ["Past 15 Days", "Past 30 Days", "Past 60 Days"];
-  useEffect(() => {
-    if (selectedDropdownItem === "Past 15 Days") {
-      setFilterValue(15);
-    } else if (selectedDropdownItem === "Past 30 Days") {
-      setFilterValue(30);
-    } else if (selectedDropdownItem === "Past 60 Days") {
-      setFilterValue(60);
-    }
-  }, [selectedDropdownItem]);
-
-  console.log("tab FilterValue", filterValue);
+  const dropdownbutton = document.querySelector(".p-dropdown-trigger");
+  if (dropdownbutton) {
+    dropdownbutton.remove();
+  }
 
   const renderHeader = () => {
     return (
@@ -322,52 +394,39 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
       >
         <Col>
           <Input
-            placeholder="Search booking id , origin, destination... "
+            placeholder="Search Ref id , origin, destination... "
             prefix={<SearchOutlined style={{ color: "#94A2B2" }} />}
             style={{
               width: "368.13px",
               padding: "4px 11px",
               borderRadius: "4px",
             }}
-            value={globalFilterValue}
-            onChange={onGlobalFilterChange}
+            value={globalFilter}
+            onChange={(e) => setGlobalFilter(e.target.value)}
           />
         </Col>
         <Col className="d-flex ">
           <div
-            style={{ border: "1px solid #E7EAF0", borderRadius: "8px" }}
-            className="px-1 d-flex me-2"
+            className="dropdownfield mx-2"
+            style={{ alignContent: "center" }}
           >
-            <Image
-              src={calendar}
-              width="16px"
-              height="12px"
-              className="mt-2 pe-1"
-            />
-
-            <div
-              style={{
-                alignContent: "center",
-                border: "none ",
-                outline: "none ",
+            <Dropdown
+              value={selectedDropdownItem}
+              onChange={(e) => {
+                setSelectedDropdownItem(e.value);
               }}
-            >
-              <Dropdown
-                value={selectedDropdownItem}
-                onChange={(e) => {
-                  console.log("Selected item:", e.value); // Add logging statement
-                  setSelectedDropdownItem(e.value);
-                }}
-                options={items}
-                placeholder="Past 15 Days"
-                className="w-full md:w-14rem"
-                style={{ border: "none" }}
-              />
-            </div>
+              options={items}
+              valueTemplate={valueTemplate}
+              className="w-full md:w-14rem datehover"
+              style={{ border: "none" }}
+            />
           </div>
 
           <div className="filter d-flex">
-            <div className="ant-image cursor-pointer" onClick={showDrawer}>
+            <div
+              className="ant-image cursor-pointer"
+              // onClick={()=>setVisible(true)}
+            >
               <img
                 src={filter}
                 className="ant-image-img me-1 my-1"
@@ -391,12 +450,85 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
             </div>
           </div>
 
-          <FilterDrawer visible={visible} onClose={onClose} />
+          <FilterDrawer visible={visible} onClose={() => setVisible(false)} />
         </Col>
       </Row>
     );
   };
-  const header = renderHeader();
+  const noData = () => {
+    return (
+      <div
+        className="no-options "
+        style={{ alignSelf: "center", height: "353px" }}
+      >
+        No Data Found
+      </div>
+    );
+  };
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "353px",
+        }}
+      >
+        <CircularProgress style={{ color: "red" }} />
+      </Box>
+    );
+  }
+  const sort = (col) => {
+    const handleSort = (col) => {
+      console.log("Ascending");
+      const sorted = [...filteredData].sort((a, b) => {
+        const valA = a[col];
+        const valB = b[col];
+        if (!isNaN(valA) && !isNaN(valB)) {
+          return valA - valB;
+        }
+        return valA > valB ? 1 : -1;
+      });
+      setFilteredData(sorted);
+    };
+
+    const handleSortDown = (col) => {
+      console.log("Descending");
+      const sorted = [...filteredData].sort((a, b) => {
+        const valA = a[col];
+        const valB = b[col];
+        if (!isNaN(valA) && !isNaN(valB)) {
+          return valB - valA;
+        }
+        return valA < valB ? 1 : -1;
+      });
+      setFilteredData(sorted);
+    };
+
+    return (
+      <div>
+        <div className="d-flex sorticon" style={{ flexDirection: "column" }}>
+          <IconButton
+            onClick={() => {
+              handleSort(col, "asc");
+            }}
+            className="p-0"
+          >
+            <ExpandLessIcon className="sortup" />
+          </IconButton>
+          <IconButton
+            onClick={() => {
+              handleSortDown(col, "desc");
+            }}
+            className="p-0"
+          >
+            <ExpandMoreIcon className="sortdown" />
+          </IconButton>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <div
@@ -406,26 +538,9 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
     >
       <DataTable
         value={currentPageData}
-        // value={tableValue}
-        dataKey="shipmentId"
-        paginator={false}
-        rows={10}
-        rowsPerPageOptions={[5, 10, 25]}
-        currentPageReportTemplate="{first} to {last} out of {totalRecords} "
-        // paginatorTemplate=" PrevPageLink PageLinks NextPageLink  CurrentPageReport "
-        removableSort
-        header={header}
-        filters={filters}
-        globalFilterFields={[
-          "id",
-          "origin",
-          "destination",
-          "Load",
-          "etd",
-          "eta",
-          "rate_validity",
-        ]}
-        rowClassName={rowClassName}
+        style={{ height: "400px" }}
+        header={renderHeader}
+        emptyMessage={noData}
       >
         <Column
           field="ref_id"
@@ -435,27 +550,8 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
               className="px-4 d-flex"
             >
               Ref. ID
-              <div
-                className="d-flex sorticon"
-                style={{ flexDirection: "column" }}
-              >
-                <IconButton
-                  onClick={() => {
-                    handleSort("id");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandLessIcon className="sortup" />
-                </IconButton>
-                <IconButton
-                  onClick={() => {
-                    handleSortDown("id");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandMoreIcon className="sortdown" />
-                </IconButton>
-              </div>
+              {MultiSelectFilter("ref_id", refId_, tblFilter.ref_id)}
+              {sort("ref_id")}
             </span>
           }
           body={shipmentTemplate}
@@ -469,27 +565,8 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
               className="d-flex"
             >
               Origin
-              <div
-                className="d-flex sorticon"
-                style={{ flexDirection: "column" }}
-              >
-                <IconButton
-                  onClick={() => {
-                    handleSort("origin");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandLessIcon className="sortup" />
-                </IconButton>
-                <IconButton
-                  onClick={() => {
-                    handleSortDown("origin");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandMoreIcon className="sortdown" />
-                </IconButton>
-              </div>
+              {MultiSelectFilter("origin", Org_, tblFilter.origin)}
+              {sort("origin")}
             </span>
           }
           body={originBodyTemplate}
@@ -504,27 +581,8 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
             >
               Destination
-              <div
-                className="d-flex sorticon"
-                style={{ flexDirection: "column" }}
-              >
-                <IconButton
-                  onClick={() => {
-                    handleSort("destination");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandLessIcon className="sortup" />
-                </IconButton>
-                <IconButton
-                  onClick={() => {
-                    handleSortDown("destination");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandMoreIcon className="sortdown" />
-                </IconButton>
-              </div>
+              {MultiSelectFilter("destination", dest_, tblFilter.destination)}
+              {sort("destination")}
             </span>
           }
           body={destinationBodyTemplate}
@@ -535,27 +593,8 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
           header={
             <span className="p-3 d-flex">
               Load
-              <div
-                className="d-flex sorticon"
-                style={{ flexDirection: "column" }}
-              >
-                <IconButton
-                  onClick={() => {
-                    handleSort("Load");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandLessIcon className="sortup" />
-                </IconButton>
-                <IconButton
-                  onClick={() => {
-                    handleSortDown("Load");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandMoreIcon className="sortdown" />
-                </IconButton>
-              </div>
+              {MultiSelectFilter("load", load_, tblFilter.load)}
+              {sort("load")}
             </span>
           }
           bodyClassName="custom-cell"
@@ -566,27 +605,8 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
           header={
             <span className="p-3 d-flex">
               ETD
-              <div
-                className="d-flex sorticon"
-                style={{ flexDirection: "column" }}
-              >
-                <IconButton
-                  onClick={() => {
-                    handleSort("etd");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandLessIcon className="sortup" />
-                </IconButton>
-                <IconButton
-                  onClick={() => {
-                    handleSortDown("etd");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandMoreIcon className="sortdown" />
-                </IconButton>
-              </div>
+              {MultiSelectFilter("etd", etd_, tblFilter.etd)}
+              {sort("etd")}
             </span>
           }
           bodyClassName="custom-cell"
@@ -597,27 +617,8 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
           header={
             <span className="p-3 d-flex">
               ETA
-              <div
-                className="d-flex sorticon"
-                style={{ flexDirection: "column" }}
-              >
-                <IconButton
-                  onClick={() => {
-                    handleSort("eta");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandLessIcon className="sortup" />
-                </IconButton>
-                <IconButton
-                  onClick={() => {
-                    handleSortDown("eta");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandMoreIcon className="sortdown" />
-                </IconButton>
-              </div>
+              {MultiSelectFilter("eta", eta_, tblFilter.eta)}
+              {sort("eta")}
             </span>
           }
           bodyClassName="custom-cell"
@@ -628,40 +629,26 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
           header={
             <span className="p-3 d-flex">
               Rate Validity
-              <div
-                className="d-flex sorticon"
-                style={{ flexDirection: "column" }}
-              >
-                <IconButton
-                  onClick={() => {
-                    handleSort("Rate Validity");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandLessIcon className="sortup" />
-                </IconButton>
-                <IconButton
-                  onClick={() => {
-                    handleSortDown("Rate Validity");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandMoreIcon className="sortdown" />
-                </IconButton>
-              </div>
+              {MultiSelectFilter(
+                "rate_validity",
+                rate_,
+                tblFilter.rate_validity
+              )}
+              {sort("rate_validity")}
             </span>
           }
-          //   bodyClassName={(rowData) =>
-          //     rowData.status === "Booking In Progress"
-          //       ? "booking-progress-cell"
-          //       : "booked-cell "
-          //   }
           className="text-start p-3"
         ></Column>
         <Column
           field="status"
           body={actionBodyTemplate}
-          header={<span className="p-3">Action</span>}
+          header={
+            <span className="p-3 d-flex">
+              Action
+              {MultiSelectFilter("status", status_, tblFilter.status)}
+              {sort("status")}
+            </span>
+          }
           className="p-3 text-start"
         ></Column>
       </DataTable>
@@ -669,13 +656,7 @@ const QuotationTable = ({ filterData, selectedStatus }) => {
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         totalItems={filteredData?.length}
-        // itemsPerPage={itemsPerPage}
       />
-      {/* <Steppertrack
-        isModalOpen={isModalOpen}
-        handleCancel={handleCancel}
-        rowData={modalRowData}
-      /> */}
       <BookFor
         bookForModal={bookForModal}
         handleCancel={() => setbookForModal(false)}
