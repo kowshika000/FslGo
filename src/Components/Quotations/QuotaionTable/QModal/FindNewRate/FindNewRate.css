@@ -1,32 +1,40 @@
-.location-card .ant-card-body {
-  padding: 20px;
+.quotationresult-div {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  max-width: 1146px;
+  justify-content: center;
+  background: #f3f5f7;
+  gap: 20px !important;
+  align-items: flex-start;
+  min-height: 818px;
 }
-.location-bar p {
-  margin: 0 !important;
+.quotationresult-leftdiv .ant-card-head {
+  padding: 16px;
+  border-bottom: 1px solid #f3f5f7;
 }
-
-.p-label {
-  font-weight: 500;
-  font-size: 13px;
-  color: #495a6e;
-}
-
-.p-value {
-  font-size: 16px;
-  font-weight: 500;
-  line-height: 26px;
-  letter-spacing: 1%;
-  color: #181e25;
+.quotationresult-leftdiv .ant-card-body {
+  padding: 0px;
 }
 
-.Service-Included .ant-card-head {
-  padding: 0px 18px;
-}
-.Service-Included .ant-card-body {
-  padding: 10px 0px 0px 0px;
+.Service-card .ant-collapse {
+  margin: 0;
+  padding: 0;
+  color: rgba(0, 0, 0, 0.88);
+  font-size: 14px;
+  line-height: 1.5714285714285714;
+  list-style: none;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  background-color: rgba(0, 0, 0, 0.02);
+  border: 1px solid #d9d9d9;
+  border-bottom: 0;
+  border-radius: 8px;
+  border-bottom: 1px solid #f3f5f7;
 }
 
-.Service-Included .ant-card-body .service-title {
+.ant-collapse .ant-collapse-header .ant-collapse-header-text {
   font-size: 14px;
   color: #212121;
   font-weight: 500;
@@ -34,14 +42,37 @@
   line-height: 24px;
 }
 
-.Service-Included .ant-card-body .Service-card {
-  padding: 0px 18px !important;
-  border-bottom: 1px solid #f3f5f7;
+.ant-collapse .ant-collapse-header .ant-collapse-expand-icon {
+  order: 1;
+  padding-inline-end: 0;
+  padding-inline-start: 12px !important;
+}
+.ant-collapse
+  .ant-collapse-header
+  .ant-collapse-expand-icon
+  .ant-collapse-arrow {
+  color: rgb(135, 135, 135);
+}
+
+.ant-collapse .ant-collapse-header .ant-collapse-expand-icon path {
+  height: 7.22px;
+  width: 4.13px;
+}
+
+.Service-card .ant-collapse-ghost {
+  background-color: transparent;
+  border: 0;
 }
 
 .Service-card .ant-checkbox-wrapper .ant-checkbox-checked .ant-checkbox-inner {
   background-color: #d32d2f !important;
   border: none;
+}
+
+.Service-card .ant-checkbox + span {
+  padding-inline-start: 8px;
+  padding-inline-end: 8px;
+  color: #384656;
 }
 
 /* .ant-checkbox:hover {
@@ -189,10 +220,6 @@
   height: 20px;
 }
 
-.location-bar .cargo-loc {
-  border-right: 1px solid #e7eaf0;
-  position: relative;
-}
 .cargo-pick .ant-card-body {
   padding: 20px;
   border-radius: 8px;
@@ -234,7 +261,7 @@
   margin-top: 20px;
 }
 
-.Service-Included .ant-card-head-title {
+.quotationresult-leftdiv .ant-card-head-title {
   font-size: 15px;
   font-weight: 500;
   line-height: 22px;
@@ -242,7 +269,7 @@
   color: #181e25;
 }
 
-/* .Service-Included .checkbox-p{
+/* .quotationresult-leftdiv .checkbox-p{
   font-size: 14px;
   font-weight: 400;
   line-height: 24px;
