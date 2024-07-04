@@ -9,74 +9,68 @@ import Vector from "../../../../../assets/logoc.png";
 import icon from "../../../../../assets/Group 2057.png";
 import Cargo from "../../../../../assets/Cargoiocn.png";
 import info from "../../../../../assets/Info.svg";
-
+import { CaretDownOutlined } from "@ant-design/icons";
+import { Dropdown } from "primereact/dropdown";
 
 function ShipmentTracker({ Details }) {
   const [showAllData, setShowAllData] = useState(false);
   const itemsToShow = showAllData ? Details : Details.slice(0, 4);
   const [showCharges, setShowCharges] = useState(null);
-
+  const [selectedCurrency, setSelectedCurrency] = useState("USD");
+  const [selectedSort, setSelectedSort] = useState("Low to High");
+  const tabs = [
+    { label: "All(0)", key: "1" },
+    { label: "Ocean(0)", key: "2" },
+    { label: "Air(0)", key: "3" },
+  ];
+  const currencyOptions = ["USD", "INR", "AED"];
+  const sortOptions = ["Low to High", "High to Low"];
+  
   const handleShowCharges = (index) => {
     setShowCharges(index);
   };
+  const DropdownTemplate = ({ value }) => (
+    <div>
+      <span className="dropdown-value">{value}</span>
+      <CaretDownOutlined className="ms-1" style={{ color: "#67788E" }} />
+    </div>
+  );
 
   return (
     <>
       <Card className="tabs mb-2">
         <div className="row">
           <div className="col-9">
-            <Tabs
-              defaultActiveKey="1"
-              items={[
-                {
-                  label: "All(0)",
-                  key: "1",
-                },
-                {
-                  label: "Ocean(0)",
-                  key: "2",
-                },
-                {
-                  label: "Air(0)",
-                  key: "3",
-                },
-              ]}
-            ></Tabs>
+            <Tabs defaultActiveKey="1" items={tabs}></Tabs>
           </div>
           <div className="col-1 align-self-center">
-            <div className="dropdown" style={{ width: "5%" }}>
-              <button
-                className="btn dropdown-toggle"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="true"
-                style={{ fontSize: "14px", fontWeight: "400" }}
-              >
-                USD
-              </button>
-              <ul className="dropdown-menu">
-                <li className="dropdown-item">LCL</li>
-                <li className="dropdown-item">FCL</li>
-                <li className="dropdown-item">Air</li>
-              </ul>
+            <div
+              className="dropdownfield1 mx-2"
+              style={{ alignContent: "center" }}
+            >
+              <Dropdown
+                value={selectedCurrency}
+                onChange={(e) => setSelectedCurrency(e.value)}
+                options={currencyOptions}
+                valueTemplate={<DropdownTemplate value={selectedCurrency} />}
+                className="w-full md:w-14rem datehover"
+                style={{ border: "none" }}
+              />
             </div>
           </div>
           <div className="col-2 align-self-center">
-            <div className="dropdown" style={{ width: "5%" }}>
-              <button
-                className="btn dropdown-toggle"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="true"
-                style={{ fontSize: "14px", fontWeight: "400" }}
-              >
-                Low to High
-              </button>
-              {/* <ul>
-                        <li className="dropdown-item">LCL</li>
-                        <li className="dropdown-item">FCL</li>
-                        <li className="dropdown-item">Air</li>
-                      </ul> */}
+            <div
+              className="dropdownfield2 mx-2"
+              style={{ alignContent: "center" }}
+            >
+              <Dropdown
+                value={selectedSort}
+                onChange={(e) => setSelectedSort(e.value)}
+                options={sortOptions}
+                valueTemplate={<DropdownTemplate value={selectedSort} />}
+                className="w-full md:w-14rem datehover"
+                style={{ border: "none" }}
+              />
             </div>
           </div>
         </div>
