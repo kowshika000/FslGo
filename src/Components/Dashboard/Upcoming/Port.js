@@ -21,8 +21,8 @@ export const Port = () => {
   const [searchDestPort, setSearchDestPort] = useState("");
   const [originPort, setOriginPort] = useState(null);
   const [destPort, setDestPort] = useState(null);
-  const [originPortOptionsVisible, setOriginPortOptionsVisible] =
-    useState(false);
+    const [originPortOptionsVisible, setOriginPortOptionsVisible] =
+      useState(false);
   const [destPortOptionsVisible, setDestPortOptionsVisible] = useState(false);
   const outerRef = useRef(null);
   const [selectedVolume, setSelectedVolume] = useState("LCL");

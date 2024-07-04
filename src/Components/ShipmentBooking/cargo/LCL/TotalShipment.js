@@ -28,7 +28,7 @@ const TotalShipment = ({ onClose }) => {
       <React.Fragment key={index} >
         <div className="d-flex">
           <div className="w-50 m-3">
-            <Typography sx={{ fontWeight: "700", opacity: "0.5" }}>
+            <Typography sx={{ fontWeight: "500", fontSize:"13px", lineHeight:"19px", letterSpacing:".01em", color: "rgba(103, 120, 142, 1)" }}>
               Package Type
             </Typography>
             <FormControl fullWidth>
@@ -43,7 +43,7 @@ const TotalShipment = ({ onClose }) => {
             </FormControl>{" "}
           </div>
           <div className="w-50 m-3">
-            <Typography sx={{ fontWeight: "700", opacity: "0.5" }}>
+            <Typography sx={{ fontWeight: "500", fontSize:"13px", lineHeight:"19px", letterSpacing:".01em", color: "rgba(103, 120, 142, 1)" }}>
               No.of Units
             </Typography>
             <div
@@ -83,7 +83,7 @@ const TotalShipment = ({ onClose }) => {
         </div>
         <div className="d-flex">
           <div className="w-50 m-3">
-            <Typography sx={{ fontWeight: "700", opacity: "0.5" }}>
+            <Typography sx={{ fontWeight: "500", fontSize:"13px", lineHeight:"19px", letterSpacing:".01em", color: "rgba(103, 120, 142, 1)" }}>
               Total Volume
             </Typography>
 
@@ -131,7 +131,7 @@ const TotalShipment = ({ onClose }) => {
             </div>
           </div>
           <div className="w-50 m-3">
-            <Typography sx={{ fontWeight: "700", opacity: "0.5" }}>
+            <Typography sx={{ fontWeight: "500", fontSize:"13px", lineHeight:"19px", letterSpacing:".01em", color: "rgba(103, 120, 142, 1)" }}>
               Total Weight
             </Typography>
             <div
@@ -181,7 +181,7 @@ const TotalShipment = ({ onClose }) => {
         {/* <DeleteIcon onClick={handleCloseLoad} color="error"/> */}
       </React.Fragment>))}
       <button className="btn" onClick={handleAddLoad}>
-        <Typography sx={{ fontWeight: "500", opacity: "0.8" }}>
+        <Typography sx={{ fontWeight: "400", fontSize:"13px", lineHeight:"19px", letterSpacing:".01em", color: "rgba(73, 90, 110, 1)" }}>
           + Add Another Load
         </Typography>
       </button>

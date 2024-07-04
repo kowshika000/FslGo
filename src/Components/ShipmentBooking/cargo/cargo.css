@@ -1,5 +1,6 @@
 .lcl-card1, .lcl-card2{
     display: flex;
+    justify-content: center;
     padding:10px 40px;
     font-size: 20px;
     border:1px solid rgba(0,0,0,0.5);
@@ -10,6 +11,10 @@
 .lcl-card1{
     border-top-left-radius: 10px;
     border-bottom-left-radius: 10px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 24px;
+    letter-spacing: .01em;
 }
 .lcl-card1.hovered{
     border:1px solid rgba(206, 14, 14, 0.5);
@@ -18,6 +23,11 @@
 .lcl-card2{
     border-top-right-radius: 10px;
     border-bottom-right-radius: 10px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 24px;
+    letter-spacing: .01em;
+    text-align: center;
 }
 .lcl-card2.hovered{
     border:1px solid rgba(206, 14, 14, 0.5);
@@ -46,4 +56,11 @@
 }
 .p-tabview-nav-link svg:hover{
     color:black;
+ }
+
+ .p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link{
+    border: none !important;
+ }
+ .p-tabview .p-tabview-nav{
+    margin-bottom: unset !important;
  }
