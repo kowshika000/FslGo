@@ -142,7 +142,7 @@ const Header = ({ setShowText, setShowmap }) => {
               Dashboard
             </Typography>
           </Link> */}
-          <Link to="/" style={{ textDecoration: "none" }}>
+          <Link to="/" style={{ textDecoration: "none" }} onClick={handleRedirectToShipments}>
             <Typography
               sx={{
                 fontSize: "15px",

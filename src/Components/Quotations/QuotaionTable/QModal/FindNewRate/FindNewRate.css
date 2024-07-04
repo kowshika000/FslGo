@@ -16,6 +16,9 @@
 .quotationresult-leftdiv .ant-card-body {
   padding: 0px;
 }
+.ant-collapse-content-box {
+  padding: 12px 0px !important;
+}
 
 .Service-card .ant-collapse {
   margin: 0;
@@ -73,6 +76,10 @@
   padding-inline-start: 8px;
   padding-inline-end: 8px;
   color: #384656;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 24px;
+  letter-spacing: 1%;
 }
 
 /* .ant-checkbox:hover {
@@ -90,6 +97,27 @@
   background-color: inherit !important;
 } */
 
+.filterouter-leftdiv {
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.filter-quotation-wrapper {
+  position: relative;
+}
+.singlefilter-leftstyling {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+}
+.div-rowcentered {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
 .tabs .ant-card-body {
   padding: 0;
 }
