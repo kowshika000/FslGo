@@ -88,6 +88,19 @@ const Navbar = ({ setShowText, setShowmap }) => {
       Invoice
     </Link>
   );
+
+  const quickBreadcrumb = (
+    <Link
+      underline="hover"
+      key="3"
+      color="inherit"
+      href="/quick"
+      onClick={handleClick}
+      style={{ fontSize: "14px", color: "#181E25", fontWeight: "400" }}
+    >
+      Quick Booking
+    </Link>
+  );
   const breadcrumbs = [homeBreadcrumb];
 
   if (pathname === "/shipments") {
@@ -98,6 +111,8 @@ const Navbar = ({ setShowText, setShowmap }) => {
     breadcrumbs.push(quotationsResultBreadcrumb);
   } else if (pathname === "/invoice") {
     breadcrumbs.push(invoiceBreadcrumb);
+  } else if(pathname === "/quick"){
+    breadcrumbs.push(quickBreadcrumb);
   }
 
   const [anchorEl, setAnchorEl] = React.useState(null);

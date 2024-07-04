@@ -20,7 +20,6 @@ import { useSelector } from "react-redux";
 import { Tag } from "primereact/tag";
 import { CloseOutlined } from "@ant-design/icons";
 import { CircularProgress, Box } from "@mui/material";
-import { FilterService } from "primereact/api";
 
 const AllBookings = ({
   filterData,
@@ -32,7 +31,21 @@ const AllBookings = ({
 }) => {
   const itemsPerPage = 5;
   const dispatch = useDispatch();
+  const [filteredData, setFilteredData] = useState(filterData);
+  const [clicked, setClicked] = useState(false);
+  const [data, setData] = useState(filteredData);
   const { loading } = useSelector((state) => state.Booking);
+  const [tblFilter, setTblFilter] = useState({
+    id: [],
+    order_no: [],
+    mode: [],
+    origin: [],
+    destination: [],
+    eta_ata: [],
+    etd_atd: [],
+    status: [],
+  });
+
   const payload = {
     filter_month: filterMonthValue ? filterMonthValue : "",
     booking_type: "",
@@ -52,17 +65,7 @@ const AllBookings = ({
     dispatch(bookingRequest({ payload }));
   }, [filterValue, filterMonthValue]);
 
-  const [filteredData, setFilteredData] = useState(filterData);
-  const [tblFilter, setTblFilter] = useState({
-    id: [],
-    order_no: [],
-    mode: [],
-    origin: [],
-    destination: [],
-    eta_ata: [],
-    etd_atd: [],
-    status: [],
-  });
+ 
   useEffect(() => {
     const filterDataTable = filterData.filter((item) =>
       Object.keys(tblFilter).every(
@@ -83,13 +86,10 @@ const AllBookings = ({
       value,
     }));
   };
-  const [clicked, setClicked] = useState(false);
-  const [data, setData] = useState(filteredData);
+  
   useEffect(() => {
     if (clicked) {
       setData(filteredData);
-      console.log("MultiSelect input was clicked");
-      // Perform any additional actions here
     }
   }, [clicked]);
 
@@ -166,7 +166,7 @@ const AllBookings = ({
         }}
         showSelectAll={false}
         onChange={(e) => handleChangeFilter(filterKey, e.value)}
-        onFocus={() => setClicked(true)} // Track when the MultiSelect gains focus
+        onFocus={() => setClicked(true)} 
         onBlur={() => setClicked(false)}
         display="chip"
         placeholder="Select"
@@ -210,8 +210,6 @@ const AllBookings = ({
           height: "30px",
           padding: "",
           gap: "8px",
-          // marginLeft:"10px",
-          // marginRight:"10px"
         }}
         label={buttonLabel}
         onClick={() => showModal(rowData)}
@@ -219,9 +217,6 @@ const AllBookings = ({
     );
   };
 
-  const rowClassName = () => {
-    return "custom-row";
-  };
   const shipmentTemplateId = (rowData) => {
     return (
       <div style={{ textAlign: "start" }}>
@@ -367,50 +362,55 @@ const AllBookings = ({
       </div>
     );
   };
-  const handleSort = (col) => {
-    console.log("Ascending");
-    const sorted = [...filteredData].sort((a, b) => {
-      const valA = a[col];
-      const valB = b[col];
-      if (!isNaN(valA) && !isNaN(valB)) {
-        return valA - valB;
-      }
-      // if (col === "etd/atd" || col === "eta/ata") {
-      //   const dateA = parseDate1(valA);
-      //   const dateB = parseDate1(valB);
-      //   return dateA - dateB;
-      // }
-      return valA > valB ? 1 : -1;
-    });
-    setFilteredData(sorted);
-  };
-  // const parseDate1 = (dateString) => {
-  //   const parts = dateString.split("/");
-  //   return new Date(parts[2], parts[1] - 1, parts[0]);
-  // };
-  // const parseDate2 = (dateString) => {
-  //   const parts = dateString.split("/");
-  //   return new Date(parts[2], parts[1] - 1, parts[0]);
-  // };
+  const sort = (col) => {
+    const handleSort = (col) => {
+      console.log("Ascending");
+      const sorted = [...filteredData].sort((a, b) => {
+        const valA = a[col];
+        const valB = b[col];
+        if (!isNaN(valA) && !isNaN(valB)) {
+          return valA - valB;
+        }
+        return valA > valB ? 1 : -1;
+      });
+      setFilteredData(sorted);
+    };
 
-  const handleSortDown = (col) => {
-    console.log("Descending");
-    const sorted = [...filteredData].sort((a, b) => {
-      const valA = a[col];
-      const valB = b[col];
+    const handleSortDown = (col) => {
+      console.log("Descending");
+      const sorted = [...filteredData].sort((a, b) => {
+        const valA = a[col];
+        const valB = b[col];
+        if (!isNaN(valA) && !isNaN(valB)) {
+          return valB - valA;
+        }
+        return valA < valB ? 1 : -1;
+      });
+      setFilteredData(sorted);
+    };
 
-      if (!isNaN(valA) && !isNaN(valB)) {
-        return valB - valA;
-      }
-
-      // if (col === "etd/atd" || col === "eta/ata") {
-      //   const dateA = parseDate2(valA);
-      //   const dateB = parseDate2(valB);
-      //   return dateB - dateA;
-      // }
-      return valA < valB ? 1 : -1;
-    });
-    setFilteredData(sorted);
+    return (
+      <div>
+        <div className="d-flex sorticon" style={{ flexDirection: "column" }}>
+          <IconButton
+            onClick={() => {
+              handleSort(col, "asc");
+            }}
+            className="p-0"
+          >
+            <ExpandLessIcon className="sortup" />
+          </IconButton>
+          <IconButton
+            onClick={() => {
+              handleSortDown(col, "desc");
+            }}
+            className="p-0"
+          >
+            <ExpandMoreIcon className="sortdown" />
+          </IconButton>
+        </div>
+      </div>
+    );
   };
 
   const paginatedData = filteredData?.slice(
@@ -543,7 +543,6 @@ const AllBookings = ({
       <DataTable
         value={paginatedData}
         dataKey="shipmentId"
-        rowClassName={rowClassName}
         className={`${filteredData?.length === 0 ? "text-center" : ""}`}
         style={{ height: "353px" }}
         emptyMessage={noData()}
@@ -556,32 +555,8 @@ const AllBookings = ({
               className=" d-flex"
             >
               Shipment ID
-              {MultiSelectFilter(
-                "id",
-                ShipId,
-                tblFilter.id
-              )}
-              <div
-                className="d-flex sorticon"
-                style={{ flexDirection: "column" }}
-              >
-                <IconButton
-                  onClick={() => {
-                    handleSort("id");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandLessIcon className="sortup" />
-                </IconButton>
-                <IconButton
-                  onClick={() => {
-                    handleSortDown("id");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandMoreIcon className="sortdown" />
-                </IconButton>
-              </div>
+              {MultiSelectFilter("id", ShipId, tblFilter.id)}
+              {sort("id")}
             </span>
           }
           body={shipmentTemplateFilterData}
@@ -596,27 +571,7 @@ const AllBookings = ({
             >
               Order No
               {MultiSelectFilter("order_no", orderId_, tblFilter.order_no)}
-              <div
-                className="d-flex sorticon"
-                style={{ flexDirection: "column" }}
-              >
-                <IconButton
-                  onClick={() => {
-                    handleSort("order_no");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandLessIcon className="sortup" />
-                </IconButton>
-                <IconButton
-                  onClick={() => {
-                    handleSortDown("order_no");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandMoreIcon className="sortdown" />
-                </IconButton>
-              </div>
+              {sort("order_no")}
             </span>
           }
           body={shipmentTemplateId}
@@ -632,27 +587,7 @@ const AllBookings = ({
             >
               Mode
               {MultiSelectFilter("mode", Mode_, tblFilter.mode)}
-              <div
-                className="d-flex sorticon"
-                style={{ flexDirection: "column" }}
-              >
-                <IconButton
-                  onClick={() => {
-                    handleSort("mode");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandLessIcon className="sortup" />
-                </IconButton>
-                <IconButton
-                  onClick={() => {
-                    handleSortDown("mode");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandMoreIcon className="sortdown" />
-                </IconButton>
-              </div>
+              {sort("mode")}
             </span>
           }
           style={{ paddingLeft: "10px", paddingRight: "10px" }}
@@ -667,27 +602,7 @@ const AllBookings = ({
             >
               Origin
               {MultiSelectFilter("origin", Org_, tblFilter.origin)}
-              <div
-                className="d-flex sorticon"
-                style={{ flexDirection: "column" }}
-              >
-                <IconButton
-                  onClick={() => {
-                    handleSort("origin");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandLessIcon className="sortup" />
-                </IconButton>
-                <IconButton
-                  onClick={() => {
-                    handleSortDown("origin");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandMoreIcon className="sortdown" />
-                </IconButton>
-              </div>
+              {sort("origin")}
             </span>
           }
           body={originBodyTemplate}
@@ -703,27 +618,7 @@ const AllBookings = ({
             >
               Destination
               {MultiSelectFilter("destination", dest_, tblFilter.destination)}
-              <div
-                className="d-flex sorticon"
-                style={{ flexDirection: "column" }}
-              >
-                <IconButton
-                  onClick={() => {
-                    handleSort("destination");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandLessIcon className="sortup" />
-                </IconButton>
-                <IconButton
-                  onClick={() => {
-                    handleSortDown("destination");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandMoreIcon className="sortdown" />
-                </IconButton>
-              </div>
+              {sort("destination")}
             </span>
           }
           body={destinationBodyTemplate}
@@ -736,27 +631,7 @@ const AllBookings = ({
             <span className=" d-flex" style={{ position: "relative" }}>
               ETD/ATD
               {MultiSelectFilter("eta_ata", etd_, tblFilter.eta_ata)}
-              <div
-                className="d-flex sorticon"
-                style={{ flexDirection: "column" }}
-              >
-                <IconButton
-                  onClick={() => {
-                    handleSort("etd/atd");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandLessIcon className="sortup" />
-                </IconButton>
-                <IconButton
-                  onClick={() => {
-                    handleSortDown("etd/atd");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandMoreIcon className="sortdown" />
-                </IconButton>
-              </div>
+              {sort("etd/atd")}
             </span>
           }
           body={bodyTemplate}
@@ -769,27 +644,7 @@ const AllBookings = ({
             <span className=" d-flex">
               ETA/ATA
               {MultiSelectFilter("etd_atd", eta_, tblFilter.etd_atd)}
-              <div
-                className="d-flex sorticon"
-                style={{ flexDirection: "column" }}
-              >
-                <IconButton
-                  onClick={() => {
-                    handleSort("eta/ata");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandLessIcon className="sortup" />
-                </IconButton>
-                <IconButton
-                  onClick={() => {
-                    handleSortDown("eta/ata");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandMoreIcon className="sortdown" />
-                </IconButton>
-              </div>
+              {sort("eta/ata")}
             </span>
           }
           body={bodyTemplateEta}
@@ -802,27 +657,7 @@ const AllBookings = ({
             <span className=" d-flex">
               Status
               {MultiSelectFilter("status", status_, tblFilter.status)}
-              <div
-                className="d-flex sorticon"
-                style={{ flexDirection: "column" }}
-              >
-                <IconButton
-                  onClick={() => {
-                    handleSort("status");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandLessIcon className="sortup" />
-                </IconButton>
-                <IconButton
-                  onClick={() => {
-                    handleSortDown("status");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandMoreIcon className="sortdown" />
-                </IconButton>
-              </div>
+              {sort("status")}
             </span>
           }
           headerStyle={{
