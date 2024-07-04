@@ -3,13 +3,13 @@ import React, { useEffect, useState } from "react";
 import TextArea from "antd/es/input/TextArea";
 import Dragger from "antd/es/upload/Dragger";
 import { Link } from "react-router-dom";
-import dropIcon from "../../../../../assets/Frame.png";
+import dropIcon from "../../../assets/Frame.png";
 import { Button, Tooltip } from "antd";
-import info from "../../../../../assets/Info.svg";
+import info from "../../../assets/Info.svg";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
-import UploadSuccess from "./UploadSuccess";
+import SavDoc from "./SaveDoc";
 
-const UploadDocument = ({ open, close }) => {
+const UploadDoc = ({ open, close }) => {
   const [forminputs, setForminputs] = useState({
     radioOn: "Packinglist",
   });
@@ -274,10 +274,10 @@ const UploadDocument = ({ open, close }) => {
             </Button>
           </div>
         </div>
-        <UploadSuccess open={uploadSuccess} close={()=>setUploadSuccess(false)}/>
+        <SavDoc open={uploadSuccess} close={()=>setUploadSuccess(false)}/>
       </div>
     </Dialog>
   );
 };
 
-export default UploadDocument;
+export default UploadDoc;
