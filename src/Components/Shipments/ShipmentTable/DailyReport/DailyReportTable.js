@@ -17,6 +17,7 @@ import { DsrReportRequest } from "../../../../Redux/Actions/DsrReportAction";
 import { CircularProgress, Box } from "@mui/material";
 
 function DailyReportTable({ filtercolumn, setfiltercolumn }) {
+  //This is for get usertoken from profile API data
   const Profileusertoken = useSelector(
     (state) => state.ProfileData?.profileData?.usertoken
   );
@@ -44,7 +45,7 @@ function DailyReportTable({ filtercolumn, setfiltercolumn }) {
     }
   }, [Profileusertoken, dispatch, successRsp]);
 
-  //Hooks
+  //Hooks and Variables
   const { loading } = useSelector((state) => state.DsrReport);
   const DsrReportData = useSelector((state) => state.DsrReport.dsrData);
   const DsrColumns = DsrReportData?.columns;
@@ -82,23 +83,39 @@ function DailyReportTable({ filtercolumn, setfiltercolumn }) {
   //   (o, key) => ({ ...o, [key]: true }),
   //   {}
   // );
+
+  const DsrColumns = DsrReportData?.columns; //get column datas from dsr api response
+  const DsrDatas = DsrReportData?.data; //get datas from dsr api response
+  // const clonednewArray = DsrDatas?.map((a) => ({ ...a })) || [];
+  const DsrDataObj = DsrReportData?.data?.[0]; //get first for column logic
+  const DsrCopied = { ...DsrDataObj }; //this copies data from previous line data
+  const DsrModifiedArray = Object?.keys(DsrCopied || {}); //change objects into array
+  console.log(DsrModifiedArray);
+
+  //This is modify arrayofvalues into objects with default true value
+
   const ColumnObject = DsrModifiedArray?.reduce(
     (o, key) => ({ ...o, [key]: true }),
     {}
   );
-  console.log(ColumnObject)
+  console.log(ColumnObject);
 
-  // const dsrfilter = DsrColumns?.reduce((o, key) => ({ ...o, [key]: [] }), {});
-  // console.log(dsrfilter);
-  // const report = datasArray;
-  // console.log(report);
-  const dsrfilter = DsrModifiedArray?.reduce((o, key) => ({ ...o, [key]: [] }), {});
+  const TableColumnObject = DsrColumns?.reduce(
+    (o, key) => ({ ...o, [key]: true }),
+    {}
+  );
+  console.log(TableColumnObject);
+
+  //This is for modify array of values into objects with empty array for storing datas
+  const dsrfilter = DsrModifiedArray?.reduce(
+    (o, key) => ({ ...o, [key]: [] }),
+    {}
+  );
   console.log(dsrfilter);
   const report = DsrDatas;
   console.log(report);
   const [currentPage, setCurrentPage] = useState(1);
   const [sidebaropen, setSidebaropen] = useState(false);
-  // const [filtercolumn, setfiltercolumn] = useState();
   const [dsrFilter, setDsrFilter] = useState();
   const [filterReport, setFilterReport] = useState();
   const [clicked, setClicked] = useState(false);
@@ -106,7 +123,7 @@ function DailyReportTable({ filtercolumn, setfiltercolumn }) {
   const itemsPerPage = 6;
 
   useEffect(() => {
-    setfiltercolumn(ColumnObject);
+    setfiltercolumn(TableColumnObject);
   }, [DsrColumns]);
   useEffect(() => {
     setFilterReport(report);
@@ -114,9 +131,9 @@ function DailyReportTable({ filtercolumn, setfiltercolumn }) {
 
   console.log(filtercolumn);
 
+  //This is modify object keys and values
   const arrayOfObj = Object.entries(filtercolumn || {})?.map((e) => ({
     [e[0]]: e[1],
-    modifyheader: e[0]?.split(" ")?.join("_"),
     header: e[0],
   }));
 

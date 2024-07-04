@@ -37,7 +37,7 @@ export default function CargoDetails({ onClose }) {
 
   return (
     <>
-      <div className="card w-75 d-flex " style={{ padding: "20px" }}>
+      <div className="card w-100 d-flex " style={{ padding: "20px" }}>
         <TabView
           sx={{
             display: "flex",
@@ -54,8 +54,9 @@ export default function CargoDetails({ onClose }) {
             header="LCL/AIR"
             leftIcon={
               <CiBoxes style={{ marginRight: "20px", fontSize:'45px' }} />
+              // <img src={boxes} alt="" />
             }
-            style={{ fontSize: "25px", marginRight: "20rem", width: "100%" }}
+            style={{ fontSize: "25px", width: "100%" }}
           >
             <div className="d-flex text-center mt-3">
               <div

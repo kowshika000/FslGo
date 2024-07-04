@@ -17,6 +17,8 @@ const ShipmentCard = () => {
   const [destination, setDestination] = useState("");
   const [isCargoOpen, setIsCargoOpen] = useState(false);
   const cargoRef = useRef(null);
+  const [originPortOptionsVisible, setOriginPortOptionsVisible] = useState(false);
+  const [destPortOptionsVisible, setDestPortOptionsVisible] = useState(false);
 
   useEffect(() => {
     if (destination && cargoRef.current) {
@@ -42,21 +44,21 @@ const ShipmentCard = () => {
         }}
       >
         <div className="card-body d-flex p-0">
-          <Origin />
+          <Origin setOriginPortOptionsVisible={setOriginPortOptionsVisible} originPortOptionsVisible={originPortOptionsVisible} setDestPortOptionsVisible={setDestPortOptionsVisible}  />
           <div
             className="align-content-center ps-2"
             style={{ minWidth: "3.03%"}}
           >
             <img src={Arrow} width="26px" height="26px" style={{alignContent:'center', margin:'auto', alignSelf:'center'}} />
           </div>
-          <Destination />
+          <Destination setOriginPortOptionsVisible={setOriginPortOptionsVisible} destPortOptionsVisible={destPortOptionsVisible} setDestPortOptionsVisible={setDestPortOptionsVisible} />
           {/* <div className="icon">
             <div className="divider"></div>
           </div> */}
           <Cargo />
           {/* Search button */}
           <div
-            style={{ minWidth: "20.2%" }}
+            style={{ minWidth: "5%" }}
             className="d-flex align-content-center justify-content-around align-items-center"
           >
             <div style={{alignContent:'center'}} >
@@ -75,10 +77,10 @@ const ShipmentCard = () => {
                 <SearchOutlined width="20px" style={{ fontWeight: "700", alignSelf:'center', alignContent:'center', alignItems:'center', }} />
               </div>
             </div>
-            <div className="align-content-center ">
+            {/* <div className="align-content-center ">
               <img src={Line} />
-            </div>
-            <div
+            </div> */}
+            {/* <div
               className="d-flex align-content-center justify-content-start pe-4"
               style={{alignContent:'center'}}
             >
@@ -107,18 +109,18 @@ const ShipmentCard = () => {
                   </Typography>
                 </button>
               </Link>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
 
-      {isCargoOpen && (
+      {/* {isCargoOpen && (
         <div className="overlay">
           <div className="suggestions-cargo cargo-port">
             <Cargo onClose={handleConfirmCargo} />
           </div>
         </div>
-      )}
+      )} */}
     </div>
   );
 };
