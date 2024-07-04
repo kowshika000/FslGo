@@ -1,9 +1,16 @@
 import React, { useState, useRef } from "react";
-import { Typography, Box, TextField } from "@mui/material";
+import { Typography, Box, TextField, CircularProgress } from "@mui/material";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import Modal from "@mui/material/Modal";
 import '../ShipmentCard.css';
 import {ReactComponent as Location} from '../../../assets/location.svg'
+import { useDispatch, useSelector } from "react-redux";
+import { Col, Row } from "antd";
+import { allportRequest } from "../../../Redux/Actions/AllPortAction";
+import CountryFlag from "../../Core-Components/CountryFlag";
+import air from '../../../assets/Air.svg'
+import sea from '../../../assets/Shipement.svg'
+import city from '../../../assets/Business2.svg'
 
 const style = {
   position: 'absolute',
@@ -17,72 +24,320 @@ const style = {
   p: 4,
 };
 
-const Destination = () => {
-  const [destination, setDestination] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
+const Destination = ({setOriginPortOptionsVisible,destPortOptionsVisible,setDestPortOptionsVisible}) => {
+  
+  const [searchDestPort, setSearchDestPort] = useState("");
+  // const [originPortOptionsVisible, setOriginPortOptionsVisible] = useState(false);
+  // const [destPortOptionsVisible, setDestPortOptionsVisible] = useState(false);
+  const [desPortCode, setDesPortCode] = useState("");
+  const [prevValue, setPrevValue] = useState("");
+  const [destPort, setDestPort] = useState(null);
+  const dispatch = useDispatch();
+  const DestinationPortData = useSelector((state) => state.allPort);
+  const { loading, error } = useSelector((state) => state.allPort);
+  const destinationPortDataValue = DestinationPortData?.allportData?.Data;
+  console.log(destinationPortDataValue)
+  const filteredSeaPorts = destinationPortDataValue?.filter((item)=>item.Transport_mode==="SEA")
+  const filteredAirPorts = destinationPortDataValue?.filter((item)=>item.Transport_mode==="AIR")
+  const filteredCityPorts = destinationPortDataValue?.filter((item)=>item.Transport_mode==="CITY")
+  console.log(filteredSeaPorts)
+  // const [destination, setDestination] = useState("");
+  // const [modalOpen, setModalOpen] = useState(false);
 
-  const destinationRef = useRef(null);
+  // const destinationRef = useRef(null);
 
-  // Mock suggestions data
-  const suggestions = [
-    {
-      label: "Sea Port",
-      labelText: "Pick up not included",
-      items: ["Nhava Sheva (INNSA)"],
-    },
-    {
-      label: "Airport",
-      labelText: "Pick up not included",
-      items: ["Chhatrapati Shivaji International Airport (BOM)"],
-    },
-    {
-      label: "City",
-      labelText: "Pick up not included",
-      items: ["Chhatrapati Shivaji International Airport (BOM)"],
-    },
-  ];
+  // // Mock suggestions data
+  // const suggestions = [
+  //   {
+  //     label: "Sea Port",
+  //     labelText: "Pick up not included",
+  //     items: ["Nhava Sheva (INNSA)"],
+  //   },
+  //   {
+  //     label: "Airport",
+  //     labelText: "Pick up not included",
+  //     items: ["Chhatrapati Shivaji International Airport (BOM)"],
+  //   },
+  //   {
+  //     label: "City",
+  //     labelText: "Pick up not included",
+  //     items: ["Chhatrapati Shivaji International Airport (BOM)"],
+  //   },
+  // ];
 
-  const handleDestinationChange = (event) => {
+  // const handleDestinationChange = (event) => {
+  //   const { value } = event.target;
+  //   setDestination(value);
+  // };
+
+  // const handleDestinationFocus = () => {
+  //     setModalOpen(true);
+  // };
+
+  // const handleClose = () => {
+  //   setModalOpen(false);
+  // };
+
+  // const handleSuggestionClick = (value) => {
+  //   setDestination(value);
+  //   setModalOpen(false);
+  // };
+
+  const handleDestPortSelect = (port) => {
+    console.log("Dest selected:", port);
+    setSearchDestPort(port?.port_name);
+    setDesPortCode(port?.port_code);
+    setDestPortOptionsVisible(false);
+    setDestPort(port);
+  };
+
+  const handleDestPortChange = (event) => {
     const { value } = event.target;
-    setDestination(value);
-  };
-
-  const handleDestinationFocus = () => {
-      setModalOpen(true);
-  };
-
-  const handleClose = () => {
-    setModalOpen(false);
-  };
-
-  const handleSuggestionClick = (value) => {
-    setDestination(value);
-    setModalOpen(false);
+    setSearchDestPort(value);
+    if (value.length >= 4) {
+      dispatch(allportRequest({ search_key: value, limits: "4" }));
+      setDestPortOptionsVisible(true);
+    } else {
+      setDestPortOptionsVisible(false);
+      setDestPort(null);
+    }
+    setOriginPortOptionsVisible(false);
   };
 
   return (
     <>
-      <div className="column  " style={{ display: "flex", minWidth:'25.92%' }}>
+      <div className="column  " style={{ display: "flex", minWidth:'30%',position:"relative" }}>
         <div style={{alignContent:'center'}}>
       <Location style={{ width:"20px", height:'20px'}} className="mx-2"/>
       </div>
         <div className="w-100">
           <Typography className="fw-bold"  style={{fontSize:'14px', fontWeight:'700', lineHeight:'20px'}}>Destination</Typography>
+          {destPort && (
+            <CountryFlag
+              countryCode={destPort.port_country}
+              className="port-flag input-port-flag"
+            />
+          )}
           <input
             type="text"
             style={{ border: "none", outline: "none", width: "90%", background: 'transparent' }}
             className="input-field "
             placeholder="Enter Sea/Airport, City or Zip Code"
-            ref={destinationRef}
-            onChange={handleDestinationChange}
-            onClick={handleDestinationFocus}
-            value={destination}
+            // ref={destinationRef}
+            // onChange={handleDestinationChange}
+            // onClick={handleDestinationFocus}
+            // value={destination}
+            onChange={handleDestPortChange}
+            value={searchDestPort}
           />
+          {
+            destPortOptionsVisible && 
+          <div className="outer-all-port">
+              {loading ? (
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "100%",
+                  }}
+                >
+                  <CircularProgress style={{ color: "red" }} />
+                </Box>
+              ) : (
+                <>
+                  <div className="inner-all-port">
+                  <div>
+                    <p
+                      style={{
+                        marginBottom: 0,
+                        padding: "12px 0 8px 0",
+                        color: "#181e25",
+                        fontSize: "15px",
+                        fontWeight: 500,
+                      }}
+                    >
+                      Sea Port <span 
+                      style={{color: "rgba(103, 120, 142, 1)",
+                              fontSize: "13px",
+                              fontWeight: 400,
+                              lineHeight:"19px",
+                              letterSpacing:".01em"}}>
+                      ( Pick up not included )
+                      </span>
+                    </p>
+                  </div>
+                  <div>
+                    {filteredSeaPorts?.map((port, index) => (
+                      <div
+                        key={index}
+                        onClick={() => handleDestPortSelect(port)}
+                        className=""
+                      >
+                        <Row className="justify-content-between p-2 port-all-content">
+                          <Col className="d-flex">
+                            <Row className="gap-2">
+                              <div className="mt-1 p-1">
+                                <CountryFlag
+                                  countryCode={port?.port_country}
+                                  className="port-flag"
+                                />{" "}
+                              </div>
+                              <div>
+                                <p className="portnamecode ">
+                                  {port?.list_value}
+                                </p>
+                                <p className="portCountry">
+                                  {port?.port_country}
+                                </p>
+                              </div>
+                            </Row>
+                          </Col>
+                          <Col style={{ marginRight: "20px" }}>
+                            <img
+                              src={sea}
+                              style={{
+                                width: "24px",
+                                height: "24px",
+                              }}
+                            />
+                          </Col>
+                        </Row>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="inner-all-port">
+                  <div>
+                    <p
+                      style={{
+                        marginBottom: 0,
+                        padding: "12px 0 8px 0",
+                        color: "#181e25",
+                        fontSize: "15px",
+                        fontWeight: 500,
+                      }}
+                    >
+                      Airport <span 
+                      style={{color: "rgba(103, 120, 142, 1)",
+                              fontSize: "13px",
+                              fontWeight: 400,
+                              lineHeight:"19px",
+                              letterSpacing:".01em"}}>
+                      ( Doesn't Include Pickup )
+                      </span>
+                    </p>
+                  </div>
+                  <div>
+                    {filteredAirPorts?.map((port, index) => (
+                      <div
+                        key={index}
+                        onClick={() => handleDestPortSelect(port)}
+                        className=""
+                      >
+                        <Row className="justify-content-between p-2 port-all-content">
+                          <Col className="d-flex">
+                            <Row className="gap-2">
+                              <div className="mt-1 p-1">
+                                <CountryFlag
+                                  countryCode={port?.port_country}
+                                  className="port-flag"
+                                />{" "}
+                              </div>
+                              <div>
+                                <p className="portnamecode ">
+                                  {port?.list_value}
+                                </p>
+                                <p className="portCountry">
+                                  {port?.port_country}
+                                </p>
+                              </div>
+                            </Row>
+                          </Col>
+                          <Col style={{ marginRight: "20px" }}>
+                            <img
+                              src={air}
+                              style={{
+                                width: "24px",
+                                height: "24px",
+                              }}
+                            />
+                          </Col>
+                        </Row>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                <div className="inner-all-port">
+                  <div>
+                    <p
+                      style={{
+                        marginBottom: 0,
+                        padding: "12px 0 8px 0",
+                        color: "#181e25",
+                        fontSize: "15px",
+                        fontWeight: 500,
+                      }}
+                    >
+                      City <span 
+                      style={{color: "rgba(103, 120, 142, 1)",
+                              fontSize: "13px",
+                              fontWeight: 400,
+                              lineHeight:"19px",
+                              letterSpacing:".01em"}}>
+                      ( Include Pickup )
+                      </span>
+                    </p>
+                  </div>
+                  <div>
+                    {filteredCityPorts?.map((port, index) => (
+                      <div
+                        key={index}
+                        onClick={() => handleDestPortSelect(port)}
+                        className=""
+                      >
+                        <Row className="justify-content-between p-2 port-all-content">
+                          <Col className="d-flex">
+                            <Row className="gap-2">
+                              <div className="mt-1 p-1">
+                                <CountryFlag
+                                  countryCode={port?.port_country}
+                                  className="port-flag"
+                                />{" "}
+                              </div>
+                              <div>
+                                <p className="portnamecode ">
+                                  {port?.list_value}
+                                </p>
+                                <p className="portCountry">
+                                  {port?.port_country}
+                                </p>
+                              </div>
+                            </Row>
+                          </Col>
+                          <Col style={{ marginRight: "20px" }}>
+                            <img
+                              src={city}
+                              style={{
+                                width: "24px",
+                                height: "24px",
+                              }}
+                            />
+                          </Col>
+                        </Row>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                </>
+              )}
+            </div>
+          }
         </div>
         
       </div>
 
-      <Modal
+      {/* <Modal
         open={modalOpen}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
@@ -107,7 +362,7 @@ const Destination = () => {
             </div>
           ))}
         </Box>
-      </Modal>
+      </Modal> */}
     </>
   );
 };
