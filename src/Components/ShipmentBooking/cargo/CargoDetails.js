@@ -19,6 +19,8 @@ import {
 import "./cargo.css";
 import TotalShipment from "./LCL/TotalShipment";
 import UnitType from "./LCL/UnitType";
+import boxes from '../../../assets/3256182_boxes_cargo_delivery_logistics_warehouse_icon 2.svg'
+import fcl from '../../../assets/661303_cargo_container_delivery_lift_logistic_icon 1.svg'
 
 export default function CargoDetails({ onClose }) {
   const [isByTotalShipmentOpen, setIsByTotalShipmentOpen] = useState(true);
@@ -37,7 +39,7 @@ export default function CargoDetails({ onClose }) {
 
   return (
     <>
-      <div className="card w-100 d-flex " style={{ padding: "20px" }}>
+      {/* <div className="card w-100 d-flex " style={{ padding: "20px" }}> */}
         <TabView
           sx={{
             display: "flex",
@@ -53,12 +55,12 @@ export default function CargoDetails({ onClose }) {
           <TabPanel
             header="LCL/AIR"
             leftIcon={
-              <CiBoxes style={{ marginRight: "20px", fontSize:'45px' }} />
-              // <img src={boxes} alt="" />
+              // <CiBoxes style={{ marginRight: "20px", fontSize:'45px' }} />
+              <img src={boxes} alt="" />
             }
             style={{ fontSize: "25px", width: "100%" }}
           >
-            <div className="d-flex text-center mt-3">
+            <div className="d-flex text-center" style={{margin:"30px 0px"}}>
               <div
                 className={`lcl-card1 w-50 ${
                   isByTotalShipmentOpen ? "hovered" : ""
@@ -95,7 +97,8 @@ export default function CargoDetails({ onClose }) {
           <TabPanel
             header="FCL"
             leftIcon={
-              <GiCargoCrate style={{ marginRight: "20px", fontSize:'35px' }} />
+              // <GiCargoCrate style={{ marginRight: "20px", fontSize:'35px' }} />
+              <img src={fcl} />
             }
             style={{ fontSize: "25px", width: "100%" }}
           >
@@ -153,7 +156,7 @@ export default function CargoDetails({ onClose }) {
             </div>
           </TabPanel>
         </TabView>
-      </div>
+      {/* </div> */}
     </>
   );
 }

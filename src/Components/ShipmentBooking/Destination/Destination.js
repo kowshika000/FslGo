@@ -106,7 +106,7 @@ const Destination = ({setOriginPortOptionsVisible,destPortOptionsVisible,setDest
 
   return (
     <>
-      <div className="column  " style={{ display: "flex", minWidth:'30%',position:"relative" }}>
+      <div className="column  " style={{ display: "flex", minWidth:'29%',position:"relative" }}>
         <div style={{alignContent:'center'}}>
       <Location style={{ width:"20px", height:'20px'}} className="mx-2"/>
       </div>
