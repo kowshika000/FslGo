@@ -48,13 +48,17 @@ function DailyReportTable({ filtercolumn, setfiltercolumn }) {
   //Hooks and Variables
   const { loading } = useSelector((state) => state.DsrReport);
   const DsrReportData = useSelector((state) => state.DsrReport.dsrData);
-  const DsrColumns = DsrReportData?.columns;
-  const DsrDatas = DsrReportData?.data;
-  const clonednewArray = DsrDatas?.map((a) => ({ ...a })) || [];
-  //my try
-  const DsrDataObj = DsrReportData?.data?.[0]
-  const DsrCopied = {...DsrDataObj}
-  const DsrModifiedArray = Object?.keys(DsrCopied || {})
+
+  const DsrColumns = DsrReportData?.columns; //get column datas from dsr api response
+  const DsrDatas = DsrReportData?.data; //get datas from dsr api response
+  // const clonednewArray = DsrDatas?.map((a) => ({ ...a })) || [];
+  const DsrDataObj = DsrReportData?.data?.[0]; //get first for column logic
+  const DsrCopied = { ...DsrDataObj }; //this copies data from previous line data
+  const DsrModifiedArray = Object?.keys(DsrCopied || {}); //change objects into array
+  console.log(DsrModifiedArray);
+
+  //This is modify arrayofvalues into objects with default true value
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -83,16 +87,6 @@ function DailyReportTable({ filtercolumn, setfiltercolumn }) {
   //   (o, key) => ({ ...o, [key]: true }),
   //   {}
   // );
-
-  const DsrColumns = DsrReportData?.columns; //get column datas from dsr api response
-  const DsrDatas = DsrReportData?.data; //get datas from dsr api response
-  // const clonednewArray = DsrDatas?.map((a) => ({ ...a })) || [];
-  const DsrDataObj = DsrReportData?.data?.[0]; //get first for column logic
-  const DsrCopied = { ...DsrDataObj }; //this copies data from previous line data
-  const DsrModifiedArray = Object?.keys(DsrCopied || {}); //change objects into array
-  console.log(DsrModifiedArray);
-
-  //This is modify arrayofvalues into objects with default true value
 
   const ColumnObject = DsrModifiedArray?.reduce(
     (o, key) => ({ ...o, [key]: true }),
