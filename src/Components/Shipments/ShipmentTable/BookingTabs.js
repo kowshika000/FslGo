@@ -9,7 +9,6 @@ import { Dropdown } from "primereact/dropdown";
 import ButtonList from "../../../assets/Button.svg";
 import Buttonfade from "../../../assets/Buttonfade.svg";
 import Group1 from "../../../assets/CButton.svg";
-import Groupfade from "../../../assets/CButtonfade.svg";
 import button16 from "../../../assets/Button16.svg";
 import FilterDrawer from "./Filter";
 import Navbar from "../../Layout/Navbar";
@@ -17,7 +16,7 @@ import image1 from "../../../assets/Shape.svg";
 import image2 from "../../../assets/Shape1.svg";
 import image3 from "../../../assets/Shape2.svg";
 import DailyReportTable from "./DailyReport/DailyReportTable";
-import { CalendarOutlined, CaretDownOutlined } from "@ant-design/icons";
+import { CaretDownOutlined } from "@ant-design/icons";
 import cal from "../../../assets/calVector.svg";
 import ScheduleDsrModal from "./DailyReport/DailyReportModal/ScheduleDsrModal";
 import { SaveDsrReqeust } from "../../../Redux/Actions/SaveDsrAction";
@@ -26,19 +25,24 @@ import { toast } from "react-toastify";
 function BookingTabs({ showText, setShowText, setShowmap }) {
   const [searchQuery] = useState("");
   const [data, setData] = useState([]);
-  const saveSuccess = useSelector((state) => state?.SaveDsr?.savedsr?.Response);
-  console.log(saveSuccess);
   const [schedulemodal, setSchedulemodal] = useState(false);
-  const ShipmentData = useSelector((state) => state.Booking);
-  const bookingData = ShipmentData?.booking;
-  const tabCount = ShipmentData?.booking?.statuswise_count;
   const [visible, setVisible] = useState(false);
   const [selectedButton, setSelectedButton] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [activeTab, setActiveTab] = useState("1");
-  const dispatch = useDispatch();
   const [filtercolumn, setfiltercolumn] = useState();
-  console.log(filtercolumn);
+  const [isAscending, setIsAscending] = useState(true);
+  const [filteredData, setFilteredData] = useState(data);
+  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [selectedDropdownItem, setSelectedDropdownItem] =
+    useState("Past 60 Days");
+  const [filterValue, setFilterValue] = useState(60);
+  const [filterMonthValue, setFilterMonthValue] = useState(null);
+  const dispatch = useDispatch();
+  const ShipmentData = useSelector((state) => state.Booking);
+  const bookingData = ShipmentData?.booking;
+  const tabCount = ShipmentData?.booking?.statuswise_count;
+  const saveSuccess = useSelector((state) => state?.SaveDsr?.savedsr?.Response);
 
   let schedule;
   if (tabCount && tabCount.length > 0) {
@@ -51,8 +55,6 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
     }
   }, [bookingData]);
 
-  const [filteredData, setFilteredData] = useState(data);
-  const [selectedStatus, setSelectedStatus] = useState(null);
   const filterData = (status) => {
     if (status === "All") {
       setFilteredData(data);
@@ -69,12 +71,6 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
     );
     setFilteredData(newFilteredData);
   }, [searchQuery, data]);
-
-  const [selectedDropdownItem, setSelectedDropdownItem] =
-    useState("Past 60 Days");
-  const [filterValue, setFilterValue] = useState(60);
-
-  const [filterMonthValue, setFilterMonthValue] = useState(null);
 
   const items = [
     "Past 30 Days",
@@ -107,6 +103,18 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
   );
   const payloadofdsrdownload = {
     sl_no: Profileusertoken,
+    sorigin: "",
+    sdest: "",
+    sstatus: "",
+    sshipper: "",
+    sconsignee: "",
+    sfrmdate: "",
+    stodate: "",
+    sshipmentby: "",
+    simport_export: "",
+    scolumns: "",
+    setafrmdate: "",
+    setatodate: "",
   };
   const handleDownloadDsr = (e) => {
     e.preventDefault();
@@ -120,7 +128,6 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
   const filteredColCopy = { ...filteredCol };
   if (filteredColCopy && typeof filteredColCopy === "object") {
     sselectcolumn = Object?.values(filteredColCopy)?.join(",");
-    console.log(sselectcolumn);
   } else {
     console.error(
       "filtercolumn is not defined or not an object:",
@@ -186,9 +193,7 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
     }
   };
 
-  const [isAscending, setIsAscending] = useState(true);
   const handleUpcomingDep = () => {
-    console.log("clicked upcoming departure");
     setSelectedButton("Upcoming Departures");
     const filteredDatas = data?.filter(
       (item) =>
@@ -206,7 +211,6 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
     setIsAscending(!isAscending);
   };
   const handleUpcomingArr = () => {
-    console.log("clicked upcoming departure");
     setSelectedButton("Upcoming Arrivals");
     const filteredDatas = data?.filter(
       (item) => item.status === "In Transit" || item.status === "Departed"
@@ -220,7 +224,6 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
     setFilteredData(sortedData);
     setIsAscending(!isAscending);
   };
-  console.log(filteredData, "from the upcoming status");
   const onClose = () => {
     setVisible(false);
   };
@@ -264,6 +267,9 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
   if (dropdownbutton) {
     dropdownbutton.remove();
   }
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div
       className="mx-auto mb-4"
@@ -286,7 +292,7 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
           >
             Daily Status Report
           </p>
-          <Navbar setShowText={setShowText} setShowmap={setShowmap}/>
+          <Navbar setShowText={setShowText} setShowmap={setShowmap} />
         </div>
       ) : (
         <SearchHeader
@@ -366,7 +372,6 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
                   <Dropdown
                     value={selectedDropdownItem}
                     onChange={(e) => {
-                      console.log("Selected item:", e.value); // Add logging statement
                       setSelectedDropdownItem(e.value);
                     }}
                     options={items}

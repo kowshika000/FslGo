@@ -34,6 +34,8 @@ const AllBookings = ({
   const [filteredData, setFilteredData] = useState(filterData);
   const [clicked, setClicked] = useState(false);
   const [data, setData] = useState(filteredData);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalRowData, setModalRowData] = useState(null);
   const { loading } = useSelector((state) => state.Booking);
   const [tblFilter, setTblFilter] = useState({
     id: [],
@@ -45,7 +47,6 @@ const AllBookings = ({
     etd_atd: [],
     status: [],
   });
-
   const payload = {
     filter_month: filterMonthValue ? filterMonthValue : "",
     booking_type: "",
@@ -65,7 +66,6 @@ const AllBookings = ({
     dispatch(bookingRequest({ payload }));
   }, [filterValue, filterMonthValue]);
 
- 
   useEffect(() => {
     const filterDataTable = filterData.filter((item) =>
       Object.keys(tblFilter).every(
@@ -86,7 +86,7 @@ const AllBookings = ({
       value,
     }));
   };
-  
+
   useEffect(() => {
     if (clicked) {
       setData(filteredData);
@@ -166,7 +166,7 @@ const AllBookings = ({
         }}
         showSelectAll={false}
         onChange={(e) => handleChangeFilter(filterKey, e.value)}
-        onFocus={() => setClicked(true)} 
+        onFocus={() => setClicked(true)}
         onBlur={() => setClicked(false)}
         display="chip"
         placeholder="Select"
@@ -179,8 +179,6 @@ const AllBookings = ({
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = Math.min(startIndex + itemsPerPage, filteredData?.length);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalRowData, setModalRowData] = useState(null);
   const showModal = (rowData) => {
     setModalRowData(rowData);
     setIsModalOpen(true);

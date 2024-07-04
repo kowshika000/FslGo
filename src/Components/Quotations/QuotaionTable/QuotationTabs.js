@@ -1,69 +1,73 @@
 import React, { useState, useEffect } from "react";
 import { Tabs, Row, Col } from "antd";
-import img1 from "../../../assets/img1.png";
-import img2 from "../../../assets/img2.png";
-// import AllBookings from "./AllBookings";
 import "../../Shipments/ShipBookingTabs.css";
-import { useDispatch, useSelector } from "react-redux";
-import { DataTable } from "primereact/datatable";
-import { Column } from "primereact/column";
+import { useSelector } from "react-redux";
 import QuotationTable from "./QuotationTable";
 
 const QuotationTabs = () => {
-  const [searchQuery, setSearchQuery] = useState("");
   const [activeKey, setActiveKey] = useState("1");
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState([]);
-  const dispatch = useDispatch();
-
-  const [showText, setShowText] = useState(false);
-  let schedule;
-
   const [filteredData, setFilteredData] = useState(data);
+  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [selectedDropdownItem, setSelectedDropdownItem] =
+    useState("Past 30 Days");
+  const quotationData = useSelector((state) => state?.QuotationList?.Quotation);
+
   const filterData = (status) => {
+    const dataa = data.filter((item) => status.includes(item.status));
+    console.log(dataa, "selectstatus");
     if (status === "All") {
       setFilteredData(data);
+      setSelectedStatus("All");
     } else {
-      setFilteredData(data.filter((item) => status.includes(item.status)));
+      setFilteredData(dataa);
+      setSelectedStatus(status);
     }
   };
 
   useEffect(() => {
-    const newFilteredData = data.filter((item) =>
-      item.id.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-    setFilteredData(newFilteredData);
-  }, [searchQuery, data]);
+    if (quotationData && quotationData?.data) {
+      setData(quotationData?.data);
+    }
+  }, [quotationData]);
+
+  useEffect(() => {
+    setActiveKey("1");
+    filterData("All");
+  }, [selectedDropdownItem]);
 
   const onChange = (key) => {
     setActiveKey(key);
     switch (key) {
       case "1":
-        filterData(["All"]);
-        setCurrentPage(1)
+        filterData("All");
+        setCurrentPage(1);
         break;
       case "2":
         filterData(["Active"]);
-        setCurrentPage(1)
+        setCurrentPage(1);
         break;
       case "3":
         filterData(["Booked"]);
-        setCurrentPage(1)
+        setCurrentPage(1);
         break;
       case "4":
         filterData(["Expired"]);
-        setCurrentPage(1)
+        setCurrentPage(1);
         break;
       case "5":
-        filterData(["Requested "]);
-        setCurrentPage(1)
+        filterData(["Requested"]);
+        setCurrentPage(1);
         break;
       default:
-        filterData(["All"]);
-        setCurrentPage(1)
+        filterData("All");
+        setCurrentPage(1);
     }
   };
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div
       className="mx-auto mt-5 "
@@ -77,11 +81,35 @@ const QuotationTabs = () => {
           <Row justify="space-between" style={{ height: "57px" }}>
             <Col span={20}>
               <Tabs activeKey={activeKey} onChange={onChange}>
-                <Tabs.TabPane tab={`All Bookings ()`} key="1" />
-                <Tabs.TabPane tab={`Active ()`} key="2" />
-                <Tabs.TabPane tab={`Booked ()`} key="3" />
-                <Tabs.TabPane tab={`Expired ()`} key="4" />
-                <Tabs.TabPane tab={`Requested ()`} key="5" />
+                <Tabs.TabPane tab={`All Bookings (${data?.length})`} key="1" />
+                <Tabs.TabPane
+                  tab={`Active (${
+                    filteredData.filter((item) => item.status === "Active")
+                      .length
+                  })`}
+                  key="2"
+                />
+                <Tabs.TabPane
+                  tab={`Booked (${
+                    filteredData.filter((item) => item.status === "Booked")
+                      .length
+                  })`}
+                  key="3"
+                />
+                <Tabs.TabPane
+                  tab={`Expired (${
+                    filteredData.filter((item) => item.status === "Expired")
+                      .length
+                  })`}
+                  key="4"
+                />
+                <Tabs.TabPane
+                  tab={`Requested (${
+                    filteredData.filter((item) => item.status === "Requested")
+                      .length
+                  })`}
+                  key="5"
+                />
               </Tabs>
             </Col>
           </Row>
@@ -89,9 +117,12 @@ const QuotationTabs = () => {
         <Col span={24} style={{ padding: "20px", backgroundColor: "white" }}>
           <QuotationTable
             filterData={filteredData}
-            selectedStatus={filterData}
+            selectedStatus={selectedStatus}
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
+            setActiveKey={setActiveKey}
+            selectedDropdownItem={selectedDropdownItem}
+            setSelectedDropdownItem={setSelectedDropdownItem}
           />
         </Col>
       </Row>

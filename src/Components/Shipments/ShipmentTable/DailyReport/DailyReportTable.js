@@ -54,8 +54,11 @@ function DailyReportTable({ filtercolumn, setfiltercolumn }) {
   const DsrDataObj = DsrReportData?.data?.[0]
   const DsrCopied = {...DsrDataObj}
   const DsrModifiedArray = Object?.keys(DsrCopied || {})
-  console.log(DsrModifiedArray)
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+ 
   //This function is used to change the
   // function changeKey(arr) {
   //   var newArr = [];
