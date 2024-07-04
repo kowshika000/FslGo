@@ -19,7 +19,6 @@ import { IconButton } from "@mui/material";
 import { Dropdown } from "primereact/dropdown";
 import Vector from "../../../assets/Vector1.png";
 import Verified from "../../../assets/Verified.png";
-import BookFor from "./QModal/BookFor";
 import Requested from "./QModal/Requested";
 import { useNavigate } from "react-router-dom";
 import { QuotationRequest } from "../../../Redux/Actions/QuotationAction";
@@ -33,17 +32,13 @@ const QuotationTable = ({
   currentPage,
   setCurrentPage,
   selectedDropdownItem,
-  setSelectedDropdownItem
+  setSelectedDropdownItem,
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
-  const [bookForModal, setbookForModal] = useState(false);
   const [requstedModal, setrequstedModal] = useState(false);
   const [filterValue, setFilterValue] = useState(30);
   const [filteredData, setFilteredData] = useState(filterData);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalRowData, setModalRowData] = useState(null);
   const [visible, setVisible] = useState(false);
   const [globalFilter, setGlobalFilter] = useState("");
   const [clicked, setClicked] = useState(false);
@@ -166,7 +161,7 @@ const QuotationTable = ({
         }}
         showSelectAll={false}
         onChange={(e) => handleChangeFilter(filterKey, e.value)}
-        onFocus={() => setClicked(true)} // Track when the MultiSelect gains focus
+        onFocus={() => setClicked(true)}
         onBlur={() => setClicked(false)}
         display="chip"
         placeholder="Select"
@@ -200,7 +195,7 @@ const QuotationTable = ({
       )
     );
     setFilteredData(filteredData);
-    setCurrentPage(1)
+    setCurrentPage(1);
   }, [globalFilter, quotationData]);
 
   useEffect(() => {
@@ -215,17 +210,8 @@ const QuotationTable = ({
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-
   // Extract the data for the current page
   const currentPageData = filteredData?.slice(startIndex, endIndex);
-
-  const showModal = (rowData) => {
-    setModalRowData(rowData);
-    setIsModalOpen(true);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
-  };
 
   const actionBodyTemplate = (rowData) => {
     let buttonLabel;
@@ -268,11 +254,8 @@ const QuotationTable = ({
     const hadleModalOpen = () => {
       if (rowData.status === "Requested") {
         setrequstedModal(true);
-
-        setbookForModal(false);
       } else if (rowData.status === "Active") {
-        setbookForModal(true);
-        setrequstedModal(false);
+        navigate("/quick");
       } else if (rowData.status === "Expired") {
         navigate("/findnewrate");
       }
@@ -653,10 +636,6 @@ const QuotationTable = ({
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         totalItems={filteredData?.length}
-      />
-      <BookFor
-        bookForModal={bookForModal}
-        handleCancel={() => setbookForModal(false)}
       />
       <Requested
         requstedModal={requstedModal}

@@ -1,20 +1,67 @@
 import React, { useState, useEffect } from "react";
-import { Dialog, Typography } from "@mui/material";
-import { Button, Input } from "antd";
+import { Typography } from "@mui/material";
+import { Button } from "antd";
 import Pagination1 from "../Core-Components/Pagination1";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { IconButton } from "@mui/material";
 import { datas } from "./data";
+import { MultiSelect } from "primereact/multiselect";
+import { Tooltip } from "antd";
+import CreateNewBooking from "./Modal/CreateNewBooking";
+import BookingSuccess from "./Modal/BookingScs";
 
-const Qbooking = ({ bookForModal, handleCancel }) => {
-  const data = datas?.map((data) => data);
+const Qbooking = () => {
+  const dataq = datas?.map((data) => data);
   const [selectedRows, setSelectedRows] = useState({});
-  const [filteredData, setFilteredData] = useState([]);
+  const [filteredData, setFilteredData] = useState(dataq);
   const [currentPage, setCurrentPage] = useState(1);
   const [bookingSuccessMdl, setBookingSuccessMdl] = useState(false);
   const [newBooking, setNewBooking] = useState(false);
+  const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
   const itemsPerPage = 10;
+  const [clicked, setClicked] = useState(false);
+  const [data, setData] = useState(filteredData);
+  const [tblFilter, setTblFilter] = useState({
+    mode: [],
+    shipper: [],
+    consignee: [],
+    pol: [],
+    pod: [],
+    commodity: [],
+  });
+  useEffect(() => {
+    const filterDataTable = dataq?.filter((item) =>
+      Object.keys(tblFilter).every(
+        (key) =>
+          tblFilter[key]?.length === 0 || tblFilter[key]?.includes(item[key])
+      )
+    );
+    setFilteredData(filterDataTable);
+    setCurrentPage(1);
+  }, [tblFilter, dataq]);
+  const getUniqueOptions = (array, key) => {
+    if (!Array.isArray(array) || !array?.length) {
+      return [];
+    }
+    return Array.from(new Set(array.map((data) => data[key]))).map((value) => ({
+      label: value,
+      value,
+    }));
+  };
+
+  useEffect(() => {
+    if (clicked) {
+      setData(filteredData);
+    }
+  }, [clicked]);
+  const mode_ = getUniqueOptions(data, "mode");
+  const shipper_ = getUniqueOptions(data, "shipper");
+  const consignee_ = getUniqueOptions(data, "consignee");
+  const pol_ = getUniqueOptions(data, "pol");
+  const pod_ = getUniqueOptions(data, "pod");
+  const commodity_ = getUniqueOptions(data, "commodity");
+
   useEffect(() => {
     setFilteredData(data);
   }, []);
@@ -33,32 +80,106 @@ const Qbooking = ({ bookForModal, handleCancel }) => {
   const currentPageData = filteredData?.slice(startIndex, endIndex);
 
   // sort data
-  const handleSort = (col) => {
-    console.log("Ascending");
-    const sorted = [...filteredData].sort((a, b) => {
-      const valA = a[col];
-      const valB = b[col];
-      if (!isNaN(valA) && !isNaN(valB)) {
-        return valA - valB;
+  const sort = (col) => {
+    const handleSort = (key) => {
+      let direction = "asc";
+      if (sortConfig.key === key && sortConfig.direction === "asc") {
+        direction = "desc";
       }
-      return valA > valB ? 1 : -1;
-    });
-    setFilteredData(sorted);
+      setSortConfig({ key, direction });
+      const sortedData = [...filteredData].sort((a, b) => {
+        const valA = a[key];
+        const valB = b[key];
+        if (!isNaN(valA) && !isNaN(valB)) {
+          return direction === "asc" ? valA - valB : valB - valA;
+        }
+        return direction === "asc"
+          ? valA > valB
+            ? 1
+            : -1
+          : valA < valB
+          ? 1
+          : -1;
+      });
+      setFilteredData(sortedData);
+    };
+    return (
+      <div className="d-flex sorticon" style={{ flexDirection: "column" }}>
+        <IconButton
+          onClick={() => handleSort(col)}
+          className="p-0"
+          style={{ color: "white" }}
+        >
+          <ExpandLessIcon className="sortup" />
+        </IconButton>
+        <IconButton
+          onClick={() => handleSort(col)}
+          className="p-0"
+          style={{ color: "white" }}
+        >
+          <ExpandMoreIcon className="sortdown" />
+        </IconButton>
+      </div>
+    );
   };
-
-  const handleSortDown = (col) => {
-    console.log("Descending");
-    const sorted = [...filteredData].sort((a, b) => {
-      const valA = a[col];
-      const valB = b[col];
-
-      if (!isNaN(valA) && !isNaN(valB)) {
-        return valB - valA;
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  const handleChangeFilter = (field, filterValues) => {
+    if (field === "all") {
+      setTblFilter({
+        mode: [],
+        shipper: [],
+        consignee: [],
+        pol: [],
+        pod: [],
+        commodity: [],
+      });
+    } else {
+      setTblFilter((prevFilters) => ({
+        ...prevFilters,
+        [field]: filterValues,
+      }));
+    }
+  };
+  function MultiSelectFilter(filterKey, options, value, additionalStyles) {
+    const renderOption = (option) => {
+      if (option.label.length <= 14) {
+        return <span>{option.label}</span>;
+      } else {
+        const truncatedText = option.label?.slice(0, 14).trim() + "..";
+        return (
+          <Tooltip placement="topLeft" title={option.label}>
+            <span role="button">{truncatedText}</span>
+          </Tooltip>
+        );
       }
-      return valA < valB ? 1 : -1;
-    });
-    setFilteredData(sorted);
-  };
+    };
+
+    return (
+      <MultiSelect
+        className="custom-multi-select"
+        value={value}
+        options={options}
+        filter
+        style={{
+          position: "absolute",
+          opacity: "0",
+          width: "20px",
+          fontSize: "10px",
+          ...additionalStyles,
+        }}
+        showSelectAll={false}
+        onChange={(e) => handleChangeFilter(filterKey, e.value)}
+        onFocus={() => setClicked(true)}
+        onBlur={() => setClicked(false)}
+        display="chip"
+        placeholder="Select"
+        itemTemplate={renderOption}
+        filterPlaceholder="Search"
+      />
+    );
+  }
   return (
     <div
       style={{ backgroundColor: "#F8FAFC", Width: "100%", minWidth: "1255px" }}
@@ -66,9 +187,7 @@ const Qbooking = ({ bookForModal, handleCancel }) => {
     >
       <div
         style={{
-          //   maxWidth: "1049px",
           backgroundColor: "white",
-          // padding: "40px 90px 40px 90px",
         }}
         className="pt-1"
       >
@@ -79,12 +198,13 @@ const Qbooking = ({ bookForModal, handleCancel }) => {
             color: "#29333D",
             fontWeight: 700,
           }}
+          className="mt-4"
         >
           Speed up your booking process by reusing details from your recent
           bookings
         </Typography>
-        <div className="mt-3" style={{ maxWidth: "1025px" }}>
-          <div>
+        <div className="mt-3">
+          <div style={{ height: "535px" }}>
             <table id="customers">
               <tr>
                 <th>Select </th>
@@ -93,170 +213,52 @@ const Qbooking = ({ bookForModal, handleCancel }) => {
                     className="d-flex justify-content-between"
                     style={{ paddingX: "8px" }}
                   >
-                    Mode{" "}
-                    <div
-                      className="d-flex sorticon"
-                      style={{ flexDirection: "column" }}
-                    >
-                      <IconButton
-                        onClick={() => {
-                          handleSort("id");
-                        }}
-                        className="p-0"
-                        style={{ color: "white" }}
-                      >
-                        <ExpandLessIcon className="sortup" />
-                      </IconButton>
-                      <IconButton
-                        onClick={() => {
-                          handleSortDown("id");
-                        }}
-                        className="p-0"
-                        style={{ color: "white" }}
-                      >
-                        <ExpandMoreIcon className="sortdown" />
-                      </IconButton>
-                    </div>
+                    Mode
+                    {MultiSelectFilter("mode", mode_, tblFilter.mode)}
+                    {sort("mode")}
                   </div>
                 </th>
                 <th>
                   <div className="d-flex justify-content-between">
-                    Shipper{" "}
-                    <div
-                      className="d-flex sorticon"
-                      style={{ flexDirection: "column" }}
-                    >
-                      <IconButton
-                        onClick={() => {
-                          handleSort("id");
-                        }}
-                        className="p-0"
-                        style={{ color: "white" }}
-                      >
-                        <ExpandLessIcon className="sortup" />
-                      </IconButton>
-                      <IconButton
-                        onClick={() => {
-                          handleSortDown("id");
-                        }}
-                        className="p-0"
-                        style={{ color: "white" }}
-                      >
-                        <ExpandMoreIcon className="sortdown" />
-                      </IconButton>
-                    </div>
+                    Shipper
+                    {MultiSelectFilter("shipper", shipper_, tblFilter.shipper)}
+                    {sort("shipper")}
                   </div>
                 </th>
                 <th>
                   <div className="d-flex justify-content-between">
-                    Consignee{" "}
-                    <div
-                      className="d-flex sorticon"
-                      style={{ flexDirection: "column" }}
-                    >
-                      <IconButton
-                        onClick={() => {
-                          handleSort("id");
-                        }}
-                        className="p-0"
-                        style={{ color: "white" }}
-                      >
-                        <ExpandLessIcon className="sortup" />
-                      </IconButton>
-                      <IconButton
-                        onClick={() => {
-                          handleSortDown("id");
-                        }}
-                        className="p-0"
-                        style={{ color: "white" }}
-                      >
-                        <ExpandMoreIcon className="sortdown" />
-                      </IconButton>
-                    </div>
+                    Consignee
+                    {MultiSelectFilter(
+                      "consignee",
+                      consignee_,
+                      tblFilter.consignee
+                    )}
+                    {sort("consignee")}
                   </div>
                 </th>
                 <th>
                   <div className="d-flex justify-content-between">
-                    POL{" "}
-                    <div
-                      className="d-flex sorticon"
-                      style={{ flexDirection: "column" }}
-                    >
-                      <IconButton
-                        onClick={() => {
-                          handleSort("id");
-                        }}
-                        className="p-0"
-                        style={{ color: "white" }}
-                      >
-                        <ExpandLessIcon className="sortup" />
-                      </IconButton>
-                      <IconButton
-                        onClick={() => {
-                          handleSortDown("id");
-                        }}
-                        className="p-0"
-                        style={{ color: "white" }}
-                      >
-                        <ExpandMoreIcon className="sortdown" />
-                      </IconButton>
-                    </div>
+                    POL
+                    {MultiSelectFilter("pol", pol_, tblFilter.pol)}
+                    {sort("pol")}
                   </div>
                 </th>
                 <th>
                   <div className="d-flex justify-content-between">
-                    POD{" "}
-                    <div
-                      className="d-flex sorticon"
-                      style={{ flexDirection: "column" }}
-                    >
-                      <IconButton
-                        onClick={() => {
-                          handleSort("id");
-                        }}
-                        className="p-0"
-                        style={{ color: "white" }}
-                      >
-                        <ExpandLessIcon className="sortup" />
-                      </IconButton>
-                      <IconButton
-                        onClick={() => {
-                          handleSortDown("id");
-                        }}
-                        className="p-0"
-                        style={{ color: "white" }}
-                      >
-                        <ExpandMoreIcon className="sortdown" />
-                      </IconButton>
-                    </div>
+                    POD
+                    {MultiSelectFilter("pod", pod_, tblFilter.pod)}
+                    {sort("pod")}
                   </div>
                 </th>
                 <th>
                   <div className="d-flex justify-content-between">
-                    Commodity{" "}
-                    <div
-                      className="d-flex sorticon"
-                      style={{ flexDirection: "column" }}
-                    >
-                      <IconButton
-                        onClick={() => {
-                          handleSort("id");
-                        }}
-                        className="p-0"
-                        style={{ color: "white" }}
-                      >
-                        <ExpandLessIcon className="sortup" />
-                      </IconButton>
-                      <IconButton
-                        onClick={() => {
-                          handleSortDown("id");
-                        }}
-                        className="p-0"
-                        style={{ color: "white" }}
-                      >
-                        <ExpandMoreIcon className="sortdown" />
-                      </IconButton>
-                    </div>
+                    Commodity
+                    {MultiSelectFilter(
+                      "commodity",
+                      commodity_,
+                      tblFilter.commodity
+                    )}
+                    {sort("commodity")}
                   </div>
                 </th>
               </tr>
@@ -321,12 +323,11 @@ const Qbooking = ({ bookForModal, handleCancel }) => {
           </Button>
         </div>
       </div>
-
-      {/* //    <BookingCreateSuccess
-    //     open={bookingSuccessMdl}
-    //     close={() => setBookingSuccessMdl(false)}
-    //   />
-    //   <NewBooking open={newBooking} close={() => setNewBooking(false)} /> */}
+      <BookingSuccess
+        open={bookingSuccessMdl}
+        close={() => setBookingSuccessMdl(false)}
+      />
+      <CreateNewBooking open={newBooking} close={() => setNewBooking(false)} />
     </div>
   );
 };
