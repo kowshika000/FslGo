@@ -32,6 +32,8 @@ const QuotationTable = ({
   selectedStatus,
   currentPage,
   setCurrentPage,
+  selectedDropdownItem,
+  setSelectedDropdownItem
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -39,13 +41,13 @@ const QuotationTable = ({
   const [bookForModal, setbookForModal] = useState(false);
   const [requstedModal, setrequstedModal] = useState(false);
   const [filterValue, setFilterValue] = useState(30);
-  const [selectedDropdownItem, setSelectedDropdownItem] =
-    useState("Past 30 Days");
-  const [filteredData, setFilteredData] = useState([]);
+  const [filteredData, setFilteredData] = useState(filterData);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalRowData, setModalRowData] = useState(null);
   const [visible, setVisible] = useState(false);
   const [globalFilter, setGlobalFilter] = useState("");
+  const [clicked, setClicked] = useState(false);
+  const [data, setData] = useState(filteredData);
   const items = [
     "Past 30 Days",
     "Past 3 Months",
@@ -68,7 +70,7 @@ const QuotationTable = ({
     status: [],
   });
   useEffect(() => {
-    const filterDataTable = quotationData?.filter((item) =>
+    const filterDataTable = filterData?.filter((item) =>
       Object.keys(tblFilter).every(
         (key) =>
           tblFilter[key]?.length === 0 || tblFilter[key]?.includes(item[key])
@@ -86,8 +88,7 @@ const QuotationTable = ({
       value,
     }));
   };
-  const [clicked, setClicked] = useState(false);
-  const [data, setData] = useState(filteredData);
+
   useEffect(() => {
     if (clicked) {
       setData(filteredData);
@@ -190,10 +191,6 @@ const QuotationTable = ({
   useEffect(() => {
     dispatch(QuotationRequest({ payload }));
   }, [dispatch, filterValue]);
-
-  useEffect(() => {
-    setFilteredData(filterData.length ? filterData : quotationData);
-  }, [selectedStatus]);
 
   useEffect(() => {
     const lowercasedFilter = globalFilter.toLowerCase();
