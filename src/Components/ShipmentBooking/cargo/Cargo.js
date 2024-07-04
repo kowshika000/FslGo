@@ -49,7 +49,7 @@ const Cargo = () => {
 
   return (
     <>
-      <div className="column " style={{ display: "flex", minWidth:'30%' }}>
+      <div className="column " style={{ display: "flex", minWidth:'33%',position: "relative" }}>
       <div className="align-content-center">
               <Ship style={{ width:"20px", height:'20px'}} className="mx-2" />
             </div>
@@ -68,10 +68,13 @@ const Cargo = () => {
           />
           {/* <Dropdown value={selectedCity} onChange={(e) => setSelectedCity(e.value)} options={cities} optionLabel="name" 
                 editable placeholder="Enter your Cargo details" className="w-full md:w-14rem" /> */}
+          <div className="outer-cargo-port">
+              <CargoDetails onClose={handleCloseModal} />
+          </div>
         </div>
       </div>
 
-      <Modal
+      {/* <Modal
         open={modalOpen}
         onClose={handleCloseModal}
         aria-labelledby="modal-modal-title"
@@ -79,7 +82,7 @@ const Cargo = () => {
         sx={{top:'50%', left:'50%'}}
       >
         <CargoDetails onClose={handleCloseModal} />
-      </Modal>
+      </Modal> */}
     </>
   );
 };

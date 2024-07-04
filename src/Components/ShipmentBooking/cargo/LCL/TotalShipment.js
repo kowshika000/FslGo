@@ -6,12 +6,17 @@ import {
   InputLabel,
   FormControl,
   TextField,
+  Radio,
+  FormControlLabel,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import "../cargo.css";
+import minus from '../../../../assets/9021673_minus_bold_icon 1.svg'
+import plus from '../../../../assets/material-symbols_add-rounded.svg'
 
 const TotalShipment = ({ onClose }) => {
   const [inputFields, setInputFields] = useState([{}]);
+  const [noofunits,setNoofunits] = useState(0)
 
   const handleAddLoad = () => {
     setInputFields([...inputFields, {}]);
@@ -27,22 +32,24 @@ const TotalShipment = ({ onClose }) => {
     {inputFields.map((load, index)=>(
       <React.Fragment key={index} >
         <div className="d-flex">
-          <div className="w-50 m-3">
+          <div className="w-50 my-3 ms-0 me-3">
             <Typography sx={{ fontWeight: "500", fontSize:"13px", lineHeight:"19px", letterSpacing:".01em", color: "rgba(103, 120, 142, 1)" }}>
               Package Type
             </Typography>
             <FormControl fullWidth>
-              <InputLabel id="demo-simple-select-label">Package</InputLabel>
+              {/* <InputLabel id="demo-simple-select-label">Package</InputLabel> */}
               <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                label="Age"
+                // labelId="demo-simple-select-label"
+                // id="demo-simple-select"
+                // label="Age"
+                displayEmpty
+                inputProps={{ 'aria-label': 'Without label' }}
               >
                 <MenuItem value="">Ten</MenuItem>
               </Select>
             </FormControl>{" "}
           </div>
-          <div className="w-50 m-3">
+          <div className="w-50 my-3 ms-3 me-0">
             <Typography sx={{ fontWeight: "500", fontSize:"13px", lineHeight:"19px", letterSpacing:".01em", color: "rgba(103, 120, 142, 1)" }}>
               No.of Units
             </Typography>
@@ -53,7 +60,9 @@ const TotalShipment = ({ onClose }) => {
             >
               <input
                 className="form-control "
-                placeholder="2"
+                placeholder="Units"
+                value={noofunits ? noofunits : ""}
+                onChange={(e)=>setNoofunits(parseInt(e.target.value))}
                 style={{
                   borderTopRightRadius: "0",
                   borderBottomRightRadius: "0",
@@ -61,28 +70,31 @@ const TotalShipment = ({ onClose }) => {
                 }}
               />
               <button
+                onClick={()=>setNoofunits((prev)=>prev>1?prev-1:1)}
                 type="button"
-                style={{ border: "none", paddingX: "15px", background: "none" }}
+                style={{ border: "none", paddingRight: "6px",paddingLeft:"6px", background: "none", borderRight:"1px solid #f0f0f0", margin:"8px 0px" }}
               >
-                -
+                <img src={minus} alt="minus"  />
               </button>
               <button
+                onClick={()=>setNoofunits((prev)=>prev<999?prev+1:999)}
                 type="button"
                 style={{
                   border: "none",
                   borderTopRightRadius: "5px",
                   borderBottomRightRadius: "5px",
-                  paddingX: "15px",
-                  background: "none",
+                  paddingRight: "6px",
+                  paddingLeft:"6px",
+                  background: "none"
                 }}
               >
-                +
+                <img src={plus} alt="add"  />
               </button>
             </div>
           </div>
         </div>
         <div className="d-flex">
-          <div className="w-50 m-3">
+          <div className="w-50 mb-3 ms-0 me-3">
             <Typography sx={{ fontWeight: "500", fontSize:"13px", lineHeight:"19px", letterSpacing:".01em", color: "rgba(103, 120, 142, 1)" }}>
               Total Volume
             </Typography>
@@ -130,7 +142,7 @@ const TotalShipment = ({ onClose }) => {
               </div>
             </div>
           </div>
-          <div className="w-50 m-3">
+          <div className="w-50 mb-3 ms-3 me-0">
             <Typography sx={{ fontWeight: "500", fontSize:"13px", lineHeight:"19px", letterSpacing:".01em", color: "rgba(103, 120, 142, 1)" }}>
               Total Weight
             </Typography>
@@ -186,18 +198,21 @@ const TotalShipment = ({ onClose }) => {
         </Typography>
       </button>
 
-      <div className="m-3 d-flex justify-content-between">
+      <div className="my-3 d-flex justify-content-between">
         <div className=" d-flex" style={{ justifyContent: "space-between" }}>
           <Typography
             sx={{
-              fontWeight: "500",
-              opacity: "0.6",
+              fontWeight: "400",
+              fontSize:"13px",
+              lineHeight:"19px",
+              letterSpacing:".01em",
+              color:"rgba(103, 120, 142, 1)",
               padding: "15px",
             }}
           >
             EXIM Type
           </Typography>
-          <input type="radio" name="exim" />
+          {/* <input type="radio" name="exim" />
           <Typography
             sx={{
               fontWeight: "700",
@@ -206,8 +221,39 @@ const TotalShipment = ({ onClose }) => {
             }}
           >
             Import
-          </Typography>
-          <input type="radio" name="exim" />
+          </Typography> */}
+          <FormControlLabel
+            value="top"
+            control={<Radio   
+              size="small" 
+              label="Import"
+              sx={{
+                color: "black",
+                '&.Mui-checked': {
+                  color: "black",
+                },
+              }}
+            />}
+            label="Import"
+            labelPlacement="right"
+          />
+          <FormControlLabel
+            value="top"
+            control={<Radio   
+              size="small" 
+              label="Import"
+              sx={{
+                color: "black",
+                '&.Mui-checked': {
+                  color: "black",
+                },
+              }}
+            />}
+            label="Export"
+            labelPlacement="right"
+          />
+          
+          {/* <input type="radio" name="exim" />
           <Typography
             sx={{
               fontWeight: "700",
@@ -216,9 +262,9 @@ const TotalShipment = ({ onClose }) => {
             }}
           >
             Export
-          </Typography>
+          </Typography> */}
         </div>
-        <div>
+        <div className="d-flex justify-content-center align-items-center">
           <button className="confirm" onClick={onClose}>
             Confirm
           </button>

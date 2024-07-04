@@ -116,7 +116,7 @@ const Origin = ({originPortOptionsVisible,setOriginPortOptionsVisible,setDestPor
 
   return (
     <>
-      <div className="column ps-2" style={{ display: "flex", minWidth:'30%',position:"relative" }}>
+      <div className="column ps-2" style={{ display: "flex", minWidth:'29%',position:"relative" }}>
       <div style={{alignContent:'center'}}>
       <Location style={{ width:"20px", height:'20px'}} className="mx-2"/>
       </div>
