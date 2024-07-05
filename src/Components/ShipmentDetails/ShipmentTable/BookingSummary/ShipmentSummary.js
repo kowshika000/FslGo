@@ -502,14 +502,14 @@ const ShipmentSummary = () => {
             <div className="card-body" style={{ height: "160px" }}>
               {newContainerArray.length <= 4 ? (
                 <>
-                  {newContainerArray.map((item) => {
-                    return <p className="container_para">{item.container}</p>;
+                  {newContainerArray.map((item,i) => {
+                    return <p key={i} className="container_para">{item.container}</p>;
                   })}
                 </>
               ) : (
                 <>
-                  {MinContainer.map((item) => (
-                    <p className="container_extrapara">{item.container}</p>
+                  {MinContainer.map((item,i) => (
+                    <p key={i} className="container_extrapara">{item.container}</p>
                   ))}
                   <span
                     role="button"

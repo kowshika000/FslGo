@@ -65,13 +65,15 @@ const QuotationTable = ({
     status: [],
   });
   useEffect(() => {
-    const filterDataTable = filterData?.filter((item) =>
+    const filterDataTable = filterData.map((item, index) => ({
+      key: index,
+      ...item, 
+    })).filter((filteredItem) =>
       Object.keys(tblFilter).every(
         (key) =>
-          tblFilter[key]?.length === 0 || tblFilter[key]?.includes(item[key])
+          tblFilter[key]?.length === 0 || tblFilter[key]?.includes(filteredItem[key])
       )
     );
-    setFilteredData(filterDataTable);
     setCurrentPage(1);
   }, [tblFilter, filterData]);
   const getUniqueOptions = (array, key) => {
@@ -402,14 +404,14 @@ const QuotationTable = ({
             />
           </div>
 
-          <div className="filter d-flex">
+          <div className="filter d-flex datehover">
             <div
-              className="ant-image cursor-pointer"
+              className=" "
               // onClick={()=>setVisible(true)}
             >
               <img
                 src={filter}
-                className="ant-image-img me-1 my-1"
+                className="me-1 my-1"
                 style={{
                   marginTop: "2px",
                   cursor: "pointer",
