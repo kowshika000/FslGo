@@ -141,7 +141,7 @@
   display: flex !important;
   align-items: center !important;
 }
-.ant-btn {
+/* .ant-btn {
   width: 20.6px;
   height: 32px;
   outline: none;
@@ -149,7 +149,7 @@
   display: inline-block;
   background-color: transparent;
   border: 1px solid transparent;
-}
+} */
 
 .ant-image {
   width: 17px;
