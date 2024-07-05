@@ -31,23 +31,34 @@ const Qbooking = () => {
     commodity: [],
   });
   useEffect(() => {
-    const filterDataTable = dataq?.filter((item) =>
-      Object.keys(tblFilter).every(
-        (key) =>
-          tblFilter[key]?.length === 0 || tblFilter[key]?.includes(item[key])
-      )
-    );
+    const filterDataTable = dataq
+      .map((item, index) => ({
+        key: index,
+        ...item,
+      }))
+      .filter((filteredItem) =>
+        Object.keys(tblFilter).every(
+          (key) =>
+            tblFilter[key]?.length === 0 ||
+            tblFilter[key]?.includes(filteredItem[key])
+        )
+      );
     setFilteredData(filterDataTable);
-    setCurrentPage(1);
   }, [tblFilter, dataq]);
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [filteredData]);
   const getUniqueOptions = (array, key) => {
     if (!Array.isArray(array) || !array?.length) {
       return [];
     }
-    return Array.from(new Set(array.map((data) => data[key]))).map((value) => ({
-      label: value,
-      value,
-    }));
+    return Array.from(new Set(array.map((data) => data[key]))).map(
+      (value, index) => ({
+        label: value,
+        value,
+        key: index,
+      })
+    );
   };
 
   useEffect(() => {
@@ -180,6 +191,14 @@ const Qbooking = () => {
       />
     );
   }
+  const tableHeaders = [
+    { label: "Mode", key: "mode" },
+    { label: "Shipper", key: "shipper" },
+    { label: "Consignee", key: "consignee" },
+    { label: "POL", key: "pol" },
+    { label: "POD", key: "pod" },
+    { label: "Commodity", key: "commodity" },
+  ];
   return (
     <div
       style={{ backgroundColor: "#F8FAFC", Width: "100%", minWidth: "1255px" }}
@@ -206,83 +225,48 @@ const Qbooking = () => {
         <div className="mt-3">
           <div style={{ height: "535px" }}>
             <table id="customers">
-              <tr>
-                <th>Select </th>
-                <th>
-                  <div
-                    className="d-flex justify-content-between"
-                    style={{ paddingX: "8px" }}
-                  >
-                    Mode
-                    {MultiSelectFilter("mode", mode_, tblFilter.mode)}
-                    {sort("mode")}
-                  </div>
-                </th>
-                <th>
-                  <div className="d-flex justify-content-between">
-                    Shipper
-                    {MultiSelectFilter("shipper", shipper_, tblFilter.shipper)}
-                    {sort("shipper")}
-                  </div>
-                </th>
-                <th>
-                  <div className="d-flex justify-content-between">
-                    Consignee
-                    {MultiSelectFilter(
-                      "consignee",
-                      consignee_,
-                      tblFilter.consignee
-                    )}
-                    {sort("consignee")}
-                  </div>
-                </th>
-                <th>
-                  <div className="d-flex justify-content-between">
-                    POL
-                    {MultiSelectFilter("pol", pol_, tblFilter.pol)}
-                    {sort("pol")}
-                  </div>
-                </th>
-                <th>
-                  <div className="d-flex justify-content-between">
-                    POD
-                    {MultiSelectFilter("pod", pod_, tblFilter.pod)}
-                    {sort("pod")}
-                  </div>
-                </th>
-                <th>
-                  <div className="d-flex justify-content-between">
-                    Commodity
-                    {MultiSelectFilter(
-                      "commodity",
-                      commodity_,
-                      tblFilter.commodity
-                    )}
-                    {sort("commodity")}
-                  </div>
-                </th>
-              </tr>
-
-              {currentPageData?.map((data, index) => (
-                <tr key={index}>
-                  <td style={{ textAlign: "center" }}>
-                    <input
-                      type="checkbox"
-                      id={`select-${index}`}
-                      className="custom-checkbox"
-                      checked={!!selectedRows[startIndex + index]}
-                      onChange={() => handleCheckboxChange(startIndex + index)}
-                    />
-                    <label htmlFor={`select-${index}`} />
-                  </td>
-                  <td>{data.mode}</td>
-                  <td>{data.shipper}</td>
-                  <td>{data.consignee}</td>
-                  <td>{data.pol}</td>
-                  <td>{data.pod}</td>
-                  <td>{data.commodity}</td>
+              <thead>
+                <tr>
+                  <th>Select </th>
+                  {tableHeaders.map((header) => (
+                    <th key={header.key}>
+                      <div className="d-flex justify-content-between">
+                        {header.label}
+                        {MultiSelectFilter(
+                          header.key,
+                          eval(header.key + "_"),
+                          tblFilter[header.key]
+                        )}
+                        {sort(header.key)}
+                      </div>
+                    </th>
+                  ))}
                 </tr>
-              ))}
+              </thead>
+              <tbody>
+                {currentPageData?.map((data, index) => (
+                  <tr key={index}>
+                    <td style={{ textAlign: "center" }}>
+                      <input
+                        type="checkbox"
+                        id={`select-${index}`}
+                        className="custom-checkbox"
+                        checked={!!selectedRows[startIndex + index]}
+                        onChange={() =>
+                          handleCheckboxChange(startIndex + index)
+                        }
+                      />
+                      <label htmlFor={`select-${index}`} />
+                    </td>
+                    <td>{data.mode}</td>
+                    <td>{data.shipper}</td>
+                    <td>{data.consignee}</td>
+                    <td>{data.pol}</td>
+                    <td>{data.pod}</td>
+                    <td>{data.commodity}</td>
+                  </tr>
+                ))}
+              </tbody>
             </table>
           </div>
           <Pagination1

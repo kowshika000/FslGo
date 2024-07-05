@@ -11,7 +11,7 @@ const FilterDrawer = ({ visible, onClose }) => {
       placement="right"
       closable={true}
       onClose={onClose}
-      visible={visible}
+      open={visible}
       width="378px"
       style={{
         borderRadius: "8px 0 0 0",
@@ -51,7 +51,7 @@ const FilterDrawer = ({ visible, onClose }) => {
                   style={{ height: "50px", fontSize: "14px" }}
                   placeholder="Type here"
                   prefix={
-                    <img src="https://www.fslgo.com/_next/static/media/bookingid.8055f8f1.svg" />
+                    <img alt="img" src="https://www.fslgo.com/_next/static/media/bookingid.8055f8f1.svg" />
                   }
                   onBlur={() => setFocused(null)}
                   onFocus={() => setFocused("booking")}
@@ -74,7 +74,7 @@ const FilterDrawer = ({ visible, onClose }) => {
                     height: "50px",
                   }}
                 >
-                  <img src="https://www.fslgo.com/_next/static/media/pullicon.8a2f56ed.svg" />
+                  <img alt="img" src="https://www.fslgo.com/_next/static/media/pullicon.8a2f56ed.svg" />
                   <Select
                     style={{ width: "100%", border: "none"}}
                     placeholder="Select type"
@@ -118,7 +118,7 @@ const FilterDrawer = ({ visible, onClose }) => {
                     focused === "etd" ? "focused-border" : ""
                   }`}
                 >
-                  <img src="https://www.fslgo.com/_next/static/media/filtercalendar.6dba3ae4.svg" />
+                  <img alt="img" src="https://www.fslgo.com/_next/static/media/filtercalendar.6dba3ae4.svg" />
                   <DatePicker
                     style={{ width: "100%" }}
                     className="filter-heading"
@@ -149,7 +149,7 @@ const FilterDrawer = ({ visible, onClose }) => {
                     height: "50px",
                   }}
                 >
-                  <img src="https://www.fslgo.com/_next/static/media/filtercalendar.6dba3ae4.svg" />
+                  <img alt="img" src="https://www.fslgo.com/_next/static/media/filtercalendar.6dba3ae4.svg" />
                   <DatePicker
                     style={{ width: "100%" }}
                     className="filter-heading"
@@ -180,7 +180,7 @@ const FilterDrawer = ({ visible, onClose }) => {
                     height: "50px",
                   }}
                 >
-                  <img
+                  <img alt="img"
                     src="https://www.fslgo.com/_next/static/media/filterlocation.5ae0235b.svg"
                     height="26px"
                     width="26px"
@@ -212,7 +212,7 @@ const FilterDrawer = ({ visible, onClose }) => {
                     height: "50px",
                   }}
                 >
-                  <img
+                  <img alt="img"
                     src="https://www.fslgo.com/_next/static/media/filterlocation.5ae0235b.svg"
                     height="26px"
                     width="26px"

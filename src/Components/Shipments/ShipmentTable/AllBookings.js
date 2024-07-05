@@ -67,10 +67,13 @@ const AllBookings = ({
   }, [filterValue, filterMonthValue]);
 
   useEffect(() => {
-    const filterDataTable = filterData.filter((item) =>
+    const filterDataTable = filterData.map((item, index) => ({
+      key: index,
+      ...item, 
+    })).filter((filteredItem) =>
       Object.keys(tblFilter).every(
         (key) =>
-          tblFilter[key]?.length === 0 || tblFilter[key]?.includes(item[key])
+          tblFilter[key]?.length === 0 || tblFilter[key]?.includes(filteredItem[key])
       )
     );
     setFilteredData(filterDataTable);
@@ -81,7 +84,8 @@ const AllBookings = ({
     if (!Array.isArray(array) || !array?.length) {
       return [];
     }
-    return Array.from(new Set(array.map((data) => data[key]))).map((value) => ({
+    return Array.from(new Set(array.map((data) => data[key]))).map((value,index) => ({
+      key:index,
       label: value,
       value,
     }));

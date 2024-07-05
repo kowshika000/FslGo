@@ -12,7 +12,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import React, { forwardRef } from "react";
 import Paper from "@mui/material/Paper";
 
-const NotificationManagement = forwardRef(({ open,modalref}) => {
+const NotificationManagement = forwardRef(({ open,modalref},ref) => {
 
   //This is for accordian
   const NotifyData = [
