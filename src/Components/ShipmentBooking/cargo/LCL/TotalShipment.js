@@ -56,7 +56,7 @@ const TotalShipment = ({ onClose }) => {
             <div
               className="btn-group w-100"
               role="group"
-              style={{ border: "1px solid rgba(0,0,0,0.3)" }}
+              style={{ border: "1px solid rgba(207, 214, 223, 1)" }}
             >
               <input
                 className="form-control "
@@ -67,6 +67,7 @@ const TotalShipment = ({ onClose }) => {
                   borderTopRightRadius: "0",
                   borderBottomRightRadius: "0",
                   padding: "13px",
+                  border:"none"
                 }}
               />
               <button
@@ -107,7 +108,7 @@ const TotalShipment = ({ onClose }) => {
               <input
                 type="text"
                 style={{
-                  border: "1px solid grey",
+                  border: "1px solid rgba(207, 214, 223, 1)",
                   borderTopLeftRadius: "5px",
                   borderBottomLeftRadius: "5px",
                   padding: "10px",
@@ -125,8 +126,8 @@ const TotalShipment = ({ onClose }) => {
                   aria-haspopup="true"
                   aria-expanded="false"
                   style={{
-                    background: "rgba(0,0,0,0.03)",
-                    border: "1px solid grey",
+                    background: "rgba(243, 245, 247, 1)",
+                    border: "1px solid rgba(207, 214, 223, 1)",
                   }}
                 >
                   CM
@@ -154,7 +155,7 @@ const TotalShipment = ({ onClose }) => {
               <input
                 type="text"
                 style={{
-                  border: "1px solid rgba(0,0,0,0.3)",
+                  border: "1px solid rgba(207, 214, 223, 1)",
                   borderTopLeftRadius: "5px",
                   borderBottomLeftRadius: "5px",
                   fontSize: "20px",
@@ -173,7 +174,7 @@ const TotalShipment = ({ onClose }) => {
                   aria-expanded="false"
                   style={{
                     background: "rgba(0,0,0,0.03)",
-                    border: "1px solid rgba(0,0,0,0.3)",
+                    border: "1px solid rgba(207, 214, 223, 1)",
                   }}
                 >
                   KG
@@ -207,7 +208,7 @@ const TotalShipment = ({ onClose }) => {
               lineHeight:"19px",
               letterSpacing:".01em",
               color:"rgba(103, 120, 142, 1)",
-              padding: "15px",
+              padding: "13px 8px 13px 0px",
             }}
           >
             EXIM Type
@@ -223,7 +224,8 @@ const TotalShipment = ({ onClose }) => {
             Import
           </Typography> */}
           <FormControlLabel
-            value="top"
+            value="Import"
+            style={{fontWeight:"400",fontSize:"13px",lineHeight:"19px",letterSpacing:".01em",color:"rgba(41, 51, 61, 1)"}}
             control={<Radio   
               size="small" 
               label="Import"
@@ -238,7 +240,8 @@ const TotalShipment = ({ onClose }) => {
             labelPlacement="right"
           />
           <FormControlLabel
-            value="top"
+            value="Export"
+            style={{fontWeight:"400",fontSize:"13px",lineHeight:"19px",letterSpacing:".01em",color:"rgba(41, 51, 61, 1)"}}
             control={<Radio   
               size="small" 
               label="Import"

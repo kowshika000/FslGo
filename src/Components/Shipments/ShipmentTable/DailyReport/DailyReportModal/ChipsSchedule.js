@@ -46,7 +46,7 @@ const ChipsSchedule = ({ setforminputs, forminputs,selected,setSelected,errorEma
         freeSolo
         renderTags={(value, getTagProps) =>
           value.map((option, index) => (
-            <Chip variant="outlined" label={option} {...getTagProps({ index })} onDelete={()=>onDelete(option)} />
+            <Chip key={index} variant="outlined" label={option} {...getTagProps({ index })} onDelete={()=>onDelete(option)} />
           ))
         }
         renderInput={(params) => (

@@ -5,8 +5,9 @@ import { Tooltip } from "antd";
 const Stepper = ({ data }) => {
   console.log("stepper", data);
   const mileStone = data?.milestones;
-  console.log(mileStone);
+  console.log(mileStone, "stonee");
   const steps = mileStone.map((data) => ({
+    // key: data?.id, 
     step: data.milestone,
     body: data.date,
     milestonestatus: data?.milestonestatus,

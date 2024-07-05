@@ -11,7 +11,7 @@ const FilterDrawer = ({ visible, onClose }) => {
       placement="right"
       closable={true}
       onClose={onClose}
-      visible={visible}
+      open={visible}
       width="378px"
       style={{
         borderRadius: "8px 0 0 0",

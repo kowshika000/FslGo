@@ -81,17 +81,27 @@
     background-color: rgb(255, 255, 255);
     border-radius: 4px;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 4px 11px;
-    margin-top: 44px;
+    margin-top: 60px;
     box-sizing: border-box;
     max-height: 350px;
     overflow: auto;
     padding: 16px;
  }
- .p-tabview-panels{
+ /* .p-tabview-panels{
     padding: 10px !important;
- }
+ } */
  .p-tabview .p-tabview-nav .p-tabview-ink-bar{
     background-color: black !important;
     height: 3px !important;
     border-radius: 8px !important;
+ }
+ .css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root.Mui-focused .MuiOutlinedInput-notchedOutline{
+    border: 1px solid rgba(207, 214, 223, 1) !important;
+ }
+
+ .css-1d3z3hw-MuiOutlinedInput-notchedOutline{
+    border: 1px solid rgba(207, 214, 223, 1) !important;
+ }
+ .css-1m05prz-MuiTypography-root{
+    margin-bottom: 5px !important;
  }
