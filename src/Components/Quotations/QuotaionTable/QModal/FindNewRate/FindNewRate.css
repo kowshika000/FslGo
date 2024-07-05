@@ -118,6 +118,81 @@
   flex-direction: row;
   align-items: center;
 }
+/* .dimmed-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+} */
+
+/* PopoOver-btn */
+.displaycheckbox-value {
+  padding-left: 24px;
+  margin-top: 5px;
+}
+.justify-atstart {
+  justify-content: flex-start;
+}
+.editpencil-btn.ant-btn {
+  padding: 1px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+.ant-btn {
+  width: 20.6px;
+  height: 32px;
+  outline: none;
+  position: relative;
+  display: inline-block;
+  background-color: transparent;
+  border: 1px solid transparent;
+}
+
+.ant-image {
+  width: 17px;
+  height: 13px;
+  position: relative;
+  display: inline-block;
+}
+.ant-image-mask {
+  display: none !important;
+}
+/* popover-content */
+.ant-popover {
+  position: absolute;
+  z-index: 1030;
+}
+.ant-popover .ant-popover-arrow {
+  display: none !important;
+}
+
+.popover-checkbox {
+  position: absolute !important;
+  left: -10px;
+  right: unset;
+  z-index: 30 !important;
+}
+
+.ant-popover .ant-popover-inner {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+/* .div-colaligned {
+  display: flex;
+  flex-direction: column;
+} */
+.ant-select-selector {
+  width: 205px;
+  height: 42px;
+  border-radius: 6px;
+  border-bottom: 2px solid #d32d2f;
+  padding: 0px 12px;
+  background-color: #fff;
+}
 .tabs .ant-card-body {
   padding: 0;
 }
