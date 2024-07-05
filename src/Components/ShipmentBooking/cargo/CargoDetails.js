@@ -56,7 +56,7 @@ export default function CargoDetails({ onClose }) {
             header="LCL/AIR"
             leftIcon={
               // <CiBoxes style={{ marginRight: "20px", fontSize:'45px' }} />
-              <img src={boxes} alt="" />
+              <img src={boxes} alt="" className="me-2" />
             }
             style={{ fontSize: "25px", width: "100%" }}
           >
@@ -98,44 +98,85 @@ export default function CargoDetails({ onClose }) {
             header="FCL"
             leftIcon={
               // <GiCargoCrate style={{ marginRight: "20px", fontSize:'35px' }} />
-              <img src={fcl} />
+              <img src={fcl} alt="fcl" className="me-2" />
             }
             style={{ fontSize: "25px", width: "100%" }}
           >
             <div className="d-flex mt-3">
-              <div className="w-50 m-3">
-                <Typography sx={{ fontWeight: "700", opacity: "0.5" }}>
+              <div className="w-50 my-3 ms-0 me-3">
+                <Typography sx={{ fontWeight: "500", fontSize:"13px", lineHeight:"19px",letterSpacing:".01em",color:"rgba(103, 120, 142, 1)" }}>
                   Container Type
                 </Typography>
                 <FormControl fullWidth>
-                  <InputLabel id="demo-simple-select-label">select Type</InputLabel>
+                  {/* <InputLabel id="demo-simple-select-label">select Type</InputLabel> */}
                   <Select
-                    labelId="demo-simple-select-label"
-                    id="demo-simple-select"
-                    label="Age"
+                    // labelId="demo-simple-select-label"
+                    // id="demo-simple-select"
+                    // label="Age"
+                    displayEmpty
+                    // placeholder="Select type"
+                    inputProps={{ 'aria-label': 'Without label' }}
                   >
                     <MenuItem value="">Ten</MenuItem>
                   </Select>
                 </FormControl>{" "}
               </div>
-              <div className="w-50 m-3">
-                <Typography sx={{ fontWeight: "700", opacity: "0.5" }}>
+              <div className="w-50 my-3 ms-3 me-0">
+                <Typography sx={{ fontWeight: "500", fontSize:"13px", lineHeight:"19px",letterSpacing:".01em",color:"rgba(103, 120, 142, 1)" }}>
                  Quantity
                 </Typography>
                 <input className="form-control p-3" />
               </div>
             </div>
-            <div className="m-3 d-flex " style={{ justifyContent: "space-between" }}>
+            <div className="my-3 d-flex " style={{ justifyContent: "space-between" }}>
               <div
                 className=" d-flex"
                 style={{ justifyContent: "space-between" }}
               >
                 <Typography
-                  sx={{ fontWeight: "500", opacity: "0.6", padding: "15px" }}
+                  sx={{
+                    fontWeight: "400",
+                    fontSize:"13px",
+                    lineHeight:"19px",
+                    letterSpacing:".01em",
+                    color:"rgba(103, 120, 142, 1)",
+                    padding: "13px 8px 13px 0px",}}
                 >
                   EXIM Type
                 </Typography>
-                <input type="radio" name="exim" />
+                <FormControlLabel
+                  value="Import"
+                  style={{fontWeight:"400",fontSize:"13px",lineHeight:"19px",letterSpacing:".01em",color:"rgba(41, 51, 61, 1)"}}
+                  control={<Radio   
+                    size="small" 
+                    label="Import"
+                    sx={{
+                      color: "black",
+                      '&.Mui-checked': {
+                        color: "black",
+                      },
+                    }}
+                  />}
+                  label="Import"
+                  labelPlacement="end"
+                />
+          <FormControlLabel
+            value="Export"
+            style={{fontWeight:"400",fontSize:"13px",lineHeight:"19px",letterSpacing:".01em",color:"rgba(41, 51, 61, 1)"}}
+            control={<Radio   
+              size="small" 
+              label="Import"
+              sx={{
+                color: "black",
+                '&.Mui-checked': {
+                  color: "black",
+                },
+              }}
+            />}
+            label="Export"
+            labelPlacement="right"
+          />
+                {/* <input type="radio" name="exim" />
                 <Typography
                   sx={{ fontWeight: "700", opacity: "0.7", padding: "15px" }}
                 >
@@ -146,9 +187,9 @@ export default function CargoDetails({ onClose }) {
                   sx={{ fontWeight: "700", opacity: "0.7", padding: "15px" }}
                 >
                   Export
-                </Typography>
+                </Typography> */}
               </div>
-              <div>
+              <div className="d-flex justify-content-center align-items-center">
                 <button onClick={onClose} className="confirm">
                   Confirm
                 </button>
