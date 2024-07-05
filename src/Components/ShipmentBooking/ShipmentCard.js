@@ -19,6 +19,7 @@ const ShipmentCard = () => {
   const cargoRef = useRef(null);
   const [originPortOptionsVisible, setOriginPortOptionsVisible] = useState(false);
   const [destPortOptionsVisible, setDestPortOptionsVisible] = useState(false);
+  const [cargoOptionsVisible, setCargoOptionsVisible] = useState(false);
 
   useEffect(() => {
     if (destination && cargoRef.current) {
@@ -44,18 +45,18 @@ const ShipmentCard = () => {
         }}
       >
         <div className="card-body d-flex p-0">
-          <Origin setOriginPortOptionsVisible={setOriginPortOptionsVisible} originPortOptionsVisible={originPortOptionsVisible} setDestPortOptionsVisible={setDestPortOptionsVisible}  />
+          <Origin setOriginPortOptionsVisible={setOriginPortOptionsVisible} originPortOptionsVisible={originPortOptionsVisible} setDestPortOptionsVisible={setDestPortOptionsVisible} setCargoOptionsVisible={setCargoOptionsVisible}  />
           <div
             className="align-content-center ps-2"
             style={{ minWidth: "3.03%"}}
           >
             <img src={Arrow} width="26px" height="26px" style={{alignContent:'center', margin:'auto', alignSelf:'center'}} />
           </div>
-          <Destination setOriginPortOptionsVisible={setOriginPortOptionsVisible} destPortOptionsVisible={destPortOptionsVisible} setDestPortOptionsVisible={setDestPortOptionsVisible} />
+          <Destination setOriginPortOptionsVisible={setOriginPortOptionsVisible} destPortOptionsVisible={destPortOptionsVisible} setDestPortOptionsVisible={setDestPortOptionsVisible} setCargoOptionsVisible={setCargoOptionsVisible} />
           {/* <div className="icon">
             <div className="divider"></div>
           </div> */}
-          <Cargo />
+          <Cargo cargoOptionsVisible={cargoOptionsVisible} setCargoOptionsVisible={setCargoOptionsVisible} />
           {/* Search button */}
           <div
             style={{ minWidth: "5%" }}

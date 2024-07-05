@@ -19,9 +19,9 @@ const style = {
   p: 4,
 };
 
-const Cargo = () => {
+const Cargo = ({setCargoOptionsVisible, cargoOptionsVisible}) => {
   const [cargo, setCargo] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
+  // const [modalOpen, setModalOpen] = useState(false);
 
   const cargoRef = useRef(null);
 
@@ -30,13 +30,13 @@ const Cargo = () => {
     setCargo(value);
   };
 
-  const handleCargoFocus = () => {
-      setModalOpen(true);
-  };
+  // const handleCargoFocus = () => {
+  //     setModalOpen(true);
+  // };
 
-  const handleCloseModal = () => {
-    setModalOpen(false);
-  };
+  // const handleCloseModal = () => {
+  //   setModalOpen(false);
+  // };
 
   const [selectedCity, setSelectedCity] = useState(null);
     const cities = [
@@ -60,17 +60,21 @@ const Cargo = () => {
             style={{ border: "none", outline: "none", width: "90%", background: 'transparent' }}
             className="input-field "
             placeholder="Enter your Cargo details"
-            ref={cargoRef}
-            onChange={handleCargoChange}
-            onFocus={handleCargoFocus}
+            // ref={cargoRef}
+            // onChange={handleCargoChange}
+            // onFocus={handleCargoFocus}
+            // onBlur={()=>setCargoOptionsVisible(false)}
+            onClick={()=>setCargoOptionsVisible((prev=>!prev))}
             value={cargo}
             readOnly
           />
           {/* <Dropdown value={selectedCity} onChange={(e) => setSelectedCity(e.value)} options={cities} optionLabel="name" 
                 editable placeholder="Enter your Cargo details" className="w-full md:w-14rem" /> */}
-          <div className="outer-cargo-port">
-              <CargoDetails onClose={handleCloseModal} />
-          </div>
+          {
+            cargoOptionsVisible && <div className="outer-cargo-port">
+              <CargoDetails />
+            </div>
+          }
         </div>
       </div>
 
