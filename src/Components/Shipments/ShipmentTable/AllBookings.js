@@ -181,7 +181,7 @@ const AllBookings = ({
   }
 
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage, filteredData?.length);
+  // const endIndex = Math.min(startIndex + itemsPerPage, filteredData?.length);
 
   const showModal = (rowData) => {
     setModalRowData(rowData);
@@ -305,7 +305,6 @@ const AllBookings = ({
     );
   };
   const bodyTemplate = (rowData) => {
-    console.log("bodyTemplaterowData", rowData);
     const hasUpdated =
       rowData?.is_updated === "Y" ? rowData?.updated_message : "";
 
@@ -366,7 +365,6 @@ const AllBookings = ({
   };
   const sort = (col) => {
     const handleSort = (col) => {
-      console.log("Ascending");
       const sorted = [...filteredData].sort((a, b) => {
         const valA = a[col];
         const valB = b[col];
@@ -379,7 +377,6 @@ const AllBookings = ({
     };
 
     const handleSortDown = (col) => {
-      console.log("Descending");
       const sorted = [...filteredData].sort((a, b) => {
         const valA = a[col];
         const valB = b[col];
@@ -688,6 +685,7 @@ const AllBookings = ({
         setCurrentPage={setCurrentPage}
         totalItems={filteredData?.length}
         onPageChange={() => setCurrentPage(1)}
+        itemsPerPage={itemsPerPage}
       />
       <ShipmentBase
         open={isModalOpen}

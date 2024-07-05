@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
-import Pagination1 from "../../Core-Components/Pagination1";
+import Pagination from "../../Core-Components/Pagination";
 import { useDispatch, useSelector } from "react-redux";
 import { Tooltip } from "antd";
 import CountryFlag from "../../Core-Components/CountryFlag";
@@ -65,15 +65,13 @@ const QuotationTable = ({
     status: [],
   });
   useEffect(() => {
-    const filterDataTable = filterData.map((item, index) => ({
-      key: index,
-      ...item, 
-    })).filter((filteredItem) =>
+    const filterDataTable = filterData?.filter((item) =>
       Object.keys(tblFilter).every(
         (key) =>
-          tblFilter[key]?.length === 0 || tblFilter[key]?.includes(filteredItem[key])
+          tblFilter[key]?.length === 0 || tblFilter[key]?.includes(item[key])
       )
     );
+    setFilteredData(filterDataTable);
     setCurrentPage(1);
   }, [tblFilter, filterData]);
   const getUniqueOptions = (array, key) => {
@@ -404,14 +402,14 @@ const QuotationTable = ({
             />
           </div>
 
-          <div className="filter d-flex datehover">
+          <div className="filter d-flex">
             <div
-              className=" "
+              className="ant-image cursor-pointer"
               // onClick={()=>setVisible(true)}
             >
               <img
                 src={filter}
-                className="me-1 my-1"
+                className="ant-image-img me-1 my-1"
                 style={{
                   marginTop: "2px",
                   cursor: "pointer",
@@ -520,7 +518,7 @@ const QuotationTable = ({
     >
       <DataTable
         value={currentPageData}
-        style={{ height: "400px" }}
+        style={{ height: "420px" }}
         header={renderHeader}
         emptyMessage={noData}
       >
@@ -634,10 +632,11 @@ const QuotationTable = ({
           className="p-3 text-start"
         ></Column>
       </DataTable>
-      <Pagination1
+      <Pagination
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         totalItems={filteredData?.length}
+        itemsPerPage={itemsPerPage}
       />
       <Requested
         requstedModal={requstedModal}

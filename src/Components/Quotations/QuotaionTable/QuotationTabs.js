@@ -68,34 +68,6 @@ const QuotationTabs = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-  const tabs = [
-    { label: `All Bookings (${data?.length})`, key: "1" },
-    {
-      label: `Active (${
-        filteredData.filter((item) => item.status === "Active").length
-      })`,
-      key: "2",
-    },
-    {
-      label: `Booked (${
-        filteredData.filter((item) => item.status === "Booked").length
-      })`,
-      key: "3",
-    },
-    {
-      label: `Expired (${
-        filteredData.filter((item) => item.status === "Expired").length
-      })`,
-      key: "4",
-    },
-    {
-      label: `Requested (${
-        filteredData.filter((item) => item.status === "Requested").length
-      })`,
-      key: "5",
-    },
-  ];
-
   return (
     <div
       className="mx-auto mt-5 "
@@ -108,11 +80,37 @@ const QuotationTabs = () => {
         <Col span={24} style={{ backgroundColor: "#F8FAFC" }}>
           <Row justify="space-between" style={{ height: "57px" }}>
             <Col span={20}>
-              <Tabs
-                activeKey={activeKey}
-                onChange={onChange}
-                items={tabs}
-              ></Tabs>
+              <Tabs activeKey={activeKey} onChange={onChange}>
+                <Tabs.TabPane tab={`All Bookings (${data?.length})`} key="1" />
+                <Tabs.TabPane
+                  tab={`Active (${
+                    filteredData.filter((item) => item.status === "Active")
+                      .length
+                  })`}
+                  key="2"
+                />
+                <Tabs.TabPane
+                  tab={`Booked (${
+                    filteredData.filter((item) => item.status === "Booked")
+                      .length
+                  })`}
+                  key="3"
+                />
+                <Tabs.TabPane
+                  tab={`Expired (${
+                    filteredData.filter((item) => item.status === "Expired")
+                      .length
+                  })`}
+                  key="4"
+                />
+                <Tabs.TabPane
+                  tab={`Requested (${
+                    filteredData.filter((item) => item.status === "Requested")
+                      .length
+                  })`}
+                  key="5"
+                />
+              </Tabs>
             </Col>
           </Row>
         </Col>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Typography } from "@mui/material";
 import { Button } from "antd";
-import Pagination1 from "../Core-Components/Pagination1";
+import Pagination from "../Core-Components/Pagination";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { IconButton } from "@mui/material";
@@ -31,23 +31,17 @@ const Qbooking = () => {
     commodity: [],
   });
   useEffect(() => {
-    const filterDataTable = dataq
-      .map((item, index) => ({
-        key: index,
-        ...item,
-      }))
-      .filter((filteredItem) =>
-        Object.keys(tblFilter).every(
-          (key) =>
-            tblFilter[key]?.length === 0 ||
-            tblFilter[key]?.includes(filteredItem[key])
-        )
-      );
+    const filterDataTable = dataq.filter((filteredItem) =>
+      Object.keys(tblFilter).every(
+        (key) =>
+          tblFilter[key]?.length === 0 ||
+          tblFilter[key]?.includes(filteredItem[key])
+      )
+    );
     setFilteredData(filterDataTable);
-  }, [tblFilter, dataq]);
-  useEffect(() => {
     setCurrentPage(1);
-  }, [filteredData]);
+  }, [tblFilter]);
+
   const getUniqueOptions = (array, key) => {
     if (!Array.isArray(array) || !array?.length) {
       return [];
@@ -66,16 +60,6 @@ const Qbooking = () => {
       setData(filteredData);
     }
   }, [clicked]);
-  const mode_ = getUniqueOptions(data, "mode");
-  const shipper_ = getUniqueOptions(data, "shipper");
-  const consignee_ = getUniqueOptions(data, "consignee");
-  const pol_ = getUniqueOptions(data, "pol");
-  const pod_ = getUniqueOptions(data, "pod");
-  const commodity_ = getUniqueOptions(data, "commodity");
-
-  useEffect(() => {
-    setFilteredData(data);
-  }, []);
 
   const handleCheckboxChange = (index) => {
     setSelectedRows((prev) => ({
@@ -105,12 +89,8 @@ const Qbooking = () => {
           return direction === "asc" ? valA - valB : valB - valA;
         }
         return direction === "asc"
-          ? valA > valB
-            ? 1
-            : -1
-          : valA < valB
-          ? 1
-          : -1;
+          ? valA.localeCompare(valB)
+          : valB.localeCompare(valA);
       });
       setFilteredData(sortedData);
     };
@@ -234,7 +214,7 @@ const Qbooking = () => {
                         {header.label}
                         {MultiSelectFilter(
                           header.key,
-                          eval(header.key + "_"),
+                          getUniqueOptions(data, header.key),
                           tblFilter[header.key]
                         )}
                         {sort(header.key)}
@@ -269,11 +249,11 @@ const Qbooking = () => {
               </tbody>
             </table>
           </div>
-          <Pagination1
+          <Pagination
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             totalItems={filteredData?.length}
-            // itemsPerPage={itemsPerPage}
+            itemsPerPage={itemsPerPage}
           />
         </div>
         <div className="d-flex justify-content-end gap-3 mt-3">
