@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { Card, Checkbox } from "antd";
+import React, { useState, useEffect, useRef } from "react";
+import { Button, Card, Checkbox, Popover, Image } from "antd";
 import "./FindNewRate.css";
 import ShipmentTracker from "./ShipmentTracker";
 import info from "../../../../../assets/Info.svg";
@@ -7,10 +7,23 @@ import { Tooltip } from "antd";
 import QuoteRequest from "./QuoteRequest";
 import { Collapse } from "antd";
 import { DownOutlined, UpOutlined } from "@ant-design/icons";
+import CargoPickupPopOver from "./CargoPickupPopOver";
+import pencil from "../../../../../assets/Pencil.svg";
 
 function FindNewRate() {
+  const [checkedItems, setCheckedItems] = useState({
+    originCharges: false,
+    exportClearance: false,
+    cargoPickup: false,
+    internationalFreight: false,
+  });
   const onChange = (e) => {
-    console.log(`checked = ${e.target.checked}`);
+    const { value, checked } = e.target;
+    setCheckedItems({
+      ...checkedItems,
+      [value]: checked,
+    });
+    console.log(`checked = ${checked}, value = ${value}`);
   };
   const onChangeCollapse = (key) => {
     console.log(key);
@@ -27,83 +40,32 @@ function FindNewRate() {
       Price: "$50",
       TotalPrice: "$300",
     },
-    {
-      id: "1",
-      Vessel: "NORTHERN DEDICATION",
-      Voyage: "2308",
-      Cutoff: "20-May-2023",
-      Departure: "24-May-2023",
-      Arrival: "30-May-2023",
-      validity: "16 May 2023",
-      Price: "$50",
-      TotalPrice: "$320",
-    },
-    {
-      id: "2",
-      Vessel: "NORTHERN PRACTISE",
-      Voyage: "41",
-      Cutoff: "24-May-2023",
-      Departure: "28-May-2023",
-      Arrival: "30-May-2023",
-      validity: "16 May 2023",
-      Price: "$50",
-      TotalPrice: "$350",
-    },
-    {
-      id: "3",
-      Vessel: "MONTPELLIER",
-      Voyage: "23005E",
-      Cutoff: "27-May-2023",
-      Departure: "31-May-2023",
-      Arrival: "06-Jun-2023",
-      validity: "16 May 2023",
-      Price: "$50",
-      TotalPrice: "$380",
-    },
-    {
-      id: "4",
-      Vessel: "MONTPELLIER",
-      Voyage: "23005E",
-      Cutoff: "27-May-2023",
-      Departure: "31-May-2023",
-      Arrival: "06-Jun-2023",
-      validity: "16 May 2023",
-      Price: "$50",
-      TotalPrice: "$380",
-    },
-    {
-      id: "5",
-      Vessel: "MONTPELLIER",
-      Voyage: "23005E",
-      Cutoff: "27-May-2023",
-      Departure: "31-May-2023",
-      Arrival: "06-Jun-2023",
-      validity: "16 May 2023",
-      Price: "$50",
-      TotalPrice: "$380",
-    },
-    {
-      id: "6",
-      Vessel: "MONTPELLIER",
-      Voyage: "23005E",
-      Cutoff: "27-May-2023",
-      Departure: "31-May-2023",
-      Arrival: "06-Jun-2023",
-      validity: "16 May 2023",
-      Price: "$50",
-      TotalPrice: "$380",
-    },
   ];
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
-  const FilterCheckbox = ({ label, tooltipText, onChange }) => {
+  }, [checkedItems]);
+
+  const imageRef = useRef(null);
+
+  if (imageRef.current) {
+    const mask = imageRef.current.querySelector(".ant-image-mask");
+    if (mask) {
+      mask.remove();
+    }
+  }
+
+  const FilterCheckbox = ({ label, tooltipText, onChange, value, checked }) => {
     return (
       <div className="filter-quotation">
+        {value === "cargoPickup" && checkedItems.cargoPickup && (
+          <div className="dimmed-background"></div>
+        )}
         <div className="filter-quotation-wrapper">
           <div className="singlefilter-leftstyling">
             <div className="div-rowcentered">
-              <Checkbox onChange={onChange}>{label}</Checkbox>
+              <Checkbox onChange={onChange} value={value} checked={checked}>
+                {label}
+              </Checkbox>
             </div>
             <div
               className="div-rowcentered"
@@ -116,10 +78,24 @@ function FindNewRate() {
               </Tooltip>
             </div>
           </div>
+          {value === "cargoPickup" && checkedItems.cargoPickup && (
+            <div className="div-rowcentered justify-atstart displaycheckbox-value">
+              <Popover
+                placement="bottom"
+                content={CargoPickupPopOver}
+                open={true}
+              >
+                <Button type="link" className="editpencil-btn">
+                  <Image src={pencil} alt="pencil" />
+                </Button>
+              </Popover>
+            </div>
+          )}
         </div>
       </div>
     );
   };
+
   const item1 = [
     {
       key: "1",
@@ -129,21 +105,29 @@ function FindNewRate() {
           <div className="filterouter-leftdiv">
             <FilterCheckbox
               label="Origin Charges"
+              checked={checkedItems.originCharges}
+              value="originCharges"
               tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
               onChange={onChange}
             />
             <FilterCheckbox
               label="Export Clearance"
+              checked={checkedItems.exportClearance}
+              value="exportClearance"
               tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
               onChange={onChange}
             />
             <FilterCheckbox
               label="Cargo Pickup"
+              checked={checkedItems.cargoPickup}
+              value="cargoPickup"
               tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
               onChange={onChange}
             />
             <FilterCheckbox
               label="International Freight"
+              value="internationalFreight"
+              checked={checkedItems.internationalFreight}
               tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
               onChange={onChange}
             />
