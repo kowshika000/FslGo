@@ -10,7 +10,6 @@ import ButtonList from "../../../assets/Button.svg";
 import Buttonfade from "../../../assets/Buttonfade.svg";
 import Group1 from "../../../assets/CButton.svg";
 import button16 from "../../../assets/Button16.svg";
-import FilterDrawer from "./Filter";
 import Navbar from "../../Layout/Navbar";
 import image1 from "../../../assets/Shape.svg";
 import image2 from "../../../assets/Shape1.svg";
@@ -26,7 +25,6 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
   const [searchQuery] = useState("");
   const [data, setData] = useState([]);
   const [schedulemodal, setSchedulemodal] = useState(false);
-  const [visible, setVisible] = useState(false);
   const [selectedButton, setSelectedButton] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [activeTab, setActiveTab] = useState("1");
@@ -158,9 +156,6 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
         setSelectedButton(null);
         setCurrentPage(1);
         break;
-      // case "2":
-      //   filterData(["Booked In Progress"]);
-      //   break;
       case "2":
         filterData(["Booked", "Cargo Pickup", "Cargo Received"]);
         setSelectedButton(null);
@@ -223,9 +218,6 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
     });
     setFilteredData(sortedData);
     setIsAscending(!isAscending);
-  };
-  const onClose = () => {
-    setVisible(false);
   };
 
   const handleTableChange = () => {
@@ -486,7 +478,6 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
           )}
         </Col>
       </Row>
-      <FilterDrawer visible={visible} onClose={onClose} />
       <ScheduleDsrModal
         open={schedulemodal}
         close={() => setSchedulemodal(false)}
