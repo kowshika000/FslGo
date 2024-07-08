@@ -40,7 +40,7 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
   const ShipmentData = useSelector((state) => state.Booking);
   const bookingData = ShipmentData?.booking;
   const tabCount = ShipmentData?.booking?.statuswise_count;
-  const saveSuccess = useSelector((state) => state?.SaveDsr?.savedsr?.Response);
+  // const saveSuccess = useSelector((state) => state?.SaveDsr?.savedsr?.Response);
 
   let schedule;
   if (tabCount && tabCount.length > 0) {
@@ -116,7 +116,8 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
   };
   const handleDownloadDsr = (e) => {
     e.preventDefault();
-    dispatch(DsrDownloadRequest({ payloadofdsrdownload }));
+    console.log("download")
+    // dispatch(DsrDownloadRequest({ payloadofdsrdownload }));
   };
 
   let sselectcolumn = "";
@@ -142,12 +143,13 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
   const handleSaveDsr = (e) => {
     e.preventDefault();
     dispatch(SaveDsrReqeust({ payload }));
+    toast.success("DSR Saved Successfully");
   };
-  useEffect(() => {
-    if (saveSuccess === "SUCCESS") {
-      toast.success("DSR Saved Successfully");
-    }
-  }, [saveSuccess]);
+  // useEffect(() => {
+  //   if (saveSuccess === "SUCCESS") {
+  //     toast.success("DSR Saved Successfully");
+  //   }
+  // }, [saveSuccess]);
   const onChange = (key) => {
     setActiveTab(key);
     switch (key) {
