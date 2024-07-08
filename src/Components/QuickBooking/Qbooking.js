@@ -10,6 +10,8 @@ import { MultiSelect } from "primereact/multiselect";
 import { Tooltip } from "antd";
 import CreateNewBooking from "./Modal/CreateNewBooking";
 import BookingSuccess from "./Modal/BookingScs";
+import { DataTable } from "primereact/datatable";
+import { Column } from "primereact/column";
 
 const Qbooking = () => {
   const dataq = datas?.map((data) => data);
@@ -62,12 +64,15 @@ const Qbooking = () => {
   }, [clicked]);
 
   const handleCheckboxChange = (index) => {
+    const pageIndex = currentPage - 1;
+    const dataIndex = pageIndex * itemsPerPage + index;
     setSelectedRows((prev) => ({
       ...prev,
-      [index]: !prev[index],
+      [dataIndex]: !prev[dataIndex],
     }));
+    console.log("Selected Row Data:", filteredData[dataIndex]);
   };
-
+  
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
@@ -99,14 +104,14 @@ const Qbooking = () => {
         <IconButton
           onClick={() => handleSort(col)}
           className="p-0"
-          style={{ color: "white" }}
+          // style={{ color: "white" }}
         >
           <ExpandLessIcon className="sortup" />
         </IconButton>
         <IconButton
           onClick={() => handleSort(col)}
           className="p-0"
-          style={{ color: "white" }}
+          // style={{ color: "white" }}
         >
           <ExpandMoreIcon className="sortdown" />
         </IconButton>
@@ -179,6 +184,28 @@ const Qbooking = () => {
     { label: "POD", key: "pod" },
     { label: "Commodity", key: "commodity" },
   ];
+  const renderTruncatedText = (text, length = 20) => {
+    if (text.length <= length) {
+      return text;
+    } else {
+      const truncatedText = text.slice(0, length).trim() + "..";
+      return (
+        <Tooltip title={text}>
+          <span>{truncatedText}</span>
+        </Tooltip>
+      );
+    }
+  };
+  // const handleMultiSelectChange = (e, key) => {
+  //   const selectedValues = e.value;
+  //   setTblFilter((prev) => ({ ...prev, [key]: selectedValues }));
+
+  //   // Filtering data based on the selected values
+  //   const filteredData = data.filter((item) =>
+  //     selectedValues.includes(item[key])
+  //   );
+  //   setFilteredData(filteredData);
+  // };
   return (
     <div
       style={{ backgroundColor: "#F8FAFC", Width: "100%", minWidth: "1255px" }}
@@ -203,51 +230,50 @@ const Qbooking = () => {
           bookings
         </Typography>
         <div className="mt-3">
-          <div style={{ height: "535px" }}>
-            <table id="customers">
-              <thead>
-                <tr>
-                  <th>Select </th>
-                  {tableHeaders.map((header) => (
-                    <th key={header.key}>
-                      <div className="d-flex justify-content-between">
-                        {header.label}
-                        {MultiSelectFilter(
-                          header.key,
-                          getUniqueOptions(data, header.key),
-                          tblFilter[header.key]
-                        )}
-                        {sort(header.key)}
-                      </div>
-                    </th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {currentPageData?.map((data, index) => (
-                  <tr key={index}>
-                    <td style={{ textAlign: "center" }}>
-                      <input
-                        type="checkbox"
-                        id={`select-${index}`}
-                        className="custom-checkbox"
-                        checked={!!selectedRows[startIndex + index]}
-                        onChange={() =>
-                          handleCheckboxChange(startIndex + index)
-                        }
-                      />
-                      <label htmlFor={`select-${index}`} />
-                    </td>
-                    <td>{data.mode}</td>
-                    <td>{data.shipper}</td>
-                    <td>{data.consignee}</td>
-                    <td>{data.pol}</td>
-                    <td>{data.pod}</td>
-                    <td>{data.commodity}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div style={{ height: "593px" }}>
+            <DataTable
+              value={currentPageData}
+              selection={selectedRows}
+              onSelectionChange={handleCheckboxChange}
+              selectionMode="multiple"
+            >
+              <Column
+                header="Select"
+                style={{ width: "80px", paddingLeft: "30px" }}
+                body={(rowData, options, index) => (
+                  <div>
+                    <input
+                      type="checkbox"
+                      checked={selectedRows[startIndex + options.rowIndex || false]}
+                      onChange={() => handleCheckboxChange(startIndex + options.rowIndex)}
+                      id={`checkbox-${options.rowIndex}`}
+                      className="custom-checkbox"
+                    />
+                    <label htmlFor={`checkbox-${options.rowIndex}`} />
+                  </div>
+                )}
+              />
+              {tableHeaders.map((header, index) => (
+                <Column
+                  key={index}
+                  field={header.key}
+                  className="p-3"
+                  style={{ width: "80px" }}
+                  header={
+                    <div className="d-flex justify-content-between p-3">
+                      {header.label}
+                      {MultiSelectFilter(
+                        header.key,
+                        getUniqueOptions(data, header.key),
+                        tblFilter[header.key]
+                      )}
+                      {sort(header.key)}
+                    </div>
+                  }
+                  body={(rowData) => renderTruncatedText(rowData[header.key])}
+                />
+              ))}
+            </DataTable>
           </div>
           <Pagination
             currentPage={currentPage}
