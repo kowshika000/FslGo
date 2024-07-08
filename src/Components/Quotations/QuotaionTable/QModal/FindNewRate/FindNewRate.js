@@ -18,13 +18,19 @@ function FindNewRate() {
     cargoPickup: false,
     internationalFreight: false,
   });
+  const [isPopoverOpen, setPopoverOpen] = useState(true);
+
   const onChange = (e) => {
+    if (e.target.name !== "cargoPickup") {
+      setPopoverOpen(false);
+    } else {
+      setPopoverOpen(true);
+    }
     const { value, checked } = e.target;
     setCheckedItems({
       ...checkedItems,
       [value]: checked,
     });
-    console.log(`checked = ${checked}, value = ${value}`);
   };
   const onChangeCollapse = (key) => {
     console.log(key);
@@ -110,13 +116,12 @@ function FindNewRate() {
     children,
     vname,
   }) => {
-    const [isPopoverOpen, setPopoverOpen] = useState(false);
     const handlePopoverOpenChange = (open) => {
       setPopoverOpen(open);
     };
-    useEffect(() => {
-      checkedItems.cargoPickup && setPopoverOpen(true);
-    }, [checkedItems]);
+    const handleButtonClick = () => {
+      setPopoverOpen((prev) => !prev);
+    };
     return (
       <div className="filter-quotation">
         {value === "cargoPickup" &&
@@ -169,6 +174,7 @@ function FindNewRate() {
                     bordeRadius: "6px",
                     padding: "1px",
                   }}
+                  onClick={handleButtonClick}
                 >
                   <Image src={pencil} alt="pencil" preview={false} />
                 </Button>
