@@ -167,3 +167,30 @@
   padding-bottom: 20px;
   margin-left: 1px;
 }
+/* 
+.custom-checkbox input[type="checkbox"] {
+  display: none;
+}
+
+.custom-checkbox input[type="checkbox"] + label {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid #797979;
+  position: relative;
+  cursor: pointer;
+  vertical-align: middle;
+}
+
+.custom-checkbox input[type="checkbox"]:checked + label::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #c90e0e;
+  transform: translate(-50%, -50%);
+} */

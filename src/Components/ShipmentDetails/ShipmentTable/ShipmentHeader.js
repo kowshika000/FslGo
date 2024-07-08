@@ -272,8 +272,7 @@ const ShipmentHeader = ({ rowDatas }) => {
           </div>
           <div className="col-2 right_column">
             <div className="bookedButton">
-              
-                return <span>{item.status}</span>
+              <span>{item.status}</span>
            
             </div>
             {/* <div className="menu_icon">
@@ -295,8 +294,7 @@ const ShipmentHeader = ({ rowDatas }) => {
         <div className="booking_row">
           <div className="booking_content">
             <p className="m-0 mb-1">Booking Date</p>
-         
-              return <p className="m-0">{item.booked_on}</p>
+            <p className="m-0">{item.booked_on}</p>
            
           </div>
           <div className="booking_content">

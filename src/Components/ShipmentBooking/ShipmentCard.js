@@ -16,6 +16,7 @@ import Arrow from "../../assets/arrow.png";
 const ShipmentCard = () => {
   const [destination, setDestination] = useState("");
   const [isCargoOpen, setIsCargoOpen] = useState(false);
+  const [active,setActive] = useState(false)
   const cargoRef = useRef(null);
   const [originPortOptionsVisible, setOriginPortOptionsVisible] =
     useState(false);

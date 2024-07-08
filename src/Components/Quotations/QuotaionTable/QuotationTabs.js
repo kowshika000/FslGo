@@ -146,7 +146,7 @@ const QuotationTabs = () => {
             <Col className="d-flex " >
               <div
                 className="dropdownfield mx-2"
-                style={{ alignContent: "center" }}
+                style={{ alignContent: "center" ,height:"57px"}}
               >
                 <Dropdown
                   value={selectedDropdownItem}
