@@ -152,8 +152,8 @@
 
 .popover-checkbox {
   position: absolute !important;
-  top: 29px;
-  left: -100px;
+  top: 18px;
+  left:23px;
   right: unset;
   z-index: 30 !important;
   margin-bottom: 5px;
@@ -168,7 +168,7 @@
   display: flex;
   flex-direction: column;
 } */
- .ant-select {
+ /* .ant-select {
   width: 205px;
   height: 32px;
   border-bottom: 2px solid #d32d2f;
@@ -177,7 +177,7 @@
 }
 .ant-select-selector:hover{
   background-color: #fff !important;
-}
+} */
 .tabs .ant-card-body {
   padding: 0;
 }
