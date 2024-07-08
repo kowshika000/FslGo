@@ -23,6 +23,7 @@ import { CircularProgress, Box } from "@mui/material";
 import { MultiSelect } from "primereact/multiselect";
 import { Tag } from "primereact/tag";
 import { CloseOutlined } from "@ant-design/icons";
+import { FindNewRateRequest } from "../../../Redux/Actions/FindNewRateAction";
 
 const QuotationTable = ({
   filterData,
@@ -250,6 +251,42 @@ const QuotationTable = ({
       </>
     );
   };
+  const inputdata = {
+    freight_mode: "S",
+    lcl_fcl_air: "LCL",
+    import_export: "I",
+    package_type: "BOX",
+    no_of_units: "10",
+    total_volume: "2",
+    total_weight: "222",
+    lcl_dimensions: [
+      {
+        length: 0,
+        width: 0,
+        height: 0,
+        type: "KG",
+      },
+    ],
+    fcl_dimensions: [
+      {
+        container_type: "",
+        no_of_containers: 0,
+      },
+    ],
+    volume_type: "KG",
+    weight_type: "CBM",
+    origin: "CNNGB",
+    destination: "AEJEA",
+    origin_country_code: "CN",
+    dest_country_code: "AE",
+    TOS: "FOB",
+    is_pickup_req: "",
+    pickup_place: "",
+    is_hazardous: "",
+    is_stackable: "",
+    is_insurance: "",
+    UID: "15085",
+  };
 
   const actionBodyTemplate = (rowData) => {
     let buttonLabel;
@@ -296,6 +333,7 @@ const QuotationTable = ({
         navigate("/quick");
       } else if (rowData.status === "Expired") {
         navigate("/findnewrate");
+        dispatch(FindNewRateRequest({inputdata}));
       }
     };
     return (
@@ -393,53 +431,53 @@ const QuotationTable = ({
         </Row>
         <Row style={{ backgroundColor: "white" }}>
           <Col>
-          {Object.keys(tblFilter)?.some(
-            (key) => tblFilter[key]?.length > 0
-          ) && (
-            <div
-              className="d-flex ps-2 justify-content-between"
-              style={{
-                backgroundColor: "#F8FAFC",
-                marginBottom: "9px",
-                padding: "5px 0px",
-                marginTop: "-11px",
-                minWidth:"1214px"
-              }}
-            >
-              {Object.entries(tblFilter).map(([field, filterValues]) => (
-                <FilterTag
-                  key={field}
-                  field={field}
-                  filterValues={filterValues}
-                  handleChangeFilter={handleChangeFilter}
-                />
-              ))}
-              {Object.keys(tblFilter)?.some(
-                (key) => tblFilter[key]?.length > 0
-              ) && (
-                <Tag
-                  style={{
-                    backgroundColor: "#F01E1E",
-                    marginRight: "10px",
-                    position: "relative",
-                    fontSize: "10px",
-                    marginLeft: "auto",
-                  }}
-                  className="px-2 py-1"
-                  rounded
-                >
-                  <div>
-                    Clear All
-                    <span className="ms-2">
-                      <CloseOutlined
-                        onClick={() => handleChangeFilter("all", [])}
-                      />
-                    </span>
-                  </div>
-                </Tag>
-              )}
-            </div>
-          )}
+            {Object.keys(tblFilter)?.some(
+              (key) => tblFilter[key]?.length > 0
+            ) && (
+              <div
+                className="d-flex ps-2 justify-content-between"
+                style={{
+                  backgroundColor: "#F8FAFC",
+                  marginBottom: "9px",
+                  padding: "5px 0px",
+                  marginTop: "-11px",
+                  minWidth: "1214px",
+                }}
+              >
+                {Object.entries(tblFilter).map(([field, filterValues]) => (
+                  <FilterTag
+                    key={field}
+                    field={field}
+                    filterValues={filterValues}
+                    handleChangeFilter={handleChangeFilter}
+                  />
+                ))}
+                {Object.keys(tblFilter)?.some(
+                  (key) => tblFilter[key]?.length > 0
+                ) && (
+                  <Tag
+                    style={{
+                      backgroundColor: "#F01E1E",
+                      marginRight: "10px",
+                      position: "relative",
+                      fontSize: "10px",
+                      marginLeft: "auto",
+                    }}
+                    className="px-2 py-1"
+                    rounded
+                  >
+                    <div>
+                      Clear All
+                      <span className="ms-2">
+                        <CloseOutlined
+                          onClick={() => handleChangeFilter("all", [])}
+                        />
+                      </span>
+                    </div>
+                  </Tag>
+                )}
+              </div>
+            )}
           </Col>
         </Row>
       </>

@@ -1,6 +1,5 @@
 import axios from "axios";
 import { environment } from "../Environment/Environment";
-import { token } from "./Token";
 import Cookies from "js-cookie";
 
 const baseURL = environment.serverURL;
@@ -10,7 +9,6 @@ const baseURL = environment.serverURL;
 export default function InboxCountService(request) {
 const authToken = Cookies.get("jwtToken")
 
-  console.log("request", request);
   return axios({
     method: "POST",
     url: baseURL + "get_notification_count",
