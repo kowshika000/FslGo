@@ -101,31 +101,6 @@ function FindNewRate() {
     window.scrollTo(0, 0);
   }, [checkedItems]);
 
-  const imageRef = useRef(null);
-
-  if (imageRef.current) {
-    const mask = imageRef.current.querySelector(".ant-image-mask");
-    if (mask) {
-      mask.remove();
-    }
-  }
-
-  const [isDimmed, setIsDimmed] = useState(true);
-
-  useEffect(() => {
-    const handleClick = () => {
-      setIsDimmed(false);
-    };
-
-    // Add event listener for clicks
-    document.addEventListener("click", handleClick);
-
-    // Cleanup event listener on component unmount
-    return () => {
-      document.removeEventListener("click", handleClick);
-    };
-  }, []);
-
   const FilterCheckbox = ({
     label,
     tooltipText,
@@ -133,89 +108,75 @@ function FindNewRate() {
     value,
     checked,
     children,
+    vname,
   }) => {
+    const [isPopoverOpen, setPopoverOpen] = useState(false);
+    const handlePopoverOpenChange = (open) => {
+      setPopoverOpen(open);
+    };
+    useEffect(() => {
+      checkedItems.cargoPickup && setPopoverOpen(true);
+    }, [checkedItems]);
     return (
-      <>
-        {value === "cargoPickup" && checkedItems.cargoPickup ? (
-          <>
-            <Popover
-              placement="bottom"
-              content={CargoPickupPopOver}
-              open={true}
-            ></Popover>
-            <div className="filter-quotation">
+      <div className="filter-quotation">
+        {value === "cargoPickup" &&
+          checkedItems.cargoPickup &&
+          isPopoverOpen && (
+            <>
               <div className="dimmed-background"></div>
-              <div className="filter-quotation-wrapper">
-                <div className="singlefilter-leftstyling">
-                  <div className="div-rowcentered">
-                    <Checkbox
-                      onChange={onChange}
-                      value={value}
-                      checked={checked}
-                    >
-                      {label}
-                    </Checkbox>
-                  </div>
-                  <div
-                    className="div-rowcentered"
-                    style={{ justifyContent: "flex-start" }}
-                  >
-                    <Tooltip placement="topLeft" title={tooltipText}>
-                      <span style={{ float: "right" }} role="button">
-                        <img src={info} alt="more" />
-                      </span>
-                    </Tooltip>
-                  </div>
-                </div>
-
-                <div className="div-rowcentered justify-atstart displaycheckbox-value">
-                  <Button
-                    type="link"
-                    className="editpencil-btn"
-                    style={{
-                      position: "relative",
-                      width: "20.6px",
-                      height: "32px",
-                      bordeRadius: "6px",
-                      padding: "1px",
-                    }}
-                  >
-                    <Image src={pencil} alt="pencil" />
-                  </Button>
-                </div>
-              </div>
+            </>
+          )}
+        <div className="filter-quotation-wrapper">
+          <div className="singlefilter-leftstyling">
+            <div className="div-rowcentered">
+              <Checkbox
+                onChange={onChange}
+                value={value}
+                checked={checked}
+                name={vname}
+              >
+                {label}
+                {children}
+              </Checkbox>
             </div>
-          </>
-        ) : (
-          <div className="filter-quotation">
-            <div className="filter-quotation-wrapper">
-              <div className="singlefilter-leftstyling">
-                <div className="div-rowcentered">
-                  <Checkbox onChange={onChange} value={value} checked={checked}>
-                    {label}
-                    {children}
-                  </Checkbox>
-                  {checkedItems.exportClearance && (
-                    <span>
-                      <img src={img} alt="icon" className="ms-2 mb-1" />
-                    </span>
-                  )}
-                </div>
-                <div
-                  className="div-rowcentered"
-                  style={{ justifyContent: "flex-start" }}
-                >
-                  <Tooltip placement="topLeft" title={tooltipText}>
-                    <span style={{ float: "right" }} role="button">
-                      <img src={info} alt="more" />
-                    </span>
-                  </Tooltip>
-                </div>
-              </div>
+            <div
+              className="div-rowcentered"
+              style={{ justifyContent: "flex-start" }}
+            >
+              <Tooltip placement="topLeft" title={tooltipText}>
+                <span style={{ float: "right" }} role="button">
+                  <img src={info} alt="more" />
+                </span>
+              </Tooltip>
             </div>
           </div>
-        )}
-      </>
+          {value === "cargoPickup" && checkedItems.cargoPickup && (
+            <div className="div-rowcentered justify-atstart displaycheckbox-value">
+              <Popover
+                placement="bottom"
+                content={CargoPickupPopOver}
+                open={isPopoverOpen}
+                onOpenChange={handlePopoverOpenChange}
+                trigger="click"
+              >
+                <Button
+                  type="link"
+                  className="editpencil-btn"
+                  style={{
+                    position: "relative",
+                    width: "20.6px",
+                    height: "32px",
+                    bordeRadius: "6px",
+                    padding: "1px",
+                  }}
+                >
+                  <Image src={pencil} alt="pencil" preview={false} />
+                </Button>
+              </Popover>
+            </div>
+          )}
+        </div>
+      </div>
     );
   };
 
@@ -228,6 +189,7 @@ function FindNewRate() {
           <div className="filterouter-leftdiv">
             <FilterCheckbox
               label="Origin Charges"
+              vname="originCharges"
               checked={checkedItems.originCharges}
               value="originCharges"
               tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
@@ -237,6 +199,7 @@ function FindNewRate() {
               label="Export Clearance"
               checked={checkedItems.exportClearance}
               value="exportClearance"
+              vname="exportClearance"
               tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
               onChange={onChange}
             >
@@ -248,12 +211,14 @@ function FindNewRate() {
               label="Cargo Pickup"
               checked={checkedItems.cargoPickup}
               value="cargoPickup"
+              vname="cargoPickup"
               tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
               onChange={onChange}
             />
             <FilterCheckbox
               label="International Freight"
               value="internationalFreight"
+              vname="internationalFreight"
               checked={checkedItems.internationalFreight}
               tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
               onChange={onChange}
