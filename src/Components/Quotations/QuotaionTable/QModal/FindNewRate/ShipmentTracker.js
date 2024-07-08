@@ -38,7 +38,7 @@ function ShipmentTracker({ Details }) {
 
   return (
     <>
-      <Card className="tabs mb-2">
+      <Card className="tabs1 mb-2">
         <div className="row">
           <div className="col-9">
             <Tabs defaultActiveKey="1" items={tabs}></Tabs>

@@ -270,6 +270,29 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  const tabs = [
+    { label: `All Bookings (${schedule?.all ? schedule?.all : 0})`, key: "1" },
+    {
+      label: `Booked (${schedule?.booked ? schedule?.booked : 0})`,
+      key: "2",
+    },
+    {
+      label: `In-Transit (${schedule?.in_transit ? schedule?.in_transit : 0})`,
+      key: "3",
+    },
+    {
+      label: `Arrived (${schedule?.arrived ? schedule?.arrived : 0})`,
+      key: "4",
+    },
+    {
+      label: `Delivered (${schedule?.delivered ? schedule?.delivered : 0})`,
+      key: "5",
+    },
+    {
+      label: `Cancelled (${schedule?.cancelled ? schedule?.cancelled : 0})`,
+      key: "6",
+    },
+  ];
   return (
     <div
       className="mx-auto mb-4"
@@ -311,44 +334,11 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
           <Row justify="between" style={{ height: "57px" }}>
             <Col span={19}>
               {!showText ? (
-                <Tabs activeKey={activeTab} onChange={onChange}>
-                  <Tabs.TabPane
-                    tab={`All Bookings (${schedule?.all ? schedule?.all : 0})`}
-                    key="1"
-                  />
-                  {/* <Tabs.TabPane
-                    tab={`Pending Action (${schedule?.pending})`}
-                    key="2"
-                  /> */}
-                  <Tabs.TabPane
-                    tab={`Booked (${schedule?.booked ? schedule?.booked : 0})`}
-                    key="2"
-                  />
-                  <Tabs.TabPane
-                    tab={`In-Transit (${
-                      schedule?.in_transit ? schedule?.in_transit : 0
-                    })`}
-                    key="3"
-                  />
-                  <Tabs.TabPane
-                    tab={`Arrived (${
-                      schedule?.arrived ? schedule?.arrived : 0
-                    })`}
-                    key="4"
-                  />
-                  <Tabs.TabPane
-                    tab={`Delivered (${
-                      schedule?.delivered ? schedule?.delivered : 0
-                    })`}
-                    key="5"
-                  />
-                  <Tabs.TabPane
-                    tab={`Cancelled (${
-                      schedule?.cancelled ? schedule?.cancelled : 0
-                    })`}
-                    key="6"
-                  />
-                </Tabs>
+                <Tabs
+                  activeKey={activeTab}
+                  onChange={onChange}
+                  items={tabs}
+                ></Tabs>
               ) : (
                 ""
               )}
