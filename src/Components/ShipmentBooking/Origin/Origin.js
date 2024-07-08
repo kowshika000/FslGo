@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Typography, Box, TextField, CircularProgress } from "@mui/material";
+import { Typography, Box, TextField, CircularProgress, FormHelperText } from "@mui/material";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import Modal from "@mui/material/Modal";
 import "../ShipmentCard.css";
@@ -28,7 +28,10 @@ const Origin = ({
   originPortOptionsVisible,
   setOriginPortOptionsVisible,
   setDestPortOptionsVisible,
-  setCargoOptionsVisible
+  setCargoOptionsVisible,
+  setOriginPort,
+  originPort,
+  destPort
 }) => {
   // const [origin, setOrigin] = useState("");
   // const [modalOpen, setModalOpen] = useState(false);
@@ -39,10 +42,11 @@ const Origin = ({
   const [checkleave, setcheckleave] = useState("");
   // const [originPortOptionsVisible, setOriginPortOptionsVisible] =
   //   useState(false);
-  const [originPort, setOriginPort] = useState(null);
+  // const [originPort, setOriginPort] = useState(null);
   const originPortData = useSelector((state) => state.allPort);
   const { loading, error } = useSelector((state) => state.allPort);
   const originPortDataValue = originPortData?.allportData?.Data;
+  const [errormsg, seterrormsg] = useState(null)
   console.log(originPortDataValue);
   const [prevValue, setPrevValue] = useState("");
   // const [destPortOptionsVisible, setDestPortOptionsVisible] = useState(false);
@@ -123,9 +127,31 @@ const Origin = ({
     console.log("Port selected:", port);
     setcheckleave(port);
     setSearchOriginPort(port?.port_name);
-    setOrgPortCode(port?.port_code);
+    // setOrgPortCode(port?.port_code);
     setOriginPortOptionsVisible(false);
     setOriginPort(port);
+    if (
+      port?.Transport_mode === "SEA" &&
+      destPort?.Transport_mode === "AIR"
+    ) {
+      seterrormsg("Please select either AIR Port or City as origin");
+      setSearchOriginPort("");
+      setOriginPort(null);
+    } else if (
+      port?.Transport_mode === "AIR" &&
+      destPort?.Transport_mode === "SEA"
+    ) {
+      seterrormsg("Please select either SEA Port or City as origin");
+      setSearchOriginPort("");
+      setOriginPort(null);
+    } else if (port?.port_country === destPort?.port_country) {
+      seterrormsg("Please select a different country than destination");
+      setSearchOriginPort("");
+      setOriginPort(null);
+    } else {
+      setSearchOriginPort(port?.port_name);
+      seterrormsg(null)
+    }
   };
 
   return (
@@ -171,15 +197,20 @@ const Origin = ({
             // onChange={handleOriginChange}
             // onClick={handleOriginFocus}
             // value={origin}
-            onBlur={() => {
-              if (!checkleave) {
-                setSearchOriginPort("");
-                setOriginPortOptionsVisible(false); //this one clear the input values when mouse on leave without selected dropdowns
-              }
-            }}
+            // onBlur={() => {
+            //   if (!checkleave) {
+            //     setSearchOriginPort("");
+            //     setOriginPortOptionsVisible(false); //this one clear the input values when mouse on leave without selected dropdowns
+            //   }
+            // }}
             onChange={handleOriginPortChange}
             value={searchOriginPort}
           />
+          {
+            errormsg && <FormHelperText style={{ color: "red", fontStyle: "italic" }}>
+            {errormsg}
+          </FormHelperText>
+          }
           {originPortOptionsVisible && (
             <div className="outer-all-port">
               {loading ? (
@@ -195,7 +226,7 @@ const Origin = ({
                 </Box>
               ) : (
                 <>
-                  {filteredSeaPorts.length > 0 && (
+                  {filteredSeaPorts?.length > 0 && (
                     <div className="inner-all-port">
                       <div>
                         <p
@@ -262,7 +293,7 @@ const Origin = ({
                       </div>
                     </div>
                   )}
-                  {filteredAirPorts.length > 0 && (
+                  {filteredAirPorts?.length > 0 && (
                     <div className="inner-all-port">
                       <div>
                         <p
@@ -329,7 +360,7 @@ const Origin = ({
                       </div>
                     </div>
                   )}
-                  {filteredCityPorts.length > 0 && (
+                  {filteredCityPorts?.length > 0 && (
                     <div className="inner-all-port">
                       <div>
                         <p
