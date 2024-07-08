@@ -38,7 +38,7 @@ export default function CargoDetails({ onClose }) {
   };
 
   return (
-    <>
+    <div className="cargo_details_section">
       {/* <div className="card w-100 d-flex " style={{ padding: "20px" }}> */}
         <TabView
           sx={{
@@ -200,6 +200,6 @@ export default function CargoDetails({ onClose }) {
           </TabPanel>
         </TabView>
       {/* </div> */}
-    </>
+    </div>
   );
 }
