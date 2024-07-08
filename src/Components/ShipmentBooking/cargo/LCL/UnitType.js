@@ -33,6 +33,7 @@ const UnitType = ({ onClose }) => {
               // labelId="demo-simple-select-label"
               // id="demo-simple-select"
               // label="Age"
+              style={{height: "45px"}}
               displayEmpty
               inputProps={{ 'aria-label': 'Without label' }}
             >
@@ -47,10 +48,10 @@ const UnitType = ({ onClose }) => {
           <div
             className="btn-group"
             role="group"
-            style={{ border: "1px solid rgb(207, 214, 223)" }}
+            style={{ border: "1px solid rgb(207, 214, 223)",height:"45px" }}
           >
             <input
-              className="form-control "
+              className="placeholder_style form-control"
               placeholder="Units"
               value={noofunits ? noofunits : ""}
                 onChange={(e)=>setNoofunits(parseInt(e.target.value))}
@@ -64,7 +65,7 @@ const UnitType = ({ onClose }) => {
             <button
               onClick={()=>setNoofunits((prev)=>prev>1?prev-1:1)}
               type="button"
-              style={{ border: "none", paddingRight: "6px",paddingLeft:"6px", background: "none", borderRight:"1px solid #f0f0f0", margin:"8px 0px" }}
+              style={{ border: "none", paddingRight: "6px",paddingLeft:"6px", background: "none", borderRight:"1px solid #f0f0f0"}}
 
             >
                 <img src={minus} alt="minus"  />
@@ -87,7 +88,7 @@ const UnitType = ({ onClose }) => {
         </div>
       </div>
       <div className="d-flex">
-        <div className="w-100 my-3">
+        <div className="w-100 mb-3">
           <Typography sx={{ fontWeight: "500", fontSize:"13px", lineHeight:"19px",letterSpacing:".01em",color:"rgba(103, 120, 142, 1)" }}>
             Dimentions
           </Typography>
@@ -97,41 +98,67 @@ const UnitType = ({ onClose }) => {
             role="group"
             aria-label="Button group with nested dropdown"
             style={{
-              border: "1px solid rgba(0,0,0,0.3)", 
+              // border: "1px solid rgb(207, 214, 223)", 
+              height:"42px"
             }}
           >
             <input
+              className="placeholder_style w-100"
               type="text"
               style={{
-                border: "1px solid rgba(0,0,0,0.3)",
+                // border: "0px",
+                border:"1px solid rgb(207, 214, 223)",
                 borderTopLeftRadius: "5px",
                 borderBottomLeftRadius: "5px",
-                fontSize: "20px", padding: "12px",
+                fontSize: "20px", 
+                padding: "12px",
               }}
-              className="w-100"
-              placeholder="5"
+              placeholder="L"
             />
             <input
+              className="placeholder_style w-100"
               type="text"
               style={{
-                border: "1px solid rgba(0,0,0,0.3)",
+                border: "1px solid rgb(207, 214, 223)",
+                borderRight:"1px solid rgb(207, 214, 223)",
+                borderLeft:"0px",
                 fontSize: "20px",
                 padding: "12px"
               }}
-              className="w-100"
-              placeholder="100"
+              placeholder="W"
             />
             <input
+              className="placeholder_style w-100"
               type="text"
               style={{
-                border: "1px solid rgba(0,0,0,0.3)",
+                border: "1px solid rgb(207, 214, 223)",
+                borderRight:"1px solid rgb(207, 214, 223)",
+                borderLeft:"0px",
                 fontSize: "20px",
                 padding: "12px"
               }}
-              className="w-100"
               placeholder="H"
             />
-            <div className="btn-group" role="group">
+            <FormControl  variant="standard">
+                {/* <InputLabel id="demo-customized-select-label">Age</InputLabel> */}
+                <Select
+                  sx={{ height:"100%",width:"100%",backgroundColor:"rgba(243, 245, 247, 1)",borderTopRightRadius:"8px",borderBottomRightRadius:"8px",border:"1px solid rgba(207, 214, 223, 1)",borderLeft:"0px" }}
+                  labelId="demo-customized-select-label"
+                  id="demo-customized-select"
+                  displayEmpty
+                  inputProps={{ 'aria-label': 'Without label' }}
+                  defaultValue="KG"
+                  // value={age}
+                  // onChange={handleChange}
+                  // input={<BootstrapInput />}
+                >
+                  <MenuItem value="KG">
+                    KG
+                  </MenuItem>
+                  <MenuItem value="LB">LB</MenuItem>
+                </Select>
+              </FormControl>
+            {/* <div className="btn-group" role="group">
               <button
                 id="btnGroupDrop1"
                 type="button"
@@ -154,11 +181,11 @@ const UnitType = ({ onClose }) => {
                   CFT
                 </a>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
-      <div className="d-flex my-3">
+      <div className="d-flex mb-3">
         <div className="w-100">
           <Typography sx={{ fontWeight: "500", fontSize:"13px", lineHeight:"19px",letterSpacing:".01em",color:"rgba(103, 120, 142, 1)" }}>
             Total Weight
@@ -167,19 +194,39 @@ const UnitType = ({ onClose }) => {
             className="btn-group w-100"
             role="group"
             aria-label="Button group with nested dropdown"
+            style={{height:"42px"}}
           >
             <input
+              className="placeholder_style w-100"
               type="text"
               style={{
-                border: "1px solid grey",
+                border: "1px solid rgb(207, 214, 223)",
                 borderTopLeftRadius: "5px",
                 borderBottomLeftRadius: "5px",
                 fontSize: "20px", padding: "12px",
               }}
-              className="w-100"
-              placeholder="1KG"
+              placeholder="Weight"
             />
-            <div className="btn-group" role="group" >
+            <FormControl  variant="standard">
+                {/* <InputLabel id="demo-customized-select-label">Age</InputLabel> */}
+                <Select
+                  sx={{ height:"100%",width:"100%",backgroundColor:"rgba(243, 245, 247, 1)",borderTopRightRadius:"8px",borderBottomRightRadius:"8px",border:"1px solid rgba(207, 214, 223, 1)",borderLeft:"0px" }}
+                  labelId="demo-customized-select-label"
+                  id="demo-customized-select"
+                  displayEmpty
+                  inputProps={{ 'aria-label': 'Without label' }}
+                  defaultValue="KG"
+                  // value={age}
+                  // onChange={handleChange}
+                  // input={<BootstrapInput />}
+                >
+                  <MenuItem value="KG">
+                    KG
+                  </MenuItem>
+                  <MenuItem value="LB">LB</MenuItem>
+                </Select>
+              </FormControl>
+            {/* <div className="btn-group" role="group" >
               <button
                 id="btnGroupDrop1"
                 type="button"
@@ -202,7 +249,7 @@ const UnitType = ({ onClose }) => {
                   LB
                 </a>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
@@ -212,7 +259,7 @@ const UnitType = ({ onClose }) => {
           + Add Another Load
         </Typography>
       </button>
-      <div className="my-3 d-flex justify-content-between">
+      <div className="mb-3 d-flex justify-content-between">
         <div className=" d-flex" style={{ justifyContent: "space-between" }}>
           <Typography
             sx={{

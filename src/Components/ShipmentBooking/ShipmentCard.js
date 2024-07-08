@@ -17,10 +17,12 @@ const ShipmentCard = () => {
   const [destination, setDestination] = useState("");
   const [isCargoOpen, setIsCargoOpen] = useState(false);
   const cargoRef = useRef(null);
-  const [originPortOptionsVisible, setOriginPortOptionsVisible] = useState(false);
+  const [originPortOptionsVisible, setOriginPortOptionsVisible] =
+    useState(false);
   const [destPortOptionsVisible, setDestPortOptionsVisible] = useState(false);
   const [cargoOptionsVisible, setCargoOptionsVisible] = useState(false);
-
+  const [originPort, setOriginPort] = useState(null);
+  const [destPort, setDestPort] = useState(null);
   useEffect(() => {
     if (destination && cargoRef.current) {
       cargoRef.current.focus();
@@ -34,6 +36,8 @@ const ShipmentCard = () => {
     setIsCargoOpen(false);
   };
 
+  const [error, seterror] = useState();
+
   return (
     <div>
       <div
@@ -45,24 +49,52 @@ const ShipmentCard = () => {
         }}
       >
         <div className="card-body d-flex p-0">
-          <Origin setOriginPortOptionsVisible={setOriginPortOptionsVisible} originPortOptionsVisible={originPortOptionsVisible} setDestPortOptionsVisible={setDestPortOptionsVisible} setCargoOptionsVisible={setCargoOptionsVisible}  />
+          <Origin
+            setOriginPortOptionsVisible={setOriginPortOptionsVisible}
+            originPortOptionsVisible={originPortOptionsVisible}
+            setDestPortOptionsVisible={setDestPortOptionsVisible}
+            setCargoOptionsVisible={setCargoOptionsVisible}
+            originPort={originPort}
+            setOriginPort={setOriginPort}
+            destPort={destPort}
+          />
           <div
             className="align-content-center ps-2"
-            style={{ minWidth: "3.03%"}}
+            style={{ minWidth: "3.03%" }}
           >
-            <img src={Arrow} width="26px" height="26px" style={{alignContent:'center', margin:'auto', alignSelf:'center'}} />
+            <img
+              src={Arrow}
+              width="26px"
+              height="26px"
+              style={{
+                alignContent: "center",
+                margin: "auto",
+                alignSelf: "center",
+              }}
+            />
           </div>
-          <Destination setOriginPortOptionsVisible={setOriginPortOptionsVisible} destPortOptionsVisible={destPortOptionsVisible} setDestPortOptionsVisible={setDestPortOptionsVisible} setCargoOptionsVisible={setCargoOptionsVisible} />
+          <Destination
+            setOriginPortOptionsVisible={setOriginPortOptionsVisible}
+            destPortOptionsVisible={destPortOptionsVisible}
+            setDestPortOptionsVisible={setDestPortOptionsVisible}
+            setCargoOptionsVisible={setCargoOptionsVisible}
+            destPort={destPort}
+            setDestPort={setDestPort}
+            originPort={originPort}
+          />
           {/* <div className="icon">
             <div className="divider"></div>
           </div> */}
-          <Cargo cargoOptionsVisible={cargoOptionsVisible} setCargoOptionsVisible={setCargoOptionsVisible} />
+          <Cargo
+            cargoOptionsVisible={cargoOptionsVisible}
+            setCargoOptionsVisible={setCargoOptionsVisible}
+          />
           {/* Search button */}
           <div
             style={{ minWidth: "5%" }}
             className="d-flex align-content-center justify-content-around align-items-center"
           >
-            <div style={{alignContent:'center'}} >
+            <div style={{ alignContent: "center" }}>
               <div
                 className="px-3 "
                 style={{
@@ -72,10 +104,18 @@ const ShipmentCard = () => {
                   height: "52px",
                   color: "white",
                   alignContent: "center ",
-                  alignItems:'center'
+                  alignItems: "center",
                 }}
               >
-                <SearchOutlined width="20px" style={{ fontWeight: "700", alignSelf:'center', alignContent:'center', alignItems:'center', }} />
+                <SearchOutlined
+                  width="20px"
+                  style={{
+                    fontWeight: "700",
+                    alignSelf: "center",
+                    alignContent: "center",
+                    alignItems: "center",
+                  }}
+                />
               </div>
             </div>
             {/* <div className="align-content-center ">
