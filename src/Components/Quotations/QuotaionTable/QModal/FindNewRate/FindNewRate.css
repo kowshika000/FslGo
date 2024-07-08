@@ -131,25 +131,18 @@
 /* PopoOver-btn */
 .displaycheckbox-value {
   padding-left: 24px;
+  margin-top: 5px;
 }
 .justify-atstart {
   justify-content: flex-start;
 }
 .editpencil-btn {
-  padding: 1px !important;
   display: flex !important;
   align-items: center !important;
 }
-
-.ant-image-mask {
-  width: 0px;
-  height: 0px;
+.editpencil-btn .ant-image-img {
+  margin-bottom: 4px !important;
 }
-.ant-image-mask-info {
-  width: 0px !important;
-  height: 0px;
-}
-
 /* popover-content */
 .ant-popover {
   position: absolute;

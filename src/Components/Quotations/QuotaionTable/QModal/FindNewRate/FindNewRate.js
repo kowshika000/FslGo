@@ -17,6 +17,12 @@ function FindNewRate() {
     exportClearance: false,
     cargoPickup: false,
     internationalFreight: false,
+    DestinationCharges: false,
+    ImportClearance: false,
+    CargoDelivery: false,
+    CargoInsurance: false,
+    StackableCargo: false,
+    NonHarzardousCargo: false
   });
   const [isPopoverOpen, setPopoverOpen] = useState(true);
 
@@ -107,6 +113,9 @@ function FindNewRate() {
     window.scrollTo(0, 0);
   }, [checkedItems]);
 
+  const [selectedValue, setSelectedValue] = useState("");
+  console.log(`selectedjhgfds ${selectedValue}`);
+
   const FilterCheckbox = ({
     label,
     tooltipText,
@@ -115,12 +124,14 @@ function FindNewRate() {
     checked,
     children,
     vname,
+    disabled,
+    defaultChecked
   }) => {
     const handlePopoverOpenChange = (open) => {
       setPopoverOpen(open);
     };
     const handleButtonClick = () => {
-      setPopoverOpen((prev) => !prev);
+      setPopoverOpen(true);
     };
     return (
       <div className="filter-quotation">
@@ -139,6 +150,8 @@ function FindNewRate() {
                 value={value}
                 checked={checked}
                 name={vname}
+                disabled={disabled}
+                defaultChecked={defaultChecked}
               >
                 {label}
                 {children}
@@ -156,17 +169,56 @@ function FindNewRate() {
             </div>
           </div>
           {value === "cargoPickup" && checkedItems.cargoPickup && (
-            <div className="div-rowcentered justify-atstart displaycheckbox-value">
+            <div
+              className="div-rowcentered justify-atstart displaycheckbox-value"
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              {!isPopoverOpen && (
+                <h6
+                  style={{
+                    fontWeight: "400",
+                    fontSize: "12px",
+                    lineHeight: "18px",
+                    letterSpacing: "1%",
+                    color: "#384656",
+                    marginBottom: "0px",
+                  }}
+                >
+                  ZIP Code :&nbsp;&nbsp;
+                  <span
+                    style={{
+                      fontWeight: "500",
+                      fontSize: "13px",
+                      lineHeight: "19px",
+                      color: "#384656",
+                      letterSpacing: "1%",
+                    }}
+                  >
+                    {selectedValue}
+                  </span>
+                </h6>
+              )}
               <Popover
                 placement="bottom"
-                content={CargoPickupPopOver}
+                content={
+                  <CargoPickupPopOver
+                    setSelectedValue={setSelectedValue}
+                    setPopoverOpen={setPopoverOpen}
+                  />
+                }
                 open={isPopoverOpen}
                 onOpenChange={handlePopoverOpenChange}
                 trigger="click"
               >
                 <Button
                   type="link"
-                  className="editpencil-btn"
+                  className={`editpencil-btn ${
+                    selectedValue && !isPopoverOpen ? "ms-auto" : ""
+                  }`}
                   style={{
                     position: "relative",
                     width: "20.6px",
@@ -225,9 +277,11 @@ function FindNewRate() {
               label="International Freight"
               value="internationalFreight"
               vname="internationalFreight"
-              checked={checkedItems.internationalFreight}
+              // checked={checkedItems.internationalFreight}
               tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
               onChange={onChange}
+              defaultChecked={true}
+              disabled={true}
             />
           </div>
         </>
@@ -243,11 +297,17 @@ function FindNewRate() {
           <div className="filterouter-leftdiv">
             <FilterCheckbox
               label="Destination Charges"
+              checked={checkedItems.DestinationCharges}
+              value="DestinationCharges"
+              vname="DestinationCharges"
               tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
               onChange={onChange}
             />
             <FilterCheckbox
               label="Import Clearance"
+              checked={checkedItems.ImportClearance}
+              value="ImportClearance"
+              vname="ImportClearance"
               tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
               onChange={onChange}
             >
@@ -257,6 +317,9 @@ function FindNewRate() {
             </FilterCheckbox>
             <FilterCheckbox
               label="Cargo Delivery"
+              checked={checkedItems.CargoDelivery}
+              value="CargoDelivery"
+              vname="CargoDelivery"
               tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
               onChange={onChange}
             />
@@ -274,6 +337,9 @@ function FindNewRate() {
           <div className="filterouter-leftdiv">
             <FilterCheckbox
               label="Cargo Insurance"
+              checked={checkedItems.CargoInsurance}
+              value="CargoInsurance"
+              vname="CargoInsurance"
               tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
               onChange={onChange}
             >
@@ -295,11 +361,17 @@ function FindNewRate() {
           <div className="filterouter-leftdiv">
             <FilterCheckbox
               label="Stackable Cargo"
+              checked={checkedItems.StackableCargo}
+              value="StackableCargo"
+              vname="StackableCargo"
               tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
               onChange={onChange}
             />
             <FilterCheckbox
               label="Non Harzardous Cargo"
+              checked={checkedItems.NonHarzardousCargo}
+              value="NonHarzardousCargo"
+              vname="NonHarzardousCargo"
               tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
               onChange={onChange}
             />

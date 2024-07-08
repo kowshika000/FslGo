@@ -1,8 +1,12 @@
 import { Select } from "antd";
 import React from "react";
 
-function CargoPickupPopOver() {
-  const onChange = (value) => {
+function CargoPickupPopOver({ setSelectedValue, setPopoverOpen }) {
+  const handleSelectChange = (value) => {
+    if (value) {
+      setSelectedValue(value);
+      setPopoverOpen(false);
+    }
     console.log(`selected ${value}`);
   };
   const onSearch = (value) => {
@@ -14,7 +18,7 @@ function CargoPickupPopOver() {
         showSearch
         placeholder="Select City or Zipcode"
         optionFilterProp="label"
-        onChange={onChange}
+        onChange={handleSelectChange}
         onSearch={onSearch}
         options={[
           {
