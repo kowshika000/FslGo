@@ -1,6 +1,5 @@
 import axios from "axios";
 import { environment } from "../Environment/Environment";
-import { token } from "./Token";
 import Cookies from "js-cookie";
 
 const baseURL = environment.serverURL;
@@ -9,7 +8,6 @@ const baseURL = environment.serverURL;
 
 
 export function DsrDownloadService(payload) {
-  console.log(payload)
   const authToken = Cookies.get("jwtToken")
     return axios({
       method: "POST",
