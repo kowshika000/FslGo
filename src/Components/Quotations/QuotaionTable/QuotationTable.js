@@ -9,22 +9,20 @@ import CountryFlag from "../../Core-Components/CountryFlag";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
-import { Row, Col, Input, Image } from "antd";
-import { SearchOutlined, CaretDownOutlined } from "@ant-design/icons";
-import FilterDrawer from "./Fillter";
-import filter from "../../../assets/Filter 2.png";
+import { Row, Col, Input } from "antd";
+import { SearchOutlined } from "@ant-design/icons";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { IconButton } from "@mui/material";
-import { Dropdown } from "primereact/dropdown";
 import Vector from "../../../assets/Vector1.png";
 import Verified from "../../../assets/Verified.png";
 import Requested from "./QModal/Requested";
 import { useNavigate } from "react-router-dom";
 import { QuotationRequest } from "../../../Redux/Actions/QuotationAction";
-import cal from "../../../assets/calVector.svg";
 import { CircularProgress, Box } from "@mui/material";
 import { MultiSelect } from "primereact/multiselect";
+import { Tag } from "primereact/tag";
+import { CloseOutlined } from "@ant-design/icons";
 
 const QuotationTable = ({
   filterData,
@@ -39,16 +37,10 @@ const QuotationTable = ({
   const [requstedModal, setrequstedModal] = useState(false);
   const [filterValue, setFilterValue] = useState(30);
   const [filteredData, setFilteredData] = useState(filterData);
-  const [visible, setVisible] = useState(false);
   const [globalFilter, setGlobalFilter] = useState("");
   const [clicked, setClicked] = useState(false);
   const [data, setData] = useState(filteredData);
-  const items = [
-    "Past 30 Days",
-    "Past 3 Months",
-    "Past 6 Months",
-    "Past 1 Year",
-  ];
+
   const itemsPerPage = 10;
   const quotationData = useSelector(
     (state) => state?.QuotationList?.Quotation?.data
@@ -212,6 +204,52 @@ const QuotationTable = ({
   const endIndex = startIndex + itemsPerPage;
   // Extract the data for the current page
   const currentPageData = filteredData?.slice(startIndex, endIndex);
+  const FilterTag = ({ field, filterValues, handleChangeFilter }) => {
+    if (!Array.isArray(filterValues)) {
+      return null;
+    }
+    const renderedColumns = new Set();
+    return (
+      <>
+        {filterValues.map((option) => {
+          if (!renderedColumns.has(field)) {
+            renderedColumns.add(field);
+            return (
+              <Tag
+                key={field}
+                style={{
+                  backgroundColor: "#F01E1E",
+                  marginRight: "10px",
+                  position: "relative",
+                  fontSize: "10px",
+                }}
+                className="px-2 py-1"
+                rounded
+              >
+                <div>
+                  {field === "ref_id" ? "Ref Id" : ""}
+                  {field === "load" ? "Load" : ""}
+                  {field === "eta" ? "ETA" : ""}
+                  {field === "etd" ? "ETD" : ""}
+                  {field === "rate_validity" ? "Rate Validity" : ""}
+                  {field === "origin" ? "Origin" : ""}
+                  {field === "destination" ? "Destination" : ""}
+                  <span className="ms-2">
+                    <CloseOutlined
+                      onClick={() => {
+                        handleChangeFilter(field, []);
+                      }}
+                    />
+                  </span>
+                </div>
+              </Tag>
+            );
+          }
+          return null;
+        })}
+      </>
+    );
+  };
 
   const actionBodyTemplate = (rowData) => {
     let buttonLabel;
@@ -331,108 +369,80 @@ const QuotationTable = ({
     );
   };
 
-  const valueTemplate = () => {
-    return (
-      <div>
-        <Image
-          src={cal}
-          alt="cal"
-          style={{
-            width: "12px",
-            height: "12px",
-            marginTop: "-2px",
-            marginRight: "7px",
-          }}
-        />
-        <span
-          style={{
-            color: "#495A6E",
-            fontWeight: "400",
-            fontSize: "13px",
-            lineHeight: "19px",
-            letterSpacing: "1%",
-            textAlign: "center",
-          }}
-        >
-          {selectedDropdownItem}
-        </span>
-        <CaretDownOutlined className="ms-1" style={{ color: "#67788E" }} />
-      </div>
-    );
-  };
-  const dropdownbutton = document.querySelector(".p-dropdown-trigger");
-  if (dropdownbutton) {
-    dropdownbutton.remove();
-  }
-
   const renderHeader = () => {
     return (
-      <Row
-        justify="space-between"
-        className="w-full mb-3"
-        style={{ backgroundColor: "white" }}
-      >
-        <Col>
-          <Input
-            placeholder="Search Ref id , origin, destination... "
-            prefix={<SearchOutlined style={{ color: "#94A2B2" }} />}
-            style={{
-              width: "368.13px",
-              padding: "4px 11px",
-              borderRadius: "4px",
-            }}
-            value={globalFilter}
-            onChange={(e) => setGlobalFilter(e.target.value)}
-          />
-        </Col>
-        <Col className="d-flex ">
-          <div
-            className="dropdownfield mx-2"
-            style={{ alignContent: "center" }}
-          >
-            <Dropdown
-              value={selectedDropdownItem}
-              onChange={(e) => {
-                setSelectedDropdownItem(e.value);
+      <>
+        <Row
+          justify="space-between"
+          className="w-full pb-3"
+          style={{ backgroundColor: "white" }}
+        >
+          <Col>
+            <Input
+              placeholder="Search Ref id , origin, destination... "
+              prefix={<SearchOutlined style={{ color: "#94A2B2" }} />}
+              style={{
+                width: "368.13px",
+                padding: "4px 11px",
+                borderRadius: "4px",
               }}
-              options={items}
-              valueTemplate={valueTemplate}
-              className="w-full md:w-14rem datehover"
-              style={{ border: "none" }}
+              value={globalFilter}
+              onChange={(e) => setGlobalFilter(e.target.value)}
             />
-          </div>
-
-          <div className="filter d-flex">
+          </Col>
+        </Row>
+        <Row style={{ backgroundColor: "white" }}>
+          <Col>
+          {Object.keys(tblFilter)?.some(
+            (key) => tblFilter[key]?.length > 0
+          ) && (
             <div
-              className="ant-image cursor-pointer"
-              // onClick={()=>setVisible(true)}
+              className="d-flex ps-2 justify-content-between"
+              style={{
+                backgroundColor: "#F8FAFC",
+                marginBottom: "9px",
+                padding: "5px 0px",
+                marginTop: "-11px",
+                minWidth:"1214px"
+              }}
             >
-              <img
-                src={filter}
-                className="ant-image-img me-1 my-1"
-                style={{
-                  marginTop: "2px",
-                  cursor: "pointer",
-                }}
-              />
-              <span
-                style={{
-                  cursor: "pointer",
-                  color: "#495A6E",
-                  textAlign: "center",
-                  fontWeight: "400",
-                  fontSize: "13px",
-                  letterSpacing: "1%",
-                }}
-              >
-                Filters
-              </span>
+              {Object.entries(tblFilter).map(([field, filterValues]) => (
+                <FilterTag
+                  key={field}
+                  field={field}
+                  filterValues={filterValues}
+                  handleChangeFilter={handleChangeFilter}
+                />
+              ))}
+              {Object.keys(tblFilter)?.some(
+                (key) => tblFilter[key]?.length > 0
+              ) && (
+                <Tag
+                  style={{
+                    backgroundColor: "#F01E1E",
+                    marginRight: "10px",
+                    position: "relative",
+                    fontSize: "10px",
+                    marginLeft: "auto",
+                  }}
+                  className="px-2 py-1"
+                  rounded
+                >
+                  <div>
+                    Clear All
+                    <span className="ms-2">
+                      <CloseOutlined
+                        onClick={() => handleChangeFilter("all", [])}
+                      />
+                    </span>
+                  </div>
+                </Tag>
+              )}
             </div>
-          </div>
-
-          <FilterDrawer visible={visible} onClose={() => setVisible(false)} />
-        </Col>
-      </Row>
+          )}
+          </Col>
+        </Row>
+      </>
     );
   };
   const noData = () => {

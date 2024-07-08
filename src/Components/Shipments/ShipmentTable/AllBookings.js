@@ -467,8 +467,8 @@ const AllBookings = ({
                   {field === "order_no" ? "Order No" : ""}
                   {field === "id" ? "Shipment Id" : ""}
                   {field === "mode" ? "Mode" : ""}
-                  {field === "eta_ata" ? "ETD/ATD" : ""}
-                  {field === "etd_atd" ? "ETA/ATA" : ""}
+                  {field === "eta_ata" ? "ETA/ATA" : ""}
+                  {field === "etd_atd" ? "ETD/ATD" : ""}
                   {field === "status" ? "Status" : ""}
                   {field === "origin" ? "Origin" : ""}
                   {field === "destination" ? "Destination" : ""}
@@ -625,12 +625,12 @@ const AllBookings = ({
         ></Column>
 
         <Column
-          field="etd/atd"
+          field="etd_atd"
           header={
             <span className=" d-flex" style={{ position: "relative" }}>
               ETD/ATD
-              {MultiSelectFilter("eta_ata", etd_, tblFilter.eta_ata)}
-              {sort("etd/atd")}
+              {MultiSelectFilter("etd_atd", etd_, tblFilter.etd_atd)}
+              {sort("etd_atd")}
             </span>
           }
           body={bodyTemplate}
@@ -638,12 +638,12 @@ const AllBookings = ({
           style={{ paddingLeft: "10px", paddingRight: "10px" }}
         ></Column>
         <Column
-          field="eta/ata"
+          field="eta_ata"
           header={
             <span className=" d-flex">
               ETA/ATA
-              {MultiSelectFilter("etd_atd", eta_, tblFilter.etd_atd)}
-              {sort("eta/ata")}
+              {MultiSelectFilter("eta_ata", eta_, tblFilter.eta_ata)}
+              {sort("eta_ata")}
             </span>
           }
           body={bodyTemplateEta}

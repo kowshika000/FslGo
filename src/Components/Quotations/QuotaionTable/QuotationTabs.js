@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Tabs, Row, Col } from "antd";
+import { Tabs, Row, Col, Image } from "antd";
 import "../../Shipments/ShipBookingTabs.css";
 import { useSelector } from "react-redux";
 import QuotationTable from "./QuotationTable";
+import { Dropdown } from "primereact/dropdown";
+import {  CaretDownOutlined } from "@ant-design/icons";
+import cal from "../../../assets/calVector.svg";
 
 const QuotationTabs = () => {
   const [activeKey, setActiveKey] = useState("1");
@@ -12,6 +15,12 @@ const QuotationTabs = () => {
   const [selectedStatus, setSelectedStatus] = useState(null);
   const [selectedDropdownItem, setSelectedDropdownItem] =
     useState("Past 30 Days");
+    const items = [
+      "Past 30 Days",
+      "Past 3 Months",
+      "Past 6 Months",
+      "Past 1 Year",
+    ]; 
   const quotationData = useSelector((state) => state?.QuotationList?.Quotation);
 
   const filterData = (status) => {
@@ -68,6 +77,54 @@ const QuotationTabs = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
+  const tabs = [
+    { label: `All Bookings (${data?.length})`, key: "1" },
+    {
+      label: `Active (0)`,
+      key: "2",
+    },
+    {
+      label: `Booked (0)`,
+      key: "3",
+    },
+    {
+      label: `Expired (0)`,
+      key: "4",
+    },
+    {
+      label: `Requested (0)`,
+      key: "5",
+    },
+  ];
+  const valueTemplate = () => {
+    return (
+      <div>
+        <Image
+          src={cal}
+          alt="cal"
+          style={{
+            width: "12px",
+            height: "12px",
+            marginTop: "-2px",
+            marginRight: "7px",
+          }}
+        />
+        <span
+          style={{
+            color: "#495A6E",
+            fontWeight: "400",
+            fontSize: "13px",
+            lineHeight: "19px",
+            letterSpacing: "1%",
+            textAlign: "center",
+          }}
+        >
+          {selectedDropdownItem}
+        </span>
+        <CaretDownOutlined className="ms-1" style={{ color: "#67788E" }} />
+      </div>
+    );
+  };
   return (
     <div
       className="mx-auto mt-5 "
@@ -77,44 +134,35 @@ const QuotationTabs = () => {
       }}
     >
       <Row className="border" style={{ borderRadius: "8px" }}>
-        <Col span={24} style={{ backgroundColor: "#F8FAFC" }}>
+        <Col span={24} style={{ backgroundColor: "#F8FAFC",borderRadius: "8px" }}>
           <Row justify="space-between" style={{ height: "57px" }}>
             <Col span={20}>
-              <Tabs activeKey={activeKey} onChange={onChange}>
-                <Tabs.TabPane tab={`All Bookings (${data?.length})`} key="1" />
-                <Tabs.TabPane
-                  tab={`Active (${
-                    filteredData.filter((item) => item.status === "Active")
-                      .length
-                  })`}
-                  key="2"
+              <Tabs
+                activeKey={activeKey}
+                onChange={onChange}
+                items={tabs}
+              ></Tabs>
+            </Col>
+            <Col className="d-flex " >
+              <div
+                className="dropdownfield mx-2"
+                style={{ alignContent: "center" }}
+              >
+                <Dropdown
+                  value={selectedDropdownItem}
+                  onChange={(e) => {
+                    setSelectedDropdownItem(e.value);
+                  }}
+                  options={items}
+                  valueTemplate={valueTemplate}
+                  className="w-full md:w-14rem datehover"
+                  style={{ border: "none" }}
                 />
-                <Tabs.TabPane
-                  tab={`Booked (${
-                    filteredData.filter((item) => item.status === "Booked")
-                      .length
-                  })`}
-                  key="3"
-                />
-                <Tabs.TabPane
-                  tab={`Expired (${
-                    filteredData.filter((item) => item.status === "Expired")
-                      .length
-                  })`}
-                  key="4"
-                />
-                <Tabs.TabPane
-                  tab={`Requested (${
-                    filteredData.filter((item) => item.status === "Requested")
-                      .length
-                  })`}
-                  key="5"
-                />
-              </Tabs>
+              </div>
             </Col>
           </Row>
         </Col>
-        <Col span={24} style={{ padding: "20px", backgroundColor: "white" }}>
+        <Col span={24} style={{ padding: "20px", backgroundColor: "white",borderRadius: "8px"}}>
           <QuotationTable
             filterData={filteredData}
             selectedStatus={selectedStatus}
