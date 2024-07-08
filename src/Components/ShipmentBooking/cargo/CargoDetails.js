@@ -113,11 +113,13 @@ export default function CargoDetails({ onClose }) {
                     // labelId="demo-simple-select-label"
                     // id="demo-simple-select"
                     // label="Age"
+                    className="placeholder_style"
+                    style={{height: "45px"}}
                     displayEmpty
-                    // placeholder="Select type"
+                    placeholder="Select Type"
                     inputProps={{ 'aria-label': 'Without label' }}
                   >
-                    <MenuItem value="">Ten</MenuItem>
+                    <MenuItem value="Ten">Ten</MenuItem>
                   </Select>
                 </FormControl>{" "}
               </div>
@@ -125,7 +127,7 @@ export default function CargoDetails({ onClose }) {
                 <Typography sx={{ fontWeight: "500", fontSize:"13px", lineHeight:"19px",letterSpacing:".01em",color:"rgba(103, 120, 142, 1)" }}>
                  Quantity
                 </Typography>
-                <input className="form-control p-3" />
+                <input style={{height: "45px"}} className="form-control p-3 placeholder_style" placeholder="Quantity"  />
               </div>
             </div>
             <div className="my-3 d-flex " style={{ justifyContent: "space-between" }}>

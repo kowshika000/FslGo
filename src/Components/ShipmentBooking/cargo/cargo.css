@@ -75,7 +75,7 @@
 
  .outer-cargo-port{
     position: absolute;
-    width: 100%;
+    width: 496px;
     left: -1px;
     z-index: 1;
     background-color: rgb(255, 255, 255);
@@ -83,7 +83,7 @@
     box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 4px 11px;
     margin-top: 60px;
     box-sizing: border-box;
-    max-height: 350px;
+    max-height: 500px;
     overflow: auto;
     padding: 16px;
  }
@@ -105,3 +105,42 @@
  .css-1m05prz-MuiTypography-root{
     margin-bottom: 5px !important;
  }
+ .css-1st9vnb-MuiInputBase-root-MuiInput-root-MuiSelect-root::before{
+   border-bottom: unset !important;
+ }
+ .css-1sri408-MuiInputBase-root-MuiInput-root-MuiSelect-root::after {
+   border-bottom: unset !important;
+ }
+ .css-1rxz5jq-MuiSelect-select-MuiInputBase-input-MuiInput-input:focus {
+   background-color: unset !important; 
+}
+
+.css-1rxz5jq-MuiSelect-select-MuiInputBase-input-MuiInput-input.css-1rxz5jq-MuiSelect-select-MuiInputBase-input-MuiInput-input.css-1rxz5jq-MuiSelect-select-MuiInputBase-input-MuiInput-input{
+   padding: 1px !important;
+   margin: 5px !important;
+}
+.css-1nrlq1o-MuiFormControl-root{
+   width: 40% !important;
+}
+.placeholder_style::placeholder{
+   font-size: 14px;
+   font-weight: 400;
+   color: rgb(212, 212, 212);
+}
+.backgroundStyle{
+   padding: 12px 24px;
+   background-color: #F3F5F7;
+   border-radius: 8px;
+
+}
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
