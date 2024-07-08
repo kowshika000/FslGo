@@ -253,59 +253,56 @@ function DailyReportTable({ filtercolumn, setfiltercolumn }) {
       </>
     );
   };
-  //This is for sort ascending order
-  const handleSort = (col) => {
-    const sorted = [...report]?.sort((a, b) => {
-      const valA = a[col];
-      const valB = b[col];
-      if (!isNaN(valA) && !isNaN(valB)) {
-        return valA - valB;
-      }
-      // if (
-      //   col === "BOOKING_DATE" ||
-      //   col === "PICKUP_DATE" ||
-      //   col === "ETD_ORIGIN"
-      // ) {
-      //   const dateA = parseDate1(valA);
-      //   const dateB = parseDate1(valB);
-      //   return dateA - dateB;
-      // }
-      return valA > valB ? 1 : -1;
-    });
-    setFilterReport(sorted);
-  };
-  const parseDate1 = (dateString) => {
-    const parts = dateString?.split("/");
-    return new Date(parts[2], parts[1] - 1, parts[0]);
-  };
-  parseDate1("12/05/2020");
-  const parseDate2 = (dateString) => {
-    const parts = dateString?.split("/");
-    return new Date(parts[2], parts[1] - 1, parts[0]);
+ 
+  const sort = (col) => {
+    const handleSort = (col) => {
+      const sorted = [...filterReport].sort((a, b) => {
+        const valA = a[col];
+        const valB = b[col];
+        if (!isNaN(valA) && !isNaN(valB)) {
+          return valA - valB;
+        }
+        return valA > valB ? 1 : -1;
+      });
+      setFilterReport(sorted);
+    };
+
+    const handleSortDown = (col) => {
+      const sorted = [...filterReport].sort((a, b) => {
+        const valA = a[col];
+        const valB = b[col];
+        if (!isNaN(valA) && !isNaN(valB)) {
+          return valB - valA;
+        }
+        return valA < valB ? 1 : -1;
+      });
+      setFilterReport(sorted);
+    };
+
+    return (
+      <div>
+        <div className="d-flex sorticon" style={{ flexDirection: "column" }}>
+          <IconButton
+            onClick={() => {
+              handleSort(col, "asc");
+            }}
+            className="p-0"
+          >
+            <ExpandLessIcon className="sortup" />
+          </IconButton>
+          <IconButton
+            onClick={() => {
+              handleSortDown(col, "desc");
+            }}
+            className="p-0"
+          >
+            <ExpandMoreIcon className="sortdown" />
+          </IconButton>
+        </div>
+      </div>
+    );
   };
 
-  const handleSortDown = (col) => {
-    const sorted = [...report].sort((a, b) => {
-      const valA = a[col];
-      const valB = b[col];
-
-      if (!isNaN(valA) && !isNaN(valB)) {
-        return valB - valA;
-      }
-
-      // if (
-      //   col === "booking_date" ||
-      //   col === "pickup_date" ||
-      //   col === "etd_origin"
-      // ) {
-      //   const dateA = parseDate2(valA);
-      //   const dateB = parseDate2(valB);
-      //   return dateB - dateA;
-      // }
-      return valA < valB ? 1 : -1;
-    });
-    setFilterReport(sorted);
-  };
 
   //This is for pagination
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -519,7 +516,8 @@ function DailyReportTable({ filtercolumn, setfiltercolumn }) {
                         getUniqueOptions(data, item?.header),
                         dsrFilter
                       )}
-                      <div
+                      {sort(item?.header)}
+                      {/* <div
                         className="d-flex sorticon"
                         style={{ flexDirection: "column" }}
                       >
@@ -539,7 +537,7 @@ function DailyReportTable({ filtercolumn, setfiltercolumn }) {
                         >
                           <ExpandMoreIcon className="sortdown" />
                         </IconButton>
-                      </div>
+                      </div> */}
                     </span>
                   }
                   style={{
@@ -594,6 +592,7 @@ function DailyReportTable({ filtercolumn, setfiltercolumn }) {
         setCurrentPage={setCurrentPage}
         totalItems={filterReport?.length}
         onPageChange={() => setCurrentPage(1)}
+        itemsPerPage={itemsPerPage}
       />
     </>
   );

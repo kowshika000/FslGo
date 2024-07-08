@@ -37,14 +37,6 @@
 .leaflet-bottom {
   z-index: auto;
 }
-.filter {
-  border: 1px solid #e7eaf0 !important;
-  padding: 5px 20px 0 20px !important;
-  margin-left: 10px !important;
-  border-radius: 4px !important;
-  height: 36px !important;
-}
-
 .ant-input {
   font-family: "Roboto", sans-serif !important;
 }
@@ -188,5 +180,8 @@
   margin: 0 !important;
 }
 .tabs1 .ant-tabs-nav {
+  margin: 0 !important;
+}
+.ant-tabs-top >.ant-tabs-nav{
   margin: 0 !important;
 }
