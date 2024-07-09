@@ -1,4 +1,4 @@
-import {BOOKING_REQUEST, BOOKING_SUCCESS, BOOKING_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE} from '../ActionTypes'
+import {LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE} from '../ActionTypes'
 const initialState = {
   error: null,
   loading: false,

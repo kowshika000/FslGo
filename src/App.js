@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import Header from "./Components/Layout/Header";
 import RecentBooking from "./Components/QuickBooking/RecentBooking";
@@ -21,13 +21,60 @@ import Quick from "./Components/QuickBooking/Quick";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
+const MainContent = ({ showmap, setShowmap, showText, setShowText }) => {
+  const location = useLocation();
+  const showfooter = location.pathname !== "/findnewrate";
+
+  return (
+    <>
+      <Header setShowmap={setShowmap} setShowText={setShowText} />
+      <div style={{ marginTop: "4rem" }}>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <ShipmentsHome
+                showmap={showmap}
+                setShowmap={setShowmap}
+                showText={showText}
+                setShowText={setShowText}
+              />
+            }
+          />
+          <Route path="/recentBooking" element={<RecentBooking />} />
+          <Route path="/inbox" element={<Inbox />} />
+          <Route path="/invoice" element={<Invoice />} />
+          <Route path="/quotation" element={<Quotation />} />
+          <Route path="/shipmentdetails" element={<ShipmentBase />} />
+          <Route path="/findnewrate" element={<FindNewRate />} />
+          <Route path="/profile" element={<ProfileBase />} />
+          <Route path="/quick" element={<Quick />} />
+        </Routes>
+      </div>
+      {showfooter && <Footer />}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+      <ToastContainer />
+    </>
+  );
+};
+
 function App() {
   const dispatch = useDispatch();
   const jwtToken = useSelector((state) => state.Login?.booking?.Token);
   const [loading, setLoading] = useState(true);
   const [showmap, setShowmap] = useState(false);
   const [showText, setShowText] = useState(false);
-
   const parseUrlParams = () => {
     const currentUrl = window.location.href;
     const queryString = currentUrl.split("?")[1];
@@ -92,45 +139,13 @@ function App() {
 
   return (
     <BrowserRouter>
-      <Header setShowmap={setShowmap} setShowText={setShowText} />
-      <div style={{ marginTop: "4rem" }}>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <ShipmentsHome
-                showmap={showmap}
-                setShowmap={setShowmap}
-                showText={showText}
-                setShowText={setShowText}
-              />
-            }
-          />
-          <Route path="/recentBooking" element={<RecentBooking />} />
-          <Route path="/inbox" element={<Inbox />} />
-          <Route path="/invoice" element={<Invoice />} />
-          <Route path="/quotation" element={<Quotation />} />
-          <Route path="/shipmentdetails" element={<ShipmentBase />} />
-          <Route path="/findnewrate" element={<FindNewRate />} />
-          <Route path="/profile" element={<ProfileBase />} />
-          <Route path="/quick" element={<Quick />} />
-        </Routes>
-      </div>
-      <Footer />
-      <ToastContainer
-        position="top-right"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
-      <ToastContainer />
-    </BrowserRouter>
+    <MainContent
+      showmap={showmap}
+      setShowmap={setShowmap}
+      showText={showText}
+      setShowText={setShowText}
+    />
+  </BrowserRouter>
   );
 }
 
