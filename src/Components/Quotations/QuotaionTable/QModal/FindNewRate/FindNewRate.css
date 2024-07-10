@@ -71,7 +71,15 @@
   background-color: #d32d2f !important;
   border: none;
 }
-
+.ant-checkbox-disabled .ant-checkbox-inner:after{
+  border-color: white;
+}
+.ant-checkbox-disabled .ant-checkbox-inner{
+  background-color: rgb(245, 126, 126) !important;
+}
+/* .Service-card .ant-checkbox-wrapper .ant-checkbox-checked .ant-checkbox-inner:hover{
+  background-color: #d32d2f ;
+} */
 .Service-card .ant-checkbox + span {
   padding-inline-start: 8px;
   padding-inline-end: 8px;
