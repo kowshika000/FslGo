@@ -7,7 +7,7 @@
   background: #f3f5f7;
   gap: 20px !important;
   align-items: flex-start;
-  min-height: 818px;
+  /* min-height: 818px; */
 }
 .quotationresult-leftdiv .ant-card-head {
   padding: 16px;
@@ -71,7 +71,15 @@
   background-color: #d32d2f !important;
   border: none;
 }
-
+.ant-checkbox-disabled .ant-checkbox-inner:after{
+  border-color: white;
+}
+.ant-checkbox-disabled .ant-checkbox-inner{
+  background-color: rgb(245, 126, 126) !important;
+}
+/* .Service-card .ant-checkbox-wrapper .ant-checkbox-checked .ant-checkbox-inner:hover{
+  background-color: #d32d2f ;
+} */
 .Service-card .ant-checkbox + span {
   padding-inline-start: 8px;
   padding-inline-end: 8px;
@@ -100,7 +108,7 @@
 .filterouter-leftdiv {
   padding-left: 16px;
   padding-right: 16px;
-  padding-bottom: 32px;
+  /* padding-bottom: 32px; */
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -144,12 +152,12 @@
   margin-bottom: 4px !important;
 }
 /* popover-content */
-.ant-popover {
+/* .ant-popover {
   position: absolute;
   z-index: 1030;
   top: 330.488px !important;
-  /* inset: 330.488px auto auto 197.3px !important; */
-}
+  inset: 330.488px auto auto 197.3px !important; 
+} */
 .ant-popover .ant-popover-arrow {
   display: none !important;
 }
@@ -160,8 +168,16 @@
   right: unset;
   z-index: 30 !important;
   margin-bottom: 5px;
+  top: -42.512px !important;
 }
-
+.popover-checkbox1 {
+  position: absolute !important;
+  left: -10px;
+  right: unset;
+  z-index: 30 !important;
+  margin-bottom: 5px;
+  top: -45.512px !important;
+}
 .ant-popover .ant-popover-inner {
   background: transparent;
   box-shadow: none;
