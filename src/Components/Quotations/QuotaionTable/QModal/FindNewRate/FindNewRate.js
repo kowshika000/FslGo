@@ -14,7 +14,7 @@ import img from "../../../../../assets/thumbsgr.svg";
 import uparrow from "../../../../../assets/uparrowcargo.svg";
 import CargoInsurance from "./CargoInsurance";
 
-function FindNewRate() {
+function FindNewRate({selectedCurrency,setSelectedCurrency}) {
   const [checkedItems, setCheckedItems] = useState({
     originCharges: false,
     exportClearance: false,
@@ -478,7 +478,7 @@ function FindNewRate() {
           </Card>
         </div>
         <div className="quotationresult-leftdiv" style={{ flex: "1 1 auto" }}>
-          <ShipmentTracker />
+          <ShipmentTracker selectedCurrency={selectedCurrency}  setSelectedCurrency={setSelectedCurrency}/>
           {/* <QuoteRequest /> */}
         </div>
       </div>
