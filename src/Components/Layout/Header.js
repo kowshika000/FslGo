@@ -203,7 +203,7 @@ const Header = ({ setShowText, setShowmap }) => {
               Invoice
             </Typography>
           </Link> */}
-          {/* <Link to="/quick" style={{ textDecoration: "none" }}>
+          <Link to="/quick" style={{ textDecoration: "none" }}>
             <Typography
               sx={{
                 fontSize: "15px",
@@ -220,7 +220,7 @@ const Header = ({ setShowText, setShowmap }) => {
             >
               Quick Booking
             </Typography>
-          </Link> */}
+          </Link>
         </Box>
       </div>
       <div
