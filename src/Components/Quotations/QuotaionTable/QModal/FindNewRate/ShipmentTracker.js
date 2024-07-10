@@ -14,10 +14,9 @@ import { Dropdown } from "primereact/dropdown";
 import { useSelector } from "react-redux";
 import ShowChargesModal from "./ShowChargesModal";
 
-function ShipmentTracker() {
+function ShipmentTracker({ selectedCurrency, setSelectedCurrency }) {
   const [showAllData, setShowAllData] = useState(false);
   const [showCharges, setShowCharges] = useState(null);
-  const [selectedCurrency, setSelectedCurrency] = useState("USD");
   const [selectedSort, setSelectedSort] = useState("Low to High");
   const FindNRate = useSelector((state) => state?.findRate?.booking?.rates);
   console.log(FindNRate, "FindNRate");
@@ -196,7 +195,7 @@ function ShipmentTracker() {
                   >
                     {" "}
                     {selectedCurrency}&nbsp;&nbsp;
-                    {data.total_price_in_local_currency}
+                    {data.total_amount_in_usd}
                     <span className="ms-2">
                       <img src={Share} alt="share" />
                     </span>
@@ -253,11 +252,11 @@ function ShipmentTracker() {
                 </div>
                 <div>
                   <p className="card-label">Depature Date</p>
-                  <p className="p-value">{data.departure}</p>
+                  <p className="p-value">{data.etd}</p>
                 </div>
                 <div>
                   <p className="card-label">Arrival Date</p>
-                  <p className="p-value">{data.arrival}</p>
+                  <p className="p-value">{data.eta}</p>
                 </div>
               </div>
               {showCharges === index && (
@@ -405,7 +404,8 @@ function ShipmentTracker() {
                       fontWeight: "500",
                     }}
                   >
-                    {data.total_price_in_local_currency}
+                    {selectedCurrency}
+                    {data.total_amount_in_usd}
                     <span className="ms-2">
                       <img src={Share} alt="share" />
                     </span>
@@ -462,11 +462,11 @@ function ShipmentTracker() {
                 </div>
                 <div>
                   <p className="card-label">Depature Date</p>
-                  <p className="p-value">{data.departure}</p>
+                  <p className="p-value">{data.etd}</p>
                 </div>
                 <div>
                   <p className="card-label">Arrival Date</p>
-                  <p className="p-value">{data.arrival}</p>
+                  <p className="p-value">{data.eta}</p>
                 </div>
               </div>
               {showCharges ? (
@@ -545,9 +545,9 @@ function ShipmentTracker() {
                     {showCharges ? "Hide" : "Show"} Charges Breakdown
                   </p>
                 </div>
-                <div className="lock-btn ms-auto me-2">
+                {/* <div className="lock-btn ms-auto me-2">
                   Lock Price at {data.Price}
-                </div>
+                </div> */}
                 <div className="book-btn">Book Now</div>
               </div>
             </Card>
