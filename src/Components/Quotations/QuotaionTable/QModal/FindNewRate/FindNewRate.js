@@ -8,6 +8,7 @@ import QuoteRequest from "./QuoteRequest";
 import { Collapse } from "antd";
 import { DownOutlined, UpOutlined } from "@ant-design/icons";
 import CargoPickupPopOver from "./CargoPickupPopOver";
+import CargoDeliveryPopOver from "./CargoDeliveryPopOver";
 import pencil from "../../../../../assets/Pencil.svg";
 import img from "../../../../../assets/thumbsgr.svg";
 
@@ -22,98 +23,33 @@ function FindNewRate() {
     CargoDelivery: false,
     CargoInsurance: false,
     StackableCargo: false,
-    NonHarzardousCargo: false
+    NonHarzardousCargo: false,
   });
-  const [isPopoverOpen, setPopoverOpen] = useState(true);
-
+  const [isPopoverOpen, setPopoverOpen] = useState(false);
+  const [isDeliveryPopoverOpen, setDeliveryPopoverOpen] = useState(false);
+  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedDeliveryValue, setSelectedDeliveryValue] = useState("");
   const onChange = (e) => {
-    if (e.target.name !== "cargoPickup") {
-      setPopoverOpen(false);
-    } else {
-      setPopoverOpen(true);
-    }
-    const { value, checked } = e.target;
+    const { name, checked } = e.target;
     setCheckedItems({
       ...checkedItems,
-      [value]: checked,
+      [name]: checked,
     });
+    if (name === "cargoPickup") {
+      setPopoverOpen(checked);
+    }
+    if (name === "CargoDelivery") {
+      setDeliveryPopoverOpen(checked);
+    }
   };
+
   const onChangeCollapse = (key) => {
     console.log(key);
   };
-  const Details = [
-    {
-      id: "1",
-      Vessel: "NORTHERN DEDICATION",
-      Voyage: "2308",
-      Cutoff: "20-May-2023",
-      Departure: "24-May-2023",
-      Arrival: "30-May-2023",
-      validity: "16 May 2023",
-      Price: "$50",
-      TotalPrice: "$320",
-    },
-    {
-      id: "2",
-      Vessel: "NORTHERN PRACTISE",
-      Voyage: "41",
-      Cutoff: "24-May-2023",
-      Departure: "28-May-2023",
-      Arrival: "30-May-2023",
-      validity: "16 May 2023",
-      Price: "$50",
-      TotalPrice: "$350",
-    },
-    {
-      id: "3",
-      Vessel: "MONTPELLIER",
-      Voyage: "23005E",
-      Cutoff: "27-May-2023",
-      Departure: "31-May-2023",
-      Arrival: "06-Jun-2023",
-      validity: "16 May 2023",
-      Price: "$50",
-      TotalPrice: "$380",
-    },
-    {
-      id: "4",
-      Vessel: "MONTPELLIER",
-      Voyage: "23005E",
-      Cutoff: "27-May-2023",
-      Departure: "31-May-2023",
-      Arrival: "06-Jun-2023",
-      validity: "16 May 2023",
-      Price: "$50",
-      TotalPrice: "$380",
-    },
-    {
-      id: "5",
-      Vessel: "MONTPELLIER",
-      Voyage: "23005E",
-      Cutoff: "27-May-2023",
-      Departure: "31-May-2023",
-      Arrival: "06-Jun-2023",
-      validity: "16 May 2023",
-      Price: "$50",
-      TotalPrice: "$380",
-    },
-    {
-      id: "6",
-      Vessel: "MONTPELLIER",
-      Voyage: "23005E",
-      Cutoff: "27-May-2023",
-      Departure: "31-May-2023",
-      Arrival: "06-Jun-2023",
-      validity: "16 May 2023",
-      Price: "$50",
-      TotalPrice: "$380",
-    },
-  ];
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [checkedItems]);
+  }, []);
 
-  const [selectedValue, setSelectedValue] = useState("");
   console.log(`selectedjhgfds ${selectedValue}`);
 
   const FilterCheckbox = ({
@@ -125,19 +61,20 @@ function FindNewRate() {
     children,
     vname,
     disabled,
-    defaultChecked
+    defaultChecked,
   }) => {
     const handlePopoverOpenChange = (open) => {
       setPopoverOpen(open);
     };
-    const handleButtonClick = () => {
-      setPopoverOpen(true);
+    const handleDeliveryPopoverOpenChange = (open) => {
+      setDeliveryPopoverOpen(open);
     };
+
     return (
       <div className="filter-quotation">
-        {value === "cargoPickup" &&
-          checkedItems.cargoPickup &&
-          isPopoverOpen && (
+        {(value === "cargoPickup" || value === "CargoDelivery") &&
+          checked &&
+          (isPopoverOpen || isDeliveryPopoverOpen) && (
             <>
               <div className="dimmed-background"></div>
             </>
@@ -168,71 +105,99 @@ function FindNewRate() {
               </Tooltip>
             </div>
           </div>
-          {value === "cargoPickup" && checkedItems.cargoPickup && (
-            <div
-              className="div-rowcentered justify-atstart displaycheckbox-value"
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              {!isPopoverOpen && (
-                <h6
-                  style={{
-                    fontWeight: "400",
-                    fontSize: "12px",
-                    lineHeight: "18px",
-                    letterSpacing: "1%",
-                    color: "#384656",
-                    marginBottom: "0px",
-                  }}
-                >
-                  ZIP Code :&nbsp;&nbsp;
-                  <span
+          {(value === "cargoPickup" || value === "CargoDelivery") &&
+            checked && (
+              <div
+                className="div-rowcentered justify-atstart displaycheckbox-value"
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                {!isPopoverOpen && !isDeliveryPopoverOpen && (
+                  <h6
                     style={{
-                      fontWeight: "500",
-                      fontSize: "13px",
-                      lineHeight: "19px",
-                      color: "#384656",
+                      fontWeight: "400",
+                      fontSize: "12px",
+                      lineHeight: "18px",
                       letterSpacing: "1%",
+                      color: "#384656",
+                      marginBottom: "0px",
                     }}
                   >
-                    {selectedValue}
-                  </span>
-                </h6>
-              )}
-              <Popover
-                placement="bottom"
-                content={
-                  <CargoPickupPopOver
-                    setSelectedValue={setSelectedValue}
-                    setPopoverOpen={setPopoverOpen}
-                  />
-                }
-                open={isPopoverOpen}
-                onOpenChange={handlePopoverOpenChange}
-                trigger="click"
-              >
-                <Button
-                  type="link"
-                  className={`editpencil-btn ${
-                    selectedValue && !isPopoverOpen ? "ms-auto" : ""
-                  }`}
-                  style={{
-                    position: "relative",
-                    width: "20.6px",
-                    height: "32px",
-                    bordeRadius: "6px",
-                    padding: "1px",
-                  }}
-                  onClick={handleButtonClick}
+                    ZIP Code :&nbsp;&nbsp;
+                    <span
+                      style={{
+                        fontWeight: "500",
+                        fontSize: "13px",
+                        lineHeight: "19px",
+                        color: "#384656",
+                        letterSpacing: "1%",
+                      }}
+                    >
+                      {value === "cargoPickup"
+                        ? selectedValue
+                        : selectedDeliveryValue}
+                    </span>
+                  </h6>
+                )}
+                <Popover
+                  placement="bottom"
+                  content={
+                    value === "cargoPickup" ? (
+                      <CargoPickupPopOver
+                        setSelectedValue={setSelectedValue}
+                        setPopoverOpen={setPopoverOpen}
+                      />
+                    ) : (
+                      <CargoDeliveryPopOver
+                        setSelectedValue={setSelectedDeliveryValue}
+                        setPopoverOpen={setDeliveryPopoverOpen}
+                      />
+                    )
+                  }
+                  open={
+                    value === "cargoPickup"
+                      ? isPopoverOpen
+                      : isDeliveryPopoverOpen
+                  }
+                  onOpenChange={
+                    value === "cargoPickup"
+                      ? handlePopoverOpenChange
+                      : handleDeliveryPopoverOpenChange
+                  }
+                  trigger="click"
                 >
-                  <Image src={pencil} alt="pencil" preview={false} />
-                </Button>
-              </Popover>
-            </div>
-          )}
+                  <Button
+                    type="link"
+                    className={`editpencil-btn ${
+                      (selectedValue || selectedDeliveryValue) &&
+                      !isPopoverOpen &&
+                      !isDeliveryPopoverOpen
+                        ? "ms-auto"
+                        : ""
+                    }`}
+                    style={{
+                      position: "relative",
+                      width: "20.6px",
+                      height: "32px",
+                      bordeRadius: "6px",
+                      padding: "1px",
+                    }}
+                    onClick={() => {
+                      if (value === "cargoPickup") {
+                        setPopoverOpen(true);
+                      } else if (value === "CargoDelivery") {
+                        setDeliveryPopoverOpen(true);
+                      }
+                    }}
+                  >
+                    <Image src={pencil} alt="pencil" preview={false} />
+                  </Button>
+                </Popover>
+              </div>
+            )}
         </div>
       </div>
     );
@@ -442,7 +407,7 @@ function FindNewRate() {
           </Card>
         </div>
         <div className="quotationresult-leftdiv" style={{ flex: "1 1 auto" }}>
-          <ShipmentTracker Details={Details} />
+          <ShipmentTracker />
           {/* <QuoteRequest /> */}
         </div>
       </div>

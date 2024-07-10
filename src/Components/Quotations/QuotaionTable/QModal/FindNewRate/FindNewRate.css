@@ -144,12 +144,12 @@
   margin-bottom: 4px !important;
 }
 /* popover-content */
-.ant-popover {
+/* .ant-popover {
   position: absolute;
   z-index: 1030;
   top: 330.488px !important;
-  /* inset: 330.488px auto auto 197.3px !important; */
-}
+  inset: 330.488px auto auto 197.3px !important; 
+} */
 .ant-popover .ant-popover-arrow {
   display: none !important;
 }
@@ -160,8 +160,16 @@
   right: unset;
   z-index: 30 !important;
   margin-bottom: 5px;
+  top: -42.512px !important;
 }
-
+.popover-checkbox1 {
+  position: absolute !important;
+  left: -10px;
+  right: unset;
+  z-index: 30 !important;
+  margin-bottom: 5px;
+  top: -45.512px !important;
+}
 .ant-popover .ant-popover-inner {
   background: transparent;
   box-shadow: none;
