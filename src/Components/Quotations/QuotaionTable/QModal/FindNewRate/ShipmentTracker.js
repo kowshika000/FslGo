@@ -1,13 +1,13 @@
 import React, { useState } from "react";
 import { Card, Tabs } from "antd";
 import "./FindNewRate.css";
-import Share from "../../../../../assets/Share.png";
-import Line from "../../../../../assets/Line 3.png";
-import Union from "../../../../../assets/Union.png";
-import flow from "../../../../../assets/flowlogo.png";
-import Vector from "../../../../../assets/logoc.png";
-import icon from "../../../../../assets/Group 2057.png";
-import Cargo from "../../../../../assets/Cargoiocn.png";
+import Share from "../../../../../assets/Share.svg";
+import Line from "../../../../../assets/Line 3.svg";
+import Union from "../../../../../assets/UnionCar.svg";
+import flow from "../../../../../assets/flowlogo.svg";
+import Vector from "../../../../../assets/VectorCar.svg";
+import icon from "../../../../../assets/circleCargo.svg";
+import Cargo from "../../../../../assets/Cargoicon.svg";
 import info from "../../../../../assets/Info.svg";
 import { CaretDownOutlined } from "@ant-design/icons";
 import { Dropdown } from "primereact/dropdown";
@@ -93,7 +93,12 @@ function ShipmentTracker() {
                 className="d-flex justify-content-between align-items-center"
               >
                 <div style={{ opacity: "40%" }} className="cargo-pickup-p">
-                  <img src={icon} alt="icon" className="me-1" />
+                  <img
+                    src={icon}
+                    alt="icon"
+                    className="me-1"
+                    style={{ marginBottom: "0.1rem" }}
+                  />
                   Cargo Pickup
                 </div>
                 <div style={{ opacity: "40%" }}>
@@ -154,7 +159,7 @@ function ShipmentTracker() {
                     <img
                       src={Union}
                       className="pe-2 mb-1"
-                      style={{ height: "12px" }}
+                      style={{ height: "12px", color: "#495A6E" }}
                     />
                     <span
                       style={{
