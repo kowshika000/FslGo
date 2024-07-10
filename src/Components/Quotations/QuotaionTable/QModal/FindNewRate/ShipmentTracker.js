@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import { Card, Tabs } from "antd";
 import "./FindNewRate.css";
-import Share from "../../../../../assets/Share.png";
-import Line from "../../../../../assets/Line 3.png";
-import Union from "../../../../../assets/Union.png";
-import flow from "../../../../../assets/flowlogo.png";
-import Vector from "../../../../../assets/logoc.png";
-import icon from "../../../../../assets/Group 2057.png";
-import Cargo from "../../../../../assets/Cargoiocn.png";
+import Share from "../../../../../assets/Share.svg";
+import Line from "../../../../../assets/Line 3.svg";
+import Union from "../../../../../assets/UnionCar.svg";
+import flow from "../../../../../assets/flowlogo.svg";
+import Vector from "../../../../../assets/VectorCar.svg";
+import icon from "../../../../../assets/circleCargo.svg";
+import Cargo from "../../../../../assets/Cargoicon.svg";
 import info from "../../../../../assets/Info.svg";
 import { CaretDownOutlined } from "@ant-design/icons";
 import { Dropdown } from "primereact/dropdown";
 import { useSelector } from "react-redux";
+import ShowChargesModal from "./ShowChargesModal";
 
 function ShipmentTracker() {
   const [showAllData, setShowAllData] = useState(false);
@@ -29,7 +30,11 @@ function ShipmentTracker() {
   const sortOptions = ["Low to High", "High to Low"];
 
   const handleShowCharges = (index) => {
-    setShowCharges(index);
+    if (showCharges === index) {
+      setShowCharges(null);
+    } else {
+      setShowCharges(index);
+    }
   };
   const DropdownTemplate = ({ value }) => (
     <div>
@@ -88,7 +93,12 @@ function ShipmentTracker() {
                 className="d-flex justify-content-between align-items-center"
               >
                 <div style={{ opacity: "40%" }} className="cargo-pickup-p">
-                  <img src={icon} alt="icon" className="me-1" />
+                  <img
+                    src={icon}
+                    alt="icon"
+                    className="me-1"
+                    style={{ marginBottom: "0.1rem" }}
+                  />
                   Cargo Pickup
                 </div>
                 <div style={{ opacity: "40%" }}>
@@ -149,7 +159,7 @@ function ShipmentTracker() {
                     <img
                       src={Union}
                       className="pe-2 mb-1"
-                      style={{ height: "12px" }}
+                      style={{ height: "12px", color: "#495A6E" }}
                     />
                     <span
                       style={{
@@ -171,7 +181,8 @@ function ShipmentTracker() {
                         color: "#181E25",
                       }}
                     >
-                      9 Days (5 Days Port to Port)
+                      {data?.total_transit_time} Days ({data?.transit_time} Days
+                      Port to Port)
                     </span>
                   </p>
                 </div>
@@ -249,63 +260,8 @@ function ShipmentTracker() {
                   <p className="p-value">{data.arrival}</p>
                 </div>
               </div>
-              {showCharges ? (
-                <div className="charges">
-                  <div className="table-responsive">
-                    <table class="table">
-                      <tbody>
-                        <tr className="header">
-                          <td className="origincharge">Origin Charges</td>
-                          <td className="one">$100</td>
-                        </tr>
-                        <tr>
-                          <td className="pickupcharge ps-4">Pickup Charges</td>
-                          <td className="price-value">$55</td>
-                        </tr>
-                        <tr>
-                          <td className="pickupcharge ps-4">B/L Issuance</td>
-                          <td className="price-value">$45</td>
-                        </tr>
-                        <tr className="header">
-                          <td className="origincharge">
-                            International Freight Charges
-                          </td>
-                          <td className="one">$80</td>
-                        </tr>
-                        <tr className="header">
-                          <td className="origincharge">Destination Charges</td>
-                          <td className="one">$120</td>
-                        </tr>
-                        <tr>
-                          <td className="pickupcharge ps-4">
-                            Handling Charges
-                          </td>
-                          <td className="price-value">$60</td>
-                        </tr>
-                        <tr>
-                          <td className="pickupcharge ps-4">
-                            Import Custom Clearance
-                          </td>
-                          <td className="price-value">$30</td>
-                        </tr>
-                        <tr>
-                          <td className="pickupcharge ps-4">
-                            Delivery Charges
-                          </td>
-                          <td className="price-value">$30</td>
-                        </tr>
-                        <tr className="total">
-                          <th className="totaoriginchargelamount">
-                            Total amount :
-                          </th>
-                          <th className="one">$300 (USD)</th>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              ) : (
-                ""
+              {showCharges === index && (
+                <ShowChargesModal FindNRate={FindNRate} />
               )}
               <div className="d-flex align-items-center">
                 <div>
@@ -322,13 +278,13 @@ function ShipmentTracker() {
                     }}
                     onClick={() => handleShowCharges(index)}
                   >
-                    {showCharges ? "Hide" : "Show"} Charges Breakdown
+                    {showCharges === index ? "Hide" : "Show"} Charges Breakdown
                   </p>
                 </div>
-                <div className="lock-btn ms-auto me-2">
+                {/* <div className="lock-btn ms-auto me-2">
                   Lock Price at {data.Price}
-                </div>
-                <div className="book-btn">Book Now</div>
+                </div> */}
+                <div className="book-btn ms-auto">Book Now</div>
               </div>
             </Card>
           )

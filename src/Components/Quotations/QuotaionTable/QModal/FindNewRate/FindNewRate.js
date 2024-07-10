@@ -8,8 +8,11 @@ import QuoteRequest from "./QuoteRequest";
 import { Collapse } from "antd";
 import { DownOutlined, UpOutlined } from "@ant-design/icons";
 import CargoPickupPopOver from "./CargoPickupPopOver";
+import CargoDeliveryPopOver from "./CargoDeliveryPopOver";
 import pencil from "../../../../../assets/Pencil.svg";
 import img from "../../../../../assets/thumbsgr.svg";
+import uparrow from "../../../../../assets/uparrowcargo.svg";
+import CargoInsurance from "./CargoInsurance";
 
 function FindNewRate() {
   const [checkedItems, setCheckedItems] = useState({
@@ -22,98 +25,83 @@ function FindNewRate() {
     CargoDelivery: false,
     CargoInsurance: false,
     StackableCargo: false,
-    NonHarzardousCargo: false
+    NonHarzardousCargo: false,
   });
-  const [isPopoverOpen, setPopoverOpen] = useState(true);
+  const [isPopoverOpen, setPopoverOpen] = useState(false);
+  const [isDeliveryPopoverOpen, setDeliveryPopoverOpen] = useState(false);
+  const [isInsurance, setInsurance] = useState(false);
+
+  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedDeliveryValue, setSelectedDeliveryValue] = useState("");
+  const [insuranceValue, setInsuranceValue] = useState("");
 
   const onChange = (e) => {
-    if (e.target.name !== "cargoPickup") {
-      setPopoverOpen(false);
-    } else {
-      setPopoverOpen(true);
-    }
-    const { value, checked } = e.target;
+    const { name, checked } = e.target;
     setCheckedItems({
       ...checkedItems,
-      [value]: checked,
+      [name]: checked,
     });
+    if (name === "cargoPickup") {
+      setPopoverOpen(checked);
+    }
+    if (name === "CargoDelivery") {
+      setDeliveryPopoverOpen(checked);
+    }
+    if (name === "CargoInsurance") {
+      setInsurance(checked);
+    }
+  };
+  const handleValue = (value) => {
+    if (value === "cargoPickup") {
+      return selectedValue;
+    } else if (value === "CargoDelivery") {
+      return selectedDeliveryValue;
+    } else if (value === "CargoInsurance") {
+      return insuranceValue;
+    }
+  };
+  const getPopoverContent = (value) => {
+    if (value === "cargoPickup") {
+      return (
+        <CargoPickupPopOver
+          setSelectedValue={setSelectedValue}
+          setPopoverOpen={setPopoverOpen}
+        />
+      );
+    } else if (value === "CargoDelivery") {
+      return (
+        <CargoDeliveryPopOver
+          setSelectedValue={setSelectedDeliveryValue}
+          setPopoverOpen={setDeliveryPopoverOpen}
+        />
+      );
+    } else if (value === "CargoInsurance") {
+      return (
+        <CargoInsurance
+          setSelectedValue={setInsuranceValue}
+          setPopoverOpen={setInsurance}
+        />
+      );
+    }
+    return null;
+  };
+  const getPopoverOpen = (value) => {
+    if (value === "cargoPickup") {
+      return isPopoverOpen;
+    } else if (value === "CargoDelivery") {
+      return isDeliveryPopoverOpen;
+    } else if (value === "CargoInsurance") {
+      return isInsurance;
+    }
+    return false;
   };
   const onChangeCollapse = (key) => {
     console.log(key);
   };
-  const Details = [
-    {
-      id: "1",
-      Vessel: "NORTHERN DEDICATION",
-      Voyage: "2308",
-      Cutoff: "20-May-2023",
-      Departure: "24-May-2023",
-      Arrival: "30-May-2023",
-      validity: "16 May 2023",
-      Price: "$50",
-      TotalPrice: "$320",
-    },
-    {
-      id: "2",
-      Vessel: "NORTHERN PRACTISE",
-      Voyage: "41",
-      Cutoff: "24-May-2023",
-      Departure: "28-May-2023",
-      Arrival: "30-May-2023",
-      validity: "16 May 2023",
-      Price: "$50",
-      TotalPrice: "$350",
-    },
-    {
-      id: "3",
-      Vessel: "MONTPELLIER",
-      Voyage: "23005E",
-      Cutoff: "27-May-2023",
-      Departure: "31-May-2023",
-      Arrival: "06-Jun-2023",
-      validity: "16 May 2023",
-      Price: "$50",
-      TotalPrice: "$380",
-    },
-    {
-      id: "4",
-      Vessel: "MONTPELLIER",
-      Voyage: "23005E",
-      Cutoff: "27-May-2023",
-      Departure: "31-May-2023",
-      Arrival: "06-Jun-2023",
-      validity: "16 May 2023",
-      Price: "$50",
-      TotalPrice: "$380",
-    },
-    {
-      id: "5",
-      Vessel: "MONTPELLIER",
-      Voyage: "23005E",
-      Cutoff: "27-May-2023",
-      Departure: "31-May-2023",
-      Arrival: "06-Jun-2023",
-      validity: "16 May 2023",
-      Price: "$50",
-      TotalPrice: "$380",
-    },
-    {
-      id: "6",
-      Vessel: "MONTPELLIER",
-      Voyage: "23005E",
-      Cutoff: "27-May-2023",
-      Departure: "31-May-2023",
-      Arrival: "06-Jun-2023",
-      validity: "16 May 2023",
-      Price: "$50",
-      TotalPrice: "$380",
-    },
-  ];
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, [checkedItems]);
+  }, []);
 
-  const [selectedValue, setSelectedValue] = useState("");
   console.log(`selectedjhgfds ${selectedValue}`);
 
   const FilterCheckbox = ({
@@ -125,19 +113,26 @@ function FindNewRate() {
     children,
     vname,
     disabled,
-    defaultChecked
+    defaultChecked,
   }) => {
-    const handlePopoverOpenChange = (open) => {
-      setPopoverOpen(open);
+    const handlePopoverOpenChange = (value) => {
+      if (value === "cargoPickup") {
+        return setPopoverOpen;
+      } else if (value === "CargoDelivery") {
+        return setDeliveryPopoverOpen;
+      } else if (value === "CargoInsurance") {
+        return setInsurance;
+      }
+      return () => {};
     };
-    const handleButtonClick = () => {
-      setPopoverOpen(true);
-    };
+
     return (
       <div className="filter-quotation">
-        {value === "cargoPickup" &&
-          checkedItems.cargoPickup &&
-          isPopoverOpen && (
+        {(value === "cargoPickup" ||
+          value === "CargoDelivery" ||
+          value === "CargoInsurance") &&
+          checked &&
+          (isPopoverOpen || isDeliveryPopoverOpen || isInsurance) && (
             <>
               <div className="dimmed-background"></div>
             </>
@@ -168,71 +163,84 @@ function FindNewRate() {
               </Tooltip>
             </div>
           </div>
-          {value === "cargoPickup" && checkedItems.cargoPickup && (
-            <div
-              className="div-rowcentered justify-atstart displaycheckbox-value"
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
-              {!isPopoverOpen && (
-                <h6
-                  style={{
-                    fontWeight: "400",
-                    fontSize: "12px",
-                    lineHeight: "18px",
-                    letterSpacing: "1%",
-                    color: "#384656",
-                    marginBottom: "0px",
-                  }}
-                >
-                  ZIP Code :&nbsp;&nbsp;
-                  <span
+          {(value === "cargoPickup" ||
+            value === "CargoDelivery" ||
+            value === "CargoInsurance") &&
+            checked && (
+              <div
+                className="div-rowcentered justify-atstart displaycheckbox-value"
+                style={{
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "center",
+                }}
+              >
+                {!isPopoverOpen && !isDeliveryPopoverOpen && !isInsurance && (
+                  <h6
                     style={{
-                      fontWeight: "500",
-                      fontSize: "13px",
-                      lineHeight: "19px",
-                      color: "#384656",
+                      fontWeight: "400",
+                      fontSize: "12px",
+                      lineHeight: "18px",
                       letterSpacing: "1%",
+                      color: "#384656",
+                      marginBottom: "0px",
                     }}
                   >
-                    {selectedValue}
-                  </span>
-                </h6>
-              )}
-              <Popover
-                placement="bottom"
-                content={
-                  <CargoPickupPopOver
-                    setSelectedValue={setSelectedValue}
-                    setPopoverOpen={setPopoverOpen}
-                  />
-                }
-                open={isPopoverOpen}
-                onOpenChange={handlePopoverOpenChange}
-                trigger="click"
-              >
-                <Button
-                  type="link"
-                  className={`editpencil-btn ${
-                    selectedValue && !isPopoverOpen ? "ms-auto" : ""
-                  }`}
-                  style={{
-                    position: "relative",
-                    width: "20.6px",
-                    height: "32px",
-                    bordeRadius: "6px",
-                    padding: "1px",
-                  }}
-                  onClick={handleButtonClick}
+                    ZIP Code :&nbsp;&nbsp;
+                    <span
+                      style={{
+                        fontWeight: "500",
+                        fontSize: "13px",
+                        lineHeight: "19px",
+                        color: "#384656",
+                        letterSpacing: "1%",
+                      }}
+                    >
+                      {handleValue(value)}
+                      {/* {value === "cargoPickup"
+                        ? selectedValue
+                        : selectedDeliveryValue} */}
+                    </span>
+                  </h6>
+                )}
+                <Popover
+                  placement="bottom"
+                  content={getPopoverContent(value)}
+                  open={getPopoverOpen(value)}
+                  onOpenChange={handlePopoverOpenChange(value)}
+                  trigger="click"
                 >
-                  <Image src={pencil} alt="pencil" preview={false} />
-                </Button>
-              </Popover>
-            </div>
-          )}
+                  <Button
+                    type="link"
+                    className={`editpencil-btn ${
+                      (selectedValue || selectedDeliveryValue || insuranceValue) &&
+                      !isPopoverOpen &&
+                      !isDeliveryPopoverOpen && !isInsurance
+                        ? "ms-auto"
+                        : ""
+                    }`}
+                    style={{
+                      position: "relative",
+                      width: "20.6px",
+                      height: "32px",
+                      bordeRadius: "6px",
+                      padding: "1px",
+                    }}
+                    onClick={() => {
+                      if (value === "cargoPickup") {
+                        setPopoverOpen(true);
+                      } else if (value === "CargoDelivery") {
+                        setDeliveryPopoverOpen(true);
+                      } else if (value === "CargoInsurance") {
+                        setInsurance(true);
+                      }
+                    }}
+                  >
+                    <Image src={pencil} alt="pencil" preview={false} />
+                  </Button>
+                </Popover>
+              </div>
+            )}
         </div>
       </div>
     );
@@ -250,7 +258,7 @@ function FindNewRate() {
               vname="originCharges"
               checked={checkedItems.originCharges}
               value="originCharges"
-              tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+              tooltipText="This includes Origin documentation, Port/Airport handling."
               onChange={onChange}
             />
             <FilterCheckbox
@@ -258,7 +266,7 @@ function FindNewRate() {
               checked={checkedItems.exportClearance}
               value="exportClearance"
               vname="exportClearance"
-              tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+              tooltipText="Charges for filing with Export customs."
               onChange={onChange}
             >
               <span>
@@ -270,7 +278,7 @@ function FindNewRate() {
               checked={checkedItems.cargoPickup}
               value="cargoPickup"
               vname="cargoPickup"
-              tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+              tooltipText="Transportation from factory/warehouse to Port/Airport."
               onChange={onChange}
             />
             <FilterCheckbox
@@ -278,7 +286,7 @@ function FindNewRate() {
               value="internationalFreight"
               vname="internationalFreight"
               // checked={checkedItems.internationalFreight}
-              tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+              tooltipText="Transportation from Origin port to Destination port."
               onChange={onChange}
               defaultChecked={true}
               disabled={true}
@@ -300,7 +308,7 @@ function FindNewRate() {
               checked={checkedItems.DestinationCharges}
               value="DestinationCharges"
               vname="DestinationCharges"
-              tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+              tooltipText="This includes destination documentation, Port/Airport handling."
               onChange={onChange}
             />
             <FilterCheckbox
@@ -308,7 +316,7 @@ function FindNewRate() {
               checked={checkedItems.ImportClearance}
               value="ImportClearance"
               vname="ImportClearance"
-              tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+              tooltipText="Charges only for Import clearance, duties and taxes will be billed as per receipt."
               onChange={onChange}
             >
               <span>
@@ -320,7 +328,7 @@ function FindNewRate() {
               checked={checkedItems.CargoDelivery}
               value="CargoDelivery"
               vname="CargoDelivery"
-              tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+              tooltipText="Transportation from Port/Airport to Factory/Warehouse."
               onChange={onChange}
             />
           </div>
@@ -340,7 +348,7 @@ function FindNewRate() {
               checked={checkedItems.CargoInsurance}
               value="CargoInsurance"
               vname="CargoInsurance"
-              tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+              tooltipText="Insurance that generally protects shipments from loss, damage, or theft while in transit. The cargo insurance coverage includes events mentioned in the policy like vehicle accidents, cargo renunciation, damage due to natural calamities, acts of war, piracy, etc."
               onChange={onChange}
             >
               <span>
@@ -364,7 +372,7 @@ function FindNewRate() {
               checked={checkedItems.StackableCargo}
               value="StackableCargo"
               vname="StackableCargo"
-              tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+              tooltipText="Cargo will be stacked. If your cargo is non-stackable rates will change."
               onChange={onChange}
             />
             <FilterCheckbox
@@ -372,7 +380,7 @@ function FindNewRate() {
               checked={checkedItems.NonHarzardousCargo}
               value="NonHarzardousCargo"
               vname="NonHarzardousCargo"
-              tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+              tooltipText="Cargo should not have any hazardous substances. Cargo is not corrosive, toxic, flammable, or reactive and does not require a warning label."
               onChange={onChange}
             />
           </div>
@@ -382,7 +390,7 @@ function FindNewRate() {
   ];
 
   const customExpandIcon = ({ isActive }) =>
-    isActive ? <UpOutlined /> : <DownOutlined />;
+    isActive ? <Image src={uparrow} alt="arrow" /> : <DownOutlined />;
 
   return (
     <div
@@ -391,11 +399,14 @@ function FindNewRate() {
         minWidth: "1255px",
         padding: "20px",
         backgroundColor: "#f3f5f7",
-        marginTop: "100px",
+        // marginTop: "100px",
       }}
     >
       <div className="quotationresult-div mx-auto">
-        <div className="quotationresult-leftdiv" style={{ flex: "0 0 272px" }}>
+        <div
+          className="quotationresult-leftdiv"
+          style={{ flex: "0 0 272px", height: "100vh" }}
+        >
           <Card title="Service Included">
             <div className="Service-card">
               <Collapse
@@ -442,7 +453,7 @@ function FindNewRate() {
           </Card>
         </div>
         <div className="quotationresult-leftdiv" style={{ flex: "1 1 auto" }}>
-          <ShipmentTracker Details={Details} />
+          <ShipmentTracker />
           {/* <QuoteRequest /> */}
         </div>
       </div>
