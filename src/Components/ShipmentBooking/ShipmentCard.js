@@ -15,7 +15,7 @@ import Arrow from "../../assets/arrow.png";
 import { useDispatch } from "react-redux";
 import { FindNewRateRequest } from "../../Redux/Actions/FindNewRateAction";
 
-const ShipmentCard = ({ setShowReselt }) => {
+const ShipmentCard = ({ setShowReselt,selectedCurrency }) => {
   const dispatch = useDispatch();
   const [destination, setDestination] = useState("");
   const [isCargoOpen, setIsCargoOpen] = useState(false);
@@ -76,12 +76,14 @@ const ShipmentCard = ({ setShowReselt }) => {
     is_stackable: "",
     is_insurance: "",
     UID: "15085",
-    currency: "USD"
+    currency: selectedCurrency
   };
   const handleSearch = () => {
     setShowReselt(true);
-    dispatch(FindNewRateRequest({ inputdata }));
   };
+  useEffect(()=>{
+    dispatch(FindNewRateRequest({ inputdata }));
+  },[handleSearch,selectedCurrency])
   return (
     <div>
       <div

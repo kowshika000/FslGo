@@ -8,6 +8,8 @@ import FindNewRate from './QuotaionTable/QModal/FindNewRate/FindNewRate';
 
 const Quotation = () => {
   const [showReselt, setShowReselt] = useState(false)
+  const [selectedCurrency, setSelectedCurrency] = useState("USD");
+
   return (
     <div style={{width:"100%", background: "linear-gradient(to bottom, white 20%,  rgb(248, 250, 252) 15%)",}}>
       <div style={{maxWidth:'1255px'}} className='shipmentIndex py-5 mx-auto' >
@@ -15,8 +17,8 @@ const Quotation = () => {
      <div>
      <Navbar/> 
      </div>
-     <ShipmentCard showReselt={showReselt} setShowReselt={setShowReselt} />
-     {showReselt ? <FindNewRate/> : <QuotationTabs/>}
+     <ShipmentCard setShowReselt={setShowReselt} selectedCurrency={selectedCurrency}/>
+     {showReselt ? <FindNewRate selectedCurrency={selectedCurrency}  setSelectedCurrency={setSelectedCurrency}/> : <QuotationTabs />}
      {/* <QuotationTabs/> */}
      </div>
     </div>
