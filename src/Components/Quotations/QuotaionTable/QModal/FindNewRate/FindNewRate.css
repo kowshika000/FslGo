@@ -7,7 +7,7 @@
   background: #f3f5f7;
   gap: 20px !important;
   align-items: flex-start;
-  min-height: 818px;
+  /* min-height: 818px; */
 }
 .quotationresult-leftdiv .ant-card-head {
   padding: 16px;
@@ -100,7 +100,7 @@
 .filterouter-leftdiv {
   padding-left: 16px;
   padding-right: 16px;
-  padding-bottom: 32px;
+  /* padding-bottom: 32px; */
   display: flex;
   flex-direction: column;
   gap: 10px;

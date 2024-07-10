@@ -1,6 +1,6 @@
 import React from "react";
 
-function ShowChargesModal() {
+function ShowChargesModal({FindNRate}) {
   return (
     <>
       <div className="charges">
