@@ -9,8 +9,10 @@ import Cookies from "js-cookie";
 // import { ReactComponent as Logo } from "../../assets/Logo.svg";
 import Logo from "../../assets/fresGoLogo.jpg";
 import { ReactComponent as Bell } from "../../assets/bell.svg";
-import { Dropdown } from "antd";
+import { Drawer, Dropdown, notification } from "antd";
 import { useSelector } from "react-redux";
+import notificationIcon from '../../assets/notificationIcon.svg'
+import greenIcon from '../../assets/greenIcon.svg'
 
 const Header = ({ setShowText, setShowmap }) => {
   const navigate = useNavigate();
@@ -18,6 +20,11 @@ const Header = ({ setShowText, setShowmap }) => {
   const pathname = location.pathname;
   const [headerFocused, setHeaderFocused] = useState(true);
   const FirstLetter = useSelector((state) => state.ProfileData?.profileData?.company?.charAt(0));
+  const [visible, setVisible] = useState(false)
+
+  const onClose = () =>{
+    setVisible(false)
+  }
 
   const handleHeaderFocus = () => {
     setHeaderFocused(true);
@@ -196,7 +203,7 @@ const Header = ({ setShowText, setShowmap }) => {
               Invoice
             </Typography>
           </Link> */}
-          <Link to="/quick" style={{ textDecoration: "none" }}>
+          {/* <Link to="/quick" style={{ textDecoration: "none" }}>
             <Typography
               sx={{
                 fontSize: "15px",
@@ -213,14 +220,14 @@ const Header = ({ setShowText, setShowmap }) => {
             >
               Quick Booking
             </Typography>
-          </Link>
+          </Link> */}
         </Box>
       </div>
       <div
         className="d-flex align-items-center"
         style={{ justifyContent: "space-between", gap: "25px" }}
       >
-        {/* <div
+        <div
           style={{
             border: "1px solid #D1D9D3",
             borderRadius: "20px",
@@ -230,11 +237,12 @@ const Header = ({ setShowText, setShowmap }) => {
             position: "relative",
           }}
           className="d-flex justify-content-end align-items-center"
+          onClick={() => setVisible(!visible)}
         >
           <Bell
             width="25px"
             height="25px"
-            style={{ position: "absolute", left: "4px" }}
+            style={{ position: "absolute", left: "4px", cursor:"pointer"}}
             alt="Bell"
           />
 
@@ -255,13 +263,177 @@ const Header = ({ setShowText, setShowmap }) => {
                 padding: "6px",
                 color: "#da1e28",
                 alignItems: "start",
+                
                 paddingTop: "2px",
+                cursor:"pointer"
               }}
             >
-              3{/* 3<sup>+</sup> */}
-        {/* </Typography>
-          </div> */}
-        {/* </div>  */}
+              3
+        </Typography>
+        <Drawer title='Notification' open={visible} onClose={onClose} style={{overflow:"auto"}}>
+              <div className="notification_header" style={{marginLeft:"20px",marginTop:"22px", display:"flex", gap:"10px"}}>
+                  <img src={notificationIcon} style={{
+                    width:"18.88px",
+                    height:"18.64px",
+                  }}/>
+                  <p style={{
+                    fontSize:"15px",
+                    fontWeight:"500",
+                    letterSpacing:".01em",
+                    lineHeight:"22px",
+                    color:"#181E25"
+                  }}>Booking Created</p>
+              </div>
+              <div className="notification_content" style={{marginLeft:"48px"}}>
+                  <p style={{
+                    fontSize:"13px",
+                    fontWeight:"400",
+                    lineHeight:"16px",
+                    width:"296px"
+                  }}>Your LCL booking # <Link className="text-decoration-none">120893000710</Link>for Nhava sheva to Jebel Ali has been created</p>
+                  <div className="timeview d-flex justify-content-space-evenly align-items-start" style={{
+                     fontSize:"13px",
+                     fontWeight:"400",
+                     lineHeight:"16px",
+                  }}>
+                    <span>
+                      <img src={greenIcon} className="me-1" style={{
+                        width:"8px",
+                        height:"8px",
+                      }} /> 
+                      1m ago
+                    </span>
+                    <span><Link style={{color:"#29333D",marginLeft:"240px"}}>view</Link></span>
+                  </div>
+              </div>
+              <div className="border" style={{
+                border:"1px solid rgb(246, 241, 241)",
+                marginTop:"25px",
+              }}></div>
+              <div className="notification_header" style={{marginLeft:"20px",marginTop:"22px", display:"flex", gap:"10px"}}>
+                  <img src={notificationIcon} style={{
+                    width:"18.88px",
+                    height:"18.64px",
+                  }}/>
+                  <p style={{
+                    fontSize:"15px",
+                    fontWeight:"500",
+                    letterSpacing:".01em",
+                    lineHeight:"22px",
+                    color:"#181E25"
+                  }}>ETD Changed</p>
+              </div>
+              <div className="notification_content" style={{marginLeft:"48px"}}>
+                  <p style={{
+                    fontSize:"13px",
+                    fontWeight:"400",
+                    lineHeight:"16px",
+                    justifyContent:"center",
+                    width:"296px"
+                  }}>Your LCL booking # <Link className="text-decoration-none">120893000710</Link>for Nhava sheva to Jebel Ali has been created</p>
+                  <div className="timeview d-flex justify-content-space-between align-items-center" style={{
+                     fontSize:"13px",
+                     fontWeight:"400",
+                     lineHeight:"16px"
+                  }}>
+                    <img src={greenIcon} className="me-1" style={{
+                        width:"8px",
+                        height:"8px",
+                      }}/> 
+                    <span>
+                      2m ago
+                    </span>
+                    <span><Link style={{color:"#29333D",marginLeft:"240px"}}>view</Link></span>
+                  </div>
+              </div>
+              <div className="border" style={{
+                border:"1px solid rgb(246, 241, 241)",
+                marginTop:"25px",
+              }}></div>
+              <div className="notification_header" style={{marginLeft:"20px",marginTop:"22px", display:"flex", gap:"10px"}}>
+                  <img src={notificationIcon} style={{
+                    width:"18.88px",
+                    height:"18.64px",
+                  }}/>
+                  <p style={{
+                    fontSize:"15px",
+                    fontWeight:"500",
+                    letterSpacing:".01em",
+                    lineHeight:"22px",
+                    color:"#181E25"
+                  }}>Booking Cancelled</p>
+              </div>
+              <div className="notification_content" style={{marginLeft:"48px"}}>
+                  <p style={{
+                    fontSize:"13px",
+                    fontWeight:"400",
+                    lineHeight:"16px",
+                    justifyContent:"center",
+                    width:"296px"
+                  }}>Your booking <Link className="text-decoration-none">#25986</Link> #25986 for Nhava Sheva to Jebal ali has been created.</p>
+                  <div className="timeview d-flex justify-content-space-between align-items-center" style={{
+                     fontSize:"13px",
+                     fontWeight:"400",
+                     lineHeight:"16px"
+                  }}>
+                    <img src={greenIcon} className="me-1" style={{
+                        width:"8px",
+                        height:"8px",
+                      }}/> 
+                    <span>
+                      2 Month ago
+                    </span>
+                    <span><Link style={{color:"#29333D",marginLeft:"210px"}}>view</Link></span>
+                  </div>
+              </div>
+              <div className="border" style={{
+                border:"1px solid rgb(246, 241, 241)",
+                marginTop:"25px",
+              }}></div>
+              <div className="bgnotification" style={{
+                // backgroundColor:"gray",
+                // padding:"20px 15px 20px 15px"
+              }}>
+              <div className="notification_header" style={{marginLeft:"20px",marginTop:"22px", display:"flex", gap:"10px"}}>
+                  <img src={notificationIcon} style={{
+                    width:"18.88px",
+                    height:"18.64px",
+                  }}/>
+                  <p style={{
+                    fontSize:"15px",
+                    fontWeight:"500",
+                    letterSpacing:".01em",
+                    lineHeight:"22px",
+                    color:"#181E25"
+                  }}>Booking Created</p>
+              </div>
+              <div className="notification_content" style={{marginLeft:"48px"}}>
+                  <p style={{
+                    fontSize:"13px",
+                    fontWeight:"400",
+                    lineHeight:"16px",
+                    justifyContent:"center",
+                    width:"296px"
+                  }}>Your booking <Link className="text-decoration-none">#25986</Link> #25986 for Nhava Sheva to Jebal ali has been created.</p>
+                  <div className="timeview d-flex justify-content-space-between align-items-center" style={{
+                     fontSize:"13px",
+                     fontWeight:"400",
+                     lineHeight:"16px"
+                  }}>
+                    <img src={greenIcon} className="me-1" style={{
+                        width:"8px",
+                        height:"8px",
+                      }}/> 
+                    <span>
+                      2 Month ago
+                    </span>
+                    {/* <span><Link style={{color:"#29333D",marginLeft:"200px"}}>view</Link></span> */}
+                  </div>
+              </div>
+              </div>
+        </Drawer>
+          </div>
+       </div> 
         <Dropdown
           menu={{
             items,
@@ -301,5 +473,6 @@ const Header = ({ setShowText, setShowmap }) => {
     </div>
   );
 };
+
 
 export default Header;
