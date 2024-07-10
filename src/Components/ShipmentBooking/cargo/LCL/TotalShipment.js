@@ -16,13 +16,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import "../cargo.css";
 import minus from "../../../../assets/9021673_minus_bold_icon 1.svg";
 import plus from "../../../../assets/material-symbols_add-rounded.svg";
-import { Input, Select as AntSelect, Space, Button } from "antd";
+import { Input, Select as AntSelect, Space, Button, Tooltip } from "antd";
 import { Option } from "antd/es/mentions";
 import deletedicon from "../../../../assets/ic_outline-delete.svg";
 import editicon from "../../../../assets/editpencil.f11da97f.svg";
 
 const TotalShipment = ({ onClose }) => {
   const [exim, setexim] = useState("I");
+  const [openTooltip, setopenTooltip] = useState(false)
   console.log(exim);
   const [inputFields, setInputFields] = useState(
     JSON.parse(localStorage.getItem("inpfields")) || [{}]
@@ -60,6 +61,8 @@ const TotalShipment = ({ onClose }) => {
   console.log(editeddata);
   console.log(saveddatas);
   console.log(inputFields.length);
+  const IsError = [errors.no_of_units,errors.total_volume,errors.total_weight].some(Boolean)
+  console.log(IsError)
   const canAdd = [
     tsDatas.no_of_units,
     tsDatas.total_volume,
@@ -1153,28 +1156,30 @@ const TotalShipment = ({ onClose }) => {
         </React.Fragment>
       ))}
       {/* <button className="btn" onClick={handleAddLoad} disabled={true} > */}
-      <Button
-        style={{
-          border: "none",
-          background: "none",
-          opacity: !CanField ? "1" : canAdd ? "1" : ".5",
-          boxShadow: "unset",
-        }}
-        onClick={handleAddLoad}
-        disabled={!CanField ? false : !canAdd}
-      >
-        <Typography
-          sx={{
-            fontWeight: "400",
-            fontSize: "13px",
-            lineHeight: "19px",
-            letterSpacing: ".01em",
-            color: "rgba(73, 90, 110, 1)",
+      <Tooltip placement="top" title={"Please add proper details for previous loads"} trigger={IsError || !canAdd && "hover"} >
+        <Button
+          style={{
+            border: "none",
+            background: "none",
+            opacity: !CanField ? "1" : canAdd && !IsError ? "1" : ".5",
+            boxShadow: "unset",
           }}
+          onClick={handleAddLoad}
+          disabled={!CanField ? false : !canAdd || IsError}
         >
-          + Add Another Load
-        </Typography>
-      </Button>
+          <Typography
+            sx={{
+              fontWeight: "400",
+              fontSize: "13px",
+              lineHeight: "19px",
+              letterSpacing: ".01em",
+              color: "rgba(73, 90, 110, 1)",
+            }}
+          >
+            + Add Another Load
+          </Typography>
+        </Button>
+      </Tooltip>
       {/* </button> */}
 
       <div className="my-3 d-flex justify-content-between">
