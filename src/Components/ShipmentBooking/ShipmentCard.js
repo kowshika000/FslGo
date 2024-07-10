@@ -76,6 +76,7 @@ const ShipmentCard = ({ setShowReselt }) => {
     is_stackable: "",
     is_insurance: "",
     UID: "15085",
+    currency: "USD"
   };
   const handleSearch = () => {
     setShowReselt(true);
