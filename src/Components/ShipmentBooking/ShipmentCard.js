@@ -12,11 +12,14 @@ import { Link } from "react-router-dom";
 import Line from "../../assets/line.png";
 import { SearchOutlined } from "@ant-design/icons";
 import Arrow from "../../assets/arrow.png";
+import { useDispatch } from "react-redux";
+import { FindNewRateRequest } from "../../Redux/Actions/FindNewRateAction";
 
-const ShipmentCard = () => {
+const ShipmentCard = ({ setShowReselt }) => {
+  const dispatch = useDispatch();
   const [destination, setDestination] = useState("");
   const [isCargoOpen, setIsCargoOpen] = useState(false);
-  const [active,setActive] = useState(false)
+  const [active, setActive] = useState(false);
   const cargoRef = useRef(null);
   const [originPortOptionsVisible, setOriginPortOptionsVisible] =
     useState(false);
@@ -38,7 +41,47 @@ const ShipmentCard = () => {
   };
 
   const [error, seterror] = useState();
-
+  const inputdata = {
+    freight_mode: "S",
+    lcl_fcl_air: "LCL",
+    import_export: "I",
+    package_type: "BOX",
+    no_of_units: "10",
+    total_volume: "2",
+    total_weight: "222",
+    lcl_dimensions: [
+      {
+        length: 0,
+        width: 0,
+        height: 0,
+        type: "KG",
+      },
+    ],
+    fcl_dimensions: [
+      {
+        container_type: "",
+        no_of_containers: 0,
+      },
+    ],
+    volume_type: "KG",
+    weight_type: "CBM",
+    origin: "CNNGB",
+    destination: "AEJEA",
+    origin_country_code: "CN",
+    dest_country_code: "AE",
+    TOS: "FOB",
+    is_pickup_req: "",
+    pickup_place: "",
+    is_hazardous: "",
+    is_stackable: "",
+    is_insurance: "",
+    UID: "15085",
+    currency: "USD"
+  };
+  const handleSearch = () => {
+    setShowReselt(true);
+    dispatch(FindNewRateRequest({ inputdata }));
+  };
   return (
     <div>
       <div
@@ -94,6 +137,7 @@ const ShipmentCard = () => {
           <div
             style={{ minWidth: "5%" }}
             className="d-flex align-content-center justify-content-around align-items-center"
+            onClick={handleSearch}
           >
             <div style={{ alignContent: "center" }}>
               <div

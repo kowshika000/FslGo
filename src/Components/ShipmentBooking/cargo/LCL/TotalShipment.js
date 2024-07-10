@@ -10,19 +10,21 @@ import {
   FormControlLabel,
   RadioGroup,
   Box,
+  FormHelperText,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import "../cargo.css";
 import minus from "../../../../assets/9021673_minus_bold_icon 1.svg";
 import plus from "../../../../assets/material-symbols_add-rounded.svg";
-import { Input, Select as AntSelect, Space, Button } from "antd";
+import { Input, Select as AntSelect, Space, Button, Tooltip } from "antd";
 import { Option } from "antd/es/mentions";
 import deletedicon from "../../../../assets/ic_outline-delete.svg";
 import editicon from "../../../../assets/editpencil.f11da97f.svg";
 
 const TotalShipment = ({ onClose }) => {
-  const [exim, setexim] = useState("I")
-  console.log(exim)
+  const [exim, setexim] = useState("I");
+  const [openTooltip, setopenTooltip] = useState(false)
+  console.log(exim);
   const [inputFields, setInputFields] = useState(
     JSON.parse(localStorage.getItem("inpfields")) || [{}]
   );
@@ -31,6 +33,12 @@ const TotalShipment = ({ onClose }) => {
   );
   const [editeddata, setediteddata] = useState({});
   const [editedId, seteditedId] = useState("");
+  const [errors, seterrors] = useState({
+    no_of_units: false,
+    total_volume: false,
+    total_weight: false,
+  });
+  console.log(errors);
   const initialData = {
     package_type: "BOX",
     no_of_units: "",
@@ -49,11 +57,12 @@ const TotalShipment = ({ onClose }) => {
     volume_type: "CBM",
     weight_type: "KG",
   });
-  // const [tseditedDatas, settseditedDatas] = useState(editeddata[0]);
-  // console.log(tseditedDatas)
+
   console.log(editeddata);
   console.log(saveddatas);
   console.log(inputFields.length);
+  const IsError = [errors.no_of_units,errors.total_volume,errors.total_weight].some(Boolean)
+  console.log(IsError)
   const canAdd = [
     tsDatas.no_of_units,
     tsDatas.total_volume,
@@ -88,14 +97,19 @@ const TotalShipment = ({ onClose }) => {
     localStorage.setItem("tsDatas", JSON.stringify(saveddatas));
     localStorage.setItem("inpfields", JSON.stringify(inputFields));
   }, [saveddatas, inputFields]);
-  // useEffect(() => {
-  //   localStorage.setItem("tsDatas",JSON.stringify(saveddatas))
-  // }, [input])
 
   //This is for create new form data
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log(typeof value)
+    settsDatas((prev) => {
+      return { ...prev, [name]: parseInt(value) };
+    });
+  };
+  const handlePackChange = (e) => {
+    const { name, value } = e.target;
+    console.log(typeof value)
     settsDatas((prev) => {
       return { ...prev, [name]: value };
     });
@@ -164,8 +178,15 @@ const TotalShipment = ({ onClose }) => {
     if (inputFields.length > 0) {
       setsaveddatas([
         ...saveddatas,
-        { ...tsDatas, id: saveddatas.length < 1 ? 1 : saveddatas.length + 1 },
+        {
+          ...tsDatas,
+          id:
+            saveddatas.length < 1
+              ? 1
+              : saveddatas[saveddatas.length - 1].id + 1,
+        },
       ]);
+      // handleSave()
       settsDatas(initialData);
     }
     setInputFields([{}]);
@@ -181,19 +202,19 @@ const TotalShipment = ({ onClose }) => {
   };
 
   const handleDelete = (e, id) => {
-    e.preventDefault();
+    // e.preventDefault();
     console.log(id);
     const filteredData = saveddatas.filter((i) => i.id !== id);
     console.log(filteredData);
     setsaveddatas(filteredData);
-    setediteddata({});
+    // setediteddata({});
     if (saveddatas.length === 1) {
       setInputFields([{}]);
     }
     // setsaveddatas(saveddatas.filter((_,i) => i !== index));
   };
   const handleEdit = (e, id) => {
-    e.preventDefault();
+    // e.preventDefault();
     console.log("edited");
     console.log(id);
     const filteredData = saveddatas.filter((i) => i.id === id);
@@ -209,7 +230,11 @@ const TotalShipment = ({ onClose }) => {
   const handleSave = () => {
     setsaveddatas([
       ...saveddatas,
-      { ...tsDatas, id: saveddatas.length < 1 ? 1 : saveddatas.length + 1 },
+      {
+        ...tsDatas,
+        id:
+          saveddatas.length < 1 ? 1 : saveddatas[saveddatas.length - 1].id + 1,
+      },
     ]);
     settsDatas(initialData);
     setInputFields([]);
@@ -364,6 +389,7 @@ const TotalShipment = ({ onClose }) => {
                 {editedId !== item.id && (
                   <img
                     src={editicon}
+                    role="button"
                     alt="edit"
                     className="me-1"
                     onClick={(e) => handleEdit(e, item.id)}
@@ -371,6 +397,7 @@ const TotalShipment = ({ onClose }) => {
                 )}
                 <img
                   src={deletedicon}
+                  role="button"
                   alt="delete"
                   onClick={(e) => handleDelete(e, item.id)}
                 />
@@ -740,6 +767,7 @@ const TotalShipment = ({ onClose }) => {
                 <span style={{ float: "inline-end" }}>
                   <img
                     src={deletedicon}
+                    role="button"
                     alt="delete"
                     onClick={handleCloseLoad}
                   />
@@ -768,7 +796,7 @@ const TotalShipment = ({ onClose }) => {
                     // id="demo-simple-select"
                     // label="Age"
                     value={tsDatas.package_type}
-                    onChange={handleChange}
+                    onChange={handlePackChange}
                     name="package_type"
                     displayEmpty
                     inputProps={{ "aria-label": "Without label" }}
@@ -795,6 +823,7 @@ const TotalShipment = ({ onClose }) => {
                   style={{
                     border: "1px solid rgba(207, 214, 223, 1)",
                     height: "45px",
+                    borderColor: errors.no_of_units ? "red" : null,
                   }}
                 >
                   <input
@@ -811,6 +840,15 @@ const TotalShipment = ({ onClose }) => {
                         e.preventDefault();
                       }
                     }}
+                    onBlur={() =>
+                      tsDatas?.no_of_units < 0 || tsDatas?.no_of_units > 999
+                        ? seterrors((prev) => {
+                            return { ...prev, no_of_units: true };
+                          })
+                        : seterrors((prev) => {
+                            return { ...prev, no_of_units: false };
+                          })
+                    }
                     // onWheel={(e) => e.target.blur()}
                     // value={noofunits ? noofunits : ""}
                     value={tsDatas?.no_of_units}
@@ -855,6 +893,13 @@ const TotalShipment = ({ onClose }) => {
                     <img src={plus} alt="add" />
                   </button>
                 </div>
+                <FormHelperText style={{ color: "red", fontStyle: "italic" }}>
+                  {errors.no_of_units && tsDatas.no_of_units > 999
+                    ? "Maximum 999 allowed"
+                    : tsDatas.no_of_units < 0
+                    ? "Min 1"
+                    : null}
+                </FormHelperText>
               </div>
             </div>
             <div className="d-flex">
@@ -874,7 +919,7 @@ const TotalShipment = ({ onClose }) => {
                   <Input size="large" addonAfter={selectAfter} defaultValue="CM" />
               </Space> */}
                 <div
-                  style={{ height: "42px" }}
+                  style={{ height: "42px",borderColor: errors.total_volume ? "red" : null, }}
                   className="btn-group "
                   role="group"
                   aria-label="Button group with nested dropdown"
@@ -891,6 +936,15 @@ const TotalShipment = ({ onClose }) => {
                         e.preventDefault();
                       }
                     }}
+                    onBlur={() =>
+                      tsDatas?.total_volume > 15
+                        ? seterrors((prev) => {
+                            return { ...prev,total_volume: true };
+                          })
+                        : seterrors((prev) => {
+                            return { ...prev,total_volume: false };
+                          })
+                    }
                     className="placeholder_style"
                     style={{
                       border: "1px solid rgba(207, 214, 223, 1)",
@@ -934,6 +988,7 @@ const TotalShipment = ({ onClose }) => {
                       <MenuItem value="CFT">CFT</MenuItem>
                     </Select>
                   </FormControl>
+                  
                   {/* <div className="btn-group" role="group">
                   <button
                     id="btnGroupDrop1"
@@ -959,6 +1014,11 @@ const TotalShipment = ({ onClose }) => {
                   </div>
                 </div> */}
                 </div>
+                <FormHelperText style={{ color: "red", fontStyle: "italic" }}>
+                  {errors.total_volume && tsDatas.total_volume > 15
+                    && "Maximum 15CBM"
+                    }
+                </FormHelperText>
               </div>
               <div className="w-50 mb-3 ms-3 me-0">
                 <Typography
@@ -973,7 +1033,7 @@ const TotalShipment = ({ onClose }) => {
                   Total Weight
                 </Typography>
                 <div
-                  style={{ height: "42px" }}
+                  style={{ height: "42px",border:errors.total_weight && "1px solid red" }}
                   className="btn-group"
                   role="group"
                   aria-label="Button group with nested dropdown"
@@ -990,6 +1050,15 @@ const TotalShipment = ({ onClose }) => {
                         e.preventDefault();
                       }
                     }}
+                    onBlur={() =>
+                      tsDatas?.total_weight < 10 || tsDatas?.total_weight > 15000
+                        ? seterrors((prev) => {
+                            return { ...prev, total_weight: true };
+                          })
+                        : seterrors((prev) => {
+                            return { ...prev, total_weight: false };
+                          })
+                    }
                     style={{
                       border: "1px solid rgba(207, 214, 223, 1)",
                       borderTopLeftRadius: "5px",
@@ -1055,9 +1124,19 @@ const TotalShipment = ({ onClose }) => {
                     </a>
                   </div>
                 </div> */}
-                </div>
+                </div>   
+                {console.log(errors.total_weight)}
+                <FormHelperText style={{ color: "red", fontStyle: "italic" }}>
+                {errors.total_weight && (tsDatas.total_weight > 15000
+                    ? "Maximum 15000KG"
+                    : tsDatas.total_weight < 10
+                    ? "Min 10KG"
+                    : null)}
+                </FormHelperText>    
               </div>
+              
             </div>
+            
             {saveddatas.length > 0 && (
               <Button
                 style={{
@@ -1077,28 +1156,30 @@ const TotalShipment = ({ onClose }) => {
         </React.Fragment>
       ))}
       {/* <button className="btn" onClick={handleAddLoad} disabled={true} > */}
-      <Button
-        style={{
-          border: "none",
-          background: "none",
-          opacity: !CanField ? "1" : canAdd ? "1" : ".5",
-          boxShadow: "unset",
-        }}
-        onClick={handleAddLoad}
-        disabled={!CanField ? false : !canAdd}
-      >
-        <Typography
-          sx={{
-            fontWeight: "400",
-            fontSize: "13px",
-            lineHeight: "19px",
-            letterSpacing: ".01em",
-            color: "rgba(73, 90, 110, 1)",
+      <Tooltip placement="top" title={"Please add proper details for previous loads"} trigger={IsError || !canAdd && "hover"} >
+        <Button
+          style={{
+            border: "none",
+            background: "none",
+            opacity: !CanField ? "1" : canAdd && !IsError ? "1" : ".5",
+            boxShadow: "unset",
           }}
+          onClick={handleAddLoad}
+          disabled={!CanField ? false : !canAdd || IsError}
         >
-          + Add Another Load
-        </Typography>
-      </Button>
+          <Typography
+            sx={{
+              fontWeight: "400",
+              fontSize: "13px",
+              lineHeight: "19px",
+              letterSpacing: ".01em",
+              color: "rgba(73, 90, 110, 1)",
+            }}
+          >
+            + Add Another Load
+          </Typography>
+        </Button>
+      </Tooltip>
       {/* </button> */}
 
       <div className="my-3 d-flex justify-content-between">
@@ -1144,7 +1225,7 @@ const TotalShipment = ({ onClose }) => {
                 <Radio
                   name="import_export"
                   value="I"
-                  onChange={(e)=>setexim(e.target.value)}
+                  onChange={(e) => setexim(e.target.value)}
                   size="small"
                   label="Import"
                   sx={{
@@ -1171,7 +1252,7 @@ const TotalShipment = ({ onClose }) => {
                 <Radio
                   name="import_export"
                   value="E"
-                  onChange={(e)=>setexim(e.target.value)}
+                  onChange={(e) => setexim(e.target.value)}
                   size="small"
                   label="Export"
                   sx={{
