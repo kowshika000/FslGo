@@ -11,6 +11,7 @@ import CargoPickupPopOver from "./CargoPickupPopOver";
 import CargoDeliveryPopOver from "./CargoDeliveryPopOver";
 import pencil from "../../../../../assets/Pencil.svg";
 import img from "../../../../../assets/thumbsgr.svg";
+import uparrow from "../../../../../assets/uparrowcargo.svg"
 
 function FindNewRate() {
   const [checkedItems, setCheckedItems] = useState({
@@ -215,7 +216,7 @@ function FindNewRate() {
               vname="originCharges"
               checked={checkedItems.originCharges}
               value="originCharges"
-              tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+              tooltipText="This includes Origin documentation, Port/Airport handling."
               onChange={onChange}
             />
             <FilterCheckbox
@@ -223,7 +224,7 @@ function FindNewRate() {
               checked={checkedItems.exportClearance}
               value="exportClearance"
               vname="exportClearance"
-              tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+              tooltipText="Charges for filing with Export customs."
               onChange={onChange}
             >
               <span>
@@ -235,7 +236,7 @@ function FindNewRate() {
               checked={checkedItems.cargoPickup}
               value="cargoPickup"
               vname="cargoPickup"
-              tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+              tooltipText="Transportation from factory/warehouse to Port/Airport."
               onChange={onChange}
             />
             <FilterCheckbox
@@ -243,7 +244,7 @@ function FindNewRate() {
               value="internationalFreight"
               vname="internationalFreight"
               // checked={checkedItems.internationalFreight}
-              tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+              tooltipText="Transportation from Origin port to Destination port."
               onChange={onChange}
               defaultChecked={true}
               disabled={true}
@@ -265,7 +266,7 @@ function FindNewRate() {
               checked={checkedItems.DestinationCharges}
               value="DestinationCharges"
               vname="DestinationCharges"
-              tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+              tooltipText="This includes destination documentation, Port/Airport handling."
               onChange={onChange}
             />
             <FilterCheckbox
@@ -273,7 +274,7 @@ function FindNewRate() {
               checked={checkedItems.ImportClearance}
               value="ImportClearance"
               vname="ImportClearance"
-              tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+              tooltipText="Charges only for Import clearance, duties and taxes will be billed as per receipt."
               onChange={onChange}
             >
               <span>
@@ -285,7 +286,7 @@ function FindNewRate() {
               checked={checkedItems.CargoDelivery}
               value="CargoDelivery"
               vname="CargoDelivery"
-              tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+              tooltipText="Transportation from Port/Airport to Factory/Warehouse."
               onChange={onChange}
             />
           </div>
@@ -305,7 +306,7 @@ function FindNewRate() {
               checked={checkedItems.CargoInsurance}
               value="CargoInsurance"
               vname="CargoInsurance"
-              tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+              tooltipText="Insurance that generally protects shipments from loss, damage, or theft while in transit. The cargo insurance coverage includes events mentioned in the policy like vehicle accidents, cargo renunciation, damage due to natural calamities, acts of war, piracy, etc."
               onChange={onChange}
             >
               <span>
@@ -329,7 +330,7 @@ function FindNewRate() {
               checked={checkedItems.StackableCargo}
               value="StackableCargo"
               vname="StackableCargo"
-              tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+              tooltipText="Cargo will be stacked. If your cargo is non-stackable rates will change."
               onChange={onChange}
             />
             <FilterCheckbox
@@ -337,7 +338,7 @@ function FindNewRate() {
               checked={checkedItems.NonHarzardousCargo}
               value="NonHarzardousCargo"
               vname="NonHarzardousCargo"
-              tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+              tooltipText="Cargo should not have any hazardous substances. Cargo is not corrosive, toxic, flammable, or reactive and does not require a warning label."
               onChange={onChange}
             />
           </div>
@@ -347,7 +348,7 @@ function FindNewRate() {
   ];
 
   const customExpandIcon = ({ isActive }) =>
-    isActive ? <UpOutlined /> : <DownOutlined />;
+    isActive ? <Image src={uparrow} alt="arrow"/> : <DownOutlined />;
 
   return (
     <div
@@ -356,11 +357,14 @@ function FindNewRate() {
         minWidth: "1255px",
         padding: "20px",
         backgroundColor: "#f3f5f7",
-        marginTop: "100px",
+        // marginTop: "100px",
       }}
     >
       <div className="quotationresult-div mx-auto">
-        <div className="quotationresult-leftdiv" style={{ flex: "0 0 272px" }}>
+        <div
+          className="quotationresult-leftdiv"
+          style={{ flex: "0 0 272px", height: "100vh" }}
+        >
           <Card title="Service Included">
             <div className="Service-card">
               <Collapse

@@ -181,7 +181,8 @@ function ShipmentTracker() {
                         color: "#181E25",
                       }}
                     >
-                      9 Days (5 Days Port to Port)
+                      {data?.total_transit_time} Days ({data?.transit_time} Days
+                      Port to Port)
                     </span>
                   </p>
                 </div>
@@ -259,7 +260,9 @@ function ShipmentTracker() {
                   <p className="p-value">{data.arrival}</p>
                 </div>
               </div>
-              {showCharges === index && <ShowChargesModal />}
+              {showCharges === index && (
+                <ShowChargesModal FindNRate={FindNRate} />
+              )}
               <div className="d-flex align-items-center">
                 <div>
                   <p
@@ -278,10 +281,10 @@ function ShipmentTracker() {
                     {showCharges === index ? "Hide" : "Show"} Charges Breakdown
                   </p>
                 </div>
-                <div className="lock-btn ms-auto me-2">
+                {/* <div className="lock-btn ms-auto me-2">
                   Lock Price at {data.Price}
-                </div>
-                <div className="book-btn">Book Now</div>
+                </div> */}
+                <div className="book-btn ms-auto">Book Now</div>
               </div>
             </Card>
           )
