@@ -18,6 +18,8 @@ import DsrReportReducer from './DsrReportReducer';
 import saveDsrReducer from './SaveDstReducer';
 import DsrDownloadReducer from './DsrDownloadReducer';
 import DsrScheduleReducer from './DsrScheduleReducer';
+import allportReducer from './AllPortReducer';
+import FindNewRateReducer from './FindNewRateReducer';
 import NotificationReducer from './NotificationReducer';
 
 const rootReducer = combineReducers({
@@ -38,6 +40,10 @@ const rootReducer = combineReducers({
     UpdatePassword: UpdatePasswordReducer,
     DsrReport: DsrReportReducer,
     SaveDsr: saveDsrReducer,
+    DsrDownload: DsrDownloadReducer,
+    DsrSchedule: DsrScheduleReducer,
+    allPort: allportReducer,
+    findRate:FindNewRateReducer,
     DsrDownload:DsrDownloadReducer,
     DsrSchedule:DsrScheduleReducer,
     Notification:NotificationReducer,

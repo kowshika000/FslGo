@@ -17,7 +17,6 @@ function* NotificationSaga({ payload }) {
   };
 }
 
-
 function* WatchNotification() {
   yield takeLatest(Types.NOTIFICATION_REQUEST, NotificationSaga);
 }

@@ -1,11 +1,12 @@
-import { Dialog } from "@mui/material";
+import { Dialog, IconButton } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import ArrowCircleRightIcon from "@mui/icons-material/ArrowCircleRight";
 import { Button } from "antd";
 import { useNavigate } from "react-router-dom";
-import UploadDocument from "./UploadDocument";
+// import { CloseOutlined } from "@ant-design/icons";
+import UploadDoc from "./UploadDoc";
 
-const NewBooking = ({ open, close }) => {
+const CreateNewBooking = ({ open, close }) => {
   const [uploadDoc, setUploadDoc] = useState(false);
   const navigate = useNavigate();
 
@@ -19,12 +20,12 @@ const NewBooking = ({ open, close }) => {
         }}
       >
         <div
-          className="card m-auto"
+          className="card m-auto "
           style={{ height: "589.93px", width: "527px" }}
         >
           <div className="align-self-center my-5">
             <img
-              src="https://s3-alpha-sig.figma.com/img/2a3a/4da6/4ceac65b0a2ff744cfb424800dc07dcf?Expires=1718582400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=CsvKX7ZBdE~7O3ZDF7eQI6El3FIozdx046-02P0hdfa~sQMTULNdpbJuSGuCwygCE-GkXJkv8PFjCmOpVroOjOM7e2BJUh41beR4jAVB5ihR7Rofn1EK~NB1N5WQVuCEe89vITTA~Lxe8sDNtDZQMFFW~ypAylZ10D45OQMWG43YfjTNP44pCeWkk~FDBX954CSsQLK3~1yP5RI4t1CoGuCXcPW3VasvRRUvF5tA~136TKd16MWiaEICw~VksdGSpvZyxOd8vuh9oueKrujEbuXa7kCzYk~lZ~Pv1LlhECE5zxefSbRP-LHWvM86GeISaCzwZ8MjHzwVLbj0-rFdqw__"
+              src="https://s3-alpha-sig.figma.com/img/2a3a/4da6/4ceac65b0a2ff744cfb424800dc07dcf?Expires=1721001600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=EnZFOJMtd38-0sb2pIziCfanmSaSErGyBc5K5f3hoNgpfaWLNRyOWE8BQs7Nfm2bmQXnNW-XdamoCLwM4in~dMSXJl3kD6TCIbvi7IFWKGIi35DJPqqFCLZ~KymhsC4psdVgfLZv9zuJL-YD9B24oXmcEu2Lz-H8qaAnxqNBa21IIiVV2wJpPuwawpl-hksIGFvFJksn0roevkaB-m8c8y7c46HAC6Ri186wgpOAUiSiWx~qKwzKLEjbY8I4RX~FuJZr2X0qq-54KRycwgQmrdX9FZT5hWP8aBsMKfMwTIt-tlTcYh7E9jXpECpcOuQW09ip0v4JEarW249VlcxpnQ__"
               alt="check"
               width="179.93px"
               height="179.93px"
@@ -86,10 +87,15 @@ const NewBooking = ({ open, close }) => {
             </Button>
           </div>
         </div>
+        {/* <div style={{position:"absolute",top:"90px",left:"935px"}}>
+          <IconButton style={{color:"white"}}>
+            <CloseOutlined />
+          </IconButton>
+        </div> */}
       </div>
-      <UploadDocument open={uploadDoc} close={() => setUploadDoc(false)} />
+      <UploadDoc open={uploadDoc} close={() => setUploadDoc(false)} />
     </Dialog>
   );
 };
 
-export default NewBooking;
+export default CreateNewBooking;

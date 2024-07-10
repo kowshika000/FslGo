@@ -1,6 +1,5 @@
 import axios from "axios";
 import { environment } from "../Environment/Environment";
-import { token } from "./Token";
 import Cookies from "js-cookie";
 const baseURL = environment.serverURL;
 

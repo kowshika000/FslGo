@@ -8,7 +8,6 @@ function* OpenSailingSaga({ payload }) {
     const openSailingesponse = yield call(OpenSailingService, payload);
     const response = openSailingesponse.data;
     console.log('Saga received response:', response);
-    console.log(response)
     yield put({
       type: Types.OPENSAILING_SUCCESS,
       payload: response

@@ -1,38 +1,47 @@
-import React, { useState } from "react";
-import Navbar from "../../../../Layout/Navbar";
-import { Card, Checkbox } from "antd";
+import React, { useState, useEffect, useRef } from "react";
+import { Button, Card, Checkbox, Popover, Image } from "antd";
 import "./FindNewRate.css";
 import ShipmentTracker from "./ShipmentTracker";
-import Location from "../../../../../assets/location.svg";
 import info from "../../../../../assets/Info.svg";
 import { Tooltip } from "antd";
-import arrow from "../../../../../assets/arrow.png";
-import ExpandLessIcon from "@mui/icons-material/ExpandLess";
-import Search from "../../../../../assets/Search.png";
-import img from "../../../../../assets/Framethumbs.png";
 import QuoteRequest from "./QuoteRequest";
 import { Collapse } from "antd";
 import { DownOutlined, UpOutlined } from "@ant-design/icons";
+import CargoPickupPopOver from "./CargoPickupPopOver";
+import pencil from "../../../../../assets/Pencil.svg";
+import img from "../../../../../assets/thumbsgr.svg";
 
 function FindNewRate() {
+  const [checkedItems, setCheckedItems] = useState({
+    originCharges: false,
+    exportClearance: false,
+    cargoPickup: false,
+    internationalFreight: false,
+    DestinationCharges: false,
+    ImportClearance: false,
+    CargoDelivery: false,
+    CargoInsurance: false,
+    StackableCargo: false,
+    NonHarzardousCargo: false
+  });
+  const [isPopoverOpen, setPopoverOpen] = useState(true);
+
   const onChange = (e) => {
-    console.log(`checked = ${e.target.checked}`);
+    if (e.target.name !== "cargoPickup") {
+      setPopoverOpen(false);
+    } else {
+      setPopoverOpen(true);
+    }
+    const { value, checked } = e.target;
+    setCheckedItems({
+      ...checkedItems,
+      [value]: checked,
+    });
   };
   const onChangeCollapse = (key) => {
     console.log(key);
   };
   const Details = [
-    {
-      id: "0",
-      Vessel: "X-PRESS ALTAIR",
-      Voyage: "23017",
-      Cutoff: "19-May-2023",
-      Departure: "23-May-2023",
-      Arrival: "23-May-2023",
-      validity: "16 May 2023",
-      Price: "$50",
-      TotalPrice: "$300",
-    },
     {
       id: "1",
       Vessel: "NORTHERN DEDICATION",
@@ -100,61 +109,181 @@ function FindNewRate() {
       TotalPrice: "$380",
     },
   ];
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [checkedItems]);
+
+  const [selectedValue, setSelectedValue] = useState("");
+  console.log(`selectedjhgfds ${selectedValue}`);
+
+  const FilterCheckbox = ({
+    label,
+    tooltipText,
+    onChange,
+    value,
+    checked,
+    children,
+    vname,
+    disabled,
+    defaultChecked
+  }) => {
+    const handlePopoverOpenChange = (open) => {
+      setPopoverOpen(open);
+    };
+    const handleButtonClick = () => {
+      setPopoverOpen(true);
+    };
+    return (
+      <div className="filter-quotation">
+        {value === "cargoPickup" &&
+          checkedItems.cargoPickup &&
+          isPopoverOpen && (
+            <>
+              <div className="dimmed-background"></div>
+            </>
+          )}
+        <div className="filter-quotation-wrapper">
+          <div className="singlefilter-leftstyling">
+            <div className="div-rowcentered">
+              <Checkbox
+                onChange={onChange}
+                value={value}
+                checked={checked}
+                name={vname}
+                disabled={disabled}
+                defaultChecked={defaultChecked}
+              >
+                {label}
+                {children}
+              </Checkbox>
+            </div>
+            <div
+              className="div-rowcentered"
+              style={{ justifyContent: "flex-start" }}
+            >
+              <Tooltip placement="topLeft" title={tooltipText}>
+                <span style={{ float: "right" }} role="button">
+                  <img src={info} alt="more" />
+                </span>
+              </Tooltip>
+            </div>
+          </div>
+          {value === "cargoPickup" && checkedItems.cargoPickup && (
+            <div
+              className="div-rowcentered justify-atstart displaycheckbox-value"
+              style={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              {!isPopoverOpen && (
+                <h6
+                  style={{
+                    fontWeight: "400",
+                    fontSize: "12px",
+                    lineHeight: "18px",
+                    letterSpacing: "1%",
+                    color: "#384656",
+                    marginBottom: "0px",
+                  }}
+                >
+                  ZIP Code :&nbsp;&nbsp;
+                  <span
+                    style={{
+                      fontWeight: "500",
+                      fontSize: "13px",
+                      lineHeight: "19px",
+                      color: "#384656",
+                      letterSpacing: "1%",
+                    }}
+                  >
+                    {selectedValue}
+                  </span>
+                </h6>
+              )}
+              <Popover
+                placement="bottom"
+                content={
+                  <CargoPickupPopOver
+                    setSelectedValue={setSelectedValue}
+                    setPopoverOpen={setPopoverOpen}
+                  />
+                }
+                open={isPopoverOpen}
+                onOpenChange={handlePopoverOpenChange}
+                trigger="click"
+              >
+                <Button
+                  type="link"
+                  className={`editpencil-btn ${
+                    selectedValue && !isPopoverOpen ? "ms-auto" : ""
+                  }`}
+                  style={{
+                    position: "relative",
+                    width: "20.6px",
+                    height: "32px",
+                    bordeRadius: "6px",
+                    padding: "1px",
+                  }}
+                  onClick={handleButtonClick}
+                >
+                  <Image src={pencil} alt="pencil" preview={false} />
+                </Button>
+              </Popover>
+            </div>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   const item1 = [
     {
       key: "1",
       label: "Origin",
       children: (
         <>
-          <p>
-            <Checkbox onChange={onChange}>Origin Charges</Checkbox>
-            <Tooltip
-              placement="topLeft"
-              title="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+          <div className="filterouter-leftdiv">
+            <FilterCheckbox
+              label="Origin Charges"
+              vname="originCharges"
+              checked={checkedItems.originCharges}
+              value="originCharges"
+              tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+              onChange={onChange}
+            />
+            <FilterCheckbox
+              label="Export Clearance"
+              checked={checkedItems.exportClearance}
+              value="exportClearance"
+              vname="exportClearance"
+              tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+              onChange={onChange}
             >
-              <span style={{ float: "right" }} role="button">
-                <img src={info} alt="more" />
-              </span>
-            </Tooltip>
-          </p>
-          <p>
-            <Checkbox onChange={onChange}>
-              Export Clearance
               <span>
                 <img src={img} alt="icon" className="ms-2 mb-1" />
               </span>
-            </Checkbox>
-            <Tooltip
-              placement="topLeft"
-              title="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
-            >
-              <span style={{ float: "right" }} role="button">
-                <img src={info} alt="more" />
-              </span>
-            </Tooltip>
-          </p>
-          <p>
-            <Checkbox onChange={onChange}>Cargo Pickup</Checkbox>
-            <Tooltip
-              placement="topLeft"
-              title="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
-            >
-              <span style={{ float: "right" }} role="button">
-                <img src={info} alt="more" />
-              </span>
-            </Tooltip>
-          </p>
-          <p>
-            <Checkbox onChange={onChange}>International Freight</Checkbox>
-            <Tooltip
-              placement="topLeft"
-              title="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
-            >
-              <span style={{ float: "right" }} role="button">
-                <img src={info} alt="more" />
-              </span>
-            </Tooltip>
-          </p>
+            </FilterCheckbox>
+            <FilterCheckbox
+              label="Cargo Pickup"
+              checked={checkedItems.cargoPickup}
+              value="cargoPickup"
+              vname="cargoPickup"
+              tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+              onChange={onChange}
+            />
+            <FilterCheckbox
+              label="International Freight"
+              value="internationalFreight"
+              vname="internationalFreight"
+              // checked={checkedItems.internationalFreight}
+              tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+              onChange={onChange}
+              defaultChecked={true}
+              disabled={true}
+            />
+          </div>
         </>
       ),
     },
@@ -165,45 +294,36 @@ function FindNewRate() {
       label: "Destination",
       children: (
         <>
-          {" "}
-          <p>
-            <Checkbox onChange={onChange}>Destination Charges</Checkbox>
-            <Tooltip
-              placement="topLeft"
-              title="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+          <div className="filterouter-leftdiv">
+            <FilterCheckbox
+              label="Destination Charges"
+              checked={checkedItems.DestinationCharges}
+              value="DestinationCharges"
+              vname="DestinationCharges"
+              tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+              onChange={onChange}
+            />
+            <FilterCheckbox
+              label="Import Clearance"
+              checked={checkedItems.ImportClearance}
+              value="ImportClearance"
+              vname="ImportClearance"
+              tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+              onChange={onChange}
             >
-              <span style={{ float: "right" }} role="button">
-                <img src={info} alt="more" />
-              </span>
-            </Tooltip>
-          </p>
-          <p>
-            <Checkbox onChange={onChange}>
-              Import Clearance
               <span>
                 <img src={img} alt="icon" className="ms-2 mb-1" />
               </span>
-            </Checkbox>
-            <Tooltip
-              placement="topLeft"
-              title="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
-            >
-              <span style={{ float: "right" }} role="button">
-                <img src={info} alt="more" />
-              </span>
-            </Tooltip>
-          </p>
-          <p>
-            <Checkbox onChange={onChange}>Cargo Delivery</Checkbox>
-            <Tooltip
-              placement="topLeft"
-              title="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
-            >
-              <span style={{ float: "right" }} role="button">
-                <img src={info} alt="more" />
-              </span>
-            </Tooltip>
-          </p>
+            </FilterCheckbox>
+            <FilterCheckbox
+              label="Cargo Delivery"
+              checked={checkedItems.CargoDelivery}
+              value="CargoDelivery"
+              vname="CargoDelivery"
+              tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+              onChange={onChange}
+            />
+          </div>
         </>
       ),
     },
@@ -214,22 +334,20 @@ function FindNewRate() {
       label: "Value Added",
       children: (
         <>
-          <p>
-            <Checkbox onChange={onChange}>
-              Cargo Insurance
+          <div className="filterouter-leftdiv">
+            <FilterCheckbox
+              label="Cargo Insurance"
+              checked={checkedItems.CargoInsurance}
+              value="CargoInsurance"
+              vname="CargoInsurance"
+              tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+              onChange={onChange}
+            >
               <span>
                 <img src={img} alt="icon" className="ms-2 mb-1" />
               </span>
-            </Checkbox>
-            <Tooltip
-              placement="topLeft"
-              title="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
-            >
-              <span style={{ float: "right" }} role="button">
-                <img src={info} alt="more" />
-              </span>
-            </Tooltip>
-          </p>
+            </FilterCheckbox>
+          </div>
         </>
       ),
     },
@@ -240,29 +358,24 @@ function FindNewRate() {
       label: "Cargo Type",
       children: (
         <>
-          {" "}
-          <p>
-            <Checkbox onChange={onChange}>Stackable Cargo</Checkbox>
-            <Tooltip
-              placement="topLeft"
-              title="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
-            >
-              <span style={{ float: "right" }} role="button">
-                <img src={info} alt="more" />
-              </span>
-            </Tooltip>
-          </p>
-          <p>
-            <Checkbox onChange={onChange}>Non Harzardous Cargo</Checkbox>
-            <Tooltip
-              placement="topLeft"
-              title="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
-            >
-              <span style={{ float: "right" }} role="button">
-                <img src={info} alt="more" />
-              </span>
-            </Tooltip>
-          </p>
+          <div className="filterouter-leftdiv">
+            <FilterCheckbox
+              label="Stackable Cargo"
+              checked={checkedItems.StackableCargo}
+              value="StackableCargo"
+              vname="StackableCargo"
+              tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+              onChange={onChange}
+            />
+            <FilterCheckbox
+              label="Non Harzardous Cargo"
+              checked={checkedItems.NonHarzardousCargo}
+              value="NonHarzardousCargo"
+              vname="NonHarzardousCargo"
+              tooltipText="Lorem ipsum dolor sit amet consectetur. Gravida id amet id maecenas tellus."
+              onChange={onChange}
+            />
+          </div>
         </>
       ),
     },

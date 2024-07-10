@@ -9,15 +9,13 @@ import { Dropdown } from "primereact/dropdown";
 import ButtonList from "../../../assets/Button.svg";
 import Buttonfade from "../../../assets/Buttonfade.svg";
 import Group1 from "../../../assets/CButton.svg";
-import Groupfade from "../../../assets/CButtonfade.svg";
 import button16 from "../../../assets/Button16.svg";
-import FilterDrawer from "./Filter";
 import Navbar from "../../Layout/Navbar";
 import image1 from "../../../assets/Shape.svg";
 import image2 from "../../../assets/Shape1.svg";
 import image3 from "../../../assets/Shape2.svg";
 import DailyReportTable from "./DailyReport/DailyReportTable";
-import { CalendarOutlined, CaretDownOutlined } from "@ant-design/icons";
+import { CaretDownOutlined } from "@ant-design/icons";
 import cal from "../../../assets/calVector.svg";
 import ScheduleDsrModal from "./DailyReport/DailyReportModal/ScheduleDsrModal";
 import { SaveDsrReqeust } from "../../../Redux/Actions/SaveDsrAction";
@@ -26,19 +24,23 @@ import { toast } from "react-toastify";
 function BookingTabs({ showText, setShowText, setShowmap }) {
   const [searchQuery] = useState("");
   const [data, setData] = useState([]);
-  const saveSuccess = useSelector((state) => state?.SaveDsr?.savedsr?.Response);
-  console.log(saveSuccess);
   const [schedulemodal, setSchedulemodal] = useState(false);
-  const ShipmentData = useSelector((state) => state.Booking);
-  const bookingData = ShipmentData?.booking;
-  const tabCount = ShipmentData?.booking?.statuswise_count;
-  const [visible, setVisible] = useState(false);
   const [selectedButton, setSelectedButton] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [activeTab, setActiveTab] = useState("1");
-  const dispatch = useDispatch();
   const [filtercolumn, setfiltercolumn] = useState();
-  console.log(filtercolumn);
+  const [isAscending, setIsAscending] = useState(true);
+  const [filteredData, setFilteredData] = useState(data);
+  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [selectedDropdownItem, setSelectedDropdownItem] =
+    useState("Past 60 Days");
+  const [filterValue, setFilterValue] = useState(60);
+  const [filterMonthValue, setFilterMonthValue] = useState(null);
+  const dispatch = useDispatch();
+  const ShipmentData = useSelector((state) => state.Booking);
+  const bookingData = ShipmentData?.booking;
+  const tabCount = ShipmentData?.booking?.statuswise_count;
+  // const saveSuccess = useSelector((state) => state?.SaveDsr?.savedsr?.Response);
 
   let schedule;
   if (tabCount && tabCount.length > 0) {
@@ -51,8 +53,6 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
     }
   }, [bookingData]);
 
-  const [filteredData, setFilteredData] = useState(data);
-  const [selectedStatus, setSelectedStatus] = useState(null);
   const filterData = (status) => {
     if (status === "All") {
       setFilteredData(data);
@@ -69,12 +69,6 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
     );
     setFilteredData(newFilteredData);
   }, [searchQuery, data]);
-
-  const [selectedDropdownItem, setSelectedDropdownItem] =
-    useState("Past 60 Days");
-  const [filterValue, setFilterValue] = useState(60);
-
-  const [filterMonthValue, setFilterMonthValue] = useState(null);
 
   const items = [
     "Past 30 Days",
@@ -107,10 +101,23 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
   );
   const payloadofdsrdownload = {
     sl_no: Profileusertoken,
+    sorigin: "",
+    sdest: "",
+    sstatus: "",
+    sshipper: "",
+    sconsignee: "",
+    sfrmdate: "",
+    stodate: "",
+    sshipmentby: "",
+    simport_export: "",
+    scolumns: "",
+    setafrmdate: "",
+    setatodate: "",
   };
   const handleDownloadDsr = (e) => {
     e.preventDefault();
-    dispatch(DsrDownloadRequest({ payloadofdsrdownload }));
+    console.log("download")
+    // dispatch(DsrDownloadRequest({ payloadofdsrdownload }));
   };
 
   let sselectcolumn = "";
@@ -120,7 +127,6 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
   const filteredColCopy = { ...filteredCol };
   if (filteredColCopy && typeof filteredColCopy === "object") {
     sselectcolumn = Object?.values(filteredColCopy)?.join(",");
-    console.log(sselectcolumn);
   } else {
     console.error(
       "filtercolumn is not defined or not an object:",
@@ -137,12 +143,13 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
   const handleSaveDsr = (e) => {
     e.preventDefault();
     dispatch(SaveDsrReqeust({ payload }));
+    toast.success("DSR Saved Successfully");
   };
-  useEffect(() => {
-    if (saveSuccess === "SUCCESS") {
-      toast.success("DSR Saved Successfully");
-    }
-  }, [saveSuccess]);
+  // useEffect(() => {
+  //   if (saveSuccess === "SUCCESS") {
+  //     toast.success("DSR Saved Successfully");
+  //   }
+  // }, [saveSuccess]);
   const onChange = (key) => {
     setActiveTab(key);
     switch (key) {
@@ -151,9 +158,6 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
         setSelectedButton(null);
         setCurrentPage(1);
         break;
-      // case "2":
-      //   filterData(["Booked In Progress"]);
-      //   break;
       case "2":
         filterData(["Booked", "Cargo Pickup", "Cargo Received"]);
         setSelectedButton(null);
@@ -186,9 +190,7 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
     }
   };
 
-  const [isAscending, setIsAscending] = useState(true);
   const handleUpcomingDep = () => {
-    console.log("clicked upcoming departure");
     setSelectedButton("Upcoming Departures");
     const filteredDatas = data?.filter(
       (item) =>
@@ -206,7 +208,6 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
     setIsAscending(!isAscending);
   };
   const handleUpcomingArr = () => {
-    console.log("clicked upcoming departure");
     setSelectedButton("Upcoming Arrivals");
     const filteredDatas = data?.filter(
       (item) => item.status === "In Transit" || item.status === "Departed"
@@ -219,10 +220,6 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
     });
     setFilteredData(sortedData);
     setIsAscending(!isAscending);
-  };
-  console.log(filteredData, "from the upcoming status");
-  const onClose = () => {
-    setVisible(false);
   };
 
   const handleTableChange = () => {
@@ -264,6 +261,32 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
   if (dropdownbutton) {
     dropdownbutton.remove();
   }
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  const tabs = [
+    { label: `All Bookings (${schedule?.all ? schedule?.all : 0})`, key: "1" },
+    {
+      label: `Booked (${schedule?.booked ? schedule?.booked : 0})`,
+      key: "2",
+    },
+    {
+      label: `In-Transit (${schedule?.in_transit ? schedule?.in_transit : 0})`,
+      key: "3",
+    },
+    {
+      label: `Arrived (${schedule?.arrived ? schedule?.arrived : 0})`,
+      key: "4",
+    },
+    {
+      label: `Delivered (${schedule?.delivered ? schedule?.delivered : 0})`,
+      key: "5",
+    },
+    {
+      label: `Cancelled (${schedule?.cancelled ? schedule?.cancelled : 0})`,
+      key: "6",
+    },
+  ];
   return (
     <div
       className="mx-auto mb-4"
@@ -286,7 +309,7 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
           >
             Daily Status Report
           </p>
-          <Navbar setShowText={setShowText} setShowmap={setShowmap}/>
+          <Navbar setShowText={setShowText} setShowmap={setShowmap} />
         </div>
       ) : (
         <SearchHeader
@@ -305,44 +328,11 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
           <Row justify="between" style={{ height: "57px" }}>
             <Col span={19}>
               {!showText ? (
-                <Tabs activeKey={activeTab} onChange={onChange}>
-                  <Tabs.TabPane
-                    tab={`All Bookings (${schedule?.all ? schedule?.all : 0})`}
-                    key="1"
-                  />
-                  {/* <Tabs.TabPane
-                    tab={`Pending Action (${schedule?.pending})`}
-                    key="2"
-                  /> */}
-                  <Tabs.TabPane
-                    tab={`Booked (${schedule?.booked ? schedule?.booked : 0})`}
-                    key="2"
-                  />
-                  <Tabs.TabPane
-                    tab={`In-Transit (${
-                      schedule?.in_transit ? schedule?.in_transit : 0
-                    })`}
-                    key="3"
-                  />
-                  <Tabs.TabPane
-                    tab={`Arrived (${
-                      schedule?.arrived ? schedule?.arrived : 0
-                    })`}
-                    key="4"
-                  />
-                  <Tabs.TabPane
-                    tab={`Delivered (${
-                      schedule?.delivered ? schedule?.delivered : 0
-                    })`}
-                    key="5"
-                  />
-                  <Tabs.TabPane
-                    tab={`Cancelled (${
-                      schedule?.cancelled ? schedule?.cancelled : 0
-                    })`}
-                    key="6"
-                  />
-                </Tabs>
+                <Tabs
+                  activeKey={activeTab}
+                  onChange={onChange}
+                  items={tabs}
+                ></Tabs>
               ) : (
                 ""
               )}
@@ -366,7 +356,6 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
                   <Dropdown
                     value={selectedDropdownItem}
                     onChange={(e) => {
-                      console.log("Selected item:", e.value); // Add logging statement
                       setSelectedDropdownItem(e.value);
                     }}
                     options={items}
@@ -491,7 +480,6 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
           )}
         </Col>
       </Row>
-      <FilterDrawer visible={visible} onClose={onClose} />
       <ScheduleDsrModal
         open={schedulemodal}
         close={() => setSchedulemodal(false)}

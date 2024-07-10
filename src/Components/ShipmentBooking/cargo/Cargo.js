@@ -5,6 +5,7 @@ import Modal from "@mui/material/Modal";
 import '../ShipmentCard.css';
 import CargoDetails from "./CargoDetails";
 import { ReactComponent as Ship} from '../../../assets/cargo.8d7c215b.svg'
+import { Dropdown } from "primereact/dropdown";
 
 const style = {
   position: 'absolute',
@@ -18,9 +19,9 @@ const style = {
   p: 4,
 };
 
-const Cargo = () => {
+const Cargo = ({setCargoOptionsVisible, cargoOptionsVisible}) => {
   const [cargo, setCargo] = useState("");
-  const [modalOpen, setModalOpen] = useState(false);
+  // const [modalOpen, setModalOpen] = useState(false);
 
   const cargoRef = useRef(null);
 
@@ -29,17 +30,26 @@ const Cargo = () => {
     setCargo(value);
   };
 
-  const handleCargoFocus = () => {
-      setModalOpen(true);
-  };
+  // const handleCargoFocus = () => {
+  //     setModalOpen(true);
+  // };
 
-  const handleCloseModal = () => {
-    setModalOpen(false);
-  };
+  // const handleCloseModal = () => {
+  //   setModalOpen(false);
+  // };
+
+  const [selectedCity, setSelectedCity] = useState(null);
+    const cities = [
+        { name: 'New York', code: 'NY' },
+        { name: 'Rome', code: 'RM' },
+        { name: 'London', code: 'LDN' },
+        { name: 'Istanbul', code: 'IST' },
+        { name: 'Paris', code: 'PRS' }
+    ];
 
   return (
     <>
-      <div className="column " style={{ display: "flex", minWidth:'25.92%' }}>
+      <div className="column " style={{ display: "flex", minWidth:'33%',position: "relative" }}>
       <div className="align-content-center">
               <Ship style={{ width:"20px", height:'20px'}} className="mx-2" />
             </div>
@@ -49,24 +59,34 @@ const Cargo = () => {
             type="text"
             style={{ border: "none", outline: "none", width: "90%", background: 'transparent' }}
             className="input-field "
-            placeholder="Enter Sea/Airport, City or Zip Code"
-            ref={cargoRef}
-            onChange={handleCargoChange}
-            onFocus={handleCargoFocus}
+            placeholder="Enter your Cargo details"
+            // ref={cargoRef}
+            // onChange={handleCargoChange}
+            // onFocus={handleCargoFocus}
+            // onBlur={()=>setCargoOptionsVisible(false)}
+            onClick={()=>setCargoOptionsVisible((prev=>!prev))}
             value={cargo}
+            readOnly
           />
+          {/* <Dropdown value={selectedCity} onChange={(e) => setSelectedCity(e.value)} options={cities} optionLabel="name" 
+                editable placeholder="Enter your Cargo details" className="w-full md:w-14rem" /> */}
+          {
+            cargoOptionsVisible && <div className="outer-cargo-port">
+              <CargoDetails />
+            </div>
+          }
         </div>
       </div>
 
-      <Modal
+      {/* <Modal
         open={modalOpen}
         onClose={handleCloseModal}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
-        sx={{top:'35%', left:'50%'}}
+        sx={{top:'50%', left:'50%'}}
       >
         <CargoDetails onClose={handleCloseModal} />
-      </Modal>
+      </Modal> */}
     </>
   );
 };

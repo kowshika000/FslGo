@@ -5,10 +5,15 @@ import {
   Select,
   InputLabel,
   FormControl,
+  FormControlLabel,
+  Radio,
 } from "@mui/material";
+import minus from '../../../../assets/9021673_minus_bold_icon 1.svg'
+import plus from '../../../../assets/material-symbols_add-rounded.svg'
 
 const UnitType = ({ onClose }) => {
   const [inputFields, setInputFields] = useState([{}]);
+  const [noofunits,setNoofunits] = useState(0)
 
   const handleAddLoad = () => {
     setInputFields([...inputFields, {}]);
@@ -18,63 +23,73 @@ const UnitType = ({ onClose }) => {
     {inputFields.map((load, index)=>(
       <React.Fragment key={index} >
       <div className="d-flex">
-        <div className="w-50 m-3">
-          <Typography sx={{ fontWeight: "700", opacity: "0.5" }}>
+        <div className="w-50 my-3 ms-0 me-3">
+          <Typography sx={{ fontWeight: "500", fontSize:"13px", lineHeight:"19px",letterSpacing:".01em",color:"rgba(103, 120, 142, 1)" }}>
             Package Type
           </Typography>
           <FormControl fullWidth>
-            <InputLabel id="demo-simple-select-label">Package</InputLabel>
+            {/* <InputLabel id="demo-simple-select-label">Package</InputLabel> */}
             <Select
-              labelId="demo-simple-select-label"
-              id="demo-simple-select"
-              label="Age"
+              // labelId="demo-simple-select-label"
+              // id="demo-simple-select"
+              // label="Age"
+              style={{height: "45px"}}
+              displayEmpty
+              inputProps={{ 'aria-label': 'Without label' }}
             >
               <MenuItem value="">Ten</MenuItem>
             </Select>
           </FormControl>{" "}
         </div>
-        <div className="w-50 m-3">
-          <Typography sx={{ fontWeight: "700", opacity: "0.5" }}>
+        <div className="w-50 my-3 ms-3 me-0">
+          <Typography sx={{ fontWeight: "500", fontSize:"13px", lineHeight:"19px",letterSpacing:".01em",color:"rgba(103, 120, 142, 1)" }}>
             No.of Units
           </Typography>
           <div
             className="btn-group"
             role="group"
-            style={{ border: "1px solid  rgba(0,0,0,0.3)" }}
+            style={{ border: "1px solid rgb(207, 214, 223)",height:"45px" }}
           >
             <input
-              className="form-control "
-              placeholder="2"
+              className="placeholder_style form-control"
+              placeholder="Units"
+              value={noofunits ? noofunits : ""}
+                onChange={(e)=>setNoofunits(parseInt(e.target.value))}
               style={{
                 borderTopRightRadius: "0",
                 borderBottomRightRadius: "0",
                 padding: "13px",
+                border:"none"
               }}
             />
             <button
+              onClick={()=>setNoofunits((prev)=>prev>1?prev-1:1)}
               type="button"
-              style={{ border: "none", paddingX: "15px", background: "none" }}
+              style={{ border: "none", paddingRight: "6px",paddingLeft:"6px", background: "none", borderRight:"1px solid #f0f0f0"}}
+
             >
-              -
+                <img src={minus} alt="minus"  />
             </button>
             <button
+              onClick={()=>setNoofunits((prev)=>prev<999?prev+1:999)}
               type="button"
               style={{
                 border: "none",
                 borderTopRightRadius: "5px",
                 borderBottomRightRadius: "5px",
-                paddingX: "15px",
-                background: "none",
+                paddingRight: "6px",
+                paddingLeft:"6px",
+                background: "none"
               }}
             >
-              +
+              <img src={plus} alt="add"  />
             </button>
           </div>
         </div>
       </div>
       <div className="d-flex">
-        <div className="w-100 m-3">
-          <Typography sx={{ fontWeight: "700", opacity: "0.5" }}>
+        <div className="w-100 mb-3">
+          <Typography sx={{ fontWeight: "500", fontSize:"13px", lineHeight:"19px",letterSpacing:".01em",color:"rgba(103, 120, 142, 1)" }}>
             Dimentions
           </Typography>
 
@@ -83,39 +98,67 @@ const UnitType = ({ onClose }) => {
             role="group"
             aria-label="Button group with nested dropdown"
             style={{
-              border: "1px solid rgba(0,0,0,0.3)", 
+              // border: "1px solid rgb(207, 214, 223)", 
+              height:"42px"
             }}
           >
             <input
+              className="placeholder_style w-100"
               type="text"
               style={{
-                border: "1px solid rgba(0,0,0,0.3)",
+                // border: "0px",
+                border:"1px solid rgb(207, 214, 223)",
                 borderTopLeftRadius: "5px",
                 borderBottomLeftRadius: "5px",
-                fontSize: "20px", padding: "12px",
+                fontSize: "20px", 
+                padding: "12px",
               }}
-              className="w-100"
-              placeholder="5"
+              placeholder="L"
             />
             <input
+              className="placeholder_style w-100"
               type="text"
               style={{
-                border: "1px solid rgba(0,0,0,0.3)",
+                border: "1px solid rgb(207, 214, 223)",
+                borderRight:"1px solid rgb(207, 214, 223)",
+                borderLeft:"0px",
                 fontSize: "20px",
+                padding: "12px"
               }}
-              className="w-100"
-              placeholder="100"
+              placeholder="W"
             />
             <input
+              className="placeholder_style w-100"
               type="text"
               style={{
-                border: "1px solid rgba(0,0,0,0.3)",
+                border: "1px solid rgb(207, 214, 223)",
+                borderRight:"1px solid rgb(207, 214, 223)",
+                borderLeft:"0px",
                 fontSize: "20px",
+                padding: "12px"
               }}
-              className="w-100"
               placeholder="H"
             />
-            <div className="btn-group" role="group">
+            <FormControl  variant="standard">
+                {/* <InputLabel id="demo-customized-select-label">Age</InputLabel> */}
+                <Select
+                  sx={{ height:"100%",width:"100%",backgroundColor:"rgba(243, 245, 247, 1)",borderTopRightRadius:"8px",borderBottomRightRadius:"8px",border:"1px solid rgba(207, 214, 223, 1)",borderLeft:"0px" }}
+                  labelId="demo-customized-select-label"
+                  id="demo-customized-select"
+                  displayEmpty
+                  inputProps={{ 'aria-label': 'Without label' }}
+                  defaultValue="KG"
+                  // value={age}
+                  // onChange={handleChange}
+                  // input={<BootstrapInput />}
+                >
+                  <MenuItem value="KG">
+                    KG
+                  </MenuItem>
+                  <MenuItem value="LB">LB</MenuItem>
+                </Select>
+              </FormControl>
+            {/* <div className="btn-group" role="group">
               <button
                 id="btnGroupDrop1"
                 type="button"
@@ -138,32 +181,52 @@ const UnitType = ({ onClose }) => {
                   CFT
                 </a>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
-      <div className="d-flex m-3">
-        <div className="w-full ">
-          <Typography sx={{ fontWeight: "700", opacity: "0.5" }}>
+      <div className="d-flex mb-3">
+        <div className="w-100">
+          <Typography sx={{ fontWeight: "500", fontSize:"13px", lineHeight:"19px",letterSpacing:".01em",color:"rgba(103, 120, 142, 1)" }}>
             Total Weight
           </Typography>
           <div
             className="btn-group w-100"
             role="group"
             aria-label="Button group with nested dropdown"
+            style={{height:"42px"}}
           >
             <input
+              className="placeholder_style w-100"
               type="text"
               style={{
-                border: "1px solid grey",
+                border: "1px solid rgb(207, 214, 223)",
                 borderTopLeftRadius: "5px",
                 borderBottomLeftRadius: "5px",
                 fontSize: "20px", padding: "12px",
               }}
-              className="w-100"
-              placeholder="1KG"
+              placeholder="Weight"
             />
-            <div className="btn-group" role="group" >
+            <FormControl  variant="standard">
+                {/* <InputLabel id="demo-customized-select-label">Age</InputLabel> */}
+                <Select
+                  sx={{ height:"100%",width:"100%",backgroundColor:"rgba(243, 245, 247, 1)",borderTopRightRadius:"8px",borderBottomRightRadius:"8px",border:"1px solid rgba(207, 214, 223, 1)",borderLeft:"0px" }}
+                  labelId="demo-customized-select-label"
+                  id="demo-customized-select"
+                  displayEmpty
+                  inputProps={{ 'aria-label': 'Without label' }}
+                  defaultValue="KG"
+                  // value={age}
+                  // onChange={handleChange}
+                  // input={<BootstrapInput />}
+                >
+                  <MenuItem value="KG">
+                    KG
+                  </MenuItem>
+                  <MenuItem value="LB">LB</MenuItem>
+                </Select>
+              </FormControl>
+            {/* <div className="btn-group" role="group" >
               <button
                 id="btnGroupDrop1"
                 type="button"
@@ -186,28 +249,63 @@ const UnitType = ({ onClose }) => {
                   LB
                 </a>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
       </React.Fragment>))}
       <button className="btn" onClick={handleAddLoad}>
-        <Typography sx={{ fontWeight: "500", opacity: "0.8" }}>
+        <Typography sx={{ fontWeight: "400", fontSize:"13px", lineHeight:"19px",letterSpacing:".01em",color:"rgba(73, 90, 110, 1)" }}>
           + Add Another Load
         </Typography>
       </button>
-      <div className="m-3 d-flex justify-content-between">
+      <div className="mb-3 d-flex justify-content-between">
         <div className=" d-flex" style={{ justifyContent: "space-between" }}>
           <Typography
             sx={{
-              fontWeight: "500",
-              opacity: "0.6",
-              padding: "15px",
+              fontWeight: "400",
+              fontSize:"13px",
+              lineHeight:"19px",
+              letterSpacing:".01em",
+              color:"rgba(103, 120, 142, 1)",
+              padding: "13px 8px 13px 0px",
             }}
           >
             EXIM Type
           </Typography>
-          <input type="radio" name="exim" />
+          <FormControlLabel
+            value="Import"
+            style={{fontWeight:"400",fontSize:"13px",lineHeight:"19px",letterSpacing:".01em",color:"rgba(41, 51, 61, 1)"}}
+            control={<Radio   
+              size="small" 
+              label="Import"
+              sx={{
+                color: "black",
+                '&.Mui-checked': {
+                  color: "black",
+                },
+              }}
+            />}
+            label="Import"
+            labelPlacement="right"
+          />
+          <FormControlLabel
+            value="Export"
+            style={{fontWeight:"400",fontSize:"13px",lineHeight:"19px",letterSpacing:".01em",color:"rgba(41, 51, 61, 1)"}}
+            control={<Radio   
+              size="small" 
+              label="Import"
+              sx={{
+                color: "black",
+                '&.Mui-checked': {
+                  color: "black",
+                },
+              }}
+            />}
+            label="Export"
+            labelPlacement="right"
+          />
+          {/* <input type="radio" name="exim" />
           <Typography
             sx={{
               fontWeight: "700",
@@ -226,9 +324,9 @@ const UnitType = ({ onClose }) => {
             }}
           >
             Export
-          </Typography>
+          </Typography> */}
         </div>
-        <div>
+        <div className="d-flex justify-content-center align-items-center">
           <button className="confirm" onClick={onClose}>
             Confirm
           </button>

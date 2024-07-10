@@ -17,6 +17,7 @@ import { DsrReportRequest } from "../../../../Redux/Actions/DsrReportAction";
 import { CircularProgress, Box } from "@mui/material";
 
 function DailyReportTable({ filtercolumn, setfiltercolumn }) {
+  //This is for get usertoken from profile API data
   const Profileusertoken = useSelector(
     (state) => state.ProfileData?.profileData?.usertoken
   );
@@ -44,18 +45,25 @@ function DailyReportTable({ filtercolumn, setfiltercolumn }) {
     }
   }, [Profileusertoken, dispatch, successRsp]);
 
-  //Hooks
+  //Hooks and Variables
   const { loading } = useSelector((state) => state.DsrReport);
   const DsrReportData = useSelector((state) => state.DsrReport.dsrData);
-  const DsrColumns = DsrReportData?.columns;
-  const DsrDatas = DsrReportData?.data;
-  const clonednewArray = DsrDatas?.map((a) => ({ ...a })) || [];
-  //my try
-  const DsrDataObj = DsrReportData?.data?.[0]
-  const DsrCopied = {...DsrDataObj}
-  const DsrModifiedArray = Object?.keys(DsrCopied || {})
-  console.log(DsrModifiedArray)
 
+  const DsrColumns = DsrReportData?.columns; //get column datas from dsr api response
+  const DsrDatas = DsrReportData?.data; //get datas from dsr api response
+  // const clonednewArray = DsrDatas?.map((a) => ({ ...a })) || [];
+  const DsrDataObj = DsrReportData?.data?.[0]; //get first for column logic
+  const DsrCopied = { ...DsrDataObj }; //this copies data from previous line data
+  const DsrModifiedArray = Object?.keys(DsrCopied || {}); //change objects into array
+  console.log(DsrModifiedArray);
+
+  //This is modify arrayofvalues into objects with default true value
+
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+ 
   //This function is used to change the
   // function changeKey(arr) {
   //   var newArr = [];
@@ -79,23 +87,29 @@ function DailyReportTable({ filtercolumn, setfiltercolumn }) {
   //   (o, key) => ({ ...o, [key]: true }),
   //   {}
   // );
+
   const ColumnObject = DsrModifiedArray?.reduce(
     (o, key) => ({ ...o, [key]: true }),
     {}
   );
-  console.log(ColumnObject)
+  console.log(ColumnObject);
 
-  // const dsrfilter = DsrColumns?.reduce((o, key) => ({ ...o, [key]: [] }), {});
-  // console.log(dsrfilter);
-  // const report = datasArray;
-  // console.log(report);
-  const dsrfilter = DsrModifiedArray?.reduce((o, key) => ({ ...o, [key]: [] }), {});
+  const TableColumnObject = DsrColumns?.reduce(
+    (o, key) => ({ ...o, [key]: true }),
+    {}
+  );
+  console.log(TableColumnObject);
+
+  //This is for modify array of values into objects with empty array for storing datas
+  const dsrfilter = DsrModifiedArray?.reduce(
+    (o, key) => ({ ...o, [key]: [] }),
+    {}
+  );
   console.log(dsrfilter);
   const report = DsrDatas;
   console.log(report);
   const [currentPage, setCurrentPage] = useState(1);
   const [sidebaropen, setSidebaropen] = useState(false);
-  // const [filtercolumn, setfiltercolumn] = useState();
   const [dsrFilter, setDsrFilter] = useState();
   const [filterReport, setFilterReport] = useState();
   const [clicked, setClicked] = useState(false);
@@ -103,7 +117,7 @@ function DailyReportTable({ filtercolumn, setfiltercolumn }) {
   const itemsPerPage = 6;
 
   useEffect(() => {
-    setfiltercolumn(ColumnObject);
+    setfiltercolumn(TableColumnObject);
   }, [DsrColumns]);
   useEffect(() => {
     setFilterReport(report);
@@ -111,9 +125,9 @@ function DailyReportTable({ filtercolumn, setfiltercolumn }) {
 
   console.log(filtercolumn);
 
+  //This is modify object keys and values
   const arrayOfObj = Object.entries(filtercolumn || {})?.map((e) => ({
     [e[0]]: e[1],
-    modifyheader: e[0]?.split(" ")?.join("_"),
     header: e[0],
   }));
 
@@ -239,59 +253,56 @@ function DailyReportTable({ filtercolumn, setfiltercolumn }) {
       </>
     );
   };
-  //This is for sort ascending order
-  const handleSort = (col) => {
-    const sorted = [...report]?.sort((a, b) => {
-      const valA = a[col];
-      const valB = b[col];
-      if (!isNaN(valA) && !isNaN(valB)) {
-        return valA - valB;
-      }
-      // if (
-      //   col === "BOOKING_DATE" ||
-      //   col === "PICKUP_DATE" ||
-      //   col === "ETD_ORIGIN"
-      // ) {
-      //   const dateA = parseDate1(valA);
-      //   const dateB = parseDate1(valB);
-      //   return dateA - dateB;
-      // }
-      return valA > valB ? 1 : -1;
-    });
-    setFilterReport(sorted);
-  };
-  const parseDate1 = (dateString) => {
-    const parts = dateString?.split("/");
-    return new Date(parts[2], parts[1] - 1, parts[0]);
-  };
-  parseDate1("12/05/2020");
-  const parseDate2 = (dateString) => {
-    const parts = dateString?.split("/");
-    return new Date(parts[2], parts[1] - 1, parts[0]);
+ 
+  const sort = (col) => {
+    const handleSort = (col) => {
+      const sorted = [...filterReport].sort((a, b) => {
+        const valA = a[col];
+        const valB = b[col];
+        if (!isNaN(valA) && !isNaN(valB)) {
+          return valA - valB;
+        }
+        return valA > valB ? 1 : -1;
+      });
+      setFilterReport(sorted);
+    };
+
+    const handleSortDown = (col) => {
+      const sorted = [...filterReport].sort((a, b) => {
+        const valA = a[col];
+        const valB = b[col];
+        if (!isNaN(valA) && !isNaN(valB)) {
+          return valB - valA;
+        }
+        return valA < valB ? 1 : -1;
+      });
+      setFilterReport(sorted);
+    };
+
+    return (
+      <div>
+        <div className="d-flex sorticon" style={{ flexDirection: "column" }}>
+          <IconButton
+            onClick={() => {
+              handleSort(col, "asc");
+            }}
+            className="p-0"
+          >
+            <ExpandLessIcon className="sortup" />
+          </IconButton>
+          <IconButton
+            onClick={() => {
+              handleSortDown(col, "desc");
+            }}
+            className="p-0"
+          >
+            <ExpandMoreIcon className="sortdown" />
+          </IconButton>
+        </div>
+      </div>
+    );
   };
 
-  const handleSortDown = (col) => {
-    const sorted = [...report].sort((a, b) => {
-      const valA = a[col];
-      const valB = b[col];
-
-      if (!isNaN(valA) && !isNaN(valB)) {
-        return valB - valA;
-      }
-
-      // if (
-      //   col === "booking_date" ||
-      //   col === "pickup_date" ||
-      //   col === "etd_origin"
-      // ) {
-      //   const dateA = parseDate2(valA);
-      //   const dateB = parseDate2(valB);
-      //   return dateB - dateA;
-      // }
-      return valA < valB ? 1 : -1;
-    });
-    setFilterReport(sorted);
-  };
 
   //This is for pagination
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -505,7 +516,8 @@ function DailyReportTable({ filtercolumn, setfiltercolumn }) {
                         getUniqueOptions(data, item?.header),
                         dsrFilter
                       )}
-                      <div
+                      {sort(item?.header)}
+                      {/* <div
                         className="d-flex sorticon"
                         style={{ flexDirection: "column" }}
                       >
@@ -525,7 +537,7 @@ function DailyReportTable({ filtercolumn, setfiltercolumn }) {
                         >
                           <ExpandMoreIcon className="sortdown" />
                         </IconButton>
-                      </div>
+                      </div> */}
                     </span>
                   }
                   style={{
@@ -580,6 +592,7 @@ function DailyReportTable({ filtercolumn, setfiltercolumn }) {
         setCurrentPage={setCurrentPage}
         totalItems={filterReport?.length}
         onPageChange={() => setCurrentPage(1)}
+        itemsPerPage={itemsPerPage}
       />
     </>
   );

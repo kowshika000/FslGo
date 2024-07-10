@@ -16,6 +16,9 @@
 .quotationresult-leftdiv .ant-card-body {
   padding: 0px;
 }
+.ant-collapse-content-box {
+  padding: 12px 0px !important;
+}
 
 .Service-card .ant-collapse {
   margin: 0;
@@ -73,6 +76,10 @@
   padding-inline-start: 8px;
   padding-inline-end: 8px;
   color: #384656;
+  font-size: 14px !important;
+  font-weight: 400 !important;
+  line-height: 24px;
+  letter-spacing: 1%;
 }
 
 /* .ant-checkbox:hover {
@@ -82,7 +89,7 @@
 .ant-checkbox-wrapper:hover {
   border: none !important;
 } */
-/* Custom CSS to remove hover effect on Ant Design Checkbox */
+
 /* .ant-checkbox-wrapper:hover .ant-checkbox-inner,
 .ant-checkbox:hover .ant-checkbox-inner,
 .ant-checkbox-input:focus + .ant-checkbox-inner {
@@ -90,6 +97,90 @@
   background-color: inherit !important;
 } */
 
+.filterouter-leftdiv {
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.filter-quotation-wrapper {
+  position: relative;
+}
+.singlefilter-leftstyling {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: space-between !important;
+}
+.div-rowcentered {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.dimmed-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+/* PopoOver-btn */
+.displaycheckbox-value {
+  padding-left: 24px;
+  margin-top: 5px;
+}
+.justify-atstart {
+  justify-content: flex-start;
+}
+.editpencil-btn {
+  display: flex !important;
+  align-items: center !important;
+}
+.editpencil-btn .ant-image-img {
+  margin-bottom: 4px !important;
+}
+/* popover-content */
+.ant-popover {
+  position: absolute;
+  z-index: 1030;
+  top: 330.488px !important;
+  /* inset: 330.488px auto auto 197.3px !important; */
+}
+.ant-popover .ant-popover-arrow {
+  display: none !important;
+}
+
+.popover-checkbox {
+  position: absolute !important;
+  left: -10px;
+  right: unset;
+  z-index: 30 !important;
+  margin-bottom: 5px;
+}
+
+.ant-popover .ant-popover-inner {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+/* .div-colaligned {
+  display: flex;
+  flex-direction: column;
+} */
+.div-colaligned .ant-select {
+  width: 205px;
+  height: 32px;
+  border-bottom: 2px solid #d32d2f;
+  border-radius: 6px;
+  background-color: #fff;
+}
+.div-colaligned .ant-select-selector:hover {
+  background-color: #fff !important;
+}
 .tabs .ant-card-body {
   padding: 0;
 }

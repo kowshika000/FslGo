@@ -19,6 +19,8 @@ import watchSaveDsr from "./SaveDsrSaga";
 import watchDsrDownload from "./DsrDownloadSaga";
 import watchDsrSchedule from "./DsrScheduleSaga";
 import WatchNotification from "./NotificationSaga";
+import watchallPort from "./AllPortSaga";
+import watchFindNewRate from "./FindNewRateSaga";
 
 export default function* rootSaga() {
   yield all([
@@ -42,5 +44,7 @@ export default function* rootSaga() {
     watchDsrDownload(),
     watchDsrSchedule(),
     WatchNotification(),
+    watchallPort(),
+    watchFindNewRate()
   ]);
 }
