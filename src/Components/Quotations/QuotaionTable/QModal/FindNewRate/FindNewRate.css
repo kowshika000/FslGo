@@ -71,10 +71,10 @@
   background-color: #d32d2f !important;
   border: none;
 }
-.ant-checkbox-disabled .ant-checkbox-inner:after{
+.ant-checkbox-disabled .ant-checkbox-inner:after {
   border-color: white;
 }
-.ant-checkbox-disabled .ant-checkbox-inner{
+.ant-checkbox-disabled .ant-checkbox-inner {
   background-color: rgb(245, 126, 126) !important;
 }
 /* .Service-card .ant-checkbox-wrapper .ant-checkbox-checked .ant-checkbox-inner:hover{
@@ -197,6 +197,78 @@
 .div-colaligned .ant-select-selector:hover {
   background-color: #fff !important;
 }
+
+.div-colaligned .ant-select-selector .ant-select-selection-placeholder {
+  color: #acb8c4 !important;
+  font-size: 14px !important;
+  font-style: normal;
+  font-weight: 400 !important;
+  letter-spacing: 0.14px !important;
+}
+.cargo-insurance-input {
+  height: 32px !important;
+  border-bottom: 2px solid #d32d2f !important;
+  border-radius: 8px !important;
+  width: 210px !important;
+}
+.div-colaligned .ant-input-affix-wrapper {
+  min-width: 0;
+  padding: 8px 12px 8px 6px;
+  border: 1px solid #cfd6df;
+  background: #fff;
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 14px;
+  line-height: 1.5715;
+  transition: all 0.3s;
+  display: inline-flex;
+}
+.div-colaligned
+  :where(.css-dev-only-do-not-override-1okl62o).ant-input:placeholder-shown {
+  text-overflow: clip;
+}
+.div-colaligned .css-dev-only-do-not-override-1okl62o.ant-input::placeholder {
+  color: #acb8c4 !important;
+}
+.div-colaligned :where(.css-1vr7spz).ant-input-affix-wrapper > input.ant-input {
+  width: 126.78px;
+  padding: 0;
+  font-size: inherit;
+  border: none;
+  border-radius: 0;
+  outline: none;
+}
+
+.div-colaligned .ant-input-affix-wrapper .ant-input-suffix {
+  margin-inline-start: 4px;
+  display: flex;
+  flex: none;
+  align-items: center;
+}
+
+.calculate-btn {
+  width: 69.63px;
+  height: 24px;
+  background: #f01e1e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #f01e1e;
+  color: #fff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12) !important;
+}
+
+:where(.css-1vr7spz).ant-btn.ant-btn-sm {
+  font-size: 14px;
+  height: 24px;
+  padding: 0px 7px;
+  border-radius: 4px;
+}
+.calculate-btn.ant-btn.ant-btn-sm {
+  min-height: 24px;
+  margin-right: -10px;
+  font-size: 13px;
+}
+
 .tabs .ant-card-body {
   padding: 0;
 }

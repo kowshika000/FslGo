@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { Button, Card, Checkbox, Popover, Image } from "antd";
+import { Button, Card, Checkbox, Popover, Image, Input } from "antd";
 import "./FindNewRate.css";
 import ShipmentTracker from "./ShipmentTracker";
 import info from "../../../../../assets/Info.svg";
@@ -77,10 +77,22 @@ function FindNewRate() {
       );
     } else if (value === "CargoInsurance") {
       return (
-        <CargoInsurance
-          setSelectedValue={setInsuranceValue}
-          setPopoverOpen={setInsurance}
-        />
+        <div class="div-colaligned popover-checkbox popover-open w-200">
+          <Input
+            className="cargo-insurance-input"
+            placeholder="Goods Value in USD"
+            type="text"
+            suffix={
+              <Button
+                type="ant-btn-primary"
+                className="calculate-btn"
+                size="small"
+              >
+                Calculate
+              </Button>
+            }
+          />
+        </div>
       );
     }
     return null;
@@ -101,8 +113,6 @@ function FindNewRate() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  console.log(`selectedjhgfds ${selectedValue}`);
 
   const FilterCheckbox = ({
     label,
@@ -186,7 +196,10 @@ function FindNewRate() {
                       marginBottom: "0px",
                     }}
                   >
-                    ZIP Code :&nbsp;&nbsp;
+                    {value === "CargoInsurance"
+                      ? "Goods value in USD"
+                      : "ZIP Code"}{" "}
+                    :&nbsp;&nbsp;
                     <span
                       style={{
                         fontWeight: "500",
@@ -213,9 +226,12 @@ function FindNewRate() {
                   <Button
                     type="link"
                     className={`editpencil-btn ${
-                      (selectedValue || selectedDeliveryValue || insuranceValue) &&
+                      (selectedValue ||
+                        selectedDeliveryValue ||
+                        insuranceValue) &&
                       !isPopoverOpen &&
-                      !isDeliveryPopoverOpen && !isInsurance
+                      !isDeliveryPopoverOpen &&
+                      !isInsurance
                         ? "ms-auto"
                         : ""
                     }`}
@@ -390,7 +406,16 @@ function FindNewRate() {
   ];
 
   const customExpandIcon = ({ isActive }) =>
-    isActive ? <Image src={uparrow} alt="arrow" /> : <DownOutlined />;
+    isActive ? (
+      <Image src={uparrow} alt="arrow" preview={false} />
+    ) : (
+      <Image
+        src={uparrow}
+        alt="arrow"
+        preview={false}
+        style={{ transform: "rotate(180deg)" }}
+      />
+    );
 
   return (
     <div
