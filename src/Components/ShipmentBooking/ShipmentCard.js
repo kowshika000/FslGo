@@ -27,6 +27,9 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
   const [cargoOptionsVisible, setCargoOptionsVisible] = useState(false);
   const [originPort, setOriginPort] = useState(null);
   const [destPort, setDestPort] = useState(null);
+  const [searchOriginPort, setSearchOriginPort] = useState("");
+  const [searchDestPort, setSearchDestPort] = useState("");
+  const [eximchange, seteximchange] = useState(false)
   useEffect(() => {
     if (destination && cargoRef.current) {
       cargoRef.current.focus();
@@ -81,6 +84,37 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
   const handleSearch = () => {
     setShowReselt(true);
   };
+  const handleSwap =()=>{
+    if(originPort && destPort && searchOriginPort && searchDestPort){
+    setSearchDestPort(searchOriginPort)
+    setSearchOriginPort(searchDestPort)
+    setDestPort(originPort)
+    setOriginPort(destPort)
+    seteximchange((prev)=>seteximchange(!prev))
+    }
+    else if(originPort && searchOriginPort){
+      setSearchDestPort(searchOriginPort)
+      setDestPort(originPort)
+      // setOriginPortOptionsVisible(false)
+    }
+    else if(destPort && searchDestPort){
+      setSearchOriginPort(searchDestPort)
+      setOriginPort(destPort)
+      // setOriginPortOptionsVisible(false)
+    }
+    else{
+      if(searchOriginPort && !originPort){
+          setSearchOriginPort("")
+          setOriginPort(false)
+          setOriginPortOptionsVisible(false)
+      }
+      else if(searchDestPort && !destPort){
+          setSearchDestPort("")
+          setDestPort(false)
+          setDestPortOptionsVisible(false)
+      }
+    }
+  }
   useEffect(() => {
     dispatch(FindNewRateRequest({ inputdata }));
   }, [handleSearch, selectedCurrency, checkedItems]);
@@ -103,6 +137,8 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
             originPort={originPort}
             setOriginPort={setOriginPort}
             destPort={destPort}
+            setSearchOriginPort={setSearchOriginPort}
+            searchOriginPort={searchOriginPort}
           />
           <div
             className="align-content-center ps-2"
@@ -110,6 +146,8 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
           >
             <img
               src={Arrow}
+              role="button"
+              onClick={handleSwap}
               width="26px"
               height="26px"
               style={{
@@ -127,6 +165,8 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
             destPort={destPort}
             setDestPort={setDestPort}
             originPort={originPort}
+            setSearchDestPort={setSearchDestPort}
+            searchDestPort={searchDestPort}
           />
           {/* <div className="icon">
             <div className="divider"></div>
@@ -134,6 +174,7 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
           <Cargo
             cargoOptionsVisible={cargoOptionsVisible}
             setCargoOptionsVisible={setCargoOptionsVisible}
+            eximchange={eximchange}
           />
           {/* Search button */}
           <div
