@@ -1,17 +1,35 @@
 import { Select } from "antd";
-import React from "react";
+import React,{useState,useEffect} from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { PickupRequest } from "../../../../../Redux/Actions/PickupAction";
 
 function CargoPickupPopOver({ setSelectedValue, setPopoverOpen }) {
+  const dispatch = useDispatch();
+  const pickupdata = useSelector((state) => state.Pickup.pickuppointlist);
+  const [options, setOptions] = useState([]);
+
   const handleSelectChange = (value) => {
     if (value) {
       setSelectedValue(value);
       setPopoverOpen(false);
     }
-    console.log(`selected ${value}`);
   };
+
   const onSearch = (value) => {
-    console.log("search:", value);
+    if (value.length >= 3) {
+      dispatch(PickupRequest({ country: "IN", pickup_place: value}));
+    }
   };
+  useEffect(() => {
+    if (pickupdata) {
+      setOptions(
+        pickupdata.map((item) => ({
+          value: item.code,
+          label: item.code,
+        }))
+      );
+    }
+  }, [pickupdata]);
   return (
     <div className="div-colaligned popover-checkbox popover-open w-200">
       <Select
@@ -20,20 +38,8 @@ function CargoPickupPopOver({ setSelectedValue, setPopoverOpen }) {
         optionFilterProp="label"
         onChange={handleSelectChange}
         onSearch={onSearch}
-        options={[
-          {
-            value: "jack",
-            label: "Jack",
-          },
-          {
-            value: "lucy",
-            label: "Lucy",
-          },
-          {
-            value: "tom",
-            label: "Tom",
-          },
-        ]}
+        options={options}
+        filterOption={false}
       />
     </div>
   );

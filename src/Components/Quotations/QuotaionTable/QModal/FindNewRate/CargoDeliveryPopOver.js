@@ -1,7 +1,12 @@
 import { Select } from "antd";
-import React from "react";
+import React,{useState,useEffect} from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { DeliveryRequest } from "../../../../../Redux/Actions/DeliveryAction";
 
 function CargoDeliveryPopOver({ setSelectedValue, setPopoverOpen }) {
+  const dispatch = useDispatch();
+  const devlivery = useSelector((state) => state.Delivery.deliverypointlist);
+  const [options, setOptions] = useState([]);
   const handleSelectChange = (value) => {
     if (value) {
       setSelectedValue(value);
@@ -10,8 +15,20 @@ function CargoDeliveryPopOver({ setSelectedValue, setPopoverOpen }) {
     console.log(`selected ${value}`);
   };
   const onSearch = (value) => {
-    console.log("search:", value);
+    if (value.length >= 3) {
+      dispatch(DeliveryRequest({ country: "IN", delivery_place: value}));
+    }
   };
+  useEffect(() => {
+    if (devlivery) {
+      setOptions(
+        devlivery.map((item) => ({
+          value: item.code,
+          label: item.code,
+        }))
+      );
+    }
+  }, [devlivery]);
   return (
     <div className="div-colaligned popover-checkbox1 popover-open w-200">
       <Select
@@ -20,20 +37,7 @@ function CargoDeliveryPopOver({ setSelectedValue, setPopoverOpen }) {
         optionFilterProp="label"
         onChange={handleSelectChange}
         onSearch={onSearch}
-        options={[
-          {
-            value: "jack11",
-            label: "Jack11",
-          },
-          {
-            value: "lucy22",
-            label: "Lucy22",
-          },
-          {
-            value: "tom33",
-            label: "Tom33",
-          },
-        ]}
+        options={options}
       />
     </div>
   );
