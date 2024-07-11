@@ -13,6 +13,18 @@ const Quotation = ({
   setShowHeader,
 }) => {
   const [selectedCurrency, setSelectedCurrency] = useState("USD");
+  const [checkedItems, setCheckedItems] = useState({
+    originCharges: false,
+    exportClearance: false,
+    cargoPickup: false,
+    internationalFreight: false,
+    DestinationCharges: true,
+    ImportClearance: false,
+    CargoDelivery: false,
+    CargoInsurance: false,
+    StackableCargo: true,
+    NonHarzardousCargo: true,
+  });
   const handleScroll = () => {
     if (showReselt) {
       const scrollTop = window.scrollY;
@@ -62,7 +74,7 @@ const Quotation = ({
           showHeader={showHeader}
           // setShowHeader={setShowHeader}
           // showReselt={showReselt}
-          
+          checkedItems={checkedItems}
         />
         </div>
        
@@ -70,6 +82,8 @@ const Quotation = ({
           <FindNewRate
             selectedCurrency={selectedCurrency}
             setSelectedCurrency={setSelectedCurrency}
+            checkedItems={checkedItems}
+            setCheckedItems={setCheckedItems}
           />
         ) : (
           <QuotationTabs />
