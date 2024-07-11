@@ -186,10 +186,19 @@
   margin: 0 !important;
 } */
 .fixed-shipment-card {
+  min-width: 1255px;
   position: fixed !important;
   top: 0 !important;
   /* width: 100% !important; */
   background-color: black;
   z-index: 1000;
   margin: 0;
+  left: 0 !important;
+}
+
+.centerdiv-white {
+  background-color: #fff;
+  display: flex !important;
+  justify-content: center !important;
+  padding: 20px;
 }

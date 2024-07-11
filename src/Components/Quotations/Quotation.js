@@ -43,53 +43,65 @@ const Quotation = ({
     <div
       style={{
         width: "100%",
-        background:
-          "linear-gradient(to bottom, white 20%,  rgb(248, 250, 252) 15%)",
       }}
     >
-      <div
-        className="shipmentIndex py-5 mx-auto row"
-        style={{ maxWidth: "1255px",gap:"18px" }}
-
-      >
-        <div className="col-lg">
-        {showHeader && (
-          <>
-            <Typography
-              style={{ fontSize: "28px", fontWeight: "700" }}
-              className="shipments-head"
-            >
-              Quotations
-            </Typography>
-            <Navbar showReselt={showReselt} />
-          </>
-        )}
-        </div>
+      <div className="centerdiv-white">
         <div
-        //  className={`${!showHeader ? "fixed-shipment-card" : ""} col-lg` }
-         >
-        <ShipmentCard
-          setShowReselt={setShowReselt}
-          selectedCurrency={selectedCurrency}
-          showHeader={showHeader}
-          // setShowHeader={setShowHeader}
-          // showReselt={showReselt}
-          checkedItems={checkedItems}
-        />
+          className="shipmentIndex mx-auto row"
+          style={{ maxWidth: "1255px", gap: "18px" }}
+        >
+          <div className="col-lg">
+            {showHeader && (
+              <>
+                <Typography
+                  style={{ fontSize: "28px", fontWeight: "700" }}
+                  className="shipments-head"
+                >
+                  Quotations
+                </Typography>
+                <Navbar showReselt={showReselt} />
+              </>
+            )}
+          </div>
+          <div
+            className={`col-lg w-full py-1  ${
+              !showHeader ? "fixed-shipment-card" : ""
+            } `}
+          >
+            <ShipmentCard
+              setShowReselt={setShowReselt}
+              selectedCurrency={selectedCurrency}
+              showHeader={showHeader}
+              // setShowHeader={setShowHeader}
+              // showReselt={showReselt}
+              checkedItems={checkedItems}
+            />
+          </div>
         </div>
-       
-        {showReselt ? (
-          <FindNewRate
-            selectedCurrency={selectedCurrency}
-            setSelectedCurrency={setSelectedCurrency}
-            checkedItems={checkedItems}
-            setCheckedItems={setCheckedItems}
-          />
-        ) : (
-          <QuotationTabs />
-        )}
-        {/* <QuotationTabs/> */}
       </div>
+
+      <div
+        style={{
+          Width: "100%",
+          minWidth: "1255px",
+          padding: "20px",
+          backgroundColor: "#f3f5f7",
+        }}
+      >
+        <div style={{ maxWidth: "1255px" }} className="mx-auto">
+          {showReselt ? (
+            <FindNewRate
+              selectedCurrency={selectedCurrency}
+              setSelectedCurrency={setSelectedCurrency}
+              checkedItems={checkedItems}
+              setCheckedItems={setCheckedItems}
+            />
+          ) : (
+            <QuotationTabs />
+          )}
+        </div>
+      </div>
+      {/* <QuotationTabs/> */}
     </div>
   );
 };

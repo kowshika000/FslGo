@@ -532,6 +532,7 @@
 }
 
 .request-btn {
+  margin-top: 40px;
   width: 206px;
   height: 40px;
   border-radius: 8px;
@@ -576,4 +577,12 @@
   color: #ffffff;
   text-align: center;
   margin-top: 20px;
+}
+
+.request-quote-btn {
+  background: #f01e1e;
+  min-height: 40px;
+  border: 1px solid #f01e1e;
+  border-radius: 8px;
+  height: 40px;
 }
