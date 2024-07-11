@@ -13,16 +13,25 @@ import {
   Radio,
   RadioGroup,
   FormLabel,
-  Button,
   Box,
+  FormHelperText,
+  Tooltip,
 } from "@mui/material";
 import minus from "../../../../assets/9021673_minus_bold_icon 1.svg";
 import plus from "../../../../assets/material-symbols_add-rounded.svg";
 import deletedicon from "../../../../assets/ic_outline-delete.svg";
 import editicon from "../../../../assets/editpencil.f11da97f.svg";
+import { Button } from 'antd';
 
-const Fcl = ({onClose}) => {
-    const [exim, setexim] = useState("I");
+const Fcl = ({onClose,eximchange,setCargo,
+  setCargoOptionsVisible,
+  settserrmsg,}) => {
+  console.log(eximchange)
+  const [exim, setexim] = useState("E");
+  useEffect(() => {
+    setexim((prev)=>prev==="I"?"E":"I")
+  }, [eximchange])
+
   const [inputFields, setInputFields] = useState(
     JSON.parse(localStorage.getItem("fclinpfields")) || [{}]
   );
@@ -36,16 +45,38 @@ const Fcl = ({onClose}) => {
     package_type: "BOX",
     quantity: "",
   };
-  const [fclDatas, setfclDatas] = useState({
+  const [fclDatas, setfclDatas] = useState( JSON.parse(localStorage.getItem("fcldatas")) || {
     package_type: "BOX",
     quantity: "",
   });
+  
   console.log(fclDatas);
+
+  const [fclerrors, setfclerrors] = useState( JSON.parse(localStorage.getItem("fcldatas")) || {
+    quantity: false,
+  });
+  console.log(fclerrors);
+  const [fclediterrors, setfclediterrors] = useState({
+    quantity: false,
+  });
+  console.log(fclerrors);
+
+  useEffect(() => {
+    localStorage.setItem("fcldatas", JSON.stringify(fclDatas));
+    localStorage.setItem("fclerrors", JSON.stringify(fclerrors));
+  }, [fclDatas, fclerrors]);
+
   // const [tseditedDatas, settseditedDatas] = useState(editeddata[0]);
   // console.log(tseditedDatas)
   console.log(editeddata);
   console.log(saveddatas);
   console.log(inputFields.length);
+  const IsError = [
+    fclerrors.quantity,
+  ].some(Boolean);
+  const IsEditError = [
+    fclediterrors.quantity,
+  ].some(Boolean);
   const canAdd = [
     fclDatas.package_type,
     fclDatas.quantity,
@@ -225,6 +256,50 @@ const Fcl = ({onClose}) => {
     setediteddata({});
     seteditedId("");
   };
+
+  const handleFclSubmit = () => {
+    console.log(canAdd, !IsError);
+    if (!IsError && canAdd) {
+      console.log("submitted");
+      // if(){
+      console.log("first");
+      const values = `FCL | ${fclDatas?.package_type} : ${fclDatas.quantity},`;
+      console.log(values)
+      setCargo(values);
+      setCargoOptionsVisible(false);
+      settserrmsg("");
+      // }
+    } 
+    // else if(saveddatas.length === 1){
+
+    // }
+    else if (saveddatas.length >= 1) {
+      console.log("second");
+      let generalquantity = 0;
+      for (let i = 0; i <= saveddatas.length - 1; i++) {
+        generalquantity += saveddatas[i].quantity;
+      }
+      // console.log(units, weight, volume);
+      // const unitscopy = [...saveddatas]
+      // let units = unitscopy.reduce((previousValue, currentValue) => previousValue.units += currentValue.units);
+      // let weight = unitscopy.reduce((previousValue, currentValue) => previousValue.weight += currentValue.weight);
+      // console.log(weight)
+      const values = `FCL | ${fclDatas?.package_type} : ${fclDatas.quantity},`;
+      setCargo(values);
+      setCargoOptionsVisible(false);
+      settserrmsg("");
+    } else {
+      setCargo("");
+      if (!canAdd) {
+        settserrmsg("Please add proper values for load");
+      } else if (fclerrors.quantity) {
+        settserrmsg("Please add proper quantity for load");
+      } else {
+        settserrmsg("");
+      }
+    }
+  };
+
   return (
     <>
          {saveddatas?.map((item, index) => {
@@ -350,7 +425,9 @@ const Fcl = ({onClose}) => {
                               displayEmpty
                               inputProps={{ "aria-label": "Without label" }}
                             >
-                              <MenuItem value="BOX">PACKAGES(s)</MenuItem>
+                              <MenuItem value="20 GENERAL PURPOSE">20 GENERAL PURPOSE</MenuItem>
+                              <MenuItem value="40 GENERAL PURPOSE">40 GENERAL PURPOSE</MenuItem>
+                              <MenuItem value="40 HICH CUBE">40 HICH CUBE</MenuItem>
                             </Select>
                           </FormControl>{" "}
                         </div>
@@ -372,6 +449,7 @@ const Fcl = ({onClose}) => {
                             style={{
                               border: "1px solid rgba(207, 214, 223, 1)",
                               height: "45px",
+                              borderColor: fclediterrors.units ? "red" : null,
                             }}
                           >
                             <input
@@ -388,6 +466,16 @@ const Fcl = ({onClose}) => {
                                   e.preventDefault();
                                 }
                               }}
+                              onBlur={() =>
+                                editeddata?.quantity < 0 || editeddata?.quantity > 99
+                                  ? setfclediterrors((prev) => {
+                                      return { ...prev, quantity: true };
+                                    })
+                                  : setfclediterrors((prev) => {
+                                      return { ...prev, quantity: false };
+                                    })
+                              }
+                              onWheel={(e) => e.target.blur()}
                               // value={noofunits ? noofunits : ""}
                               value={editeddata?.quantity}
                               name="quantity"
@@ -430,6 +518,15 @@ const Fcl = ({onClose}) => {
                               <img src={plus} alt="add" />
                             </button>
                           </div>
+                          <FormHelperText
+                            style={{ color: "red", fontStyle: "italic" }}
+                          >
+                            {fclediterrors.quantity && editeddata.quantity > 99
+                              ? "Maximum 99 allowed"
+                              : editeddata.quantity < 0
+                              ? "Min 1"
+                              : null}
+                          </FormHelperText>
                         </div>
                       </div>
                       <Button
@@ -440,7 +537,7 @@ const Fcl = ({onClose}) => {
                           opacity: !canEditSave ? ".5" : "1",
                         }}
                         onClick={handleUpdate}
-                        disabled={!canEditSave}
+                        disabled={!canEditSave || IsEditError}
                       >
                         save
                       </Button>
@@ -504,7 +601,9 @@ const Fcl = ({onClose}) => {
                     placeholder="Select Type"
                     inputProps={{ 'aria-label': 'Without label' }}
                   >
-                    <MenuItem value="BOX">PACKAGES(s)</MenuItem>
+                    <MenuItem value="20 GENERAL PURPOSE">20 GENERAL PURPOSE</MenuItem>
+                              <MenuItem value="40 GENERAL PURPOSE">40 GENERAL PURPOSE</MenuItem>
+                              <MenuItem value="40 HICH CUBE">40 HICH CUBE</MenuItem>
                   </Select>
                 </FormControl>{" "}
               </div>
@@ -542,6 +641,16 @@ const Fcl = ({onClose}) => {
                         e.preventDefault();
                       }
                     }}
+                    onBlur={() =>
+                      fclDatas?.quantity < 0 || fclDatas?.quantity > 99
+                        ? setfclerrors((prev) => {
+                            return { ...prev, quantity: true };
+                          })
+                        : setfclerrors((prev) => {
+                            return { ...prev, quantity: false };
+                          })
+                    }
+                    onWheel={(e) => e.target.blur()}
                     // onWheel={(e) => e.target.blur()}
                     // value={noofunits ? noofunits : ""}
                     value={fclDatas?.quantity}
@@ -583,6 +692,15 @@ const Fcl = ({onClose}) => {
                     <img src={plus} alt="add" />
                   </button>
                 </div>
+                <FormHelperText
+                            style={{ color: "red", fontStyle: "italic" }}
+                          >
+                            {fclerrors.quantity && fclDatas.quantity > 99
+                              ? "Maximum 99 allowed"
+                              : fclDatas.quantity < 0
+                              ? "Min 1"
+                              : null}
+                          </FormHelperText>
               </div>
             </div>
             {saveddatas.length > 0 && (
@@ -594,7 +712,7 @@ const Fcl = ({onClose}) => {
                   opacity: !canSave ? ".5" : "1",
                 }}
                 onClick={handleSave}
-                disabled={!canSave}
+                disabled={!canSave || IsError}
               >
                 save
               </Button>
@@ -603,15 +721,20 @@ const Fcl = ({onClose}) => {
             </React.Fragment>
         ))}
             <div className="d-flex">
+            <Tooltip
+        placement="top"
+        title={"Please add proper details for previous loads"}
+        trigger={IsError || (!canAdd && "hover")}
+      >
             <Button
                 style={{
                 border: "none",
                 background: "none",
-                opacity: !CanField ? "1" : canAdd ? "1" : ".5",
+                opacity: !CanField ? "1" : canAdd && !IsError ? "1" : ".5",
                 boxShadow: "unset",
                 }}
                 onClick={handleAddLoad}
-                disabled={!CanField ? false : !canAdd}
+                disabled={!CanField ? false : !canAdd || IsError}
             >
             <Typography
             sx={{
@@ -620,11 +743,13 @@ const Fcl = ({onClose}) => {
                 lineHeight: "19px",
                 letterSpacing: ".01em",
                 color: "rgba(73, 90, 110, 1)",
+                textTransform:"capitalize"
             }}
             >
             + Add Another Load
             </Typography>
             </Button>
+            </Tooltip>
             </div>
           <div className="my-3 d-flex " style={{ justifyContent: "space-between" }}>
               <div
@@ -646,7 +771,7 @@ const Fcl = ({onClose}) => {
             row
             aria-labelledby="demo-row-radio-buttons-group-label"
             name="row-radio-buttons-group"
-            defaultValue="I"
+            value={exim}
           >
             <FormControlLabel
               value="I"
@@ -717,7 +842,7 @@ const Fcl = ({onClose}) => {
                 </Typography> */}
               </div>
               <div className="d-flex justify-content-center align-items-center">
-                <button onClick={onClose} className="confirm">
+                <button onClick={handleFclSubmit} className="confirm">
                   Confirm
                 </button>
               </div>
