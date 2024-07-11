@@ -14,19 +14,8 @@ import img from "../../../../../assets/thumbsgr.svg";
 import uparrow from "../../../../../assets/uparrowcargo.svg";
 import CargoInsurance from "./CargoInsurance";
 
-function FindNewRate({selectedCurrency,setSelectedCurrency}) {
-  const [checkedItems, setCheckedItems] = useState({
-    originCharges: false,
-    exportClearance: false,
-    cargoPickup: false,
-    internationalFreight: false,
-    DestinationCharges: false,
-    ImportClearance: false,
-    CargoDelivery: false,
-    CargoInsurance: false,
-    StackableCargo: false,
-    NonHarzardousCargo: false,
-  });
+function FindNewRate({selectedCurrency,setSelectedCurrency,checkedItems,setCheckedItems}) {
+ 
   const [isPopoverOpen, setPopoverOpen] = useState(false);
   const [isDeliveryPopoverOpen, setDeliveryPopoverOpen] = useState(false);
   const [isInsurance, setInsurance] = useState(false);
@@ -478,7 +467,7 @@ function FindNewRate({selectedCurrency,setSelectedCurrency}) {
           </Card>
         </div>
         <div className="quotationresult-leftdiv" style={{ flex: "1 1 auto" }}>
-          <ShipmentTracker selectedCurrency={selectedCurrency}  setSelectedCurrency={setSelectedCurrency}/>
+          <ShipmentTracker selectedCurrency={selectedCurrency}  setSelectedCurrency={setSelectedCurrency} selectedValue={selectedValue}/>
           {/* <QuoteRequest /> */}
         </div>
       </div>

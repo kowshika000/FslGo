@@ -15,7 +15,7 @@ import { useSelector } from "react-redux";
 import ShowChargesModal from "./ShowChargesModal";
 import { CircularProgress, Box } from "@mui/material";
 
-function ShipmentTracker({ selectedCurrency, setSelectedCurrency }) {
+function ShipmentTracker({ selectedCurrency, setSelectedCurrency,selectedValue }) {
   const [showAllData, setShowAllData] = useState(false);
   const [showCharges, setShowCharges] = useState(null);
   const [selectedSort, setSelectedSort] = useState("Low to High");
@@ -113,7 +113,7 @@ function ShipmentTracker({ selectedCurrency, setSelectedCurrency }) {
                     className="me-1"
                     style={{ marginBottom: "0.1rem" }}
                   />
-                  Cargo Pickup
+                 {selectedValue ? selectedValue :"Cargo Pickup"} 
                 </div>
                 <div style={{ opacity: "40%" }}>
                   <img src={Line} alt="line" />
