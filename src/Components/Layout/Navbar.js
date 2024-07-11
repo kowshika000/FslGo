@@ -4,7 +4,7 @@ import Breadcrumbs from "@mui/material/Breadcrumbs";
 import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import { Link, Stack } from "@mui/material";
 
-const Navbar = ({ setShowText, setShowmap }) => {
+const Navbar = ({ setShowText, setShowmap,showReselt }) => {
   const location = useLocation();
   const pathname = location.pathname;
   const navigate = useNavigate();
@@ -56,7 +56,8 @@ const Navbar = ({ setShowText, setShowmap }) => {
       onClick={handleClick}
       style={{ fontSize: "14px", color: "#181E25", fontWeight: "400" }}
     >
-      Quotations
+      {showReselt ? "Quotations Results" : "Quotations"}
+      
     </Link>
   );
 

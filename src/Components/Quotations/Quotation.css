@@ -185,3 +185,11 @@
 /* .ant-tabs-top >.ant-tabs-nav{
   margin: 0 !important;
 } */
+.fixed-shipment-card {
+  position: fixed !important;
+  top: 0 !important;
+  /* width: 100% !important; */
+  background-color: black;
+  z-index: 1000;
+  margin: 0;
+}

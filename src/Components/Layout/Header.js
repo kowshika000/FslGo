@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Box, Typography, Button } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
-import CloseIcon from "@mui/icons-material/Close";
+import { Box, Typography } from "@mui/material";
+// import MenuIcon from "@mui/icons-material/Menu";
+// import CloseIcon from "@mui/icons-material/Close";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
@@ -9,15 +9,15 @@ import Cookies from "js-cookie";
 // import { ReactComponent as Logo } from "../../assets/Logo.svg";
 import Logo from "../../assets/fresGoLogo.jpg";
 import { ReactComponent as Bell } from "../../assets/bell.svg";
-import { Drawer, Dropdown, notification } from "antd";
+import { Drawer, Dropdown, } from "antd";
 import { useSelector } from "react-redux";
 import notificationIcon from '../../assets/notificationIcon.svg'
 import greenIcon from '../../assets/greenIcon.svg'
 
-const Header = ({ setShowText, setShowmap }) => {
+const Header = ({ setShowText, setShowmap,setShowReselt }) => {
   const navigate = useNavigate();
   const location = useLocation();
-  const pathname = location.pathname;
+  // const pathname = location.pathname;
   const [headerFocused, setHeaderFocused] = useState(true);
   const FirstLetter = useSelector((state) => state.ProfileData?.profileData?.company?.charAt(0));
   const [visible, setVisible] = useState(false)
@@ -88,10 +88,13 @@ const Header = ({ setShowText, setShowmap }) => {
     },
   ];
   const handleRedirectToShipments = () => {
-    navigate("/");
+    // navigate("/");
     setShowmap(false);
     setShowText(false);
   };
+  const handleNavQuoation =()=>{
+    setShowReselt(false);
+  }
   return (
     <div
       className="d-flex justify-content-between"
@@ -167,7 +170,7 @@ const Header = ({ setShowText, setShowmap }) => {
               Shipments
             </Typography>
           </Link>
-          <Link to="/quotation" style={{ textDecoration: "none" }}>
+          <Link to="/quotation" style={{ textDecoration: "none" }} onClick={handleNavQuoation}>
             <Typography
               sx={{
                 fontSize: "15px",
