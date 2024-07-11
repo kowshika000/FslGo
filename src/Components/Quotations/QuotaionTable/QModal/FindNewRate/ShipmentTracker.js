@@ -13,12 +13,14 @@ import { CaretDownOutlined } from "@ant-design/icons";
 import { Dropdown } from "primereact/dropdown";
 import { useSelector } from "react-redux";
 import ShowChargesModal from "./ShowChargesModal";
+import { CircularProgress, Box } from "@mui/material";
 
 function ShipmentTracker({ selectedCurrency, setSelectedCurrency }) {
   const [showAllData, setShowAllData] = useState(false);
   const [showCharges, setShowCharges] = useState(null);
   const [selectedSort, setSelectedSort] = useState("Low to High");
   const FindNRate = useSelector((state) => state?.findRate?.booking?.rates);
+  const {loading} =  useSelector((state) => state?.findRate);
   console.log(FindNRate, "FindNRate");
   const tabs = [
     { label: "All(0)", key: "1" },
@@ -41,7 +43,20 @@ function ShipmentTracker({ selectedCurrency, setSelectedCurrency }) {
       <CaretDownOutlined className="ms-1" style={{ color: "#67788E" }} />
     </div>
   );
-
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress style={{ color: "red" }} />
+      </Box>
+    );
+  }
   return (
     <>
       <Card className="tabs1 mb-2">

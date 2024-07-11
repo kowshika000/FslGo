@@ -23,7 +23,7 @@ import { CircularProgress, Box } from "@mui/material";
 import { MultiSelect } from "primereact/multiselect";
 import { Tag } from "primereact/tag";
 import { CloseOutlined } from "@ant-design/icons";
-import { FindNewRateRequest } from "../../../Redux/Actions/FindNewRateAction";
+// import { FindNewRateRequest } from "../../../Redux/Actions/FindNewRateAction";
 
 const QuotationTable = ({
   filterData,
@@ -31,7 +31,7 @@ const QuotationTable = ({
   currentPage,
   setCurrentPage,
   selectedDropdownItem,
-  setSelectedDropdownItem,
+  // setSelectedDropdownItem,
 }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -251,42 +251,42 @@ const QuotationTable = ({
       </>
     );
   };
-  const inputdata = {
-    freight_mode: "S",
-    lcl_fcl_air: "LCL",
-    import_export: "I",
-    package_type: "BOX",
-    no_of_units: "10",
-    total_volume: "2",
-    total_weight: "222",
-    lcl_dimensions: [
-      {
-        length: 0,
-        width: 0,
-        height: 0,
-        type: "KG",
-      },
-    ],
-    fcl_dimensions: [
-      {
-        container_type: "",
-        no_of_containers: 0,
-      },
-    ],
-    volume_type: "KG",
-    weight_type: "CBM",
-    origin: "CNNGB",
-    destination: "AEJEA",
-    origin_country_code: "CN",
-    dest_country_code: "AE",
-    TOS: "FOB",
-    is_pickup_req: "",
-    pickup_place: "",
-    is_hazardous: "",
-    is_stackable: "",
-    is_insurance: "",
-    UID: "15085",
-  };
+  // const inputdata = {
+  //   freight_mode: "S",
+  //   lcl_fcl_air: "LCL",
+  //   import_export: "I",
+  //   package_type: "BOX",
+  //   no_of_units: "10",
+  //   total_volume: "2",
+  //   total_weight: "222",
+  //   lcl_dimensions: [
+  //     {
+  //       length: 0,
+  //       width: 0,
+  //       height: 0,
+  //       type: "KG",
+  //     },
+  //   ],
+  //   fcl_dimensions: [
+  //     {
+  //       container_type: "",
+  //       no_of_containers: 0,
+  //     },
+  //   ],
+  //   volume_type: "KG",
+  //   weight_type: "CBM",
+  //   origin: "CNNGB",
+  //   destination: "AEJEA",
+  //   origin_country_code: "CN",
+  //   dest_country_code: "AE",
+  //   TOS: "FOB",
+  //   is_pickup_req: "",
+  //   pickup_place: "",
+  //   is_hazardous: "",
+  //   is_stackable: "",
+  //   is_insurance: "",
+  //   UID: "15085",
+  // };
 
   const actionBodyTemplate = (rowData) => {
     let buttonLabel;
@@ -333,7 +333,7 @@ const QuotationTable = ({
         navigate("/quick");
       } else if (rowData.status === "Expired") {
         navigate("/findnewrate");
-        dispatch(FindNewRateRequest({inputdata}));
+        // dispatch(FindNewRateRequest({inputdata}));
       }
     };
     return (
