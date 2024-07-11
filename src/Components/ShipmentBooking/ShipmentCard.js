@@ -15,7 +15,7 @@ import Arrow from "../../assets/arrow.png";
 import { useDispatch } from "react-redux";
 import { FindNewRateRequest } from "../../Redux/Actions/FindNewRateAction";
 
-const ShipmentCard = ({ setShowReselt,selectedCurrency }) => {
+const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
   const dispatch = useDispatch();
   const [destination, setDestination] = useState("");
   const [isCargoOpen, setIsCargoOpen] = useState(false);
@@ -46,9 +46,9 @@ const ShipmentCard = ({ setShowReselt,selectedCurrency }) => {
     lcl_fcl_air: "LCL",
     import_export: "I",
     package_type: "BOX",
-    no_of_units: "10",
-    total_volume: "2",
-    total_weight: "222",
+    no_of_units: "1",
+    total_volume: "5",
+    total_weight: "100",
     lcl_dimensions: [
       {
         length: 0,
@@ -63,31 +63,31 @@ const ShipmentCard = ({ setShowReselt,selectedCurrency }) => {
         no_of_containers: 0,
       },
     ],
-    volume_type: "KG",
+    volume_type: "C",
     weight_type: "CBM",
-    origin: "CNNGB",
+    origin: "INNSA",
     destination: "AEJEA",
-    origin_country_code: "CN",
+    origin_country_code: "IN",
     dest_country_code: "AE",
-    TOS: "FOB",
-    is_pickup_req: "",
-    pickup_place: "",
-    is_hazardous: "",
-    is_stackable: "",
-    is_insurance: "",
+    TOS: checkedItems.originCharges ? "FCA" : "FOB",
+    is_pickup_req: checkedItems.cargoPickup ? "Y" : "N",
+    pickup_place: "N",
+    is_hazardous: checkedItems.NonHarzardousCargo ? "N" : "Y",
+    is_stackable: checkedItems.StackableCargo ? "Y" : "N",
+    is_insurance: checkedItems.CargoInsurance ? "Y" : "N",
     UID: "15085",
-    currency: selectedCurrency
+    currency: selectedCurrency,
   };
   const handleSearch = () => {
     setShowReselt(true);
   };
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(FindNewRateRequest({ inputdata }));
-  },[handleSearch,selectedCurrency])
+  }, [handleSearch, selectedCurrency, checkedItems]);
   return (
-    <div>
+    <div style={{ maxWidth: "1255px" }} className="mx-auto">
       <div
-        className="mx-auto my-5 w-100 card shadow"
+        className="card shadow"
         style={{
           minWidth: "1270px",
           border: "1px solid #E7EAF0",

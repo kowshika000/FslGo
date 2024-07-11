@@ -21,6 +21,8 @@ import DsrScheduleReducer from './DsrScheduleReducer';
 import allportReducer from './AllPortReducer';
 import FindNewRateReducer from './FindNewRateReducer';
 import NotificationReducer from './NotificationReducer';
+import PickupReducer from './PickupReducer';
+import DeliveryReducer from './DeleiveryReducer';
 
 const rootReducer = combineReducers({
     ShipmentCount: shipmentCountReducer,
@@ -47,6 +49,8 @@ const rootReducer = combineReducers({
     DsrDownload:DsrDownloadReducer,
     DsrSchedule:DsrScheduleReducer,
     Notification:NotificationReducer,
+    Pickup:PickupReducer,
+    Delivery:DeliveryReducer
 });
 
 export default rootReducer;

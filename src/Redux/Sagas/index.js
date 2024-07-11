@@ -21,6 +21,8 @@ import watchDsrSchedule from "./DsrScheduleSaga";
 import WatchNotification from "./NotificationSaga";
 import watchallPort from "./AllPortSaga";
 import watchFindNewRate from "./FindNewRateSaga";
+import watchPickup from "./PickupSaga";
+import watchDelivery from "./DeliverySaga";
 
 export default function* rootSaga() {
   yield all([
@@ -45,6 +47,8 @@ export default function* rootSaga() {
     watchDsrSchedule(),
     WatchNotification(),
     watchallPort(),
-    watchFindNewRate()
+    watchFindNewRate(),
+    watchPickup(),
+    watchDelivery()
   ]);
 }

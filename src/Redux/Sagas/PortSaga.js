@@ -6,8 +6,7 @@ function* PortSaga({ payload }) {
     console.log('payload',payload)
     const portResponse = yield call(PortService, payload);
     const response = portResponse.data;
-    console.log('Saga received response:', response);
-    console.log(response)
+
     yield put({
       type: Types.PORT_SUCCESS,
       payload: response})
