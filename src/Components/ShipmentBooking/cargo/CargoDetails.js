@@ -7,7 +7,7 @@ import boxes from '../../../assets/3256182_boxes_cargo_delivery_logistics_wareho
 import fcl from '../../../assets/661303_cargo_container_delivery_lift_logistic_icon 1.svg'
 import Fcl from "./FCL/Fcl";
 
-export default function CargoDetails({ onClose }) {
+export default function CargoDetails({ onClose,eximchange,setCargo, setCargoOptionsVisible,settserrmsg }) {
   const [isByTotalShipmentOpen, setIsByTotalShipmentOpen] = useState(true);
   const [isByUnitTypeOpen, setIsByUnitTypeOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
@@ -68,13 +68,13 @@ export default function CargoDetails({ onClose }) {
             {/* By Total Shipment*/}
 
             {isByTotalShipmentOpen && (
-              <TotalShipment/>
+              <TotalShipment setCargo={setCargo} eximchange={eximchange} setCargoOptionsVisible={setCargoOptionsVisible} settserrmsg={settserrmsg} />
             )}
 
             {/* By Unit Type*/}
 
             {isByUnitTypeOpen && (
-              <UnitType/>
+              <UnitType setCargo={setCargo} eximchange={eximchange} setCargoOptionsVisible={setCargoOptionsVisible} settserrmsg={settserrmsg}  />
             )}
           </TabPanel>
 
@@ -88,7 +88,7 @@ export default function CargoDetails({ onClose }) {
             }
             style={{ fontSize: "25px", width: "100%" }}
           >
-            <Fcl onClose={onClose} />
+            <Fcl onClose={onClose} eximchange={eximchange} setCargo={setCargo} setCargoOptionsVisible={setCargoOptionsVisible} settserrmsg={settserrmsg} />
           </TabPanel>
         </TabView>
       {/* </div> */}

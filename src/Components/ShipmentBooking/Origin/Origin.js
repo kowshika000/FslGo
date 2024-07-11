@@ -11,6 +11,8 @@ import { allportRequest } from "../../../Redux/Actions/AllPortAction";
 import air from "../../../assets/Air.svg";
 import sea from "../../../assets/Shipement.svg";
 import city from "../../../assets/Business2.svg";
+import { IoIosClose } from "react-icons/io";
+import { IoClose } from "react-icons/io5";
 
 const style = {
   position: "absolute",
@@ -31,13 +33,15 @@ const Origin = ({
   setCargoOptionsVisible,
   setOriginPort,
   originPort,
-  destPort
+  destPort,
+  searchOriginPort,
+  setSearchOriginPort,
 }) => {
   // const [origin, setOrigin] = useState("");
   // const [modalOpen, setModalOpen] = useState(false);
   // const originRef = useRef(null);
 
-  const [searchOriginPort, setSearchOriginPort] = useState("");
+  // const [searchOriginPort, setSearchOriginPort] = useState("");
   const [orgPortCode, setOrgPortCode] = useState("");
   const [checkleave, setcheckleave] = useState("");
   // const [originPortOptionsVisible, setOriginPortOptionsVisible] =
@@ -154,6 +158,12 @@ const Origin = ({
     }
   };
 
+  const handleClose = () =>{
+      setOriginPort("")
+      setSearchOriginPort("")
+      setOriginPortOptionsVisible(false)
+  }
+
   return (
     <>
       <div
@@ -206,6 +216,11 @@ const Origin = ({
             onChange={handleOriginPortChange}
             value={searchOriginPort}
           />
+          {/* <IoIosClose size=15  /> */}
+          {
+            searchOriginPort && 
+            <IoClose role="button" style={{position:"absolute",top:"51%",right:"20px",}} onClick={handleClose} />
+          }
           {
             errormsg && <FormHelperText style={{ color: "red", fontStyle: "italic" }}>
             {errormsg}

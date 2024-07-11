@@ -9,24 +9,56 @@ import {
   Radio,
   Box,
   RadioGroup,
+  FormHelperText,
 } from "@mui/material";
 import minus from "../../../../assets/9021673_minus_bold_icon 1.svg";
 import plus from "../../../../assets/material-symbols_add-rounded.svg";
-import { Button } from "antd";
+import { Button, Tooltip } from "antd";
 import deletedicon from "../../../../assets/ic_outline-delete.svg";
 import editicon from "../../../../assets/editpencil.f11da97f.svg";
 
-const UnitType = ({ onClose }) => {
-  const [exim, setexim] = useState("I");
-  console.log(exim);
+const UnitType = ({
+  onClose,
+  eximchange,
+  setCargo,
+  setCargoOptionsVisible,
+  settserrmsg,
+}) => {
+  console.log(eximchange);
+  const [exim, setexim] = useState("E");
+
+  useEffect(() => {
+    setexim((prev) => (prev === "I" ? "E" : "I"));
+  }, [eximchange]);
+
   const [inputFields, setInputFields] = useState(
     JSON.parse(localStorage.getItem("utinpfields")) || [{}]
   );
   const [saveddatas, setsaveddatas] = useState(
     JSON.parse(localStorage.getItem("utDatas")) || []
   );
+  console.log(saveddatas);
   const [editeddata, setediteddata] = useState({});
   const [editedId, seteditedId] = useState("");
+
+  const [uterrors, setuterrors] = useState(
+    JSON.parse(localStorage.getItem("utDataserr")) || {
+      units: false,
+      lengths: false,
+      width: false,
+      height: false,
+      weight: false,
+    }
+  );
+  console.log(uterrors);
+  const [utediterrors, setutediterrors] = useState({
+    units: false,
+    lengths: false,
+    width: false,
+    height: false,
+    weight: false,
+  });
+  console.log(uterrors);
 
   const initialData = {
     package_type: "BOX",
@@ -38,22 +70,44 @@ const UnitType = ({ onClose }) => {
     weight: "",
     weightUnit: "KG",
   };
-  const [utDatas, setutDatas] = useState({
-    package_type: "BOX",
-    units: "",
-    height: "",
-    lengths: "",
-    width: "",
-    dimensionUnit: "CM",
-    weight: "",
-    weightUnit: "KG",
-  });
+  const [utDatas, setutDatas] = useState(
+    JSON.parse(localStorage.getItem("utDataslocal")) || {
+      package_type: "BOX",
+      units: "",
+      height: "",
+      lengths: "",
+      width: "",
+      dimensionUnit: "CM",
+      weight: "",
+      weightUnit: "KG",
+    }
+  );
+
+  useEffect(() => {
+    localStorage.setItem("utDataslocal", JSON.stringify(utDatas));
+    localStorage.setItem("utDataserr", JSON.stringify(uterrors));
+  }, [utDatas, uterrors]);
+
   console.log(utDatas);
   // const [tseditedDatas, settseditedDatas] = useState(editeddata[0]);
   // console.log(tseditedDatas)
   console.log(editeddata);
   console.log(saveddatas);
   console.log(inputFields.length);
+  const IsError = [
+    uterrors.units,
+    uterrors.lengths,
+    uterrors.width,
+    uterrors.height,
+    uterrors.weight,
+  ].some(Boolean);
+  const IsEditError = [
+    utediterrors.units,
+    utediterrors.lengths,
+    utediterrors.width,
+    utediterrors.height,
+    utediterrors.weight,
+  ].some(Boolean);
   const canAdd = [
     utDatas.package_type,
     utDatas.units,
@@ -170,7 +224,13 @@ const UnitType = ({ onClose }) => {
     if (inputFields.length > 0) {
       setsaveddatas([
         ...saveddatas,
-        { ...utDatas, id: saveddatas.length < 1 ? 1 : saveddatas[saveddatas.length - 1].id + 1 },
+        {
+          ...utDatas,
+          id:
+            saveddatas.length < 1
+              ? 1
+              : saveddatas[saveddatas.length - 1].id + 1,
+        },
       ]);
       setutDatas(initialData);
     }
@@ -215,7 +275,11 @@ const UnitType = ({ onClose }) => {
   const handleSave = () => {
     setsaveddatas([
       ...saveddatas,
-      { ...utDatas, id: saveddatas.length < 1 ? 1 : saveddatas[saveddatas.length - 1].id + 1 },
+      {
+        ...utDatas,
+        id:
+          saveddatas.length < 1 ? 1 : saveddatas[saveddatas.length - 1].id + 1,
+      },
     ]);
     setutDatas(initialData);
     setInputFields([]);
@@ -299,6 +363,72 @@ const UnitType = ({ onClose }) => {
     setediteddata({});
     seteditedId("");
   };
+
+  const handleLclUnitSubmit = () => {
+    console.log(canAdd, !IsError);
+    if (!IsError && canAdd) {
+      // console.log("submitted");
+      // if(){
+      console.log("first");
+      const values = `LCL | ${utDatas?.units} Units, ${(
+        (utDatas.lengths * utDatas.height * utDatas.width) /
+        1000000
+      ).toFixed(3)} ${utDatas.dimensionUnit}, ${utDatas.weight} ${
+        utDatas.weightUnit
+      }`;
+      setCargo(values);
+      setCargoOptionsVisible(false);
+      settserrmsg("");
+      // }
+    } 
+    // else if(saveddatas.length === 1){
+
+    // }
+    else if (saveddatas.length >= 1) {
+      console.log("second");
+      let units = 0;
+      let weight = 0;
+      let volume = 0;
+      for (let i = 0; i <= saveddatas.length - 1; i++) {
+        units += saveddatas[i].units;
+        weight += parseInt(saveddatas[i].weight);
+        let res =
+          (parseInt(saveddatas[i].lengths) *
+            parseInt(saveddatas[i].width) *
+            parseInt(saveddatas[i].height) *
+            parseInt(saveddatas[i].units)) /
+          1000000;
+        volume += res;
+      }
+      console.log(units, weight, volume);
+      // const unitscopy = [...saveddatas]
+      // let units = unitscopy.reduce((previousValue, currentValue) => previousValue.units += currentValue.units);
+      // let weight = unitscopy.reduce((previousValue, currentValue) => previousValue.weight += currentValue.weight);
+      // console.log(weight)
+      const values = `LCL | ${units} Units, ${volume.toFixed(3)} CBM, ${weight} ${utDatas.weightUnit}`;
+      setCargo(values);
+      setCargoOptionsVisible(false);
+      settserrmsg("");
+    } else {
+      setCargo("");
+      if (!canAdd) {
+        settserrmsg("Please add proper values for load");
+      } else if (uterrors.units) {
+        settserrmsg("Please add proper units for load");
+      } else if (uterrors.lengths) {
+        settserrmsg("Please add proper length for load");
+      } else if (uterrors.width) {
+        settserrmsg("Please add proper width for load");
+      } else if (uterrors.height) {
+        settserrmsg("Please add proper height for load");
+      } else if (uterrors.weight) {
+        settserrmsg("Please add proper weight for load");
+      } else {
+        settserrmsg("");
+      }
+    }
+  };
+
   return (
     <>
       {saveddatas?.map((item, index) => {
@@ -446,6 +576,7 @@ const UnitType = ({ onClose }) => {
                             style={{
                               border: "1px solid rgba(207, 214, 223, 1)",
                               height: "45px",
+                              borderColor: utediterrors.units ? "red" : null,
                             }}
                           >
                             <input
@@ -462,6 +593,16 @@ const UnitType = ({ onClose }) => {
                                   e.preventDefault();
                                 }
                               }}
+                              onBlur={() =>
+                                editeddata?.units < 0 || editeddata?.units > 999
+                                  ? setutediterrors((prev) => {
+                                      return { ...prev, units: true };
+                                    })
+                                  : setutediterrors((prev) => {
+                                      return { ...prev, units: false };
+                                    })
+                              }
+                              onWheel={(e) => e.target.blur()}
                               // value={noofunits ? noofunits : ""}
                               value={editeddata?.units}
                               name="units"
@@ -504,6 +645,15 @@ const UnitType = ({ onClose }) => {
                               <img src={plus} alt="add" />
                             </button>
                           </div>
+                          <FormHelperText
+                            style={{ color: "red", fontStyle: "italic" }}
+                          >
+                            {utediterrors.units && editeddata.units > 999
+                              ? "Maximum 999 allowed"
+                              : editeddata.units < 0
+                              ? "Min 1"
+                              : null}
+                          </FormHelperText>
                         </div>
                       </div>
                       <div className="d-flex">
@@ -540,6 +690,17 @@ const UnitType = ({ onClose }) => {
                                   e.preventDefault();
                                 }
                               }}
+                              onBlur={() =>
+                                editeddata?.lengths < 10 ||
+                                editeddata?.lengths > 310
+                                  ? setutediterrors((prev) => {
+                                      return { ...prev, lengths: true };
+                                    })
+                                  : setutediterrors((prev) => {
+                                      return { ...prev, lengths: false };
+                                    })
+                              }
+                              onWheel={(e) => e.target.blur()}
                               className="placeholder_style"
                               style={{
                                 border: "1px solid rgba(207, 214, 223, 1)",
@@ -548,6 +709,9 @@ const UnitType = ({ onClose }) => {
                                 padding: "10px",
                                 fontSize: "1rem",
                                 width: "60%",
+                                borderColor: utediterrors.lengths
+                                  ? "red"
+                                  : null,
                               }}
                               // className="w-100"
                               value={editeddata?.lengths}
@@ -567,6 +731,17 @@ const UnitType = ({ onClose }) => {
                                   e.preventDefault();
                                 }
                               }}
+                              onBlur={() =>
+                                editeddata?.width < 10 ||
+                                editeddata?.width > 310
+                                  ? setutediterrors((prev) => {
+                                      return { ...prev, width: true };
+                                    })
+                                  : setutediterrors((prev) => {
+                                      return { ...prev, width: false };
+                                    })
+                              }
+                              onWheel={(e) => e.target.blur()}
                               className="placeholder_style"
                               style={{
                                 border: "1px solid rgb(207, 214, 223)",
@@ -575,6 +750,7 @@ const UnitType = ({ onClose }) => {
                                 padding: "10px",
                                 fontSize: "1rem",
                                 width: "60%",
+                                borderColor: utediterrors.width ? "red" : null,
                               }}
                               // className="w-100"
                               value={editeddata?.width}
@@ -594,6 +770,17 @@ const UnitType = ({ onClose }) => {
                                   e.preventDefault();
                                 }
                               }}
+                              onBlur={() =>
+                                editeddata?.height < 10 ||
+                                editeddata?.height > 310
+                                  ? setutediterrors((prev) => {
+                                      return { ...prev, height: true };
+                                    })
+                                  : setutediterrors((prev) => {
+                                      return { ...prev, height: false };
+                                    })
+                              }
+                              onWheel={(e) => e.target.blur()}
                               className="placeholder_style"
                               style={{
                                 border: "1px solid rgb(207, 214, 223)",
@@ -602,6 +789,7 @@ const UnitType = ({ onClose }) => {
                                 padding: "10px",
                                 fontSize: "1rem",
                                 width: "60%",
+                                borderColor: utediterrors.height ? "red" : null,
                               }}
                               // className="w-100"
                               value={editeddata?.height}
@@ -662,6 +850,50 @@ const UnitType = ({ onClose }) => {
                               </div>
                             </div> */}
                           </div>
+                          <div className="d-flex">
+                            <FormHelperText
+                              style={{
+                                color: "red",
+                                fontStyle: "italic",
+                                width: "132px",
+                              }}
+                            >
+                              {utediterrors.lengths &&
+                                (editeddata.lengths > 310
+                                  ? "Max 310CM"
+                                  : editeddata.lengths < 10
+                                  ? "Min 10CM"
+                                  : null)}
+                            </FormHelperText>
+                            <FormHelperText
+                              style={{
+                                color: "red",
+                                fontStyle: "italic",
+                                width: "132px",
+                              }}
+                            >
+                              {utediterrors.width &&
+                                (editeddata.width > 310
+                                  ? "Max 310CM"
+                                  : editeddata.width < 10
+                                  ? "Min 10CM"
+                                  : null)}
+                            </FormHelperText>
+                            <FormHelperText
+                              style={{
+                                color: "red",
+                                fontStyle: "italic",
+                                width: "132px",
+                              }}
+                            >
+                              {utediterrors.height &&
+                                (editeddata.height > 310
+                                  ? "Max 310CM"
+                                  : editeddata.height < 10
+                                  ? "Min 10CM"
+                                  : null)}
+                            </FormHelperText>
+                          </div>
                         </div>
                       </div>
                       <div className="d-flex">
@@ -695,6 +927,17 @@ const UnitType = ({ onClose }) => {
                                   e.preventDefault();
                                 }
                               }}
+                              onBlur={() =>
+                                editeddata?.weight <= 0 ||
+                                editeddata?.weight > 3000
+                                  ? setutediterrors((prev) => {
+                                      return { ...prev, weight: true };
+                                    })
+                                  : setutediterrors((prev) => {
+                                      return { ...prev, weight: false };
+                                    })
+                              }
+                              onWheel={(e) => e.target.blur()}
                               style={{
                                 border: "1px solid rgba(207, 214, 223, 1)",
                                 borderTopLeftRadius: "5px",
@@ -702,6 +945,7 @@ const UnitType = ({ onClose }) => {
                                 fontSize: "1rem",
                                 padding: "10px",
                                 width: "100%",
+                                borderColor: utediterrors.weight ? "red" : null,
                               }}
                               placeholder="Weight"
                               className="placeholder_style"
@@ -763,6 +1007,21 @@ const UnitType = ({ onClose }) => {
                               </div>
                             </div> */}
                           </div>
+                          <FormHelperText
+                            style={{
+                              color: "red",
+                              fontStyle: "italic",
+                              width: "132px",
+                            }}
+                          >
+                            {utediterrors.weight
+                              ? editeddata.weight > 310
+                                ? "Max 3000KG"
+                                : utDatas.weight <= 0
+                                ? "Min 1 KG"
+                                : null
+                              : ""}
+                          </FormHelperText>
                         </div>
                       </div>
                       <Button
@@ -773,7 +1032,7 @@ const UnitType = ({ onClose }) => {
                           opacity: !canEditSave ? ".5" : "1",
                         }}
                         onClick={handleUpdate}
-                        disabled={!canEditSave}
+                        disabled={!canEditSave || IsEditError}
                       >
                         save
                       </Button>
@@ -831,11 +1090,7 @@ const UnitType = ({ onClose }) => {
                   Package Type
                 </Typography>
                 <FormControl fullWidth>
-                  {/* <InputLabel id="demo-simple-select-label">Package</InputLabel> */}
                   <Select
-                    // labelId="demo-simple-select-label"
-                    // id="demo-simple-select"
-                    // label="Age"
                     style={{ height: "45px" }}
                     value={utDatas.package_type}
                     onChange={handleChange}
@@ -865,6 +1120,7 @@ const UnitType = ({ onClose }) => {
                   style={{
                     border: "1px solid rgb(207, 214, 223)",
                     height: "45px",
+                    borderColor: uterrors.units ? "red" : null,
                   }}
                 >
                   <input
@@ -881,7 +1137,16 @@ const UnitType = ({ onClose }) => {
                         e.preventDefault();
                       }
                     }}
-                    // onWheel={(e) => e.target.blur()}
+                    onBlur={() =>
+                      utDatas?.units < 0 || utDatas?.units > 999
+                        ? setuterrors((prev) => {
+                            return { ...prev, units: true };
+                          })
+                        : setuterrors((prev) => {
+                            return { ...prev, units: false };
+                          })
+                    }
+                    onWheel={(e) => e.target.blur()}
                     // value={noofunits ? noofunits : ""}
                     value={utDatas?.units}
                     name="units"
@@ -922,6 +1187,13 @@ const UnitType = ({ onClose }) => {
                     <img src={plus} alt="add" />
                   </button>
                 </div>
+                <FormHelperText style={{ color: "red", fontStyle: "italic" }}>
+                  {uterrors.units && utDatas.units > 999
+                    ? "Maximum 999 allowed"
+                    : utDatas.units < 0
+                    ? "Min 1"
+                    : null}
+                </FormHelperText>
               </div>
             </div>
             <div className="d-flex">
@@ -960,6 +1232,16 @@ const UnitType = ({ onClose }) => {
                         e.preventDefault();
                       }
                     }}
+                    onBlur={() =>
+                      utDatas?.lengths < 10 || utDatas?.lengths > 310
+                        ? setuterrors((prev) => {
+                            return { ...prev, lengths: true };
+                          })
+                        : setuterrors((prev) => {
+                            return { ...prev, lengths: false };
+                          })
+                    }
+                    onWheel={(e) => e.target.blur()}
                     style={{
                       // border: "0px",
                       border: "1px solid rgb(207, 214, 223)",
@@ -967,6 +1249,7 @@ const UnitType = ({ onClose }) => {
                       borderBottomLeftRadius: "5px",
                       fontSize: "1rem",
                       padding: "12px",
+                      borderColor: uterrors.lengths ? "red" : null,
                     }}
                     placeholder="L"
                     value={utDatas.lengths}
@@ -986,12 +1269,23 @@ const UnitType = ({ onClose }) => {
                         e.preventDefault();
                       }
                     }}
+                    onBlur={() =>
+                      utDatas?.width < 10 || utDatas?.width > 310
+                        ? setuterrors((prev) => {
+                            return { ...prev, width: true };
+                          })
+                        : setuterrors((prev) => {
+                            return { ...prev, width: false };
+                          })
+                    }
+                    onWheel={(e) => e.target.blur()}
                     style={{
                       border: "1px solid rgb(207, 214, 223)",
                       borderRight: "1px solid rgb(207, 214, 223)",
-                      borderLeft: "0px",
+                      borderLeft: "1px solid rgb(207, 214, 223)",
                       fontSize: "1rem",
                       padding: "12px",
+                      borderColor: uterrors.width ? "red" : null,
                     }}
                     placeholder="W"
                     value={utDatas.width}
@@ -1011,12 +1305,23 @@ const UnitType = ({ onClose }) => {
                         e.preventDefault();
                       }
                     }}
+                    onBlur={() =>
+                      utDatas?.height < 10 || utDatas?.height > 310
+                        ? setuterrors((prev) => {
+                            return { ...prev, height: true };
+                          })
+                        : setuterrors((prev) => {
+                            return { ...prev, height: false };
+                          })
+                    }
+                    onWheel={(e) => e.target.blur()}
                     style={{
                       border: "1px solid rgb(207, 214, 223)",
                       borderRight: "1px solid rgb(207, 214, 223)",
-                      borderLeft: "0px",
+                      borderLeft: "1px solid rgb(207, 214, 223)",
                       fontSize: "1rem",
                       padding: "12px",
+                      borderColor: uterrors.height ? "red" : null,
                     }}
                     placeholder="H"
                     value={utDatas.height}
@@ -1076,6 +1381,50 @@ const UnitType = ({ onClose }) => {
               </div>
             </div> */}
                 </div>
+                <div className="d-flex">
+                  <FormHelperText
+                    style={{
+                      color: "red",
+                      fontStyle: "italic",
+                      width: "132px",
+                    }}
+                  >
+                    {uterrors.lengths &&
+                      (utDatas.lengths > 310
+                        ? "Max 310CM"
+                        : utDatas.lengths < 10
+                        ? "Min 10CM"
+                        : null)}
+                  </FormHelperText>
+                  <FormHelperText
+                    style={{
+                      color: "red",
+                      fontStyle: "italic",
+                      width: "132px",
+                    }}
+                  >
+                    {uterrors.width &&
+                      (utDatas.width > 310
+                        ? "Max 310CM"
+                        : utDatas.width < 10
+                        ? "Min 10CM"
+                        : null)}
+                  </FormHelperText>
+                  <FormHelperText
+                    style={{
+                      color: "red",
+                      fontStyle: "italic",
+                      width: "132px",
+                    }}
+                  >
+                    {uterrors.height &&
+                      (utDatas.height > 310
+                        ? "Max 310CM"
+                        : utDatas.height < 10
+                        ? "Min 10CM"
+                        : null)}
+                  </FormHelperText>
+                </div>
               </div>
             </div>
             <div className="d-flex mb-3">
@@ -1109,6 +1458,16 @@ const UnitType = ({ onClose }) => {
                         e.preventDefault();
                       }
                     }}
+                    onBlur={() =>
+                      utDatas?.weight <= 0 || utDatas?.weight > 3000
+                        ? setuterrors((prev) => {
+                            return { ...prev, weight: true };
+                          })
+                        : setuterrors((prev) => {
+                            return { ...prev, weight: false };
+                          })
+                    }
+                    onWheel={(e) => e.target.blur()}
                     className="placeholder_style w-100"
                     style={{
                       border: "1px solid rgb(207, 214, 223)",
@@ -1116,6 +1475,7 @@ const UnitType = ({ onClose }) => {
                       borderBottomLeftRadius: "5px",
                       fontSize: "1rem",
                       padding: "12px",
+                      borderColor: uterrors.weight ? "red" : null,
                     }}
                     placeholder="Weight"
                     value={utDatas.weight}
@@ -1133,6 +1493,7 @@ const UnitType = ({ onClose }) => {
                         borderBottomRightRadius: "8px",
                         border: "1px solid rgba(207, 214, 223, 1)",
                         borderLeft: "0px",
+                        borderColor: uterrors.weight ? "red" : null,
                       }}
                       labelId="demo-customized-select-label"
                       id="demo-customized-select"
@@ -1172,6 +1533,17 @@ const UnitType = ({ onClose }) => {
               </div>
             </div> */}
                 </div>
+                <FormHelperText
+                  style={{ color: "red", fontStyle: "italic", width: "132px" }}
+                >
+                  {uterrors.weight
+                    ? utDatas.weight > 310
+                      ? "Max 3000KG"
+                      : utDatas.weight <= 0
+                      ? "Min 1 KG"
+                      : null
+                    : ""}
+                </FormHelperText>
               </div>
             </div>
             {saveddatas.length > 0 && (
@@ -1183,7 +1555,7 @@ const UnitType = ({ onClose }) => {
                   opacity: !canSave ? ".5" : "1",
                 }}
                 onClick={handleSave}
-                disabled={!canSave}
+                disabled={!canSave || IsError}
               >
                 save
               </Button>
@@ -1191,28 +1563,34 @@ const UnitType = ({ onClose }) => {
           </div>
         </React.Fragment>
       ))}
-      <Button
-        style={{
-          border: "none",
-          background: "none",
-          opacity: !CanField ? "1" : canAdd ? "1" : ".5",
-          boxShadow: "unset",
-        }}
-        onClick={handleAddLoad}
-        disabled={!CanField ? false : !canAdd}
+      <Tooltip
+        placement="top"
+        title={"Please add proper details for previous loads"}
+        trigger={IsError || (!canAdd && "hover")}
       >
-        <Typography
-          sx={{
-            fontWeight: "400",
-            fontSize: "13px",
-            lineHeight: "19px",
-            letterSpacing: ".01em",
-            color: "rgba(73, 90, 110, 1)",
+        <Button
+          style={{
+            border: "none",
+            background: "none",
+            opacity: !CanField ? "1" : canAdd && !IsError ? "1" : ".5",
+            boxShadow: "unset",
           }}
+          onClick={handleAddLoad}
+          disabled={!CanField ? false : !canAdd || IsError}
         >
-          + Add Another Load
-        </Typography>
-      </Button>
+          <Typography
+            sx={{
+              fontWeight: "400",
+              fontSize: "13px",
+              lineHeight: "19px",
+              letterSpacing: ".01em",
+              color: "rgba(73, 90, 110, 1)",
+            }}
+          >
+            + Add Another Load
+          </Typography>
+        </Button>
+      </Tooltip>
       <div className="mb-3 d-flex justify-content-between">
         <div className=" d-flex" style={{ justifyContent: "space-between" }}>
           <Typography
@@ -1231,7 +1609,7 @@ const UnitType = ({ onClose }) => {
             row
             aria-labelledby="demo-row-radio-buttons-group-label"
             name="row-radio-buttons-group"
-            defaultValue="I"
+            value={exim}
           >
             <FormControlLabel
               value="I"
@@ -1246,7 +1624,7 @@ const UnitType = ({ onClose }) => {
                 <Radio
                   name="import_export"
                   value="I"
-                  onChange={(e)=>setexim(e.target.value)}
+                  onChange={(e) => setexim(e.target.value)}
                   size="small"
                   label="Import"
                   sx={{
@@ -1273,7 +1651,7 @@ const UnitType = ({ onClose }) => {
                 <Radio
                   name="import_export"
                   value="E"
-                  onChange={(e)=>setexim(e.target.value)}
+                  onChange={(e) => setexim(e.target.value)}
                   size="small"
                   label="Export"
                   sx={{
@@ -1290,7 +1668,7 @@ const UnitType = ({ onClose }) => {
           </RadioGroup>
         </div>
         <div className="d-flex justify-content-center align-items-center">
-          <button className="confirm" onClick={onClose}>
+          <button className="confirm" onClick={handleLclUnitSubmit}>
             Confirm
           </button>
         </div>

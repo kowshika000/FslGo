@@ -17,6 +17,7 @@ import CountryFlag from "../../Core-Components/CountryFlag";
 import air from "../../../assets/Air.svg";
 import sea from "../../../assets/Shipement.svg";
 import city from "../../../assets/Business2.svg";
+import { IoClose } from "react-icons/io5";
 
 const style = {
   position: "absolute",
@@ -38,11 +39,14 @@ const Destination = ({
   setDestPort,
   destPort,
   originPort,
+  searchDestPort,
+  setSearchDestPort
 }) => {
-  const [searchDestPort, setSearchDestPort] = useState("");
+  // const [searchDestPort, setSearchDestPort] = useState("");
   // const [originPortOptionsVisible, setOriginPortOptionsVisible] = useState(false);
   // const [destPortOptionsVisible, setDestPortOptionsVisible] = useState(false);
   const [desPortCode, setDesPortCode] = useState("");
+  console.log(searchDestPort)
   const [prevValue, setPrevValue] = useState("");
   const [checkleave, setcheckleave] = useState("");
   const [errormsg, seterrormsg] = useState(null)
@@ -148,6 +152,12 @@ const Destination = ({
     setCargoOptionsVisible(false);
   };
 
+  const handleClose = () =>{
+    setDestPort("")
+    setSearchDestPort("")
+    setDestPortOptionsVisible(false)
+}
+
   return (
     <>
       <div
@@ -202,6 +212,10 @@ const Destination = ({
 
             // }}
           />
+          {
+            searchDestPort && 
+            <IoClose role="button" style={{position:"absolute",top:"51%",right:"20px",}} onClick={handleClose} />
+          }
           {
             errormsg && <FormHelperText style={{ color: "red", fontStyle: "italic" }}>
             {errormsg}
