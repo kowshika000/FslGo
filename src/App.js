@@ -61,7 +61,7 @@ const MainContent = ({
           setShowReselt={setShowReselt}
         />
       )}
-      <div style={{ marginTop: "4rem" }}>
+      <div style={{ marginTop: "76px" }}></div>
         <Routes>
           <Route
             path="/"
@@ -93,7 +93,6 @@ const MainContent = ({
           <Route path="/profile" element={<ProfileBase />} />
           <Route path="/quick" element={<Quick />} />
         </Routes>
-      </div>
       {showfooter && <Footer />}
       <ToastContainer
         position="top-right"

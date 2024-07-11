@@ -14,8 +14,12 @@ import img from "../../../../../assets/thumbsgr.svg";
 import uparrow from "../../../../../assets/uparrowcargo.svg";
 import CargoInsurance from "./CargoInsurance";
 
-function FindNewRate({selectedCurrency,setSelectedCurrency,checkedItems,setCheckedItems}) {
- 
+function FindNewRate({
+  selectedCurrency,
+  setSelectedCurrency,
+  checkedItems,
+  setCheckedItems,
+}) {
   const [isPopoverOpen, setPopoverOpen] = useState(false);
   const [isDeliveryPopoverOpen, setDeliveryPopoverOpen] = useState(false);
   const [isInsurance, setInsurance] = useState(false);
@@ -407,69 +411,68 @@ function FindNewRate({selectedCurrency,setSelectedCurrency,checkedItems,setCheck
     );
 
   return (
-    <div
-      style={{
-        Width: "100%",
-        minWidth: "1255px",
-        padding: "20px",
-        backgroundColor: "#f3f5f7",
-        // marginTop: "100px",
-      }}
-    >
-      <div className="quotationresult-div mx-auto">
-        <div
-          className="quotationresult-leftdiv"
-          style={{ flex: "0 0 272px", height: "100vh" }}
-        >
-          <Card title="Service Included">
-            <div className="Service-card">
-              <Collapse
-                defaultActiveKey={["1"]}
-                expandIconPosition="end"
-                expandIcon={customExpandIcon}
-                ghost={true}
-                onChange={onChangeCollapse}
-                className="width-full"
-                items={item1}
-                style={{ borderBottom: "1px solid #F3F5F7" }}
-              />
-              <Collapse
-                defaultActiveKey={["1"]}
-                expandIconPosition="end"
-                expandIcon={customExpandIcon}
-                ghost={true}
-                onChange={onChangeCollapse}
-                className="width-full"
-                items={item2}
-                style={{ borderBottom: "1px solid #F3F5F7" }}
-              />
-              <Collapse
-                defaultActiveKey={["1"]}
-                expandIconPosition="end"
-                expandIcon={customExpandIcon}
-                ghost={true}
-                onChange={onChangeCollapse}
-                className="width-full"
-                items={item3}
-                style={{ borderBottom: "1px solid #F3F5F7" }}
-              />
-              <Collapse
-                defaultActiveKey={["1"]}
-                expandIconPosition="end"
-                expandIcon={customExpandIcon}
-                ghost={true}
-                onChange={onChangeCollapse}
-                className="width-full"
-                items={item4}
-                style={{ borderBottom: "1px solid#F3F5F7" }}
-              />
-            </div>
-          </Card>
-        </div>
-        <div className="quotationresult-leftdiv" style={{ flex: "1 1 auto" }}>
-          <ShipmentTracker selectedCurrency={selectedCurrency}  setSelectedCurrency={setSelectedCurrency} selectedValue={selectedValue}/>
-          {/* <QuoteRequest /> */}
-        </div>
+    <div className="quotationresult-div mx-auto">
+      <div
+        className="quotationresult-leftdiv"
+        style={{ flex: "0 0 272px", height: "100vh" }}
+      >
+        <Card title="Service Included">
+          <div className="Service-card">
+            <Collapse
+              defaultActiveKey={["1"]}
+              expandIconPosition="end"
+              expandIcon={customExpandIcon}
+              ghost={true}
+              onChange={onChangeCollapse}
+              className="width-full"
+              items={item1}
+              style={{ borderBottom: "1px solid #F3F5F7" }}
+            />
+            <Collapse
+              defaultActiveKey={["1"]}
+              expandIconPosition="end"
+              expandIcon={customExpandIcon}
+              ghost={true}
+              onChange={onChangeCollapse}
+              className="width-full"
+              items={item2}
+              style={{ borderBottom: "1px solid #F3F5F7" }}
+            />
+            <Collapse
+              defaultActiveKey={["1"]}
+              expandIconPosition="end"
+              expandIcon={customExpandIcon}
+              ghost={true}
+              onChange={onChangeCollapse}
+              className="width-full"
+              items={item3}
+              style={{ borderBottom: "1px solid #F3F5F7" }}
+            />
+            <Collapse
+              defaultActiveKey={["1"]}
+              expandIconPosition="end"
+              expandIcon={customExpandIcon}
+              ghost={true}
+              onChange={onChangeCollapse}
+              className="width-full"
+              items={item4}
+              style={{ borderBottom: "1px solid#F3F5F7" }}
+            />
+          </div>
+        </Card>
+      </div>
+      <div className="quotationresult-leftdiv" style={{ flex: "1 1 auto" }}>
+        {checkedItems.DestinationCharges === false ? (
+          <QuoteRequest />
+        ) : (
+          <>
+            <ShipmentTracker
+              selectedCurrency={selectedCurrency}
+              setSelectedCurrency={setSelectedCurrency}
+              selectedValue={selectedValue}
+            />
+          </>
+        )}
       </div>
     </div>
   );
