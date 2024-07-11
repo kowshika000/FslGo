@@ -15,7 +15,7 @@ import Arrow from "../../assets/arrow.png";
 import { useDispatch } from "react-redux";
 import { FindNewRateRequest } from "../../Redux/Actions/FindNewRateAction";
 
-const ShipmentCard = ({ setShowReselt,selectedCurrency,checkedItems }) => {
+const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
   const dispatch = useDispatch();
   const [destination, setDestination] = useState("");
   const [isCargoOpen, setIsCargoOpen] = useState(false);
@@ -69,25 +69,25 @@ const ShipmentCard = ({ setShowReselt,selectedCurrency,checkedItems }) => {
     destination: "AEJEA",
     origin_country_code: "IN",
     dest_country_code: "AE",
-    TOS: checkedItems.originCharges ? "FCA" :"FOB",
-    is_pickup_req: checkedItems.cargoPickup ? "Y":"N",
+    TOS: checkedItems.originCharges ? "FCA" : "FOB",
+    is_pickup_req: checkedItems.cargoPickup ? "Y" : "N",
     pickup_place: "N",
-    is_hazardous: checkedItems.NonHarzardousCargo ? "N":"Y",
-    is_stackable: checkedItems.StackableCargo ? "Y":"N",
-    is_insurance: checkedItems.CargoInsurance ? "Y":"N",
+    is_hazardous: checkedItems.NonHarzardousCargo ? "N" : "Y",
+    is_stackable: checkedItems.StackableCargo ? "Y" : "N",
+    is_insurance: checkedItems.CargoInsurance ? "Y" : "N",
     UID: "15085",
-    currency: selectedCurrency
+    currency: selectedCurrency,
   };
   const handleSearch = () => {
     setShowReselt(true);
   };
-  useEffect(()=>{
+  useEffect(() => {
     dispatch(FindNewRateRequest({ inputdata }));
-  },[handleSearch,selectedCurrency ,checkedItems])
+  }, [handleSearch, selectedCurrency, checkedItems]);
   return (
-    <div>
+    <div style={{ maxWidth: "1255px" }} className="mx-auto">
       <div
-        className="mx-auto my-5 w-100 card shadow"
+        className="card shadow"
         style={{
           minWidth: "1270px",
           border: "1px solid #E7EAF0",
