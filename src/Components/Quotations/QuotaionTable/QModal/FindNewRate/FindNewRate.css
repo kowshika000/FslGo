@@ -601,8 +601,23 @@
   height: 40px;
 }
 
+/* @media screen and (max-width: 1440px) {
+  .fixed {
+    left: 94px !important;
+  }
+}
+@media screen and (max-width: 1024px) {
+  .fixed {
+    left: 30px !important;
+  }
+} */
 @media screen and (max-width: 1440px) {
   .fixed {
     left: 94px !important;
+  }
+}
+@media screen and (min-width: 1024px) {
+  .fixed {
+    left: 40px !important;
   }
 }

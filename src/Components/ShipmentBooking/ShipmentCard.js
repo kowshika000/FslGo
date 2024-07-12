@@ -29,7 +29,7 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
   const [destPort, setDestPort] = useState(null);
   const [searchOriginPort, setSearchOriginPort] = useState("");
   const [searchDestPort, setSearchDestPort] = useState("");
-  const [eximchange, seteximchange] = useState(false)
+  const [eximchange, seteximchange] = useState(false);
   const [tsexim, settsexim] = useState("I");
   const [utexim, setutexim] = useState("I");
   const [fclexim, setfclexim] = useState("I");
@@ -48,6 +48,61 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
   };
 
   const [error, seterror] = useState();
+  // let tosValue = "";
+  //   if (checkedItems.internationalFreight && checkedItems.DestinationCharges) {
+  //     tosValue = "FOB";
+  //   } else if (
+  //     checkedItems.internationalFreight &&
+  //     checkedItems.DestinationCharges &&
+  //     checkedItems.originCharges
+  //   ) {
+  //     tosValue = "FCA";
+  //   } else if (
+  //     checkedItems.internationalFreight &&
+  //     checkedItems.DestinationCharges &&
+  //     checkedItems.CargoDelivery
+  //   ) {
+  //     tosValue = "FOB";
+  //   } else if (
+  //     checkedItems.internationalFreight &&
+  //     checkedItems.DestinationCharges &&
+  //     checkedItems.originCharges &&
+  //     checkedItems.CargoDelivery
+  //   ) {
+  //     tosValue = "FCA";
+  //   } else if (
+  //     checkedItems.internationalFreight &&
+  //     checkedItems.DestinationCharges &&
+  //     checkedItems.originCharges &&
+  //     checkedItems.cargoPickup
+  //   ) {
+  //     tosValue = "EXW";
+  //   } else if (
+  //     checkedItems.internationalFreight &&
+  //     checkedItems.DestinationCharges &&
+  //     checkedItems.originCharges &&
+  //     checkedItems.cargoPickup &&
+  //     checkedItems.CargoDelivery
+  //   ) {
+  //     tosValue = "EXW";
+  //   }
+  let tosValue = "";
+
+  if (checkedItems.internationalFreight && checkedItems.DestinationCharges) {
+    if (
+      checkedItems.originCharges &&
+      checkedItems.cargoPickup &&
+      checkedItems.CargoDelivery
+    ) {
+      tosValue = "FCA";
+    } else if (checkedItems.originCharges && checkedItems.cargoPickup) {
+      tosValue = "EXW";
+    } else {
+      tosValue = "FOB";
+    }
+  } else {
+    tosValue = ""; 
+  }
   const inputdata = {
     freight_mode: "S",
     lcl_fcl_air: "LCL",
@@ -88,39 +143,35 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
   const handleSearch = () => {
     setShowReselt(true);
   };
-  const handleSwap =()=>{
-    if(originPort && destPort && searchOriginPort && searchDestPort){
-    setSearchDestPort(searchOriginPort)
-    setSearchOriginPort(searchDestPort)
-    setDestPort(originPort)
-    setOriginPort(destPort)
-    settsexim((prev)=>prev==="I"?"E":"I")
-    setutexim((prev)=>prev==="I"?"E":"I")
-    setfclexim((prev)=>prev==="I"?"E":"I")
-    }
-    else if(originPort && searchOriginPort){
-      setSearchDestPort(searchOriginPort)
-      setDestPort(originPort)
+  const handleSwap = () => {
+    if (originPort && destPort && searchOriginPort && searchDestPort) {
+      setSearchDestPort(searchOriginPort);
+      setSearchOriginPort(searchDestPort);
+      setDestPort(originPort);
+      setOriginPort(destPort);
+      settsexim((prev) => (prev === "I" ? "E" : "I"));
+      setutexim((prev) => (prev === "I" ? "E" : "I"));
+      setfclexim((prev) => (prev === "I" ? "E" : "I"));
+    } else if (originPort && searchOriginPort) {
+      setSearchDestPort(searchOriginPort);
+      setDestPort(originPort);
       // setOriginPortOptionsVisible(false)
-    }
-    else if(destPort && searchDestPort){
-      setSearchOriginPort(searchDestPort)
-      setOriginPort(destPort)
+    } else if (destPort && searchDestPort) {
+      setSearchOriginPort(searchDestPort);
+      setOriginPort(destPort);
       // setOriginPortOptionsVisible(false)
-    }
-    else{
-      if(searchOriginPort && !originPort){
-          setSearchOriginPort("")
-          setOriginPort(false)
-          setOriginPortOptionsVisible(false)
-      }
-      else if(searchDestPort && !destPort){
-          setSearchDestPort("")
-          setDestPort(false)
-          setDestPortOptionsVisible(false)
+    } else {
+      if (searchOriginPort && !originPort) {
+        setSearchOriginPort("");
+        setOriginPort(false);
+        setOriginPortOptionsVisible(false);
+      } else if (searchDestPort && !destPort) {
+        setSearchDestPort("");
+        setDestPort(false);
+        setDestPortOptionsVisible(false);
       }
     }
-  }
+  };
   useEffect(() => {
     dispatch(FindNewRateRequest({ inputdata }));
   }, [handleSearch, selectedCurrency, checkedItems]);
@@ -187,7 +238,6 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
             setutexim={setutexim}
             fclexim={fclexim}
             setfclexim={setfclexim}
-
           />
           {/* Search button */}
           <div

@@ -309,7 +309,7 @@ function ShipmentTracker({
                 </div>
               </div>
               {showCharges === index && (
-                <ShowChargesModal FindNRate={FindNRate} />
+                <ShowChargesModal FindNRate={data}  />
               )}
               <div className="d-flex align-items-center">
                 <div>
