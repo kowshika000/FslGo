@@ -1,12 +1,11 @@
 import { Select } from "antd";
-import React,{useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PickupRequest } from "../../../../../Redux/Actions/PickupAction";
 
 function CargoPickupPopOver({ setSelectedValue, setPopoverOpen }) {
   const dispatch = useDispatch();
-  const pickupdata = useSelector((state) => state?.Pickup?.pickuppointlist);
-  console.log(pickupdata,"ccccccc");
+  const pickupdata = useSelector((state) => state?.Pickup?.pickuppointlist?.pickuppointlist);
   const [options, setOptions] = useState([]);
 
   const handleSelectChange = (value) => {
@@ -18,26 +17,22 @@ function CargoPickupPopOver({ setSelectedValue, setPopoverOpen }) {
 
   const onSearch = (value) => {
     if (value.length >= 3) {
-      dispatch(PickupRequest({ country: "IN", pickup_place: value}));
+      dispatch(PickupRequest({ country: "IN", pickup_place: value }));
+    }else{
+      setOptions([]);
     }
   };
   useEffect(() => {
-      if (pickupdata && Array.isArray(pickupdata)) {
-        const updatedOptions = pickupdata.map((item, index) => ({
-          value: item.list_value,
-          label: item.list_value,
-          key: index,
-        }));
-        setOptions(updatedOptions);
-        console.log(updatedOptions, "Optionsccc");
+    if (pickupdata && Array.isArray(pickupdata)) {
+    const updatedOptions = pickupdata?.map((item, index) => ({
+      value: item.list_value,
+      label: item.list_value,
+      key: index,
+    }));
+    setOptions(updatedOptions);
     }
-  }, [pickupdata]);
-  useEffect(() => {
-    if (pickupdata === undefined) {
-      // Handle error or show a message
-      console.log("Error fetching pickup data");
-    }
-  }, [pickupdata]);
+  }, [pickupdata]); 
+
   return (
     <div className="div-colaligned popover-checkbox popover-open w-200">
       <Select
@@ -50,6 +45,10 @@ function CargoPickupPopOver({ setSelectedValue, setPopoverOpen }) {
         filterOption={(input, option) =>
           option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
+        // options={[
+        //   { value: 'New York', label: 'New York' },
+        //   { value: 'Los Angeles', label: 'Los Angeles' }
+        // ]}
       />
     </div>
   );

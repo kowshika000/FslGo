@@ -2,7 +2,7 @@ import {DELIVERY_REQUEST, DELIVERY_SUCCESS, DELIVERY_FAILURE} from '../ActionTyp
 const initialState = {
   error: null,
   loading: false,
-  Delivery: {},
+  Delivery: [],
 };
 function DeliveryReducer(state = initialState, action) {
   switch (action.type) {
