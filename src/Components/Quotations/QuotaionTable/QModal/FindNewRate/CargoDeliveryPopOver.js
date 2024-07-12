@@ -22,7 +22,7 @@ function CargoDeliveryPopOver({ setSelectedValue, setPopoverOpen }) {
   useEffect(() => {
     if (devlivery) {
       setOptions(
-        devlivery.map((item) => ({
+        devlivery?.map((item) => ({
           value: item.code,
           label: item.code,
         }))
