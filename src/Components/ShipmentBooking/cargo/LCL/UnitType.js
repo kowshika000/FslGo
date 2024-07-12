@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Typography,
   MenuItem,
@@ -23,42 +23,58 @@ const UnitType = ({
   setCargo,
   setCargoOptionsVisible,
   settserrmsg,
+  utexim,
+  setutexim,
+  inputFields,
+  setInputFields,
+  saveddatas,
+  setsaveddatas,
+  editeddata,
+  setediteddata,
+  editedId,
+  seteditedId,
+  uterrors,
+  setuterrors,
+  utediterrors,
+  setutediterrors,
+  utDatas,
+  setutDatas,
+  setshowcargo
 }) => {
   console.log(eximchange);
-  const [exim, setexim] = useState("E");
+  const hasPageBeenRendered = useRef(false)
+  console.log(inputFields)
+  console.log(editeddata)
+  // const [utexim, setutexim] = useState("E");
 
-  useEffect(() => {
-    setexim((prev) => (prev === "I" ? "E" : "I"));
-  }, [eximchange]);
+  // const [inputFields, setInputFields] = useState(
+  //   JSON.parse(localStorage.getItem("utinpfields")) || [{}]
+  // );
+  // const [saveddatas, setsaveddatas] = useState(
+  //   JSON.parse(localStorage.getItem("utDatas")) || []
+  // );
+  // console.log(saveddatas);
+  // const [editeddata, setediteddata] = useState({});
+  // const [editedId, seteditedId] = useState("");
 
-  const [inputFields, setInputFields] = useState(
-    JSON.parse(localStorage.getItem("utinpfields")) || [{}]
-  );
-  const [saveddatas, setsaveddatas] = useState(
-    JSON.parse(localStorage.getItem("utDatas")) || []
-  );
-  console.log(saveddatas);
-  const [editeddata, setediteddata] = useState({});
-  const [editedId, seteditedId] = useState("");
-
-  const [uterrors, setuterrors] = useState(
-    JSON.parse(localStorage.getItem("utDataserr")) || {
-      units: false,
-      lengths: false,
-      width: false,
-      height: false,
-      weight: false,
-    }
-  );
+  // const [uterrors, setuterrors] = useState(
+  //   JSON.parse(localStorage.getItem("utDataserr")) || {
+  //     units: false,
+  //     lengths: false,
+  //     width: false,
+  //     height: false,
+  //     weight: false,
+  //   }
+  // );
   console.log(uterrors);
-  const [utediterrors, setutediterrors] = useState({
-    units: false,
-    lengths: false,
-    width: false,
-    height: false,
-    weight: false,
-  });
-  console.log(uterrors);
+  // const [utediterrors, setutediterrors] = useState({
+  //   units: false,
+  //   lengths: false,
+  //   width: false,
+  //   height: false,
+  //   weight: false,
+  // });
+  // console.log(uterrors);
 
   const initialData = {
     package_type: "BOX",
@@ -70,23 +86,23 @@ const UnitType = ({
     weight: "",
     weightUnit: "KG",
   };
-  const [utDatas, setutDatas] = useState(
-    JSON.parse(localStorage.getItem("utDataslocal")) || {
-      package_type: "BOX",
-      units: "",
-      height: "",
-      lengths: "",
-      width: "",
-      dimensionUnit: "CM",
-      weight: "",
-      weightUnit: "KG",
-    }
-  );
+  // const [utDatas, setutDatas] = useState(
+  //   JSON.parse(localStorage.getItem("utDataslocal")) || {
+  //     package_type: "BOX",
+  //     units: "",
+  //     height: "",
+  //     lengths: "",
+  //     width: "",
+  //     dimensionUnit: "CM",
+  //     weight: "",
+  //     weightUnit: "KG",
+  //   }
+  // );
 
-  useEffect(() => {
-    localStorage.setItem("utDataslocal", JSON.stringify(utDatas));
-    localStorage.setItem("utDataserr", JSON.stringify(uterrors));
-  }, [utDatas, uterrors]);
+  // useEffect(() => {
+  //   localStorage.setItem("utDataslocal", JSON.stringify(utDatas));
+  //   localStorage.setItem("utDataserr", JSON.stringify(uterrors));
+  // }, [utDatas, uterrors]);
 
   console.log(utDatas);
   // const [tseditedDatas, settseditedDatas] = useState(editeddata[0]);
@@ -144,10 +160,10 @@ const UnitType = ({
   ].every(Boolean);
   console.log(canEditSave);
 
-  useEffect(() => {
-    localStorage.setItem("utDatas", JSON.stringify(saveddatas));
-    localStorage.setItem("utinpfields", JSON.stringify(inputFields));
-  }, [saveddatas, inputFields]);
+  // useEffect(() => {
+  //   localStorage.setItem("utDatas", JSON.stringify(saveddatas));
+  //   localStorage.setItem("utinpfields", JSON.stringify(inputFields));
+  // }, [saveddatas, inputFields]);
   // useEffect(() => {
   //   localStorage.setItem("utDatas",JSON.stringify(saveddatas))
   // }, [input])
@@ -364,52 +380,140 @@ const UnitType = ({
     seteditedId("");
   };
 
-  const handleLclUnitSubmit = () => {
-    console.log(canAdd, !IsError);
-    if (!IsError && canAdd) {
-      // console.log("submitted");
-      // if(){
-      console.log("first");
-      const values = `LCL | ${utDatas?.units} Units, ${(
-        (utDatas.lengths * utDatas.height * utDatas.width) /
-        1000000
-      ).toFixed(3)} ${utDatas.dimensionUnit}, ${utDatas.weight} ${
-        utDatas.weightUnit
-      }`;
-      setCargo(values);
-      setCargoOptionsVisible(false);
-      settserrmsg("");
-      // }
-    } 
-    // else if(saveddatas.length === 1){
+  //This is for one load
+  const values = `LCL | ${utDatas?.units} Units, ${(
+    (utDatas?.lengths * utDatas?.height * utDatas?.width * utDatas?.units) /
+    1000000
+  ).toFixed(3)} ${utDatas.dimensionUnit}, ${utDatas.weight *  utDatas?.units} ${
+    utDatas.weightUnit
+  }`;
 
-    // }
-    else if (saveddatas.length >= 1) {
-      console.log("second");
-      let units = 0;
+useEffect(() => {
+  if(hasPageBeenRendered.current){
+    console.log(values)
+      console.log("changed")
+      setCargo(values)
+  }
+  hasPageBeenRendered.current = true;
+}, [utDatas])
+
+
+//This for graeater than one
+
+let units = 0;
       let weight = 0;
       let volume = 0;
       for (let i = 0; i <= saveddatas.length - 1; i++) {
-        units += saveddatas[i].units;
-        weight += parseInt(saveddatas[i].weight);
+        units += parseInt(saveddatas[i].units)
+        units += parseInt(utDatas?.units)
+        weight += parseInt(saveddatas[i].weight) * parseInt(saveddatas[i].units) ;
+        weight += parseInt(utDatas?.weight) * parseInt(utDatas?.units)
         let res =
           (parseInt(saveddatas[i].lengths) *
             parseInt(saveddatas[i].width) *
             parseInt(saveddatas[i].height) *
             parseInt(saveddatas[i].units)) /
           1000000;
+        let saveres =
+          (parseInt(utDatas.lengths) *
+            parseInt(utDatas.width) *
+            parseInt(utDatas.height) *
+            parseInt(utDatas.units)) /
+          1000000;
         volume += res;
+        volume += saveres
       }
+      console.log(weight * units)
+    const greatervalues = `LCL | ${units} Units, ${volume.toFixed(3)} CBM, ${weight} ${utDatas.weightUnit}`;
+
+    useEffect(() => {
+      if(hasPageBeenRendered.current){
+        console.log(greatervalues)
+          console.log("changed")
+          setCargo(greatervalues)
+      }
+      hasPageBeenRendered.current = true;
+    }, [utDatas,saveddatas,editeddata])
+
+    //This for graeater than one
+
+let unitss = 0;
+let weights = 0;
+let volumes = 0;
+for (let i = 0; i <= saveddatas.length - 1; i++) {
+  unitss += parseInt(saveddatas[i].units)
+  weights += parseInt(saveddatas[i].weight) * parseInt(saveddatas[i].units) ;
+  let resp =
+    (parseInt(saveddatas[i].lengths) *
+      parseInt(saveddatas[i].width) *
+      parseInt(saveddatas[i].height) *
+      parseInt(saveddatas[i].units)) /
+    1000000;
+    volumes += resp;
+}
+console.log(weights * unitss)
+const valueswithoutfields = `LCL | ${unitss} Units, ${volumes.toFixed(3)} CBM, ${weights} ${utDatas.weightUnit}`;
+console.log(valueswithoutfields)
+
+useEffect(() => {
+if(hasPageBeenRendered.current){
+  console.log(greatervalues)
+    console.log("changed")
+    setCargo(greatervalues)
+}
+hasPageBeenRendered.current = true;
+}, [utDatas,saveddatas,editeddata])
+
+  //trigger LCL submit
+
+  const handleLclUnitSubmit = () => {
+    console.log(canAdd, !IsError);
+    if (!IsError && canAdd) {
+      console.log("first");
+      setshowcargo(true)
+      setCargo(values);
+      setCargoOptionsVisible(false);
+      settserrmsg("");
+      // }
+    } 
+    else if (saveddatas.length >= 1 && inputFields.length>=1) {
+      console.log("second");
+      // let units = 0;
+      // let weight = 0;
+      // let volume = 0;
+      // for (let i = 0; i <= saveddatas.length - 1; i++) {
+      //   units += saveddatas[i].units;
+      //   weight += parseInt(saveddatas[i].weight);
+      //   let res =
+      //     (parseInt(saveddatas[i].lengths) *
+      //       parseInt(saveddatas[i].width) *
+      //       parseInt(saveddatas[i].height) *
+      //       parseInt(saveddatas[i].units)) /
+      //     1000000;
+      //   volume += res;
+      // }
       console.log(units, weight, volume);
       // const unitscopy = [...saveddatas]
       // let units = unitscopy.reduce((previousValue, currentValue) => previousValue.units += currentValue.units);
       // let weight = unitscopy.reduce((previousValue, currentValue) => previousValue.weight += currentValue.weight);
       // console.log(weight)
-      const values = `LCL | ${units} Units, ${volume.toFixed(3)} CBM, ${weight} ${utDatas.weightUnit}`;
-      setCargo(values);
+      // const greatervalues = `LCL | ${units} Units, ${volume.toFixed(3)} CBM, ${weight} ${utDatas.weightUnit}`;
+      setCargo(greatervalues);
+      setshowcargo(true)
       setCargoOptionsVisible(false);
       settserrmsg("");
-    } else {
+    }
+    else if(saveddatas?.length>=1 && inputFields.length === 0){
+        console.log("in")
+        setshowcargo(true)
+        setCargo(valueswithoutfields)
+    }
+    else if(saveddatas?.length>=1 && Object.keys(editeddata).length > 0 ){
+        console.log("edit")
+        // setshowcargo(true)
+        // setCargo(valueswithoutfields)
+    }
+     else {
       setCargo("");
       if (!canAdd) {
         settserrmsg("Please add proper values for load");
@@ -492,7 +596,7 @@ const UnitType = ({
                     }}
                   >
                     {item.lengths}x{item.width}x{item.height}{" "}
-                    {item.dimensionUnit} | {item.weight} {item.weightUnit} |{" "}
+                    {item.dimensionUnit} | {item.weight * item.units} {item.weightUnit} |{" "}
                     {(
                       (item.lengths * item.height * item.width) /
                       1000000
@@ -1609,7 +1713,7 @@ const UnitType = ({
             row
             aria-labelledby="demo-row-radio-buttons-group-label"
             name="row-radio-buttons-group"
-            value={exim}
+            value={utexim}
           >
             <FormControlLabel
               value="I"
@@ -1624,7 +1728,7 @@ const UnitType = ({
                 <Radio
                   name="import_export"
                   value="I"
-                  onChange={(e) => setexim(e.target.value)}
+                  onChange={(e) => setutexim(e.target.value)}
                   size="small"
                   label="Import"
                   sx={{
@@ -1651,7 +1755,7 @@ const UnitType = ({
                 <Radio
                   name="import_export"
                   value="E"
-                  onChange={(e) => setexim(e.target.value)}
+                  onChange={(e) => setutexim(e.target.value)}
                   size="small"
                   label="Export"
                   sx={{

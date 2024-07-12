@@ -20,8 +20,19 @@ const style = {
   p: 4,
 };
 
-const Cargo = ({ setCargoOptionsVisible, cargoOptionsVisible, eximchange }) => {
+const Cargo = ({
+  setCargoOptionsVisible,
+  cargoOptionsVisible,
+  eximchange,
+  tsexim,
+  settsexim,
+  fclexim,
+  setfclexim,
+  utexim,
+  setutexim,
+}) => {
   const [cargo, setCargo] = useState("");
+  const [showcargo, setshowcargo] = useState(false);
   // const [modalOpen, setModalOpen] = useState(false);
 
   const cargoRef = useRef(null);
@@ -39,20 +50,102 @@ const Cargo = ({ setCargoOptionsVisible, cargoOptionsVisible, eximchange }) => {
   //   setModalOpen(false);
   // };
 
-  const [selectedCity, setSelectedCity] = useState(null);
-  const cities = [
-    { name: "New York", code: "NY" },
-    { name: "Rome", code: "RM" },
-    { name: "London", code: "LDN" },
-    { name: "Istanbul", code: "IST" },
-    { name: "Paris", code: "PRS" },
-  ];
+  //This is for total shipment
+
+  const [tsDatas, settsDatas] = useState({
+    package_type: "BOX",
+    no_of_units: "",
+    total_volume: "",
+    total_weight: "",
+    // import_export: "I",
+    volume_type: "CBM",
+    weight_type: "KG",
+  });
+
+  const [errors, seterrors] = useState({
+    no_of_units: false,
+    total_volume: false,
+    total_weight: false,
+  });
+
+  //This is for Unit Shipment
+
+  const [inputFields, setInputFields] = useState([{}] );
+  const [saveddatas, setsaveddatas] = useState([]);
+  console.log(saveddatas);
+  const [editeddata, setediteddata] = useState({});
+  const [editedId, seteditedId] = useState("");
+
+  const [uterrors, setuterrors] = useState({
+      units: false,
+      lengths: false,
+      width: false,
+      height: false,
+      weight: false,
+    }
+  );
+  console.log(uterrors);
+  const [utediterrors, setutediterrors] = useState({
+    units: false,
+    lengths: false,
+    width: false,
+    height: false,
+    weight: false,
+  });
+  console.log(uterrors);
+
+  const initialData = {
+    package_type: "BOX",
+    units: "",
+    height: "",
+    lengths: "",
+    width: "",
+    dimensionUnit: "CM",
+    weight: "",
+    weightUnit: "KG",
+  };
+  const [utDatas, setutDatas] = useState({
+      package_type: "BOX",
+      units: "",
+      height: "",
+      lengths: "",
+      width: "",
+      dimensionUnit: "CM",
+      weight: "",
+      weightUnit: "KG",
+    }
+  );
+
+  //this is for fcl
+
+  const [fclinputFields, setfclInputFields] = useState( [{}]
+  );
+  const [fclsaveddatas, setfclsaveddatas] = useState([]
+  );
+  const [fclediteddata, setfclediteddata] = useState({});
+  const [fcleditedId, setfcleditedId] = useState("");
+  const [fclDatas, setfclDatas] = useState({
+      package_type: "BOX",
+      quantity: "",
+    }
+  );
+
+
+  const [fclerrors, setfclerrors] = useState({
+      quantity: false,
+    }
+  );
+  const [fclediterrors, setfclediterrors] = useState({
+    quantity: false,
+  });
+
+  //This is for error
 
   const [tserrmsg, settserrmsg] = useState("");
-  const handleClose =()=>{
-    setCargoOptionsVisible(false)
-    setCargo("")
-  }
+  const handleClose = () => {
+    setCargoOptionsVisible(false);
+    setCargo("");
+  };
 
   return (
     <>
@@ -85,15 +178,18 @@ const Cargo = ({ setCargoOptionsVisible, cargoOptionsVisible, eximchange }) => {
             // onFocus={handleCargoFocus}
             // onBlur={()=>setCargoOptionsVisible(false)}
             onClick={() => setCargoOptionsVisible((prev) => !prev)}
-            value={cargo}
+            value={showcargo ? cargo: ""}
             readOnly
           />
           {/* <Dropdown value={selectedCity} onChange={(e) => setSelectedCity(e.value)} options={cities} optionLabel="name" 
                 editable placeholder="Enter your Cargo details" className="w-full md:w-14rem" /> */}
-                 {
-            cargo && 
-            <IoClose role="button" style={{position:"absolute",top:"51%",right:"20px",}} onClick={handleClose} />
-          }
+          {cargo && (
+            <IoClose
+              role="button"
+              style={{ position: "absolute", top: "51%", right: "20px" }}
+              onClick={handleClose}
+            />
+          )}
           {tserrmsg && (
             <FormHelperText
               style={{
@@ -111,6 +207,46 @@ const Cargo = ({ setCargoOptionsVisible, cargoOptionsVisible, eximchange }) => {
                 setCargo={setCargo}
                 setCargoOptionsVisible={setCargoOptionsVisible}
                 settserrmsg={settserrmsg}
+                errors={errors}
+                seterrors={seterrors}
+                tsDatas={tsDatas}
+                settsDatas={settsDatas}
+                tsexim={tsexim}
+                settsexim={settsexim}
+                utexim={utexim}
+                setutexim={setutexim}
+                fclexim={fclexim}
+                setfclexim={setfclexim}
+                setshowcargo={setshowcargo}
+                inputFields={inputFields}
+                setInputFields={setInputFields}
+                saveddatas={saveddatas}
+                setsaveddatas={setsaveddatas}
+                editeddata={editeddata}
+                setediteddata={setediteddata}
+                editedId={editedId}
+                seteditedId={seteditedId}
+                uterrors={uterrors}
+                setuterrors={setuterrors}
+                utediterrors={utediterrors}
+                setutediterrors={setutediterrors}
+                utDatas={utDatas}
+                setutDatas={setutDatas}
+                fclinputFields={fclinputFields}
+                setfclInputFields={ setfclInputFields}
+                fclsaveddatas={fclsaveddatas}
+                setfclsaveddatas={setfclsaveddatas}
+                fclediteddata={fclediteddata}
+                setfclediteddata={setfclediteddata}
+                fcleditedId={fcleditedId}
+                setfcleditedId={setfcleditedId}
+                fclDatas={fclDatas}
+                setfclDatas={ setfclDatas}
+                fclerrors={fclerrors}
+                setfclerrors={setfclerrors}
+                fclediterrors={fclediterrors}
+                setfclediterrors={setfclediterrors}
+
               />
             </div>
           )}

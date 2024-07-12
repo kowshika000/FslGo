@@ -30,6 +30,10 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
   const [searchOriginPort, setSearchOriginPort] = useState("");
   const [searchDestPort, setSearchDestPort] = useState("");
   const [eximchange, seteximchange] = useState(false)
+  const [tsexim, settsexim] = useState("I");
+  const [utexim, setutexim] = useState("I");
+  const [fclexim, setfclexim] = useState("I");
+
   useEffect(() => {
     if (destination && cargoRef.current) {
       cargoRef.current.focus();
@@ -90,7 +94,9 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
     setSearchOriginPort(searchDestPort)
     setDestPort(originPort)
     setOriginPort(destPort)
-    seteximchange((prev)=>seteximchange(!prev))
+    settsexim((prev)=>prev==="I"?"E":"I")
+    setutexim((prev)=>prev==="I"?"E":"I")
+    setfclexim((prev)=>prev==="I"?"E":"I")
     }
     else if(originPort && searchOriginPort){
       setSearchDestPort(searchOriginPort)
@@ -175,6 +181,13 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
             cargoOptionsVisible={cargoOptionsVisible}
             setCargoOptionsVisible={setCargoOptionsVisible}
             eximchange={eximchange}
+            tsexim={tsexim}
+            settsexim={settsexim}
+            utexim={utexim}
+            setutexim={setutexim}
+            fclexim={fclexim}
+            setfclexim={setfclexim}
+
           />
           {/* Search button */}
           <div
