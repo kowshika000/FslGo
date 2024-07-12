@@ -64,7 +64,7 @@ const Quotation = ({
             )}
           </div>
           <div
-            className={`col-lg w-full py-1  ${
+            className={`col-lg px-0 py-1  ${
               !showHeader ? "fixed-shipment-card" : ""
             } `}
           >
@@ -88,14 +88,15 @@ const Quotation = ({
           backgroundColor: "#f3f5f7",
         }}
       >
-        <div style={{ maxWidth: "1255px" }} className="mx-auto" >
-        {showHeader ? "" : <div style={{ marginTop: "4.5rem" }}></div>}
+        <div style={{ maxWidth: "1255px" }} className="mx-auto">
+          {showHeader ? "" : <div style={{ marginTop: "4.5rem" }}></div>}
           {showReselt ? (
             <FindNewRate
               selectedCurrency={selectedCurrency}
               setSelectedCurrency={setSelectedCurrency}
               checkedItems={checkedItems}
               setCheckedItems={setCheckedItems}
+              showHeader={showHeader}
             />
           ) : (
             <QuotationTabs />

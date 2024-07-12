@@ -2,18 +2,32 @@
   display: flex;
   flex-direction: row;
   width: 100%;
-  max-width: 1146px;
   justify-content: center;
   background: #f3f5f7;
   gap: 20px !important;
   align-items: flex-start;
-  /* min-height: 818px; */
 }
 .quotationresult-leftdiv .ant-card-head {
   padding: 16px;
   border-bottom: 1px solid #f3f5f7;
 }
 .quotationresult-leftdiv .ant-card-body {
+  padding: 0px;
+}
+.quotationresult-leftdiv {
+  flex: 0 0 272px !important;
+}
+.fixed {
+  position: fixed;
+  left: 135px;
+  top: 170px;
+  width: 272px;
+  height: 100vh;
+}
+.fixedleft {
+  margin-left: 290px !important;
+}
+.quotationresult-rightdiv .ant-card-body {
   padding: 0px;
 }
 .ant-collapse-content-box {
@@ -585,4 +599,10 @@
   border: 1px solid #f01e1e;
   border-radius: 8px;
   height: 40px;
+}
+
+@media screen and (max-width: 1440px) {
+  .fixed {
+    left: 94px !important;
+  }
 }
