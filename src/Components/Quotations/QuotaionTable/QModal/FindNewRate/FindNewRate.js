@@ -37,6 +37,7 @@ function FindNewRate({
     });
     if (name === "cargoPickup") {
       setPopoverOpen(checked);
+      // checked.originCharges = checked
     }
     if (name === "CargoDelivery") {
       setDeliveryPopoverOpen(checked);
@@ -44,6 +45,7 @@ function FindNewRate({
     if (name === "CargoInsurance") {
       setInsurance(checked);
     }
+
   };
   const handleValue = (value) => {
     if (value === "cargoPickup") {
@@ -266,14 +268,14 @@ function FindNewRate({
             <FilterCheckbox
               label="Origin Charges"
               vname="originCharges"
-              checked={checkedItems.originCharges}
+              checked={checkedItems?.originCharges}
               value="originCharges"
               tooltipText="This includes Origin documentation, Port/Airport handling."
               onChange={onChange}
             />
             <FilterCheckbox
               label="Export Clearance"
-              checked={checkedItems.exportClearance}
+              checked={checkedItems?.exportClearance}
               value="exportClearance"
               vname="exportClearance"
               tooltipText="Charges for filing with Export customs."
@@ -285,7 +287,7 @@ function FindNewRate({
             </FilterCheckbox>
             <FilterCheckbox
               label="Cargo Pickup"
-              checked={checkedItems.cargoPickup}
+              checked={checkedItems?.cargoPickup}
               value="cargoPickup"
               vname="cargoPickup"
               tooltipText="Transportation from factory/warehouse to Port/Airport."
@@ -315,7 +317,7 @@ function FindNewRate({
           <div className="filterouter-leftdiv">
             <FilterCheckbox
               label="Destination Charges"
-              checked={checkedItems.DestinationCharges}
+              checked={checkedItems?.DestinationCharges}
               value="DestinationCharges"
               vname="DestinationCharges"
               tooltipText="This includes destination documentation, Port/Airport handling."
@@ -323,7 +325,7 @@ function FindNewRate({
             />
             <FilterCheckbox
               label="Import Clearance"
-              checked={checkedItems.ImportClearance}
+              checked={checkedItems?.ImportClearance}
               value="ImportClearance"
               vname="ImportClearance"
               tooltipText="Charges only for Import clearance, duties and taxes will be billed as per receipt."
@@ -335,7 +337,7 @@ function FindNewRate({
             </FilterCheckbox>
             <FilterCheckbox
               label="Cargo Delivery"
-              checked={checkedItems.CargoDelivery}
+              checked={checkedItems?.CargoDelivery}
               value="CargoDelivery"
               vname="CargoDelivery"
               tooltipText="Transportation from Port/Airport to Factory/Warehouse."
@@ -355,7 +357,7 @@ function FindNewRate({
           <div className="filterouter-leftdiv">
             <FilterCheckbox
               label="Cargo Insurance"
-              checked={checkedItems.CargoInsurance}
+              checked={checkedItems?.CargoInsurance}
               value="CargoInsurance"
               vname="CargoInsurance"
               tooltipText="Insurance that generally protects shipments from loss, damage, or theft while in transit. The cargo insurance coverage includes events mentioned in the policy like vehicle accidents, cargo renunciation, damage due to natural calamities, acts of war, piracy, etc."
@@ -379,7 +381,7 @@ function FindNewRate({
           <div className="filterouter-leftdiv">
             <FilterCheckbox
               label="Stackable Cargo"
-              checked={checkedItems.StackableCargo}
+              checked={checkedItems?.StackableCargo}
               value="StackableCargo"
               vname="StackableCargo"
               tooltipText="Cargo will be stacked. If your cargo is non-stackable rates will change."
@@ -387,7 +389,7 @@ function FindNewRate({
             />
             <FilterCheckbox
               label="Non Harzardous Cargo"
-              checked={checkedItems.NonHarzardousCargo}
+              checked={checkedItems?.NonHarzardousCargo}
               value="NonHarzardousCargo"
               vname="NonHarzardousCargo"
               tooltipText="Cargo should not have any hazardous substances. Cargo is not corrosive, toxic, flammable, or reactive and does not require a warning label."
@@ -463,7 +465,7 @@ function FindNewRate({
         className={`quotationresult-rightdiv ${showHeader ? "" : "fixedleft"}`}
         style={{ flex: "1 1 auto" }}
       >
-        {checkedItems.DestinationCharges === false ? (
+        {checkedItems?.DestinationCharges === false ? (
           <QuoteRequest />
         ) : (
           <>
