@@ -83,13 +83,12 @@
 }
 .sortup {
   font-size: small !important;
-  opacity: 50%;
+  opacity: 50% !important;
 }
 .sortdown {
   font-size: small !important;
   margin-top: -6px !important;
-  opacity: 50%;
-
+  opacity: 50% !important;
 }
 .ant-modal-content
 {

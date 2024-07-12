@@ -35,3 +35,12 @@
 .acc-row:hover{
   background-color: rgba(247, 252, 255, 1);
 }
+.sortup {
+  font-size: small !important;
+  opacity: 50% !important;
+}
+.sortdown {
+  font-size: small !important;
+  margin-top: -6px !important;
+  opacity: 50% !important;
+}
