@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from "react";
 import { GiCargoCrate } from "react-icons/gi";
 import { CiBoxes } from "react-icons/ci";
 import { Dropdown } from "primereact/dropdown";
@@ -21,85 +21,98 @@ import minus from "../../../../assets/9021673_minus_bold_icon 1.svg";
 import plus from "../../../../assets/material-symbols_add-rounded.svg";
 import deletedicon from "../../../../assets/ic_outline-delete.svg";
 import editicon from "../../../../assets/editpencil.f11da97f.svg";
-import { Button } from 'antd';
+import { Button } from "antd";
 
-const Fcl = ({onClose,eximchange,setCargo,
+const Fcl = ({
+  onClose,
+  eximchange,
+  setCargo,
   setCargoOptionsVisible,
-  settserrmsg,}) => {
-  console.log(eximchange)
-  const [exim, setexim] = useState("E");
-  useEffect(() => {
-    setexim((prev)=>prev==="I"?"E":"I")
-  }, [eximchange])
+  settserrmsg,
+  fclexim,
+  setfclexim,
+  fclinputFields,
+  setfclInputFields,
+  fclsaveddatas,
+  setfclsaveddatas,
+  fclediteddata,
+  setfclediteddata,
+  fcleditedId,
+  setfcleditedId,
+  fclDatas,
+  setfclDatas,
+  fclerrors,
+  setfclerrors,
+  fclediterrors,
+  setfclediterrors,
+  setshowcargo
+}) => {
 
-  const [inputFields, setInputFields] = useState(
-    JSON.parse(localStorage.getItem("fclinpfields")) || [{}]
-  );
-  const [saveddatas, setsaveddatas] = useState(
-    JSON.parse(localStorage.getItem("fclDatas")) || []
-  );
-  const [editeddata, setediteddata] = useState({});
-  const [editedId, seteditedId] = useState("");
+  console.log(eximchange);
+  const hasPageBeenRendered = useRef(false)
+  // const [fclexim, setfclexim] = useState("E");
+
+  // const [fclinputFields, setfclInputFields] = useState(
+  //   JSON.parse(localStorage.getItem("fclinpfields")) || [{}]
+  // );
+  // const [fclsaveddatas, setfclsaveddatas] = useState(
+  //   JSON.parse(localStorage.getItem("fclDatas")) || []
+  // );
+  // const [fclediteddata, setfclediteddata] = useState({});
+  // const [fcleditedId, setfcleditedId] = useState("");
 
   const initialData = {
     package_type: "BOX",
     quantity: "",
   };
-  const [fclDatas, setfclDatas] = useState( JSON.parse(localStorage.getItem("fcldatas")) || {
-    package_type: "BOX",
-    quantity: "",
-  });
-  
+  // const [fclDatas, setfclDatas] = useState(
+  //   JSON.parse(localStorage.getItem("fcldatas")) || {
+  //     package_type: "BOX",
+  //     quantity: "",
+  //   }
+  // );
+
   console.log(fclDatas);
 
-  const [fclerrors, setfclerrors] = useState( JSON.parse(localStorage.getItem("fcldatas")) || {
-    quantity: false,
-  });
+  // const [fclerrors, setfclerrors] = useState(
+  //   JSON.parse(localStorage.getItem("fcldatas")) || {
+  //     quantity: false,
+  //   }
+  // );
   console.log(fclerrors);
-  const [fclediterrors, setfclediterrors] = useState({
-    quantity: false,
-  });
+  // const [fclediterrors, setfclediterrors] = useState({
+  //   quantity: false,
+  // });
   console.log(fclerrors);
 
-  useEffect(() => {
-    localStorage.setItem("fcldatas", JSON.stringify(fclDatas));
-    localStorage.setItem("fclerrors", JSON.stringify(fclerrors));
-  }, [fclDatas, fclerrors]);
+  // useEffect(() => {
+  //   localStorage.setItem("fcldatas", JSON.stringify(fclDatas));
+  //   localStorage.setItem("fclerrors", JSON.stringify(fclerrors));
+  // }, [fclDatas, fclerrors]);
 
-  // const [tseditedDatas, settseditedDatas] = useState(editeddata[0]);
+  // const [tseditedDatas, settseditedDatas] = useState(fclediteddata[0]);
   // console.log(tseditedDatas)
-  console.log(editeddata);
-  console.log(saveddatas);
-  console.log(inputFields.length);
-  const IsError = [
-    fclerrors.quantity,
-  ].some(Boolean);
-  const IsEditError = [
-    fclediterrors.quantity,
-  ].some(Boolean);
-  const canAdd = [
-    fclDatas.package_type,
-    fclDatas.quantity,
-  ].every(Boolean);
-  const CanField = Boolean(inputFields.length);
+  console.log(fclediteddata);
+  console.log(fclsaveddatas);
+  console.log(fclinputFields.length);
+  const IsError = [fclerrors.quantity].some(Boolean);
+  const IsEditError = [fclediterrors.quantity].some(Boolean);
+  const canAdd = [fclDatas.package_type, fclDatas.quantity].every(Boolean);
+  const CanField = Boolean(fclinputFields.length);
   console.log(CanField);
   console.log(canAdd);
-  const canSave = [
-    fclDatas.package_type,
-    fclDatas.quantity,
-  ].every(Boolean);
+  const canSave = [fclDatas.package_type, fclDatas.quantity].every(Boolean);
   console.log(canSave);
-  const canEditSave = [
-    editeddata.package_type,
-    editeddata.quantity,
-  ].every(Boolean);
+  const canEditSave = [fclediteddata.package_type, fclediteddata.quantity].every(
+    Boolean
+  );
   console.log(canEditSave);
 
-  useEffect(() => {
-    localStorage.setItem("fclDatas", JSON.stringify(saveddatas));
-    localStorage.setItem("fclinpfields", JSON.stringify(inputFields));
-  }, [saveddatas, inputFields]);
-  console.log(exim);
+  // useEffect(() => {
+  //   localStorage.setItem("fclDatas", JSON.stringify(fclsaveddatas));
+  //   localStorage.setItem("fclinpfields", JSON.stringify(fclinputFields));
+  // }, [fclsaveddatas, fclinputFields]);
+  // console.log(fclexim);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -147,62 +160,72 @@ const Fcl = ({onClose,eximchange,setCargo,
   console.log(fclDatas);
 
   const handleAddLoad = () => {
-    if (inputFields.length > 0) {
-      setsaveddatas([
-        ...saveddatas,
-        { ...fclDatas, id: saveddatas.length < 1 ? 1 : saveddatas[saveddatas.length - 1].id + 1 },
+    if (fclinputFields.length > 0) {
+      setfclsaveddatas([
+        ...fclsaveddatas,
+        {
+          ...fclDatas,
+          id:
+            fclsaveddatas.length < 1
+              ? 1
+              : fclsaveddatas[fclsaveddatas.length - 1].id + 1,
+        },
       ]);
       setfclDatas(initialData);
     }
-    setInputFields([{}]);
+    setfclInputFields([{}]);
   };
-  console.log(inputFields);
+  console.log(fclinputFields);
   const handleCloseLoad = (index) => {
-    // if (inputFields.length === 1) {
+    // if (fclinputFields.length === 1) {
     //   return;
     // }
-    // setInputFields(inputFields.filter((_, i) => i !== index));
-    setInputFields([]);
+    // setfclInputFields(fclinputFields.filter((_, i) => i !== index));
+    setfclInputFields([]);
     setfclDatas(initialData);
   };
 
   const handleDelete = (e, id) => {
     console.log(id);
-    const filteredData = saveddatas.filter((i) => i.id !== id);
+    const filteredData = fclsaveddatas.filter((i) => i.id !== id);
     console.log(filteredData);
-    setsaveddatas(filteredData);
-    // setediteddata({});
-    if (saveddatas.length === 1) {
-      setInputFields([{}]);
+    setfclsaveddatas(filteredData);
+    // setfclediteddata({});
+    if (fclsaveddatas.length === 1) {
+      setfclInputFields([{}]);
     }
-    // setsaveddatas(saveddatas.filter((_,i) => i !== index));
+    // setfclsaveddatas(fclsaveddatas.filter((_,i) => i !== index));
   };
   const handleEdit = (e, id) => {
     console.log("edited");
     console.log(id);
-    const filteredData = saveddatas.filter((i) => i.id === id);
+    const filteredData = fclsaveddatas.filter((i) => i.id === id);
     console.log(filteredData);
-    seteditedId(id);
-    setediteddata(filteredData[0]);
-    // if(saveddatas.length===1){
-    //   setInputFields([{}]);
+    setfcleditedId(id);
+    setfclediteddata(filteredData[0]);
+    // if(fclsaveddatas.length===1){
+    //   setfclInputFields([{}]);
     // }
-    // setsaveddatas(saveddatas.filter((_,i) => i !== index));
+    // setfclsaveddatas(fclsaveddatas.filter((_,i) => i !== index));
   };
 
   const handleSave = () => {
-    setsaveddatas([
-      ...saveddatas,
-      { ...fclDatas, id: saveddatas.length < 1 ? 1 : saveddatas[saveddatas.length - 1].id + 1 },
+    setfclsaveddatas([
+      ...fclsaveddatas,
+      {
+        ...fclDatas,
+        id:
+          fclsaveddatas.length < 1 ? 1 : fclsaveddatas[fclsaveddatas.length - 1].id + 1,
+      },
     ]);
     setfclDatas(initialData);
-    setInputFields([]);
+    setfclInputFields([]);
   };
 
   //This is for edit Data
   const handleEditChange = (e) => {
     const { name, value } = e.target;
-    setediteddata((prev) => {
+    setfclediteddata((prev) => {
       return { ...prev, [name]: value };
     });
   };
@@ -210,12 +233,12 @@ const Fcl = ({onClose,eximchange,setCargo,
   const handleEditQuantity = (e) => {
     const { name, value } = e.target;
     console.log(value, typeof value);
-    setediteddata((prev) => {
+    setfclediteddata((prev) => {
       return { ...prev, [name]: !value ? "" : parseInt(value) };
     });
   };
   const handleEditQuantityIncrement = () => {
-    setediteddata((prev) => {
+    setfclediteddata((prev) => {
       return {
         ...prev,
         quantity:
@@ -228,7 +251,7 @@ const Fcl = ({onClose,eximchange,setCargo,
     });
   };
   const handleEditQuantityDecrement = () => {
-    setediteddata((prev) => {
+    setfclediteddata((prev) => {
       return {
         ...prev,
         quantity:
@@ -243,44 +266,53 @@ const Fcl = ({onClose,eximchange,setCargo,
 
   const handleUpdate = () => {
     // const { name, value } = e.target;
-    const filteredEdit = saveddatas.map((item) =>
-      item.id === editedId ? editeddata : item
+    const filteredEdit = fclsaveddatas.map((item) =>
+      item.id === fcleditedId ? fclediteddata : item
     );
     console.log(filteredEdit);
-    // const filteredItems = filteredEdit.push(editeddata)
+    // const filteredItems = filteredEdit.push(fclediteddata)
     // console.log(filteredEdit)
-    // setsaveddatas((prev) => {
-    //   return [...prev,editeddata];
+    // setfclsaveddatas((prev) => {
+    //   return [...prev,fclediteddata];
     // });
-    setsaveddatas(filteredEdit);
-    setediteddata({});
-    seteditedId("");
+    setfclsaveddatas(filteredEdit);
+    setfclediteddata({});
+    setfcleditedId("");
   };
+
+//This is for one load
+const values = `FCL | ${fclDatas?.package_type} : ${fclDatas.quantity},`;
+
+useEffect(() => {
+if(hasPageBeenRendered.current){
+  console.log(values)
+    setCargo(values)
+}
+hasPageBeenRendered.current = true;
+}, [fclDatas])
+
 
   const handleFclSubmit = () => {
     console.log(canAdd, !IsError);
     if (!IsError && canAdd) {
-      console.log("submitted");
-      // if(){
-      console.log("first");
-      const values = `FCL | ${fclDatas?.package_type} : ${fclDatas.quantity},`;
-      console.log(values)
+      setshowcargo(true)
+      console.log(values);
       setCargo(values);
       setCargoOptionsVisible(false);
       settserrmsg("");
       // }
-    } 
-    // else if(saveddatas.length === 1){
+    }
+    // else if(fclsaveddatas.length === 1){
 
     // }
-    else if (saveddatas.length >= 1) {
+    else if (fclsaveddatas.length >= 1 && fclinputFields.length>=1) {
       console.log("second");
       let generalquantity = 0;
-      for (let i = 0; i <= saveddatas.length - 1; i++) {
-        generalquantity += saveddatas[i].quantity;
+      for (let i = 0; i <= fclsaveddatas.length - 1; i++) {
+        generalquantity += fclsaveddatas[i].quantity;
       }
       // console.log(units, weight, volume);
-      // const unitscopy = [...saveddatas]
+      // const unitscopy = [...fclsaveddatas]
       // let units = unitscopy.reduce((previousValue, currentValue) => previousValue.units += currentValue.units);
       // let weight = unitscopy.reduce((previousValue, currentValue) => previousValue.weight += currentValue.weight);
       // console.log(weight)
@@ -302,7 +334,7 @@ const Fcl = ({onClose,eximchange,setCargo,
 
   return (
     <>
-         {saveddatas?.map((item, index) => {
+      {fclsaveddatas?.map((item, index) => {
         return (
           <Box
             key={index}
@@ -335,7 +367,7 @@ const Fcl = ({onClose,eximchange,setCargo,
                 >
                   Load {index + 1}
                 </span>{" "}
-                {editedId !== item.id && (
+                {fcleditedId !== item.id && (
                   // <>
                   <span
                     style={{
@@ -351,7 +383,7 @@ const Fcl = ({onClose,eximchange,setCargo,
                 )}
               </div>
 
-              {/* {editedId !== item.id && (
+              {/* {fcleditedId !== item.id && (
                 <div>
                   <span
                     style={{
@@ -373,7 +405,7 @@ const Fcl = ({onClose,eximchange,setCargo,
                 </div>
               )} */}
               <div>
-                {editedId !== item.id && (
+                {fcleditedId !== item.id && (
                   <img
                     src={editicon}
                     role="button"
@@ -391,14 +423,14 @@ const Fcl = ({onClose,eximchange,setCargo,
               </div>
             </div>
             {/* {
-              editeddata?.map((item,i)=>{
+              fclediteddata?.map((item,i)=>{
                 console.log(item,i)
-                console.log(item.id,editedId) */}
-            {editedId === item.id && (
+                console.log(item.id,fcleditedId) */}
+            {fcleditedId === item.id && (
               <>
                 {
-                  editeddata && (
-                    <div key={editeddata?.id}>
+                  fclediteddata && (
+                    <div key={fclediteddata?.id}>
                       <div className="d-flex">
                         <div className="w-50 my-3 ms-0 me-3">
                           <Typography
@@ -419,15 +451,21 @@ const Fcl = ({onClose,eximchange,setCargo,
                               // labelId="demo-simple-select-label"
                               // id="demo-simple-select"
                               // label="Age"
-                              value={editeddata?.package_type}
+                              value={fclediteddata?.package_type}
                               onChange={handleEditChange}
                               name="package_type"
                               displayEmpty
                               inputProps={{ "aria-label": "Without label" }}
                             >
-                              <MenuItem value="20 GENERAL PURPOSE">20 GENERAL PURPOSE</MenuItem>
-                              <MenuItem value="40 GENERAL PURPOSE">40 GENERAL PURPOSE</MenuItem>
-                              <MenuItem value="40 HICH CUBE">40 HICH CUBE</MenuItem>
+                              <MenuItem value="20 GENERAL PURPOSE">
+                                20 GENERAL PURPOSE
+                              </MenuItem>
+                              <MenuItem value="40 GENERAL PURPOSE">
+                                40 GENERAL PURPOSE
+                              </MenuItem>
+                              <MenuItem value="40 HICH CUBE">
+                                40 HICH CUBE
+                              </MenuItem>
                             </Select>
                           </FormControl>{" "}
                         </div>
@@ -467,7 +505,8 @@ const Fcl = ({onClose,eximchange,setCargo,
                                 }
                               }}
                               onBlur={() =>
-                                editeddata?.quantity < 0 || editeddata?.quantity > 99
+                                fclediteddata?.quantity < 0 ||
+                                fclediteddata?.quantity > 99
                                   ? setfclediterrors((prev) => {
                                       return { ...prev, quantity: true };
                                     })
@@ -477,7 +516,7 @@ const Fcl = ({onClose,eximchange,setCargo,
                               }
                               onWheel={(e) => e.target.blur()}
                               // value={noofunits ? noofunits : ""}
-                              value={editeddata?.quantity}
+                              value={fclediteddata?.quantity}
                               name="quantity"
                               // onChange={(e)=>setNoofunits(parseInt(e.target.value))}
                               onChange={handleEditQuantity}
@@ -521,9 +560,9 @@ const Fcl = ({onClose,eximchange,setCargo,
                           <FormHelperText
                             style={{ color: "red", fontStyle: "italic" }}
                           >
-                            {fclediterrors.quantity && editeddata.quantity > 99
+                            {fclediterrors.quantity && fclediteddata.quantity > 99
                               ? "Maximum 99 allowed"
-                              : editeddata.quantity < 0
+                              : fclediteddata.quantity < 0
                               ? "Min 1"
                               : null}
                           </FormHelperText>
@@ -554,10 +593,10 @@ const Fcl = ({onClose,eximchange,setCargo,
           </Box>
         );
       })}
-      {inputFields.map((load, index) => (
+      {fclinputFields.map((load, index) => (
         <React.Fragment key={index}>
-          <div className={`${saveddatas.length > 0 && "backgroundStyle"}`}>
-            {saveddatas.length > 0 && (
+          <div className={`${fclsaveddatas.length > 0 && "backgroundStyle"}`}>
+            {fclsaveddatas.length > 0 && (
               <>
                 <span
                   style={{
@@ -568,7 +607,7 @@ const Fcl = ({onClose,eximchange,setCargo,
                     color: "rgba(24, 30, 37, 1)",
                   }}
                 >
-                  Load {saveddatas.length + 1}
+                  Load {fclsaveddatas.length + 1}
                 </span>
                 <span style={{ float: "inline-end" }}>
                   <img
@@ -583,7 +622,15 @@ const Fcl = ({onClose,eximchange,setCargo,
             )}
             <div className="d-flex mt-3">
               <div className="w-50 my-3 ms-0 me-3">
-                <Typography sx={{ fontWeight: "500", fontSize:"13px", lineHeight:"19px",letterSpacing:".01em",color:"rgba(103, 120, 142, 1)" }}>
+                <Typography
+                  sx={{
+                    fontWeight: "500",
+                    fontSize: "13px",
+                    lineHeight: "19px",
+                    letterSpacing: ".01em",
+                    color: "rgba(103, 120, 142, 1)",
+                  }}
+                >
                   Container Type
                 </Typography>
                 <FormControl fullWidth>
@@ -593,22 +640,26 @@ const Fcl = ({onClose,eximchange,setCargo,
                     // id="demo-simple-select"
                     // label="Age"
                     className="placeholder_style"
-                    style={{height: "45px"}}
+                    style={{ height: "45px" }}
                     value={fclDatas.package_type}
                     onChange={handleChange}
                     name="package_type"
                     displayEmpty
                     placeholder="Select Type"
-                    inputProps={{ 'aria-label': 'Without label' }}
+                    inputProps={{ "aria-label": "Without label" }}
                   >
-                    <MenuItem value="20 GENERAL PURPOSE">20 GENERAL PURPOSE</MenuItem>
-                              <MenuItem value="40 GENERAL PURPOSE">40 GENERAL PURPOSE</MenuItem>
-                              <MenuItem value="40 HICH CUBE">40 HICH CUBE</MenuItem>
+                    <MenuItem value="20 GENERAL PURPOSE">
+                      20 GENERAL PURPOSE
+                    </MenuItem>
+                    <MenuItem value="40 GENERAL PURPOSE">
+                      40 GENERAL PURPOSE
+                    </MenuItem>
+                    <MenuItem value="40 HICH CUBE">40 HICH CUBE</MenuItem>
                   </Select>
                 </FormControl>{" "}
               </div>
               <div className="w-50 my-3 ms-3 me-0">
-              <Typography
+                <Typography
                   sx={{
                     fontWeight: "500",
                     fontSize: "13px",
@@ -692,18 +743,16 @@ const Fcl = ({onClose,eximchange,setCargo,
                     <img src={plus} alt="add" />
                   </button>
                 </div>
-                <FormHelperText
-                            style={{ color: "red", fontStyle: "italic" }}
-                          >
-                            {fclerrors.quantity && fclDatas.quantity > 99
-                              ? "Maximum 99 allowed"
-                              : fclDatas.quantity < 0
-                              ? "Min 1"
-                              : null}
-                          </FormHelperText>
+                <FormHelperText style={{ color: "red", fontStyle: "italic" }}>
+                  {fclerrors.quantity && fclDatas.quantity > 99
+                    ? "Maximum 99 allowed"
+                    : fclDatas.quantity < 0
+                    ? "Min 1"
+                    : null}
+                </FormHelperText>
               </div>
             </div>
-            {saveddatas.length > 0 && (
+            {fclsaveddatas.length > 0 && (
               <Button
                 style={{
                   backgroundColor: "transparent",
@@ -717,61 +766,59 @@ const Fcl = ({onClose,eximchange,setCargo,
                 save
               </Button>
             )}
-            </div>
-            </React.Fragment>
-        ))}
-            <div className="d-flex">
-            <Tooltip
-        placement="top"
-        title={"Please add proper details for previous loads"}
-        trigger={IsError || (!canAdd && "hover")}
-      >
-            <Button
-                style={{
-                border: "none",
-                background: "none",
-                opacity: !CanField ? "1" : canAdd && !IsError ? "1" : ".5",
-                boxShadow: "unset",
-                }}
-                onClick={handleAddLoad}
-                disabled={!CanField ? false : !canAdd || IsError}
-            >
+          </div>
+        </React.Fragment>
+      ))}
+      <div className="d-flex">
+        <Tooltip
+          placement="top"
+          title={"Please add proper details for previous loads"}
+          trigger={IsError || (!canAdd && "hover")}
+        >
+          <Button
+            style={{
+              border: "none",
+              background: "none",
+              opacity: !CanField ? "1" : canAdd && !IsError ? "1" : ".5",
+              boxShadow: "unset",
+            }}
+            onClick={handleAddLoad}
+            disabled={!CanField ? false : !canAdd || IsError}
+          >
             <Typography
-            sx={{
+              sx={{
                 fontWeight: "400",
                 fontSize: "13px",
                 lineHeight: "19px",
                 letterSpacing: ".01em",
                 color: "rgba(73, 90, 110, 1)",
-                textTransform:"capitalize"
-            }}
+                textTransform: "capitalize",
+              }}
             >
-            + Add Another Load
+              + Add Another Load
             </Typography>
-            </Button>
-            </Tooltip>
-            </div>
-          <div className="my-3 d-flex " style={{ justifyContent: "space-between" }}>
-              <div
-                className=" d-flex"
-                style={{ justifyContent: "space-between" }}
-              >
-                <Typography
-                  sx={{
-                    fontWeight: "400",
-                    fontSize:"13px",
-                    lineHeight:"19px",
-                    letterSpacing:".01em",
-                    color:"rgba(103, 120, 142, 1)",
-                    padding: "13px 8px 13px 0px",}}
-                >
-                  EXIM Type
-                </Typography>
-                <RadioGroup
+          </Button>
+        </Tooltip>
+      </div>
+      <div className="my-3 d-flex " style={{ justifyContent: "space-between" }}>
+        <div className=" d-flex" style={{ justifyContent: "space-between" }}>
+          <Typography
+            sx={{
+              fontWeight: "400",
+              fontSize: "13px",
+              lineHeight: "19px",
+              letterSpacing: ".01em",
+              color: "rgba(103, 120, 142, 1)",
+              padding: "13px 8px 13px 0px",
+            }}
+          >
+            EXIM Type
+          </Typography>
+          <RadioGroup
             row
             aria-labelledby="demo-row-radio-buttons-group-label"
             name="row-radio-buttons-group"
-            value={exim}
+            value={fclexim}
           >
             <FormControlLabel
               value="I"
@@ -786,7 +833,7 @@ const Fcl = ({onClose,eximchange,setCargo,
                 <Radio
                   name="import_export"
                   value="I"
-                  onChange={(e)=>setexim(e.target.value)}
+                  onChange={(e) => setfclexim(e.target.value)}
                   size="small"
                   label="Import"
                   sx={{
@@ -813,7 +860,7 @@ const Fcl = ({onClose,eximchange,setCargo,
                 <Radio
                   name="import_export"
                   value="E"
-                  onChange={(e)=>setexim(e.target.value)}
+                  onChange={(e) => setfclexim(e.target.value)}
                   size="small"
                   label="Export"
                   sx={{
@@ -828,27 +875,27 @@ const Fcl = ({onClose,eximchange,setCargo,
               labelPlacement="right"
             />
           </RadioGroup>
-                {/* <input type="radio" name="exim" />
+          {/* <input type="radio" name="fclexim" />
                 <Typography
                   sx={{ fontWeight: "700", opacity: "0.7", padding: "15px" }}
                 >
                   Import
                 </Typography>
-                <input type="radio" name="exim" />
+                <input type="radio" name="fclexim" />
                 <Typography
                   sx={{ fontWeight: "700", opacity: "0.7", padding: "15px" }}
                 >
                   Export
                 </Typography> */}
-              </div>
-              <div className="d-flex justify-content-center align-items-center">
-                <button onClick={handleFclSubmit} className="confirm">
-                  Confirm
-                </button>
-              </div>
-            </div>
+        </div>
+        <div className="d-flex justify-content-center align-items-center">
+          <button onClick={handleFclSubmit} className="confirm">
+            Confirm
+          </button>
+        </div>
+      </div>
     </>
-  )
-}
+  );
+};
 
-export default Fcl
+export default Fcl;

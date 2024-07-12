@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   Typography,
   MenuItem,
@@ -27,14 +27,23 @@ const TotalShipment = ({
   setCargo,
   setCargoOptionsVisible,
   settserrmsg,
+  tsDatas,
+  settsDatas,
+  errors,
+  seterrors,
+  tsexim,
+  settsexim,
+  setshowcargo
 }) => {
   console.log(eximchange);
-  const [exim, setexim] = useState("E");
-  useEffect(() => {
-    setexim((prev) => (prev === "I" ? "E" : "I"));
-  }, [eximchange]);
+  // const [tsexim, settsexim] = useState("E");
+  // useEffect(() => {
+  //   settsexim((prev) => (prev === "I" ? "E" : "I"));
+  // }, [eximchange]);
 
-  console.log(exim);
+  console.log(tsexim);
+
+  const [change, setchange] = useState(false)
 
   // const [inputFields, setInputFields] = useState(
   //   JSON.parse(localStorage.getItem("inpfields")) || [{}]
@@ -44,13 +53,13 @@ const TotalShipment = ({
   // );
   // const [editeddata, setediteddata] = useState({});
   // const [editedId, seteditedId] = useState("");
-  const [errors, seterrors] = useState(
-    JSON.parse(localStorage.getItem("tsDataserr")) || {
-      no_of_units: false,
-      total_volume: false,
-      total_weight: false,
-    }
-  );
+  // const [errors, seterrors] = useState(
+  //   JSON.parse(localStorage.getItem("tsDataserr")) || {
+  //     no_of_units: false,
+  //     total_volume: false,
+  //     total_weight: false,
+  //   }
+  // );
   console.log(errors);
   // const initialData = {
   //   package_type: "BOX",
@@ -61,17 +70,17 @@ const TotalShipment = ({
   //   volume_type: "CBM",
   //   weight_type: "KG",
   // };
-  const [tsDatas, settsDatas] = useState(
-    JSON.parse(localStorage.getItem("tsDatas")) || {
-      package_type: "BOX",
-      no_of_units: "",
-      total_volume: "",
-      total_weight: "",
-      // import_export: "I",
-      volume_type: "CBM",
-      weight_type: "KG",
-    }
-  );
+  // const [tsDatas, settsDatas] = useState(
+  //   JSON.parse(localStorage.getItem("tsDatas")) || {
+  //     package_type: "BOX",
+  //     no_of_units: "",
+  //     total_volume: "",
+  //     total_weight: "",
+  //     // import_export: "I",
+  //     volume_type: "CBM",
+  //     weight_type: "KG",
+  //   }
+  // );
 
   const IsError = [
     errors.no_of_units,
@@ -104,10 +113,10 @@ const TotalShipment = ({
   //   editeddata.weight_type,
   // ].every(Boolean);
 
-  useEffect(() => {
-    localStorage.setItem("tsDatas", JSON.stringify(tsDatas));
-    localStorage.setItem("tsDataserr", JSON.stringify(errors));
-  }, [tsDatas, errors]);
+  // useEffect(() => {
+  //   localStorage.setItem("tsDatas", JSON.stringify(tsDatas));
+  //   localStorage.setItem("tsDataserr", JSON.stringify(errors));
+  // }, [tsDatas, errors]);
 
   //This is for create new form data
 
@@ -185,10 +194,42 @@ const TotalShipment = ({
     });
   };
 
+  const hasPageBeenRendered = useRef(false)
+
+  // useEffect(() => {
+  //   console.log("call dispatch")
+  //   if(hasPageBeenRendered.current){
+  //     if(passwordResponse?.statuscode == "201"){
+  //       console.log("invalid")
+  //       setOpeninvalid(true)
+  //     }
+  //     else if(passwordResponse?.statuscode == "200"){
+  //       console.log("success")
+  //       form.resetFields()
+  //       setOpensuccess(true)
+  //       }
+  //   }
+  //     hasPageBeenRendered.current = true;
+  // }, [passwordResponse])
+
+const values = `LCL | ${tsDatas?.no_of_units} Units, ${tsDatas?.volume_type === 'CFT'?`${tsDatas?.total_volume*0.028} CBM`:`${tsDatas?.total_volume} CBM`},  ${tsDatas?.weight_type === 'LB'?`${(tsDatas?.total_weight/2.20462).toFixed(3)} KG`:`${tsDatas?.total_weight} KG`}`;
+
+useEffect(() => {
+  if(hasPageBeenRendered.current){
+    console.log(values)
+    console.log(change)
+      console.log("changed")
+      setCargo(values)
+  }
+  hasPageBeenRendered.current = true;
+}, [tsDatas])
+
+  
+
   const handleLclSubmit = (e) => {
     if (!IsError && canAdd) {
       console.log("submitted");
-      const values = `LCL | ${tsDatas?.no_of_units} Units, ${tsDatas.total_volume} ${tsDatas.volume_type}, ${tsDatas.total_weight} ${tsDatas.weight_type}`;
+      setshowcargo(true)
       setCargo(values);
       setCargoOptionsVisible(false);
       settserrmsg("");
@@ -1172,7 +1213,7 @@ const TotalShipment = ({
             row
             aria-labelledby="demo-row-radio-buttons-group-label"
             name="row-radio-buttons-group"
-            value={exim}
+            value={tsexim}
           >
             <FormControlLabel
               value="I"
@@ -1187,7 +1228,7 @@ const TotalShipment = ({
                 <Radio
                   name="import_export"
                   value="I"
-                  onChange={(e) => setexim(e.target.value)}
+                  onChange={(e) => settsexim(e.target.value)}
                   size="small"
                   label="Import"
                   sx={{
@@ -1214,7 +1255,7 @@ const TotalShipment = ({
                 <Radio
                   name="import_export"
                   value="E"
-                  onChange={(e) => setexim(e.target.value)}
+                  onChange={(e) => settsexim(e.target.value)}
                   size="small"
                   label="Export"
                   sx={{
