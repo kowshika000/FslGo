@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { TabView, TabPanel } from "primereact/tabview";
 import "./cargo.css";
 import TotalShipment from "./LCL/TotalShipment";
@@ -6,6 +6,9 @@ import UnitType from "./LCL/UnitType";
 import boxes from "../../../assets/3256182_boxes_cargo_delivery_logistics_warehouse_icon 2.svg";
 import fcl from "../../../assets/661303_cargo_container_delivery_lift_logistic_icon 1.svg";
 import Fcl from "./FCL/Fcl";
+import { useDispatch, useSelector } from "react-redux";
+import { containerpackRequest } from "../../../Redux/Actions/ContainerPackAction";
+import { ShowChart } from "@mui/icons-material";
 
 export default function CargoDetails({
   onClose,
@@ -52,10 +55,47 @@ export default function CargoDetails({
   setfclerrors,
   fclediterrors,
   setfclediterrors,
+  cargo,
+  showcargo
 }) {
   const [isByTotalShipmentOpen, setIsByTotalShipmentOpen] = useState(true);
+  const hasPageBeenRendered = useRef(false);
   const [isByUnitTypeOpen, setIsByUnitTypeOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const dispatch = useDispatch()
+  const containerPack = useSelector((state) => state?.ContainerPack?.cpack);
+  console.log(containerPack)
+  const container_types = containerPack?.container_type
+  const packages = containerPack?.package
+  const [lastsavedfcl, setlastsavedfcl] = useState(false)
+  console.log("lastsaved",lastsavedfcl)
+  console.log(cargo)
+  const tos = cargo.substring(0,3)
+  console.log(tos)
+
+  
+
+  // useEffect(() => {
+  //   if(showcargo){
+  //     if(tos === "LCL")
+  //     console.log("FCL")
+  //     setIsByUnitTypeOpen(true);
+  //     setIsByTotalShipmentOpen(false);
+  //   }
+  // }, [tos,showcargo])
+
+
+  
+  
+
+
+  // useEffect(() => {
+  //   if (hasPageBeenRendered.current) {
+  //     setCargo("")
+  //   }
+  //   hasPageBeenRendered.current = true;
+  // }, [isByTotalShipmentOpen,isByUnitTypeOpen]);
+  
 
   const toggleByTotalShipment = () => {
     setIsByTotalShipmentOpen(true);
@@ -65,7 +105,13 @@ export default function CargoDetails({
   const toggleByUnitType = () => {
     setIsByUnitTypeOpen(true);
     setIsByTotalShipmentOpen(false);
+    setCargo("")
   };
+
+  useEffect(() => {
+    dispatch(containerpackRequest());
+  }, []);
+  
 
   return (
     <div className="cargo_details_section">
@@ -120,6 +166,8 @@ export default function CargoDetails({
               tsexim={tsexim}
               settsexim={settsexim}
               setshowcargo={setshowcargo}
+              packages={packages}
+              // setlastsaved={setlastsaved}
             />
           )}
 
@@ -148,6 +196,8 @@ export default function CargoDetails({
               utDatas={utDatas}
               setutDatas={setutDatas}
               setshowcargo={setshowcargo}
+              packages={packages}
+              // setlastsaved={setlastsaved}
             />
           )}
         </TabPanel>
@@ -185,6 +235,8 @@ export default function CargoDetails({
             fclediterrors={fclediterrors}
             setfclediterrors={setfclediterrors}
             setshowcargo={setshowcargo}
+            container_types={container_types}
+            setlastsavedfcl={setlastsavedfcl}
           />
         </TabPanel>
       </TabView>

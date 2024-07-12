@@ -23,6 +23,7 @@ import watchallPort from "./AllPortSaga";
 import watchFindNewRate from "./FindNewRateSaga";
 import watchPickup from "./PickupSaga";
 import watchDelivery from "./DeliverySaga";
+import watchCPack from "./ContainerPackSaga";
 
 export default function* rootSaga() {
   yield all([
@@ -49,6 +50,7 @@ export default function* rootSaga() {
     watchallPort(),
     watchFindNewRate(),
     watchPickup(),
-    watchDelivery()
+    watchDelivery(),
+    watchCPack()
   ]);
 }

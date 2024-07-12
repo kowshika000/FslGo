@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { FormHelperText, Typography } from "@mui/material";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import Modal from "@mui/material/Modal";
@@ -7,6 +7,8 @@ import CargoDetails from "./CargoDetails";
 import { ReactComponent as Ship } from "../../../assets/cargo.8d7c215b.svg";
 import { Dropdown } from "primereact/dropdown";
 import { IoClose } from "react-icons/io5";
+import { containerpackRequest } from "../../../Redux/Actions/ContainerPackAction";
+import { useDispatch } from "react-redux";
 
 const style = {
   position: "absolute",
@@ -31,6 +33,7 @@ const Cargo = ({
   utexim,
   setutexim,
 }) => {
+  const dispatch = useDispatch()
   const [cargo, setCargo] = useState("");
   const [showcargo, setshowcargo] = useState(false);
   // const [modalOpen, setModalOpen] = useState(false);
@@ -60,6 +63,7 @@ const Cargo = ({
     // import_export: "I",
     volume_type: "CBM",
     weight_type: "KG",
+    mode:"TS"
   });
 
   const [errors, seterrors] = useState({
@@ -94,16 +98,6 @@ const Cargo = ({
   });
   console.log(uterrors);
 
-  const initialData = {
-    package_type: "BOX",
-    units: "",
-    height: "",
-    lengths: "",
-    width: "",
-    dimensionUnit: "CM",
-    weight: "",
-    weightUnit: "KG",
-  };
   const [utDatas, setutDatas] = useState({
       package_type: "BOX",
       units: "",
@@ -113,8 +107,10 @@ const Cargo = ({
       dimensionUnit: "CM",
       weight: "",
       weightUnit: "KG",
+      mode:"UT"
     }
   );
+  console.log(saveddatas)
 
   //this is for fcl
 
@@ -127,6 +123,7 @@ const Cargo = ({
   const [fclDatas, setfclDatas] = useState({
       package_type: "BOX",
       quantity: "",
+      mode: "FCL"
     }
   );
 
@@ -146,6 +143,11 @@ const Cargo = ({
     setCargoOptionsVisible(false);
     setCargo("");
   };
+
+  // useEffect(() => {
+  //   dispatch(containerpackRequest())
+  //   console.log("dis")
+  // }, [])
 
   return (
     <>
@@ -246,6 +248,9 @@ const Cargo = ({
                 setfclerrors={setfclerrors}
                 fclediterrors={fclediterrors}
                 setfclediterrors={setfclediterrors}
+                cargo={cargo}
+                showcargo={showcargo}
+
 
               />
             </div>
