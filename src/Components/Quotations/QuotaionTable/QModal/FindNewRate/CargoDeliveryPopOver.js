@@ -5,14 +5,15 @@ import { DeliveryRequest } from "../../../../../Redux/Actions/DeliveryAction";
 
 function CargoDeliveryPopOver({ setSelectedValue, setPopoverOpen }) {
   const dispatch = useDispatch();
-  const devlivery = useSelector((state) => state.Delivery.deliverypointlist);
+  const delivery = useSelector((state) => state?.Delivery?.Delivery?.deliverypointlist);
+  console.log(delivery,"delivery data");
+
   const [options, setOptions] = useState([]);
   const handleSelectChange = (value) => {
     if (value) {
       setSelectedValue(value);
       setPopoverOpen(false);
     }
-    console.log(`selected ${value}`);
   };
   const onSearch = (value) => {
     if (value.length >= 3) {
@@ -20,15 +21,15 @@ function CargoDeliveryPopOver({ setSelectedValue, setPopoverOpen }) {
     }
   };
   useEffect(() => {
-    if (devlivery) {
-      setOptions(
-        devlivery?.map((item) => ({
-          value: item.code,
-          label: item.code,
-        }))
-      );
+    if (delivery && Array.isArray(delivery)) {
+    const updatedOptions = delivery?.map((item, index) => ({
+      value: item.list_value,
+      label: item.list_value,
+      key: index,
+    }));
+    setOptions(updatedOptions);
     }
-  }, [devlivery]);
+  }, [delivery]); 
   return (
     <div className="div-colaligned popover-checkbox1 popover-open w-200">
       <Select
@@ -38,6 +39,9 @@ function CargoDeliveryPopOver({ setSelectedValue, setPopoverOpen }) {
         onChange={handleSelectChange}
         onSearch={onSearch}
         options={options}
+        filterOption={(input, option) =>
+          option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
       />
     </div>
   );

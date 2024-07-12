@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Card, Checkbox, Popover, Image, Input } from "antd";
 import "./FindNewRate.css";
 import ShipmentTracker from "./ShipmentTracker";
@@ -6,19 +6,20 @@ import info from "../../../../../assets/Info.svg";
 import { Tooltip } from "antd";
 import QuoteRequest from "./QuoteRequest";
 import { Collapse } from "antd";
-import { DownOutlined, UpOutlined } from "@ant-design/icons";
+// import { DownOutlined, UpOutlined } from "@ant-design/icons";
 import CargoPickupPopOver from "./CargoPickupPopOver";
 import CargoDeliveryPopOver from "./CargoDeliveryPopOver";
 import pencil from "../../../../../assets/Pencil.svg";
 import img from "../../../../../assets/thumbsgr.svg";
 import uparrow from "../../../../../assets/uparrowcargo.svg";
-import CargoInsurance from "./CargoInsurance";
+// import CargoInsurance from "./CargoInsurance";
 
 function FindNewRate({
   selectedCurrency,
   setSelectedCurrency,
   checkedItems,
   setCheckedItems,
+  showHeader,
 }) {
   const [isPopoverOpen, setPopoverOpen] = useState(false);
   const [isDeliveryPopoverOpen, setDeliveryPopoverOpen] = useState(false);
@@ -411,12 +412,9 @@ function FindNewRate({
     );
 
   return (
-    <div className="quotationresult-div mx-auto">
-      <div
-        className="quotationresult-leftdiv"
-        style={{ flex: "0 0 272px", height: "100vh" }}
-      >
-        <Card title="Service Included">
+    <div className="quotationresult-div">
+      <div className={`quotationresult-leftdiv ${showHeader ? "" : "fixed"}`}>
+        <Card title="Service Included" style={{ overflowX: "auto" }}>
           <div className="Service-card">
             <Collapse
               defaultActiveKey={["1"]}
@@ -461,7 +459,10 @@ function FindNewRate({
           </div>
         </Card>
       </div>
-      <div className="quotationresult-leftdiv" style={{ flex: "1 1 auto" }}>
+      <div
+        className={`quotationresult-rightdiv ${showHeader ? "" : "fixedleft"}`}
+        style={{ flex: "1 1 auto" }}
+      >
         {checkedItems.DestinationCharges === false ? (
           <QuoteRequest />
         ) : (
@@ -470,6 +471,8 @@ function FindNewRate({
               selectedCurrency={selectedCurrency}
               setSelectedCurrency={setSelectedCurrency}
               selectedValue={selectedValue}
+              checkedItems={checkedItems}
+              selectedDeliveryValue={selectedDeliveryValue}
             />
           </>
         )}

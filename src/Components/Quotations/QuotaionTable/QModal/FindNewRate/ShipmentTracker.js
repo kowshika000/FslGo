@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, Tabs } from "antd";
+import { Card, Tabs,Tooltip } from "antd";
 import "./FindNewRate.css";
 import Share from "../../../../../assets/Share.svg";
 import Line from "../../../../../assets/Line 3.svg";
@@ -14,14 +14,21 @@ import { Dropdown } from "primereact/dropdown";
 import { useSelector } from "react-redux";
 import ShowChargesModal from "./ShowChargesModal";
 import { CircularProgress, Box } from "@mui/material";
+import airplane from "../../../../../assets/mdi_aeroplane.svg";
 
-function ShipmentTracker({ selectedCurrency, setSelectedCurrency,selectedValue }) {
+function ShipmentTracker({
+  selectedCurrency,
+  setSelectedCurrency,
+  selectedValue,
+  checkedItems,
+  selectedDeliveryValue
+}) {
   const [showAllData, setShowAllData] = useState(false);
   const [showCharges, setShowCharges] = useState(null);
   const [selectedSort, setSelectedSort] = useState("Low to High");
   const FindNRate = useSelector((state) => state?.findRate?.booking?.rates);
-  const {loading} =  useSelector((state) => state?.findRate);
-  console.log(FindNRate, "FindNRate");
+  const { loading } = useSelector((state) => state?.findRate);
+  // console.log(FindNRate, "FindNRate");
   const tabs = [
     { label: "All(0)", key: "1" },
     { label: "Ocean(0)", key: "2" },
@@ -57,6 +64,33 @@ function ShipmentTracker({ selectedCurrency, setSelectedCurrency,selectedValue }
       </Box>
     );
   }
+  const displayedData = showAllData ? FindNRate : FindNRate?.slice(0, 4);
+  const renderSelectedValue = () => {
+    if (!checkedItems.cargoPickup) return "Cargo Pickup";
+
+    if (selectedValue.length > 10) {
+      return (
+        <Tooltip placement="topLeft" title={selectedValue}>
+          <span>{selectedValue.substring(0, 10) + "..."}</span>
+        </Tooltip>
+      );
+    } else {
+      return <span>{selectedValue}</span>;
+    }
+  };
+  const renderSelectedValue1 = () => {
+    if (!checkedItems.CargoDelivery) return "Cargo Pickup";
+
+    if (selectedDeliveryValue.length > 10) {
+      return (
+        <Tooltip placement="topLeft" title={selectedDeliveryValue}>
+          <span>{selectedDeliveryValue.substring(0, 10) + "..."}</span>
+        </Tooltip>
+      );
+    } else {
+      return <span>{selectedDeliveryValue}</span>;
+    }
+  };
   return (
     <>
       <Card className="tabs1 mb-2">
@@ -97,7 +131,7 @@ function ShipmentTracker({ selectedCurrency, setSelectedCurrency,selectedValue }
         </div>
       </Card>
 
-      {FindNRate?.map(
+      {displayedData?.map(
         (data, index) =>
           index === 0 &&
           data?.mode === "SEA" && (
@@ -106,14 +140,14 @@ function ShipmentTracker({ selectedCurrency, setSelectedCurrency,selectedValue }
                 key={index}
                 className="d-flex justify-content-between align-items-center"
               >
-                <div style={{ opacity: "40%" }} className="cargo-pickup-p">
+                <div style={{opacity: !checkedItems.cargoPickup ? "40%" : "100%",}} className="cargo-pickup-p">
                   <img
                     src={icon}
                     alt="icon"
                     className="me-1"
                     style={{ marginBottom: "0.1rem" }}
                   />
-                 {selectedValue ? selectedValue :"Cargo Pickup"} 
+                  {renderSelectedValue()}
                 </div>
                 <div style={{ opacity: "40%" }}>
                   <img src={Line} alt="line" />
@@ -148,14 +182,14 @@ function ShipmentTracker({ selectedCurrency, setSelectedCurrency,selectedValue }
                   <img src={Line} alt="line" />
                 </div>
                 <div>
-                  <p className="m-0 cargo-pickup-p" style={{ opacity: "40%" }}>
+                  <p className="m-0 cargo-pickup-p" style={{opacity: !checkedItems.CargoDelivery ? "40%" : "100%",}}>
                     <img
                       src={Cargo}
                       alt="cargo"
                       className="me-1 mb-1"
                       style={{ width: "13px", height: "17px" }}
                     />
-                    Cargo Delivery
+                   {renderSelectedValue1()}
                   </p>
                 </div>
               </div>
@@ -163,7 +197,7 @@ function ShipmentTracker({ selectedCurrency, setSelectedCurrency,selectedValue }
           )
       )}
 
-      {FindNRate?.map(
+      {displayedData?.map(
         (data, index) =>
           data.mode == "SEA" && (
             <Card className="track1 mb-2" key={index}>
@@ -303,19 +337,7 @@ function ShipmentTracker({ selectedCurrency, setSelectedCurrency,selectedValue }
             </Card>
           )
       )}
-      {FindNRate?.length > 4 && (
-        <div className="hr-with-text">
-          <hr />
-          <span
-            onClick={() => setShowAllData(!showAllData)}
-            className="show-more"
-          >
-            {showAllData ? "Show Less" : "Show More"}
-          </span>
-          <hr />
-        </div>
-      )}
-      {FindNRate?.map(
+      {displayedData?.map(
         (data, index) =>
           index === 0 &&
           data?.mode === "AIR" && (
@@ -345,7 +367,7 @@ function ShipmentTracker({ selectedCurrency, setSelectedCurrency,selectedValue }
                       height: "10px",
                     }}
                   >
-                    <img src={Union} alt="union" className="mb-2" />
+                    <img src={airplane} alt="union" className="mb-2" />
                   </span>
                   <span style={{ height: "10px" }}>
                     <img src={flow} alt="flow" />
@@ -375,7 +397,7 @@ function ShipmentTracker({ selectedCurrency, setSelectedCurrency,selectedValue }
             </Card>
           )
       )}
-      {FindNRate?.map(
+      {displayedData?.map(
         (data, index) =>
           data.mode == "AIR" && (
             <Card className="track1 mb-2" key={index}>
@@ -383,9 +405,8 @@ function ShipmentTracker({ selectedCurrency, setSelectedCurrency,selectedValue }
                 <div>
                   <p style={{ fontSize: "15px" }}>
                     <img
-                      src={Union}
-                      className="pe-2 mb-1"
-                      style={{ height: "12px" }}
+                      src={airplane}
+                      className="pe-2"
                     />
                     <span
                       style={{
@@ -563,7 +584,7 @@ function ShipmentTracker({ selectedCurrency, setSelectedCurrency,selectedValue }
                 {/* <div className="lock-btn ms-auto me-2">
                   Lock Price at {data.Price}
                 </div> */}
-                <div className="book-btn">Book Now</div>
+                <div className="book-btn ms-auto">Book Now</div>
               </div>
             </Card>
           )
