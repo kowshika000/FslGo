@@ -45,11 +45,12 @@ const Fcl = ({
   setfclerrors,
   fclediterrors,
   setfclediterrors,
-  setshowcargo
+  setshowcargo,
+  container_types,
+  setlastsavedfcl
 }) => {
-
   console.log(eximchange);
-  const hasPageBeenRendered = useRef(false)
+  const hasPageBeenRendered = useRef(false);
   // const [fclexim, setfclexim] = useState("E");
 
   // const [fclinputFields, setfclInputFields] = useState(
@@ -64,6 +65,7 @@ const Fcl = ({
   const initialData = {
     package_type: "BOX",
     quantity: "",
+    mode: "FCL"
   };
   // const [fclDatas, setfclDatas] = useState(
   //   JSON.parse(localStorage.getItem("fcldatas")) || {
@@ -71,6 +73,38 @@ const Fcl = ({
   //     quantity: "",
   //   }
   // );
+
+  console.log(fclsaveddatas)
+  const [fclsavobj, setfclsavobj] = useState({})
+  //This for graeater than one
+
+  let units = 0;
+  let weight = 0;
+  let volume = 0;
+  for (let i = 0; i <= fclsaveddatas.length - 1; i++) {
+    units += parseInt(fclsaveddatas[i].units);
+    units += parseInt(fclDatas?.units);
+    weight += parseInt(fclsaveddatas[i].weight) * parseInt(fclsaveddatas[i].units);
+    weight += parseInt(fclDatas?.weight) * parseInt(fclDatas?.units);
+    let res =
+      (parseInt(fclsaveddatas[i].lengths) *
+        parseInt(fclsaveddatas[i].width) *
+        parseInt(fclsaveddatas[i].height) *
+        parseInt(fclsaveddatas[i].units)) /
+      1000000;
+    let saveres =
+      (parseInt(fclDatas.lengths) *
+        parseInt(fclDatas.width) *
+        parseInt(fclDatas.height) *
+        parseInt(fclDatas.units)) /
+      1000000;
+    volume += res;
+    volume += saveres;
+  }
+  console.log(weight * units);
+  const greatervalues = `LCL | ${units} Units, ${volume.toFixed(
+    3
+  )} CBM, ${weight} ${fclDatas.weightUnit}`;
 
   console.log(fclDatas);
 
@@ -103,10 +137,57 @@ const Fcl = ({
   console.log(canAdd);
   const canSave = [fclDatas.package_type, fclDatas.quantity].every(Boolean);
   console.log(canSave);
-  const canEditSave = [fclediteddata.package_type, fclediteddata.quantity].every(
-    Boolean
-  );
+  const canEditSave = [
+    fclediteddata.package_type,
+    fclediteddata.quantity,
+  ].every(Boolean);
   console.log(canEditSave);
+
+  console.log(fclsaveddatas)
+
+let mapped = fclsaveddatas?.map((item,i) => ({ [item.package_type]: item.quantity }) );
+console.log(mapped)
+const result = mapped.reduce((acc, obj) => {
+  // Iterate through each key-value pair in the object
+  for (const key in obj) {
+    if (obj.hasOwnProperty(key)) {
+      // If the key already exists in the accumulator, add the quantity
+      if (acc.hasOwnProperty(key)) {
+        acc[key] += obj[key];
+      } else {
+        // Otherwise, set the initial quantity
+        acc[key] = obj[key];
+      }
+    }
+  }
+  return acc;
+}, {});
+
+console.log(result);
+
+// Function to abbreviate 'GENERAL PURPOSE' to 'GP'
+const abbreviateKey = (key) => {
+  // Split the key into parts and extract the first letters of each part after the number
+  const parts = key.split(' ');
+  // Extract first letter of each word after the initial number
+  const abbreviation = parts.slice(1).map(part => part[0]).join('');
+  // Concatenate the number with the abbreviation
+  return `${parts[0]}${abbreviation}`;
+};
+
+// Convert to custom string format "key: value" with abbreviated keys
+const customString = Object.entries(result)
+  .map(([key, value]) => `${abbreviateKey(key)} X ${value}`)
+  .join(', ');
+
+console.log(customString); 
+
+
+  // useEffect(() => {
+    
+
+  // }, [fclsaveddatas])
+  
 
   // useEffect(() => {
   //   localStorage.setItem("fclDatas", JSON.stringify(fclsaveddatas));
@@ -215,7 +296,9 @@ const Fcl = ({
       {
         ...fclDatas,
         id:
-          fclsaveddatas.length < 1 ? 1 : fclsaveddatas[fclsaveddatas.length - 1].id + 1,
+          fclsaveddatas.length < 1
+            ? 1
+            : fclsaveddatas[fclsaveddatas.length - 1].id + 1,
       },
     ]);
     setfclDatas(initialData);
@@ -280,22 +363,31 @@ const Fcl = ({
     setfcleditedId("");
   };
 
-//This is for one load
-const values = `FCL | ${fclDatas?.package_type} : ${fclDatas.quantity},`;
+  //This is for one load
+  const values = `FCL | ${fclDatas?.package_type} : ${fclDatas.quantity},`;
 
-useEffect(() => {
-if(hasPageBeenRendered.current){
-  console.log(values)
-    setCargo(values)
-}
-hasPageBeenRendered.current = true;
-}, [fclDatas])
+  useEffect(() => {
+    // if (hasPageBeenRendered.current) {
+      console.log(greatervalues);
+      console.log("changed");
+      setCargo(greatervalues);
+    // }
+    // hasPageBeenRendered.current = true;
+  }, [fclDatas, fclsaveddatas, fclediteddata]);
 
+  useEffect(() => {
+    if (hasPageBeenRendered.current) {
+      console.log(values);
+      setCargo(values);
+    }
+    hasPageBeenRendered.current = true;
+  }, [fclDatas]);
 
   const handleFclSubmit = () => {
+    setlastsavedfcl(true)
     console.log(canAdd, !IsError);
-    if (!IsError && canAdd) {
-      setshowcargo(true)
+    if (!IsError && canAdd && fclsaveddatas.length < 1) {
+      setshowcargo(true);
       console.log(values);
       setCargo(values);
       setCargoOptionsVisible(false);
@@ -305,7 +397,7 @@ hasPageBeenRendered.current = true;
     // else if(fclsaveddatas.length === 1){
 
     // }
-    else if (fclsaveddatas.length >= 1 && fclinputFields.length>=1) {
+    else if (fclsaveddatas.length >= 1 && !fclinputFields.length>0 ) {
       console.log("second");
       let generalquantity = 0;
       for (let i = 0; i <= fclsaveddatas.length - 1; i++) {
@@ -317,9 +409,25 @@ hasPageBeenRendered.current = true;
       // let weight = unitscopy.reduce((previousValue, currentValue) => previousValue.weight += currentValue.weight);
       // console.log(weight)
       const values = `FCL | ${fclDatas?.package_type} : ${fclDatas.quantity},`;
-      setCargo(values);
+      setCargo(customString);
       setCargoOptionsVisible(false);
       settserrmsg("");
+    } 
+    else if (fclsaveddatas.length >= 1 && fclinputFields.length>0 ) {
+      console.log("third");
+      // let generalquantity = 0;
+      // for (let i = 0; i <= fclsaveddatas.length - 1; i++) {
+      //   generalquantity += fclsaveddatas[i].quantity;
+      // }
+      // // console.log(units, weight, volume);
+      // // const unitscopy = [...fclsaveddatas]
+      // // let units = unitscopy.reduce((previousValue, currentValue) => previousValue.units += currentValue.units);
+      // // let weight = unitscopy.reduce((previousValue, currentValue) => previousValue.weight += currentValue.weight);
+      // // console.log(weight)
+      // const values = `FCL | ${fclDatas?.package_type} : ${fclDatas.quantity},`;
+      // setCargo(customString);
+      // setCargoOptionsVisible(false);
+      // settserrmsg("");
     } else {
       setCargo("");
       if (!canAdd) {
@@ -560,7 +668,8 @@ hasPageBeenRendered.current = true;
                           <FormHelperText
                             style={{ color: "red", fontStyle: "italic" }}
                           >
-                            {fclediterrors.quantity && fclediteddata.quantity > 99
+                            {fclediterrors.quantity &&
+                            fclediteddata.quantity > 99
                               ? "Maximum 99 allowed"
                               : fclediteddata.quantity < 0
                               ? "Min 1"
@@ -648,13 +757,18 @@ hasPageBeenRendered.current = true;
                     placeholder="Select Type"
                     inputProps={{ "aria-label": "Without label" }}
                   >
-                    <MenuItem value="20 GENERAL PURPOSE">
+                    {container_types?.map((item, i) => {
+                      return (
+                        <MenuItem value={item?.value}>{item?.label}</MenuItem>
+                      );
+                    })}
+                    {/* <MenuItem value="20 GENERAL PURPOSE">
                       20 GENERAL PURPOSE
                     </MenuItem>
                     <MenuItem value="40 GENERAL PURPOSE">
                       40 GENERAL PURPOSE
                     </MenuItem>
-                    <MenuItem value="40 HICH CUBE">40 HICH CUBE</MenuItem>
+                    <MenuItem value="40 HICH CUBE">40 HICH CUBE</MenuItem> */}
                   </Select>
                 </FormControl>{" "}
               </div>

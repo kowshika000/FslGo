@@ -23,6 +23,7 @@ import FindNewRateReducer from './FindNewRateReducer';
 import NotificationReducer from './NotificationReducer';
 import PickupReducer from './PickupReducer';
 import DeliveryReducer from './DeleiveryReducer';
+import ContainerPackReducer from './ContainerPackReducer';
 
 const rootReducer = combineReducers({
     ShipmentCount: shipmentCountReducer,
@@ -50,7 +51,8 @@ const rootReducer = combineReducers({
     DsrSchedule:DsrScheduleReducer,
     Notification:NotificationReducer,
     Pickup:PickupReducer,
-    Delivery:DeliveryReducer
+    Delivery:DeliveryReducer,
+    ContainerPack: ContainerPackReducer
 });
 
 export default rootReducer;

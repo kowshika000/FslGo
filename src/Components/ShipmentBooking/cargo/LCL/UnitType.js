@@ -39,12 +39,14 @@ const UnitType = ({
   setutediterrors,
   utDatas,
   setutDatas,
-  setshowcargo
+  setshowcargo,
+  packages,
+  // setlastsaved
 }) => {
   console.log(eximchange);
-  const hasPageBeenRendered = useRef(false)
-  console.log(inputFields)
-  console.log(editeddata)
+  const hasPageBeenRendered = useRef(false);
+  console.log(inputFields);
+  console.log(editeddata);
   // const [utexim, setutexim] = useState("E");
 
   // const [inputFields, setInputFields] = useState(
@@ -85,7 +87,62 @@ const UnitType = ({
     dimensionUnit: "CM",
     weight: "",
     weightUnit: "KG",
+    mode: "TS",
   };
+
+  //This for graeater than one
+
+  let unitss = 0;
+  let weights = 0;
+  let volumes = 0;
+  for (let i = 0; i <= saveddatas.length - 1; i++) {
+    unitss += parseInt(saveddatas[i].units);
+    weights += parseInt(saveddatas[i].weight) * parseInt(saveddatas[i].units);
+    let resp =
+      (parseInt(saveddatas[i].lengths) *
+        parseInt(saveddatas[i].width) *
+        parseInt(saveddatas[i].height) *
+        parseInt(saveddatas[i].units)) /
+      1000000;
+    volumes += resp;
+  }
+  console.log(weights * unitss);
+  const valueswithoutfields = `LCL | ${unitss} Units, ${volumes.toFixed(
+    3
+  )} CBM, ${weights} ${utDatas.weightUnit}`;
+  console.log(valueswithoutfields);
+
+
+  //This for graeater than one
+
+  let units = 0;
+  let weight = 0;
+  let volume = 0;
+  for (let i = 0; i <= saveddatas.length - 1; i++) {
+    units += parseInt(saveddatas[i].units);
+    units += parseInt(utDatas?.units);
+    weight += parseInt(saveddatas[i].weight) * parseInt(saveddatas[i].units);
+    weight += parseInt(utDatas?.weight) * parseInt(utDatas?.units);
+    let res =
+      (parseInt(saveddatas[i].lengths) *
+        parseInt(saveddatas[i].width) *
+        parseInt(saveddatas[i].height) *
+        parseInt(saveddatas[i].units)) /
+      1000000;
+    let saveres =
+      (parseInt(utDatas.lengths) *
+        parseInt(utDatas.width) *
+        parseInt(utDatas.height) *
+        parseInt(utDatas.units)) /
+      1000000;
+    volume += res;
+    volume += saveres;
+  }
+  console.log(weight * units);
+  const greatervalues = `LCL | ${units} Units, ${volume.toFixed(
+    3
+  )} CBM, ${weight} ${utDatas.weightUnit}`;
+
   // const [utDatas, setutDatas] = useState(
   //   JSON.parse(localStorage.getItem("utDataslocal")) || {
   //     package_type: "BOX",
@@ -251,6 +308,7 @@ const UnitType = ({
       setutDatas(initialData);
     }
     setInputFields([{}]);
+    setCargo(values)
   };
   console.log(inputFields);
   const handleCloseLoad = (index) => {
@@ -384,99 +442,106 @@ const UnitType = ({
   const values = `LCL | ${utDatas?.units} Units, ${(
     (utDatas?.lengths * utDatas?.height * utDatas?.width * utDatas?.units) /
     1000000
-  ).toFixed(3)} ${utDatas.dimensionUnit}, ${utDatas.weight *  utDatas?.units} ${
+  ).toFixed(3)} ${utDatas.dimensionUnit}, ${utDatas.weight * utDatas?.units} ${
     utDatas.weightUnit
   }`;
 
-useEffect(() => {
-  if(hasPageBeenRendered.current){
-    console.log(values)
-      console.log("changed")
-      setCargo(values)
-  }
-  hasPageBeenRendered.current = true;
-}, [utDatas])
+  useEffect(() => {
+    if (hasPageBeenRendered.current) {
+      console.log(values);
+      console.log("changed");
+      setCargo(values);
+    }
+    hasPageBeenRendered.current = true;
+  }, [utDatas]);
+
+  //This for graeater than one
+
+  // let units = 0;
+  // let weight = 0;
+  // let volume = 0;
+  // for (let i = 0; i <= saveddatas.length - 1; i++) {
+  //   units += parseInt(saveddatas[i].units);
+  //   units += parseInt(utDatas?.units);
+  //   weight += parseInt(saveddatas[i].weight) * parseInt(saveddatas[i].units);
+  //   weight += parseInt(utDatas?.weight) * parseInt(utDatas?.units);
+  //   let res =
+  //     (parseInt(saveddatas[i].lengths) *
+  //       parseInt(saveddatas[i].width) *
+  //       parseInt(saveddatas[i].height) *
+  //       parseInt(saveddatas[i].units)) /
+  //     1000000;
+  //   let saveres =
+  //     (parseInt(utDatas.lengths) *
+  //       parseInt(utDatas.width) *
+  //       parseInt(utDatas.height) *
+  //       parseInt(utDatas.units)) /
+  //     1000000;
+  //   volume += res;
+  //   volume += saveres;
+  // }
+  // console.log(weight * units);
+  // const greatervalues = `LCL | ${units} Units, ${volume.toFixed(
+  //   3
+  // )} CBM, ${weight} ${utDatas.weightUnit}`;
+
+  useEffect(() => {
+    // if (hasPageBeenRendered.current) {
+      console.log(greatervalues);
+      console.log("changed");
+      setCargo(greatervalues);
+    // }
+    // hasPageBeenRendered.current = true;
+  }, [utDatas, saveddatas, editeddata]);
+
+  //This for graeater than one
+
+  // let unitss = 0;
+  // let weights = 0;
+  // let volumes = 0;
+  // for (let i = 0; i <= saveddatas.length - 1; i++) {
+  //   unitss += parseInt(saveddatas[i].units)
+  //   weights += parseInt(saveddatas[i].weight) * parseInt(saveddatas[i].units) ;
+  //   let resp =
+  //     (parseInt(saveddatas[i].lengths) *
+  //       parseInt(saveddatas[i].width) *
+  //       parseInt(saveddatas[i].height) *
+  //       parseInt(saveddatas[i].units)) /
+  //     1000000;
+  //     volumes += resp;
+  // }
+  // console.log(weights * unitss)
+  // const valueswithoutfields = `LCL | ${unitss} Units, ${volumes.toFixed(3)} CBM, ${weights} ${utDatas.weightUnit}`;
+  // console.log(valueswithoutfields)
+
+  useEffect(() => {
+    // if (hasPageBeenRendered.current) {
+      console.log(greatervalues);
+      console.log("changed");
+      console.log("change edited");
+      setCargo(greatervalues);
+    // }
+    // hasPageBeenRendered.current = true;
+  }, [utDatas, saveddatas]);
 
 
-//This for graeater than one
 
-let units = 0;
-      let weight = 0;
-      let volume = 0;
-      for (let i = 0; i <= saveddatas.length - 1; i++) {
-        units += parseInt(saveddatas[i].units)
-        units += parseInt(utDatas?.units)
-        weight += parseInt(saveddatas[i].weight) * parseInt(saveddatas[i].units) ;
-        weight += parseInt(utDatas?.weight) * parseInt(utDatas?.units)
-        let res =
-          (parseInt(saveddatas[i].lengths) *
-            parseInt(saveddatas[i].width) *
-            parseInt(saveddatas[i].height) *
-            parseInt(saveddatas[i].units)) /
-          1000000;
-        let saveres =
-          (parseInt(utDatas.lengths) *
-            parseInt(utDatas.width) *
-            parseInt(utDatas.height) *
-            parseInt(utDatas.units)) /
-          1000000;
-        volume += res;
-        volume += saveres
-      }
-      console.log(weight * units)
-    const greatervalues = `LCL | ${units} Units, ${volume.toFixed(3)} CBM, ${weight} ${utDatas.weightUnit}`;
-
-    useEffect(() => {
-      if(hasPageBeenRendered.current){
-        console.log(greatervalues)
-          console.log("changed")
-          setCargo(greatervalues)
-      }
-      hasPageBeenRendered.current = true;
-    }, [utDatas,saveddatas,editeddata])
-
-    //This for graeater than one
-
-let unitss = 0;
-let weights = 0;
-let volumes = 0;
-for (let i = 0; i <= saveddatas.length - 1; i++) {
-  unitss += parseInt(saveddatas[i].units)
-  weights += parseInt(saveddatas[i].weight) * parseInt(saveddatas[i].units) ;
-  let resp =
-    (parseInt(saveddatas[i].lengths) *
-      parseInt(saveddatas[i].width) *
-      parseInt(saveddatas[i].height) *
-      parseInt(saveddatas[i].units)) /
-    1000000;
-    volumes += resp;
-}
-console.log(weights * unitss)
-const valueswithoutfields = `LCL | ${unitss} Units, ${volumes.toFixed(3)} CBM, ${weights} ${utDatas.weightUnit}`;
-console.log(valueswithoutfields)
-
-useEffect(() => {
-if(hasPageBeenRendered.current){
-  console.log(greatervalues)
-    console.log("changed")
-    setCargo(greatervalues)
-}
-hasPageBeenRendered.current = true;
-}, [utDatas,saveddatas,editeddata])
+  console.log(saveddatas);
+  console.log(editeddata);
 
   //trigger LCL submit
 
   const handleLclUnitSubmit = () => {
+    // console.log(setlastsaved("LCLUNIT"))
     console.log(canAdd, !IsError);
     if (!IsError && canAdd) {
       console.log("first");
-      setshowcargo(true)
+      setshowcargo(true);
       setCargo(values);
       setCargoOptionsVisible(false);
       settserrmsg("");
       // }
-    } 
-    else if (saveddatas.length >= 1 && inputFields.length>=1) {
+    } else if (saveddatas.length >= 1 && inputFields.length >= 1) {
       console.log("second");
       // let units = 0;
       // let weight = 0;
@@ -499,21 +564,18 @@ hasPageBeenRendered.current = true;
       // console.log(weight)
       // const greatervalues = `LCL | ${units} Units, ${volume.toFixed(3)} CBM, ${weight} ${utDatas.weightUnit}`;
       setCargo(greatervalues);
-      setshowcargo(true)
+      setshowcargo(true);
       setCargoOptionsVisible(false);
       settserrmsg("");
-    }
-    else if(saveddatas?.length>=1 && inputFields.length === 0){
-        console.log("in")
-        setshowcargo(true)
-        setCargo(valueswithoutfields)
-    }
-    else if(saveddatas?.length>=1 && Object.keys(editeddata).length > 0 ){
-        console.log("edit")
-        // setshowcargo(true)
-        // setCargo(valueswithoutfields)
-    }
-     else {
+    } else if (saveddatas?.length >= 1 && inputFields.length === 0) {
+      console.log("in");
+      setshowcargo(true);
+      setCargo(valueswithoutfields);
+    } else if (saveddatas?.length >= 1 && Object.keys(editeddata).length > 0) {
+      console.log("edit");
+      // setshowcargo(true)
+      // setCargo(valueswithoutfields)
+    } else {
       setCargo("");
       if (!canAdd) {
         settserrmsg("Please add proper values for load");
@@ -596,12 +658,14 @@ hasPageBeenRendered.current = true;
                     }}
                   >
                     {item.lengths}x{item.width}x{item.height}{" "}
-                    {item.dimensionUnit} | {item.weight * item.units} {item.weightUnit} |{" "}
+                    {item.dimensionUnit} | {item.weight * item.units}{" "}
+                    {item.weightUnit} |{" "}
                     {(
-                      (item.lengths * item.height * item.width) /
+                      (item.lengths * item.height * item.width * item.units * item.weight ) /
                       1000000
                     ).toFixed(3)}{" "}
                     CBM
+                    {/* {((item.lengths * 0.0254)/0.2794)*((item.lengths *0.0254)/0.2794)*((item.lengths *0.0254)/0.2794)} */}
                   </span>
                 </div>
               )}
@@ -658,7 +722,11 @@ hasPageBeenRendered.current = true;
                               displayEmpty
                               inputProps={{ "aria-label": "Without label" }}
                             >
-                              <MenuItem value="BOX">PACKAGES(s)</MenuItem>
+                              {packages?.map((item, index) => {
+                                return (
+                                  <MenuItem value="BOX">{item?.label}</MenuItem>
+                                );
+                              })}
                             </Select>
                           </FormControl>{" "}
                         </div>
@@ -1202,7 +1270,9 @@ hasPageBeenRendered.current = true;
                     displayEmpty
                     inputProps={{ "aria-label": "Without label" }}
                   >
-                    <MenuItem value="BOX">PACKAGES(s)</MenuItem>
+                    {packages?.map((item, index) => {
+                      return <MenuItem value="BOX">{item?.label}</MenuItem>;
+                    })}
                   </Select>
                 </FormControl>{" "}
               </div>

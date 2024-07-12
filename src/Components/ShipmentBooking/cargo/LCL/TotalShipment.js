@@ -33,7 +33,8 @@ const TotalShipment = ({
   seterrors,
   tsexim,
   settsexim,
-  setshowcargo
+  setshowcargo,
+  packages
 }) => {
   console.log(eximchange);
   // const [tsexim, settsexim] = useState("E");
@@ -872,7 +873,12 @@ useEffect(() => {
               displayEmpty
               inputProps={{ "aria-label": "Without label" }}
             >
-              <MenuItem value="BOX">PACKAGES(s)</MenuItem>
+              {
+                packages?.map((item,index)=>{
+                  return <MenuItem value="BOX">{item?.label}</MenuItem>
+                })
+              }
+              
             </Select>
           </FormControl>{" "}
         </div>
