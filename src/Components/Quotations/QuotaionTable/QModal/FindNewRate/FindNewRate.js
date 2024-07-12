@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Card, Checkbox, Popover, Image, Input } from "antd";
 import "./FindNewRate.css";
 import ShipmentTracker from "./ShipmentTracker";
@@ -6,13 +6,13 @@ import info from "../../../../../assets/Info.svg";
 import { Tooltip } from "antd";
 import QuoteRequest from "./QuoteRequest";
 import { Collapse } from "antd";
-import { DownOutlined, UpOutlined } from "@ant-design/icons";
+// import { DownOutlined, UpOutlined } from "@ant-design/icons";
 import CargoPickupPopOver from "./CargoPickupPopOver";
 import CargoDeliveryPopOver from "./CargoDeliveryPopOver";
 import pencil from "../../../../../assets/Pencil.svg";
 import img from "../../../../../assets/thumbsgr.svg";
 import uparrow from "../../../../../assets/uparrowcargo.svg";
-import CargoInsurance from "./CargoInsurance";
+// import CargoInsurance from "./CargoInsurance";
 
 function FindNewRate({
   selectedCurrency,
@@ -471,6 +471,8 @@ function FindNewRate({
               selectedCurrency={selectedCurrency}
               setSelectedCurrency={setSelectedCurrency}
               selectedValue={selectedValue}
+              checkedItems={checkedItems}
+              selectedDeliveryValue={selectedDeliveryValue}
             />
           </>
         )}
