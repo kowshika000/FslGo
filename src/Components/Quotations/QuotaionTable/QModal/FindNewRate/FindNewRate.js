@@ -19,6 +19,7 @@ function FindNewRate({
   setSelectedCurrency,
   checkedItems,
   setCheckedItems,
+  showHeader,
 }) {
   const [isPopoverOpen, setPopoverOpen] = useState(false);
   const [isDeliveryPopoverOpen, setDeliveryPopoverOpen] = useState(false);
@@ -411,12 +412,9 @@ function FindNewRate({
     );
 
   return (
-    <div className="quotationresult-div mx-auto">
-      <div
-        className="quotationresult-leftdiv"
-        style={{ flex: "0 0 272px", height: "100vh" }}
-      >
-        <Card title="Service Included">
+    <div className="quotationresult-div">
+      <div className={`quotationresult-leftdiv ${showHeader ? "" : "fixed"}`}>
+        <Card title="Service Included" style={{ overflowX: "auto" }}>
           <div className="Service-card">
             <Collapse
               defaultActiveKey={["1"]}
@@ -461,7 +459,10 @@ function FindNewRate({
           </div>
         </Card>
       </div>
-      <div className="quotationresult-leftdiv" style={{ flex: "1 1 auto" }}>
+      <div
+        className={`quotationresult-rightdiv ${showHeader ? "" : "fixedleft"}`}
+        style={{ flex: "1 1 auto" }}
+      >
         {checkedItems.DestinationCharges === false ? (
           <QuoteRequest />
         ) : (
