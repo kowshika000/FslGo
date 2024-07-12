@@ -2,7 +2,7 @@ import {PICKUP_REQUEST, PICKUP_SUCCESS, PICKUP_FAILURE} from '../ActionTypes'
 const initialState = {
   error: null,
   loading: false,
-  Pickup: {},
+  pickuppointlist: [],
 };
 function PickupReducer(state = initialState, action) {
   switch (action.type) {
@@ -19,7 +19,7 @@ function PickupReducer(state = initialState, action) {
         ...state,
         error: null,
         loading: false,
-        openSailing: action.payload,
+        pickuppointlist: action.payload,
       };
     case PICKUP_FAILURE:
       return {

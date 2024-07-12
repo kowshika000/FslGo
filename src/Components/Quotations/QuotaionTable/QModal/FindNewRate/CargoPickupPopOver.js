@@ -5,7 +5,8 @@ import { PickupRequest } from "../../../../../Redux/Actions/PickupAction";
 
 function CargoPickupPopOver({ setSelectedValue, setPopoverOpen }) {
   const dispatch = useDispatch();
-  const pickupdata = useSelector((state) => state.Pickup.pickuppointlist);
+  const pickupdata = useSelector((state) => state?.Pickup?.pickuppointlist);
+  console.log(pickupdata,"ccccccc");
   const [options, setOptions] = useState([]);
 
   const handleSelectChange = (value) => {
@@ -21,13 +22,20 @@ function CargoPickupPopOver({ setSelectedValue, setPopoverOpen }) {
     }
   };
   useEffect(() => {
-    if (pickupdata) {
-      setOptions(
-        pickupdata.map((item) => ({
-          value: item.code,
-          label: item.code,
-        }))
-      );
+      if (pickupdata && Array.isArray(pickupdata)) {
+        const updatedOptions = pickupdata.map((item, index) => ({
+          value: item.list_value,
+          label: item.list_value,
+          key: index,
+        }));
+        setOptions(updatedOptions);
+        console.log(updatedOptions, "Optionsccc");
+    }
+  }, [pickupdata]);
+  useEffect(() => {
+    if (pickupdata === undefined) {
+      // Handle error or show a message
+      console.log("Error fetching pickup data");
     }
   }, [pickupdata]);
   return (
@@ -39,7 +47,9 @@ function CargoPickupPopOver({ setSelectedValue, setPopoverOpen }) {
         onChange={handleSelectChange}
         onSearch={onSearch}
         options={options}
-        filterOption={false}
+        filterOption={(input, option) =>
+          option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
       />
     </div>
   );

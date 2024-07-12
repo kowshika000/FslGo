@@ -19,7 +19,7 @@ function DeliveryReducer(state = initialState, action) {
         ...state,
         error: null,
         loading: false,
-        openSailing: action.payload,
+        Delivery: action.payload,
       };
     case DELIVERY_FAILURE:
       return {

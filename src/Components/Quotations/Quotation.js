@@ -88,7 +88,8 @@ const Quotation = ({
           backgroundColor: "#f3f5f7",
         }}
       >
-        <div style={{ maxWidth: "1255px" }} className="mx-auto">
+        <div style={{ maxWidth: "1255px" }} className="mx-auto" >
+        {showHeader ? "" : <div style={{ marginTop: "4.5rem" }}></div>}
           {showReselt ? (
             <FindNewRate
               selectedCurrency={selectedCurrency}

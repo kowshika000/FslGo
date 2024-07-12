@@ -23,6 +23,7 @@ import { CircularProgress, Box } from "@mui/material";
 import { MultiSelect } from "primereact/multiselect";
 import { Tag } from "primereact/tag";
 import { CloseOutlined } from "@ant-design/icons";
+import "../../Dashboard/ShipmentHistory/ShipmentHistory.css"
 // import { FindNewRateRequest } from "../../../Redux/Actions/FindNewRateAction";
 
 const QuotationTable = ({
