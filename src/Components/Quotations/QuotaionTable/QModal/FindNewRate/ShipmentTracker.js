@@ -27,9 +27,9 @@ function ShipmentTracker({
   const [showAllData, setShowAllData] = useState(false);
   const [showCharges, setShowCharges] = useState(null);
   const [selectedSort, setSelectedSort] = useState("Low to High");
-  const FindNRate = useSelector((state) => state?.findRate?.booking?.rates);
+  const FindNRate = useSelector((state) => state?.findRate?.findRate?.rates);
   const { findRate, loading } = useSelector((state) => state?.findRate);
-  console.log(findRate, "FindNRate");
+  console.log(FindNRate, "FindNRate");
   const tabs = [
     { label: "All(0)", key: "1" },
     { label: "Ocean(0)", key: "2" },
