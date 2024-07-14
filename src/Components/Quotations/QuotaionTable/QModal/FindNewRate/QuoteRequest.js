@@ -130,7 +130,7 @@ import RightArrow from "../../../../../assets/rightarrow.png";
 import QuoteRequestModal from "./QuoteRequestModal";
 
 function QuoteRequest() {
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
   };
