@@ -101,7 +101,7 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
       tosValue = "FOB";
     }
   } else {
-    tosValue = ""; 
+    tosValue = "";
   }
   const inputdata = {
     freight_mode: "S",
@@ -127,9 +127,9 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
     ],
     volume_type: "C",
     weight_type: "CBM",
-    origin: "INNSA",
+    origin: "DEACH",
     destination: "AEJEA",
-    origin_country_code: "IN",
+    origin_country_code: "DE",
     dest_country_code: "AE",
     TOS: checkedItems.originCharges ? "FCA" : "FOB",
     is_pickup_req: checkedItems.cargoPickup ? "Y" : "N",
