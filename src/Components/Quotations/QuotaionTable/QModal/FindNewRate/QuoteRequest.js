@@ -121,15 +121,13 @@
 
 // export default QuoteRequest;
 
-import React from "react";
-import { Card, Col, Row, Input, Button } from "antd";
+import React, { useState } from "react";
+import { Card, Col, Row, Button } from "antd";
 import "./FindNewRate.css";
 import Stripes from "../../../../../assets/Stripes.png";
 import Avatar from "../../../../../assets/Avatar.png";
 import RightArrow from "../../../../../assets/rightarrow.png";
-import Email from "../../../../../assets/Email.png";
-import info from "../../../../../assets/Info.svg";
-import SubmitArr from "../../../../../assets/monochrome.png";
+import QuoteRequestModal from "./QuoteRequestModal";
 
 function QuoteRequest() {
   const [isModalOpen, setIsModalOpen] = useState(true);
@@ -218,6 +216,9 @@ function QuoteRequest() {
           </Col>
         </Row>
       </Card>
+      {showModal && (
+        <QuoteRequestModal showModal={isModalOpen} onCancel={handleCancel} />
+      )}
     </>
   );
 }
