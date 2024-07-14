@@ -4,7 +4,6 @@ import "./FindNewRate.css";
 import ShipmentTracker from "./ShipmentTracker";
 import info from "../../../../../assets/Info.svg";
 import { Tooltip } from "antd";
-import QuoteRequest from "./QuoteRequest";
 import { Collapse } from "antd";
 // import { DownOutlined, UpOutlined } from "@ant-design/icons";
 import CargoPickupPopOver from "./CargoPickupPopOver";
@@ -465,19 +464,12 @@ function FindNewRate({
         className={`quotationresult-rightdiv ${showHeader ? "" : "fixedleft"}`}
         style={{ flex: "1 1 auto" }}
       >
-        {checkedItems?.DestinationCharges === false ? (
-          <QuoteRequest />
-        ) : (
-          <>
-            <ShipmentTracker
-              selectedCurrency={selectedCurrency}
-              setSelectedCurrency={setSelectedCurrency}
-              selectedValue={selectedValue}
-              checkedItems={checkedItems}
-              selectedDeliveryValue={selectedDeliveryValue}
-            />
-          </>
-        )}
+       <ShipmentTracker
+          selectedCurrency={selectedCurrency}
+          setSelectedCurrency={setSelectedCurrency}
+          selectedValue={selectedValue}
+          checkedItems={checkedItems}
+        />
       </div>
     </div>
   );
