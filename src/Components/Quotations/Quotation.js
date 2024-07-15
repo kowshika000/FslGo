@@ -25,6 +25,11 @@ const Quotation = ({
     StackableCargo: true,
     NonHarzardousCargo: true,
   });
+  // if ((checkedItems.cargoPickup = true)) {
+  //   checkedItems.originCharges = true;
+  // } else if ((checkedItems.cargoPickup = false)) {
+  //   checkedItems.originCharges = false;
+  // }
   const handleScroll = () => {
     if (showReselt) {
       const scrollTop = window.scrollY;
@@ -89,7 +94,7 @@ const Quotation = ({
         }}
       >
         <div style={{ maxWidth: "1255px" }} className="mx-auto">
-          {showHeader ? "" : <div style={{ marginTop: "4.5rem" }}></div>}
+          {showHeader ? "" : <div style={{ marginTop: "4rem" }}></div>}
           {showReselt ? (
             <FindNewRate
               selectedCurrency={selectedCurrency}

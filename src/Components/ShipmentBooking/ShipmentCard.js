@@ -31,7 +31,6 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
   const [searchDestPort, setSearchDestPort] = useState("");
   const [exim, setexim] = useState("I");
 
-
   useEffect(() => {
     if (destination && cargoRef.current) {
       cargoRef.current.focus();
@@ -48,49 +47,51 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
   // const [error, seterror] = useState();
 
   let tosValue = "";
- if (
-  checkedItems.DestinationCharges &&
-  checkedItems.originCharges &&
-  checkedItems.cargoPickup &&
-  checkedItems.CargoDelivery
-) {
-  tosValue = "EXW";
-} else if (
-  checkedItems.DestinationCharges &&
-  checkedItems.originCharges &&
-  checkedItems.cargoPickup
-) {
-  tosValue = "EXW";
-} else if (
-  checkedItems.DestinationCharges &&
-  checkedItems.originCharges &&
-  checkedItems.CargoDelivery
-) {
-  tosValue = "FCA";
-} else if (
-  checkedItems.DestinationCharges &&
-  checkedItems.originCharges
-) {
-  tosValue = "FCA";
-} else if (
-  checkedItems.DestinationCharges &&
-  checkedItems.CargoDelivery
-) {
-  tosValue = "FOB";
-} else if (
-  checkedItems.DestinationCharges
-) {
-  tosValue = "FOB";
-}
-
-  console.log(
-    checkedItems.DestinationCharges && checkedItems.originCharges,
-    "checked..."
-  );
+  if (exim === "I") {
+    if (
+      checkedItems.DestinationCharges &&
+      checkedItems.originCharges &&
+      checkedItems.cargoPickup &&
+      checkedItems.CargoDelivery
+    ) {
+      tosValue = "EXW";
+    } else if (
+      checkedItems.DestinationCharges &&
+      checkedItems.originCharges &&
+      checkedItems.cargoPickup
+    ) {
+      tosValue = "EXW";
+    } else if (
+      checkedItems.DestinationCharges &&
+      checkedItems.originCharges &&
+      checkedItems.CargoDelivery
+    ) {
+      tosValue = "FCA";
+    } else if (checkedItems.DestinationCharges && checkedItems.originCharges) {
+      tosValue = "FCA";
+    } else if (checkedItems.DestinationCharges && checkedItems.CargoDelivery) {
+      tosValue = "FOB";
+    } else if (checkedItems.DestinationCharges) {
+      tosValue = "FOB";
+    }
+  } else if (exim === "E") {
+    if (
+      checkedItems.originCharges &&
+      checkedItems.cargoPickup &&
+      checkedItems.CargoDelivery &&
+      checkedItems.DestinationCharges
+    ) {
+      tosValue = "DAP";
+    } else if (checkedItems.originCharges && checkedItems.cargoPickup) {
+      tosValue = "CFR";
+    } else if (checkedItems.originCharges) {
+      tosValue = "CFR";
+    }
+  }
   const inputdata = {
     freight_mode: "S",
     lcl_fcl_air: "LCL",
-    import_export: exim ,
+    import_export: exim,
     package_type: "BOX",
     no_of_units: "1",
     total_volume: "5",
@@ -216,7 +217,6 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
           <Cargo
             cargoOptionsVisible={cargoOptionsVisible}
             setCargoOptionsVisible={setCargoOptionsVisible}
-
             exim={exim}
             setexim={setexim}
             // utexim={utexim}
