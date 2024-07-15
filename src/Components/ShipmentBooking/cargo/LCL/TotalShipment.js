@@ -34,7 +34,9 @@ const TotalShipment = ({
   setexim,
   setshowcargo,
   packages,
-  setlastsaved
+  setlastsaved,
+  setFinaldetails,
+  setmode
 }) => {
 
 
@@ -228,9 +230,11 @@ useEffect(() => {
       console.log("submitted");
       setshowcargo(true)
       setCargo(values);
+      setmode("LCLTOTAL")
       setCargoOptionsVisible(false);
       seterrmsg("")
       setlastsaved("LCLTOTAL")
+      setFinaldetails(values)
     } else {
       setCargo("");
       console.log("error");

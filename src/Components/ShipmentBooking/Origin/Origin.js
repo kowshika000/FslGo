@@ -36,6 +36,11 @@ const Origin = ({
   destPort,
   searchOriginPort,
   setSearchOriginPort,
+  searchOriginCode,
+  setSearchOriginCode,
+  orgerrormsg,
+  setorgerrormsg
+
 }) => {
   // const [origin, setOrigin] = useState("");
   // const [modalOpen, setModalOpen] = useState(false);
@@ -50,7 +55,7 @@ const Origin = ({
   const originPortData = useSelector((state) => state.allPort);
   const { loading, error } = useSelector((state) => state.allPort);
   const originPortDataValue = originPortData?.allportData?.Data;
-  const [errormsg, seterrormsg] = useState(null)
+  
   console.log(originPortDataValue);
   const [prevValue, setPrevValue] = useState("");
   // const [destPortOptionsVisible, setDestPortOptionsVisible] = useState(false);
@@ -138,23 +143,24 @@ const Origin = ({
       port?.Transport_mode === "SEA" &&
       destPort?.Transport_mode === "AIR"
     ) {
-      seterrormsg("Please select either AIR Port or City as origin");
+      setorgerrormsg("Please select either AIR Port or City as origin");
       setSearchOriginPort("");
       setOriginPort(null);
     } else if (
       port?.Transport_mode === "AIR" &&
       destPort?.Transport_mode === "SEA"
     ) {
-      seterrormsg("Please select either SEA Port or City as origin");
+      setorgerrormsg("Please select either SEA Port or City as origin");
       setSearchOriginPort("");
       setOriginPort(null);
     } else if (port?.port_country === destPort?.port_country) {
-      seterrormsg("Please select a different country than destination");
+      setorgerrormsg("Please select a different country than destination");
       setSearchOriginPort("");
       setOriginPort(null);
     } else {
       setSearchOriginPort(port?.port_name);
-      seterrormsg(null)
+      setSearchOriginCode(port?.port_code)
+      setorgerrormsg(null)
     }
   };
 
@@ -222,8 +228,8 @@ const Origin = ({
             <IoClose role="button" style={{position:"absolute",top:"51%",right:"20px",}} onClick={handleClose} />
           }
           {
-            errormsg && <FormHelperText style={{ color: "red", fontStyle: "italic" }}>
-            {errormsg}
+            orgerrormsg && <FormHelperText style={{ color: "red", fontStyle: "italic" }}>
+            {orgerrormsg}
           </FormHelperText>
           }
           {originPortOptionsVisible && (
