@@ -25,12 +25,8 @@ const Quotation = ({
     StackableCargo: true,
     NonHarzardousCargo: true,
   });
-  const [exim, setexim] = useState("E");
-  // if ((checkedItems.cargoPickup = true)) {
-  //   checkedItems.originCharges = true;
-  // } else if ((checkedItems.cargoPickup = false)) {
-  //   checkedItems.originCharges = false;
-  // }
+  const [exim, setexim] = useState("I");
+  const [highlightShipmentCard, setHighlightShipmentCard] = useState(false);
   const handleScroll = () => {
     if (showReselt) {
       const scrollTop = window.scrollY;
@@ -44,6 +40,10 @@ const Quotation = ({
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [showReselt]);
+
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, [highlightShipmentCard]);
 
   return (
     <div
@@ -72,14 +72,15 @@ const Quotation = ({
           <div
             className={`col-lg px-0 py-1  ${
               !showHeader ? "fixed-shipment-card" : ""
-            } `}
+            }
+           ${highlightShipmentCard ? "dimmed-background1" : ""}
+             `}
           >
             <ShipmentCard
               setShowReselt={setShowReselt}
               selectedCurrency={selectedCurrency}
               showHeader={showHeader}
-              // setShowHeader={setShowHeader}
-              // showReselt={showReselt}
+              setHighlightShipmentCard={setHighlightShipmentCard}
               checkedItems={checkedItems}
               setCheckedItems={setCheckedItems}
               exim={exim}
@@ -110,7 +111,9 @@ const Quotation = ({
               exim={exim}
             />
           ) : (
-            <QuotationTabs />
+            <div className={`${highlightShipmentCard ? "marginTop" : ""}`}>
+            <QuotationTabs  setHighlightShipmentCard={setHighlightShipmentCard}/>
+            </div>
           )}
         </div>
       </div>
