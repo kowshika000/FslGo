@@ -34,8 +34,12 @@ const Cargo = ({
   setutexim,
 }) => {
   const dispatch = useDispatch()
+  const [lastsaved,setlastsaved] = useState("")
+  const [activeIndex,setactiveIndex] = useState(0)
   const [cargo, setCargo] = useState("");
   const [showcargo, setshowcargo] = useState(false);
+  const [isByTotalShipmentOpen, setIsByTotalShipmentOpen] = useState(true);
+  const [isByUnitTypeOpen, setIsByUnitTypeOpen] = useState(false);
   // const [modalOpen, setModalOpen] = useState(false);
 
   const cargoRef = useRef(null);
@@ -98,7 +102,22 @@ const Cargo = ({
   });
   console.log(uterrors);
 
-  const [utDatas, setutDatas] = useState({
+  // const [utDatas, setutDatas] = useState({
+  //     package_type: "BOX",
+  //     units: "",
+  //     height: "",
+  //     lengths: "",
+  //     width: "",
+  //     dimensionUnit: "CM",
+  //     weight: "",
+  //     weightUnit: "KG",
+  //     mode:"UT"
+  //   }
+  // );
+  console.log(saveddatas)
+
+  const [utDatas, setutDatas] = useState([
+    {
       package_type: "BOX",
       units: "",
       height: "",
@@ -107,41 +126,45 @@ const Cargo = ({
       dimensionUnit: "CM",
       weight: "",
       weightUnit: "KG",
-      mode:"UT"
-    }
+    },
+  ]
   );
-  console.log(saveddatas)
+  const [utclickedId, setutclickedId] = useState([0])
 
   //this is for fcl
 
-  const [fclinputFields, setfclInputFields] = useState( [{}]
+  // const [fclinputFields, setfclInputFields] = useState( [{}]
+  // );
+  // const [fclsaveddatas, setfclsaveddatas] = useState([]
+  // );
+  // const [fclediteddata, setfclediteddata] = useState({});
+  // const [fcleditedId, setfcleditedId] = useState("");
+  const [fclDatas, setfclDatas] = useState([
+    {
+      containerType: "",
+      quantity: null,
+    },
+  ]
   );
-  const [fclsaveddatas, setfclsaveddatas] = useState([]
-  );
-  const [fclediteddata, setfclediteddata] = useState({});
-  const [fcleditedId, setfcleditedId] = useState("");
-  const [fclDatas, setfclDatas] = useState({
-      package_type: "BOX",
-      quantity: "",
-      mode: "FCL"
-    }
-  );
+  const [clickedId, setclickedId] = useState([0])
 
 
-  const [fclerrors, setfclerrors] = useState({
-      quantity: false,
-    }
-  );
-  const [fclediterrors, setfclediterrors] = useState({
-    quantity: false,
-  });
+  // const [fclerrors, setfclerrors] = useState({
+  //     quantity: false,
+  //     containerType:false,
+  //   }
+  // );
+  // const [fclediterrors, setfclediterrors] = useState({
+  //   quantity: false,
+  // });
 
   //This is for error
 
-  const [tserrmsg, settserrmsg] = useState("");
+  const [tserrmsg, seterrmsg] = useState("");
   const handleClose = () => {
     setCargoOptionsVisible(false);
     setCargo("");
+    setlastsaved("LCLTOTAL")
   };
 
   // useEffect(() => {
@@ -149,6 +172,29 @@ const Cargo = ({
   //   console.log("dis")
   // }, [])
 
+  useEffect(() => {
+    if(lastsaved === 'LCLUNIT'){
+      setIsByUnitTypeOpen(true);
+      setIsByTotalShipmentOpen(false);
+      setactiveIndex(0)
+    }
+    else if(lastsaved === 'LCLTOTAL'){
+      setIsByUnitTypeOpen(false);
+      setIsByTotalShipmentOpen(true);
+      setactiveIndex(0)
+    }
+    else if(lastsaved === 'FCL'){
+      // setIsByUnitTypeOpen(false);
+      // setIsByTotalShipmentOpen(false);
+      setactiveIndex(1)
+    }
+  }, [lastsaved])
+  console.log(lastsaved)
+
+  // useEffect(() => {
+  //   setshowcargo("")
+  // }, [activeIndex])
+  
   return (
     <>
       <div
@@ -208,7 +254,7 @@ const Cargo = ({
                 eximchange={eximchange}
                 setCargo={setCargo}
                 setCargoOptionsVisible={setCargoOptionsVisible}
-                settserrmsg={settserrmsg}
+                seterrmsg={seterrmsg}
                 errors={errors}
                 seterrors={seterrors}
                 tsDatas={tsDatas}
@@ -220,38 +266,48 @@ const Cargo = ({
                 fclexim={fclexim}
                 setfclexim={setfclexim}
                 setshowcargo={setshowcargo}
-                inputFields={inputFields}
-                setInputFields={setInputFields}
-                saveddatas={saveddatas}
-                setsaveddatas={setsaveddatas}
-                editeddata={editeddata}
-                setediteddata={setediteddata}
-                editedId={editedId}
-                seteditedId={seteditedId}
-                uterrors={uterrors}
-                setuterrors={setuterrors}
-                utediterrors={utediterrors}
-                setutediterrors={setutediterrors}
+                // inputFields={inputFields}
+                // setInputFields={setInputFields}
+                // saveddatas={saveddatas}
+                // setsaveddatas={setsaveddatas}
+                // editeddata={editeddata}
+                // setediteddata={setediteddata}
+                // editedId={editedId}
+                // seteditedId={seteditedId}
+                // uterrors={uterrors}
+                // setuterrors={setuterrors}
+                // utediterrors={utediterrors}
+                // setutediterrors={setutediterrors}
                 utDatas={utDatas}
                 setutDatas={setutDatas}
-                fclinputFields={fclinputFields}
-                setfclInputFields={ setfclInputFields}
-                fclsaveddatas={fclsaveddatas}
-                setfclsaveddatas={setfclsaveddatas}
-                fclediteddata={fclediteddata}
-                setfclediteddata={setfclediteddata}
-                fcleditedId={fcleditedId}
-                setfcleditedId={setfcleditedId}
+                utclickedId={utclickedId}
+                setutclickedId={setutclickedId}
+                // fclinputFields={fclinputFields}
+                // setfclInputFields={ setfclInputFields}
+                // fclsaveddatas={fclsaveddatas}
+                // setfclsaveddatas={setfclsaveddatas}
+                // fclediteddata={fclediteddata}
+                // setfclediteddata={setfclediteddata}
+                // fcleditedId={fcleditedId}
+                // setfcleditedId={setfcleditedId}
                 fclDatas={fclDatas}
                 setfclDatas={ setfclDatas}
-                fclerrors={fclerrors}
-                setfclerrors={setfclerrors}
-                fclediterrors={fclediterrors}
-                setfclediterrors={setfclediterrors}
+                clickedId={clickedId}
+                setclickedId={setclickedId}
+                // fclerrors={fclerrors}
+                // setfclerrors={setfclerrors}
+                // fclediterrors={fclediterrors}
+                // setfclediterrors={setfclediterrors}
                 cargo={cargo}
                 showcargo={showcargo}
-
-
+                setlastsaved={setlastsaved}
+                lastsaved={lastsaved}
+                activeIndex={activeIndex}
+                setactiveIndex={setactiveIndex}
+                isByTotalShipmentOpen={isByTotalShipmentOpen}
+                setIsByTotalShipmentOpen={setIsByTotalShipmentOpen}
+                isByUnitTypeOpen={isByUnitTypeOpen}
+                setIsByUnitTypeOpen={setIsByUnitTypeOpen}
               />
             </div>
           )}
