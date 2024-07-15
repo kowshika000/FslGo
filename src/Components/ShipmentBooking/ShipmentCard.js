@@ -15,7 +15,14 @@ import Arrow from "../../assets/arrow.png";
 import { useDispatch } from "react-redux";
 import { FindNewRateRequest } from "../../Redux/Actions/FindNewRateAction";
 
-const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
+const ShipmentCard = ({
+  setShowReselt,
+  selectedCurrency,
+  checkedItems,
+  setCheckedItems,
+  setexim,
+  exim,
+}) => {
   const dispatch = useDispatch();
   const [destination] = useState("");
   // const [isCargoOpen, setIsCargoOpen] = useState(false);
@@ -29,7 +36,6 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
   const [destPort, setDestPort] = useState(null);
   const [searchOriginPort, setSearchOriginPort] = useState("");
   const [searchDestPort, setSearchDestPort] = useState("");
-  const [exim, setexim] = useState("I");
 
   useEffect(() => {
     if (destination && cargoRef.current) {
@@ -126,6 +132,7 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
     UID: "15085",
     currency: selectedCurrency,
   };
+
   const handleSearch = () => {
     setShowReselt(true);
   };
@@ -159,6 +166,13 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
     }
   };
   useEffect(() => {
+    if (exim === "I") {
+      setCheckedItems({ ...checkedItems, DestinationCharges: true });
+    } else if (exim === "E") {
+      setCheckedItems({ ...checkedItems, originCharges: true });
+    }
+  }, [exim]);
+  useEffect(() => {
     dispatch(FindNewRateRequest({ inputdata }));
   }, [selectedCurrency, checkedItems]);
   return (
@@ -166,7 +180,7 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
       <div
         className="card shadow"
         style={{
-          minWidth: "1270px",
+          minWidth: "1255px",
           border: "1px solid #E7EAF0",
           borderRadius: "8px",
         }}
