@@ -29,10 +29,8 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
   const [destPort, setDestPort] = useState(null);
   const [searchOriginPort, setSearchOriginPort] = useState("");
   const [searchDestPort, setSearchDestPort] = useState("");
-  const [eximchange] = useState(false);
-  const [tsexim, settsexim] = useState("I");
-  const [utexim, setutexim] = useState("I");
-  const [fclexim, setfclexim] = useState("I");
+  const [exim, setexim] = useState("I");
+
 
   useEffect(() => {
     if (destination && cargoRef.current) {
@@ -92,7 +90,7 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
   const inputdata = {
     freight_mode: "S",
     lcl_fcl_air: "LCL",
-    import_export: "I" ,
+    import_export: exim ,
     package_type: "BOX",
     no_of_units: "1",
     total_volume: "5",
@@ -136,9 +134,9 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
       setSearchOriginPort(searchDestPort);
       setDestPort(originPort);
       setOriginPort(destPort);
-      settsexim((prev) => (prev === "I" ? "E" : "I"));
-      setutexim((prev) => (prev === "I" ? "E" : "I"));
-      setfclexim((prev) => (prev === "I" ? "E" : "I"));
+      setexim((prev) => (prev === "I" ? "E" : "I"));
+      // setutexim((prev) => (prev === "I" ? "E" : "I"));
+      // setfclexim((prev) => (prev === "I" ? "E" : "I"));
     } else if (originPort && searchOriginPort) {
       setSearchDestPort(searchOriginPort);
       setDestPort(originPort);
@@ -218,13 +216,13 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
           <Cargo
             cargoOptionsVisible={cargoOptionsVisible}
             setCargoOptionsVisible={setCargoOptionsVisible}
-            eximchange={eximchange}
-            tsexim={tsexim}
-            settsexim={settsexim}
-            utexim={utexim}
-            setutexim={setutexim}
-            fclexim={fclexim}
-            setfclexim={setfclexim}
+
+            exim={exim}
+            setexim={setexim}
+            // utexim={utexim}
+            // setutexim={setutexim}
+            // fclexim={fclexim}
+            // setfclexim={setfclexim}
           />
           {/* Search button */}
           <div

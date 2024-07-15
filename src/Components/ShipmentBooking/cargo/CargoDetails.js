@@ -11,7 +11,6 @@ import { containerpackRequest } from "../../../Redux/Actions/ContainerPackAction
 
 export default function CargoDetails({
   onClose,
-  eximchange,
   setCargo,
   setCargoOptionsVisible,
   seterrmsg,
@@ -19,12 +18,12 @@ export default function CargoDetails({
   settsDatas,
   errors,
   seterrors,
-  tsexim,
-  settsexim,
-  fclexim,
-  setfclexim,
-  utexim,
-  setutexim,
+  exim,
+  setexim,
+  // fclexim,
+  // setfclexim,
+  // utexim,
+  // setutexim,
   setshowcargo,
   // inputFields,
   // setInputFields,
@@ -166,15 +165,14 @@ export default function CargoDetails({
           {isByTotalShipmentOpen && (
             <TotalShipment
               setCargo={setCargo}
-              eximchange={eximchange}
               setCargoOptionsVisible={setCargoOptionsVisible}
               seterrmsg={seterrmsg}
               tsDatas={tsDatas}
               settsDatas={settsDatas}
               errors={errors}
               seterrors={seterrors}
-              tsexim={tsexim}
-              settsexim={settsexim}
+              exim={exim}
+              setexim={setexim}
               setshowcargo={setshowcargo}
               packages={packages}
               setlastsaved={setlastsaved}
@@ -186,11 +184,12 @@ export default function CargoDetails({
           {isByUnitTypeOpen && (
             <UnitType
               setCargo={setCargo}
-              eximchange={eximchange}
               setCargoOptionsVisible={setCargoOptionsVisible}
               seterrmsg={seterrmsg}
-              utexim={utexim}
-              setutexim={setutexim}
+              // utexim={utexim}
+              // setutexim={setutexim}
+              exim={exim}
+              setexim={setexim}
               // inputFields={inputFields}
               // setInputFields={setInputFields}
               // saveddatas={saveddatas}
@@ -227,12 +226,13 @@ export default function CargoDetails({
         >
           <Fcl
             onClose={onClose}
-            eximchange={eximchange}
             setCargo={setCargo}
             setCargoOptionsVisible={setCargoOptionsVisible}
             seterrmsg={seterrmsg}
-            fclexim={fclexim}
-            setfclexim={setfclexim}
+            // fclexim={fclexim}
+            // setfclexim={setfclexim}
+            exim={exim}
+            setexim={setexim}
             // fclinputFields={fclinputFields}
             // setfclInputFields={ setfclInputFields}
             // fclsaveddatas={fclsaveddatas}
