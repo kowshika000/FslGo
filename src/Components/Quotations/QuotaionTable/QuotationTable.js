@@ -32,6 +32,7 @@ const QuotationTable = ({
   currentPage,
   setCurrentPage,
   selectedDropdownItem,
+  setHighlightShipmentCard,
   // setSelectedDropdownItem,
 }) => {
   const navigate = useNavigate();
@@ -252,43 +253,6 @@ const QuotationTable = ({
       </>
     );
   };
-  // const inputdata = {
-  //   freight_mode: "S",
-  //   lcl_fcl_air: "LCL",
-  //   import_export: "I",
-  //   package_type: "BOX",
-  //   no_of_units: "10",
-  //   total_volume: "2",
-  //   total_weight: "222",
-  //   lcl_dimensions: [
-  //     {
-  //       length: 0,
-  //       width: 0,
-  //       height: 0,
-  //       type: "KG",
-  //     },
-  //   ],
-  //   fcl_dimensions: [
-  //     {
-  //       container_type: "",
-  //       no_of_containers: 0,
-  //     },
-  //   ],
-  //   volume_type: "KG",
-  //   weight_type: "CBM",
-  //   origin: "CNNGB",
-  //   destination: "AEJEA",
-  //   origin_country_code: "CN",
-  //   dest_country_code: "AE",
-  //   TOS: "FOB",
-  //   is_pickup_req: "",
-  //   pickup_place: "",
-  //   is_hazardous: "",
-  //   is_stackable: "",
-  //   is_insurance: "",
-  //   UID: "15085",
-  // };
-
   const actionBodyTemplate = (rowData) => {
     let buttonLabel;
     let btnClass;
@@ -333,8 +297,7 @@ const QuotationTable = ({
       } else if (rowData.status === "Active") {
         navigate("/quick");
       } else if (rowData.status === "Expired") {
-        navigate("/findnewrate");
-        // dispatch(FindNewRateRequest({inputdata}));
+        setHighlightShipmentCard(true)
       }
     };
     return (
