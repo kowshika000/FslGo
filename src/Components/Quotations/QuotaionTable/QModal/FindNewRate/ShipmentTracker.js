@@ -23,6 +23,7 @@ function ShipmentTracker({
   selectedValue,
   checkedItems,
   selectedDeliveryValue,
+  setShowReselt
 }) {
   const [showAllData, setShowAllData] = useState(false);
   const [showCharges, setShowCharges] = useState(null);
@@ -58,10 +59,27 @@ function ShipmentTracker({
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          height: "100vh",
+          height: "500px",
+          flexDirection: "column",
         }}
       >
-        <CircularProgress style={{ color: "red" }} />
+        <div
+          className="text-center"
+          style={{ fontWeight: "bold", fontSize: "16px" }}
+        >
+          Kindly hold for a moment as we search for the most competitive
+          <br />
+          shipping rates tailored to your needs.
+        </div>
+        <div
+          className="mt-4 d-flex flex-direction-row "
+          style={{ fontWeight: "bold", fontSize: "16px" }}
+        >
+          Powered by &nbsp;&nbsp; <div className="h5 text-danger">FSL GO</div>,
+          your trusted logistics partner.
+        </div>
+
+        <CircularProgress style={{ color: "red" }} className="mt-4" />
       </Box>
     );
   }
@@ -69,7 +87,7 @@ function ShipmentTracker({
   const renderSelectedValue = () => {
     if (!checkedItems.cargoPickup) return "Cargo Pickup";
 
-    if (selectedValue.length > 10) {
+    if (selectedValue?.length > 10) {
       return (
         <Tooltip placement="topLeft" title={selectedValue}>
           <span>{selectedValue.substring(0, 10) + "..."}</span>
@@ -82,7 +100,7 @@ function ShipmentTracker({
   const renderSelectedValue1 = () => {
     if (!checkedItems.CargoDelivery) return "Cargo Pickup";
 
-    if (selectedDeliveryValue.length > 10) {
+    if (selectedDeliveryValue?.length > 10) {
       return (
         <Tooltip placement="topLeft" title={selectedDeliveryValue}>
           <span>{selectedDeliveryValue.substring(0, 10) + "..."}</span>
@@ -132,7 +150,7 @@ function ShipmentTracker({
         </div>
       </Card>
       {findRate?.statusmessage === "information not available" ? (
-        <QuoteRequest />
+        <QuoteRequest setShowReselt={setShowReselt}/>
       ) : (
         <>
           {displayedData?.map(
