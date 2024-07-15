@@ -8,14 +8,13 @@ import fcl from "../../../assets/661303_cargo_container_delivery_lift_logistic_i
 import Fcl from "./FCL/Fcl";
 import { useDispatch, useSelector } from "react-redux";
 import { containerpackRequest } from "../../../Redux/Actions/ContainerPackAction";
-import { ShowChart } from "@mui/icons-material";
 
 export default function CargoDetails({
   onClose,
   eximchange,
   setCargo,
   setCargoOptionsVisible,
-  settserrmsg,
+  seterrmsg,
   tsDatas,
   settsDatas,
   errors,
@@ -27,65 +26,70 @@ export default function CargoDetails({
   utexim,
   setutexim,
   setshowcargo,
-  inputFields,
-  setInputFields,
-  saveddatas,
-  setsaveddatas,
-  editeddata,
-  setediteddata,
-  editedId,
-  seteditedId,
-  uterrors,
-  setuterrors,
-  utediterrors,
-  setutediterrors,
+  // inputFields,
+  // setInputFields,
+  // saveddatas,
+  // setsaveddatas,
+  // editeddata,
+  // setediteddata,
+  // editedId,
+  // seteditedId,
+  // uterrors,
+  // setuterrors,
+  // utediterrors,
+  // setutediterrors,
   utDatas,
   setutDatas,
-  fclinputFields,
-  setfclInputFields,
-  fclsaveddatas,
-  setfclsaveddatas,
-  fclediteddata,
-  setfclediteddata,
-  fcleditedId,
-  setfcleditedId,
+  utclickedId,
+  setutclickedId,
+  // fclinputFields,
+  // setfclInputFields,
+  // fclsaveddatas,
+  // setfclsaveddatas,
+  // fclediteddata,
+  // setfclediteddata,
+  // fcleditedId,
+  // setfcleditedId,
   fclDatas,
   setfclDatas,
-  fclerrors,
-  setfclerrors,
-  fclediterrors,
-  setfclediterrors,
+  setclickedId,
+  clickedId,
+  // fclerrors,
+  // setfclerrors,
+  // fclediterrors,
+  // setfclediterrors,
   cargo,
-  showcargo
+  showcargo,
+  setlastsaved,
+  lastsaved,
+  activeIndex,
+  setactiveIndex,
+  isByTotalShipmentOpen,
+  setIsByTotalShipmentOpen,
+  isByUnitTypeOpen,
+  setIsByUnitTypeOpen
 }) {
-  const [isByTotalShipmentOpen, setIsByTotalShipmentOpen] = useState(true);
+  
   const hasPageBeenRendered = useRef(false);
-  const [isByUnitTypeOpen, setIsByUnitTypeOpen] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const dispatch = useDispatch()
   const containerPack = useSelector((state) => state?.ContainerPack?.cpack);
   console.log(containerPack)
   const container_types = containerPack?.container_type
   const packages = containerPack?.package
-  const [lastsavedfcl, setlastsavedfcl] = useState(false)
-  console.log("lastsaved",lastsavedfcl)
-  console.log(cargo)
-  const tos = cargo.substring(0,3)
-  console.log(tos)
+  // const [lastsavedfcl, setlastsavedfcl] = useState(false)
+  // console.log("lastsaved",lastsavedfcl)
+  // console.log(cargo)
+  // const tos = cargo.substring(0,3)
+  // console.log(tos)
+  
 
   
 
-  // useEffect(() => {
-  //   if(showcargo){
-  //     if(tos === "LCL")
-  //     console.log("FCL")
-  //     setIsByUnitTypeOpen(true);
-  //     setIsByTotalShipmentOpen(false);
-  //   }
-  // }, [tos,showcargo])
-
-
   
+
+
+  console.log(lastsaved)
   
 
 
@@ -100,12 +104,13 @@ export default function CargoDetails({
   const toggleByTotalShipment = () => {
     setIsByTotalShipmentOpen(true);
     setIsByUnitTypeOpen(false);
+    // setshowcargo("")
   };
 
   const toggleByUnitType = () => {
     setIsByUnitTypeOpen(true);
     setIsByTotalShipmentOpen(false);
-    setCargo("")
+    // setshowcargo("")
   };
 
   useEffect(() => {
@@ -117,6 +122,11 @@ export default function CargoDetails({
     <div className="cargo_details_section">
       {/* <div className="card w-100 d-flex " style={{ padding: "20px" }}> */}
       <TabView
+      activeIndex={activeIndex}
+      onTabChange={(e) => {
+        setactiveIndex(e.index)
+        setCargo("")
+      }}
         sx={{
           display: "flex",
           justifyContent: "space-between",
@@ -158,7 +168,7 @@ export default function CargoDetails({
               setCargo={setCargo}
               eximchange={eximchange}
               setCargoOptionsVisible={setCargoOptionsVisible}
-              settserrmsg={settserrmsg}
+              seterrmsg={seterrmsg}
               tsDatas={tsDatas}
               settsDatas={settsDatas}
               errors={errors}
@@ -167,7 +177,7 @@ export default function CargoDetails({
               settsexim={settsexim}
               setshowcargo={setshowcargo}
               packages={packages}
-              // setlastsaved={setlastsaved}
+              setlastsaved={setlastsaved}
             />
           )}
 
@@ -178,26 +188,28 @@ export default function CargoDetails({
               setCargo={setCargo}
               eximchange={eximchange}
               setCargoOptionsVisible={setCargoOptionsVisible}
-              settserrmsg={settserrmsg}
+              seterrmsg={seterrmsg}
               utexim={utexim}
               setutexim={setutexim}
-              inputFields={inputFields}
-              setInputFields={setInputFields}
-              saveddatas={saveddatas}
-              setsaveddatas={setsaveddatas}
-              editeddata={editeddata}
-              setediteddata={setediteddata}
-              editedId={editedId}
-              seteditedId={seteditedId}
-              uterrors={uterrors}
-              setuterrors={setuterrors}
-              utediterrors={utediterrors}
-              setutediterrors={setutediterrors}
+              // inputFields={inputFields}
+              // setInputFields={setInputFields}
+              // saveddatas={saveddatas}
+              // setsaveddatas={setsaveddatas}
+              // editeddata={editeddata}
+              // setediteddata={setediteddata}
+              // editedId={editedId}
+              // seteditedId={seteditedId}
+              // uterrors={uterrors}
+              // setuterrors={setuterrors}
+              // utediterrors={utediterrors}
+              // setutediterrors={setutediterrors}
               utDatas={utDatas}
               setutDatas={setutDatas}
+              setutclickedId={setutclickedId}
+              utclickedId={utclickedId}
               setshowcargo={setshowcargo}
               packages={packages}
-              // setlastsaved={setlastsaved}
+              setlastsaved={setlastsaved}
             />
           )}
         </TabPanel>
@@ -211,32 +223,35 @@ export default function CargoDetails({
             <img src={fcl} alt="fcl" className="me-2" />
           }
           style={{ fontSize: "25px", width: "100%" }}
+          
         >
           <Fcl
             onClose={onClose}
             eximchange={eximchange}
             setCargo={setCargo}
             setCargoOptionsVisible={setCargoOptionsVisible}
-            settserrmsg={settserrmsg}
+            seterrmsg={seterrmsg}
             fclexim={fclexim}
             setfclexim={setfclexim}
-            fclinputFields={fclinputFields}
-            setfclInputFields={ setfclInputFields}
-            fclsaveddatas={fclsaveddatas}
-            setfclsaveddatas={setfclsaveddatas}
-            fclediteddata={fclediteddata}
-            setfclediteddata={setfclediteddata}
-            fcleditedId={fcleditedId}
-            setfcleditedId={setfcleditedId}
+            // fclinputFields={fclinputFields}
+            // setfclInputFields={ setfclInputFields}
+            // fclsaveddatas={fclsaveddatas}
+            // setfclsaveddatas={setfclsaveddatas}
+            // fclediteddata={fclediteddata}
+            // setfclediteddata={setfclediteddata}
+            // fcleditedId={fcleditedId}
+            // setfcleditedId={setfcleditedId}
             fclDatas={fclDatas}
             setfclDatas={ setfclDatas}
-            fclerrors={fclerrors}
-            setfclerrors={setfclerrors}
-            fclediterrors={fclediterrors}
-            setfclediterrors={setfclediterrors}
+            clickedId={clickedId}
+            setclickedId={setclickedId}
+            // fclerrors={fclerrors}
+            // setfclerrors={setfclerrors}
+            // fclediterrors={fclediterrors}
+            // setfclediterrors={setfclediterrors}
             setshowcargo={setshowcargo}
             container_types={container_types}
-            setlastsavedfcl={setlastsavedfcl}
+            // setlastsaved={setlastsaved}
           />
         </TabPanel>
       </TabView>

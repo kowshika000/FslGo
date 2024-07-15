@@ -26,7 +26,7 @@ const TotalShipment = ({
   eximchange,
   setCargo,
   setCargoOptionsVisible,
-  settserrmsg,
+  seterrmsg,
   tsDatas,
   settsDatas,
   errors,
@@ -34,7 +34,8 @@ const TotalShipment = ({
   tsexim,
   settsexim,
   setshowcargo,
-  packages
+  packages,
+  setlastsaved
 }) => {
   console.log(eximchange);
   // const [tsexim, settsexim] = useState("E");
@@ -233,22 +234,23 @@ useEffect(() => {
       setshowcargo(true)
       setCargo(values);
       setCargoOptionsVisible(false);
-      settserrmsg("");
+      seterrmsg("")
+      setlastsaved("LCLTOTAL")
     } else {
       setCargo("");
       console.log("error");
       if (!canAdd) {
         console.log("err");
-        settserrmsg("Please add proper values for load");
+        seterrmsg("Please add proper values for load");
       } else if (errors.no_of_units) {
         console.log("units");
-        settserrmsg("Please add proper units for load");
+        seterrmsg("Please add proper units for load");
       } else if (errors.total_volume) {
-        settserrmsg("Please add proper volume for load");
+        seterrmsg("Please add proper volume for load");
       } else if (errors.total_weight) {
-        settserrmsg("Please add proper weight for load");
+        seterrmsg("Please add proper weight for load");
       } else {
-        settserrmsg("");
+        seterrmsg("");
       }
     }
   };
@@ -875,7 +877,7 @@ useEffect(() => {
             >
               {
                 packages?.map((item,index)=>{
-                  return <MenuItem value="BOX">{item?.label}</MenuItem>
+                  return <MenuItem value={item.code}>{item?.label}</MenuItem>
                 })
               }
               
@@ -1059,7 +1061,7 @@ useEffect(() => {
           <FormHelperText style={{ color: "red", fontStyle: "italic" }}>
             {errors.total_volume &&
               tsDatas.total_volume > 15 &&
-              "Maximum 15CBM"}
+              `Maximum 15${tsDatas?.volume_type}`}
           </FormHelperText>
         </div>
         <div className="w-50 mb-3 ms-3 me-0">
@@ -1147,9 +1149,9 @@ useEffect(() => {
           <FormHelperText style={{ color: "red", fontStyle: "italic" }}>
             {errors.total_weight &&
               (tsDatas.total_weight > 15000
-                ? "Maximum 15000KG"
+                ? `Maximum 15000${tsDatas?.weight_type}`
                 : tsDatas.total_weight < 10
-                ? "Min 10KG"
+                ? `Min 10${tsDatas?.weight_type}`
                 : null)}
           </FormHelperText>
         </div>
