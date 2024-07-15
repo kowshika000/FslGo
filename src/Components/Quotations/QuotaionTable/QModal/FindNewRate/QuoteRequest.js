@@ -129,7 +129,7 @@ import Avatar from "../../../../../assets/Avatar.png";
 import RightArrow from "../../../../../assets/rightarrow.png";
 import QuoteRequestModal from "./QuoteRequestModal";
 
-function QuoteRequest() {
+function QuoteRequest({ setShowReselt }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
@@ -195,17 +195,17 @@ function QuoteRequest() {
                   src={RightArrow}
                   alt="arrow"
                   className="me-1"
-                  style={{ width: "18px", height: "18px", cursor: "pointer" }}
+                  style={{ width: "18px", height: "18px", cursor: "pointer",color:"#03b2cb" }}
                 />
               </div>
-              <div>
+              <div onClick={() => setShowReselt(false)}>
                 <span
                   style={{
                     fontSize: "14px",
                     fontWeight: "400",
                     lineHeight: "24px",
                     letterSpacing: "1%",
-                    color: "#000000",
+                    color: "#03b2cb",
                     cursor: "pointer",
                   }}
                 >
@@ -217,7 +217,11 @@ function QuoteRequest() {
         </Row>
       </Card>
       {showModal && (
-        <QuoteRequestModal showModal={isModalOpen} onCancel={handleCancel} />
+        <QuoteRequestModal
+          showModal={isModalOpen}
+          onCancel={handleCancel}
+          setShowReselt={setShowReselt}
+        />
       )}
     </>
   );

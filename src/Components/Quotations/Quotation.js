@@ -97,6 +97,7 @@ const Quotation = ({
               checkedItems={checkedItems}
               setCheckedItems={setCheckedItems}
               showHeader={showHeader}
+              setShowReselt={setShowReselt}
             />
           ) : (
             <QuotationTabs />

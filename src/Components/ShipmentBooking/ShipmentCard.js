@@ -92,7 +92,7 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
   const inputdata = {
     freight_mode: "S",
     lcl_fcl_air: "LCL",
-    import_export: "I",
+    import_export: "I" ,
     package_type: "BOX",
     no_of_units: "1",
     total_volume: "5",
@@ -113,9 +113,10 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
     ],
     volume_type: "C",
     weight_type: "CBM",
-    origin: "DEACH",
+    // origin: "DEACH",
+    origin: "INNSA",
     destination: "AEJEA",
-    origin_country_code: "DE",
+    origin_country_code: "IN",
     dest_country_code: "AE",
     TOS: tosValue,
     is_pickup_req: checkedItems.cargoPickup ? "Y" : "N",
@@ -160,7 +161,7 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
   };
   useEffect(() => {
     dispatch(FindNewRateRequest({ inputdata }));
-  }, [handleSearch, selectedCurrency, checkedItems]);
+  }, [selectedCurrency, checkedItems]);
   return (
     <div style={{ maxWidth: "1255px" }} className="mx-auto">
       <div

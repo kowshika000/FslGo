@@ -202,3 +202,26 @@
   justify-content: center !important;
   padding: 20px;
 }
+.ant-modal-close {
+  color: white !important;
+}
+.quote-request .ant-modal-content {
+  top: 0 !important;
+}
+
+.booking-modal-header {
+  font-family: var(--tertiary-font) !important;
+}
+.request-modal {
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 34px;
+  letter-spacing: 0.24px;
+}
+.request-modal-p {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0.14px;
+}
