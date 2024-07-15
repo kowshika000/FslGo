@@ -18,13 +18,15 @@ const Quotation = ({
     exportClearance: false,
     cargoPickup: false,
     internationalFreight: false,
-    DestinationCharges: true,
+    DestinationCharges: false,
     ImportClearance: false,
     CargoDelivery: false,
     CargoInsurance: false,
     StackableCargo: true,
     NonHarzardousCargo: true,
   });
+  const [exim, setexim] = useState("I");
+  const [highlightShipmentCard, setHighlightShipmentCard] = useState(false);
   const handleScroll = () => {
     if (showReselt) {
       const scrollTop = window.scrollY;
@@ -38,6 +40,10 @@ const Quotation = ({
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [showReselt]);
+
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, [highlightShipmentCard]);
 
   return (
     <div
@@ -66,15 +72,19 @@ const Quotation = ({
           <div
             className={`col-lg px-0 py-1  ${
               !showHeader ? "fixed-shipment-card" : ""
-            } `}
+            }
+           ${highlightShipmentCard ? "dimmed-background1" : ""}
+             `}
           >
             <ShipmentCard
               setShowReselt={setShowReselt}
               selectedCurrency={selectedCurrency}
               showHeader={showHeader}
-              // setShowHeader={setShowHeader}
-              // showReselt={showReselt}
+              setHighlightShipmentCard={setHighlightShipmentCard}
               checkedItems={checkedItems}
+              setCheckedItems={setCheckedItems}
+              exim={exim}
+              setexim={setexim}
             />
           </div>
         </div>
@@ -89,7 +99,7 @@ const Quotation = ({
         }}
       >
         <div style={{ maxWidth: "1255px" }} className="mx-auto">
-          {showHeader ? "" : <div style={{ marginTop: "4.5rem" }}></div>}
+          {showHeader ? "" : <div style={{ marginTop: "4rem" }}></div>}
           {showReselt ? (
             <FindNewRate
               selectedCurrency={selectedCurrency}
@@ -98,9 +108,12 @@ const Quotation = ({
               setCheckedItems={setCheckedItems}
               showHeader={showHeader}
               setShowReselt={setShowReselt}
+              exim={exim}
             />
           ) : (
-            <QuotationTabs />
+            <div className={`${highlightShipmentCard ? "marginTop" : ""}`}>
+            <QuotationTabs  setHighlightShipmentCard={setHighlightShipmentCard}/>
+            </div>
           )}
         </div>
       </div>

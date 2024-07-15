@@ -15,7 +15,14 @@ import Arrow from "../../assets/arrow.png";
 import { useDispatch } from "react-redux";
 import { FindNewRateRequest } from "../../Redux/Actions/FindNewRateAction";
 
-const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
+const ShipmentCard = ({
+  setShowReselt,
+  selectedCurrency,
+  checkedItems,
+  setCheckedItems,
+  setexim,
+  exim,
+}) => {
   const dispatch = useDispatch();
   const [destination] = useState("");
   // const [isCargoOpen, setIsCargoOpen] = useState(false);
@@ -33,12 +40,11 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
   const [searchDestCode, setSearchDestCode] = useState("");
   const [finalDetails,setFinaldetails] = useState("")
   const [mode, setmode] = useState("")
-  console.log(originPort)
-  
   const [exim, setexim] = useState("I");
   const [deserrormsg, setdeserrormsg] = useState(null)
   const [orgerrormsg, setorgerrormsg] = useState(null)
   const [tserrmsg, seterrmsg] = useState("");
+
 
   useEffect(() => {
     if (destination && cargoRef.current) {
@@ -56,49 +62,51 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
   // const [error, seterror] = useState();
 
   let tosValue = "";
- if (
-  checkedItems.DestinationCharges &&
-  checkedItems.originCharges &&
-  checkedItems.cargoPickup &&
-  checkedItems.CargoDelivery
-) {
-  tosValue = "EXW";
-} else if (
-  checkedItems.DestinationCharges &&
-  checkedItems.originCharges &&
-  checkedItems.cargoPickup
-) {
-  tosValue = "EXW";
-} else if (
-  checkedItems.DestinationCharges &&
-  checkedItems.originCharges &&
-  checkedItems.CargoDelivery
-) {
-  tosValue = "FCA";
-} else if (
-  checkedItems.DestinationCharges &&
-  checkedItems.originCharges
-) {
-  tosValue = "FCA";
-} else if (
-  checkedItems.DestinationCharges &&
-  checkedItems.CargoDelivery
-) {
-  tosValue = "FOB";
-} else if (
-  checkedItems.DestinationCharges
-) {
-  tosValue = "FOB";
-}
-
-  console.log(
-    checkedItems.DestinationCharges && checkedItems.originCharges,
-    "checked..."
-  );
+  if (exim === "I") {
+    if (
+      checkedItems.DestinationCharges &&
+      checkedItems.originCharges &&
+      checkedItems.cargoPickup &&
+      checkedItems.CargoDelivery
+    ) {
+      tosValue = "EXW";
+    } else if (
+      checkedItems.DestinationCharges &&
+      checkedItems.originCharges &&
+      checkedItems.cargoPickup
+    ) {
+      tosValue = "EXW";
+    } else if (
+      checkedItems.DestinationCharges &&
+      checkedItems.originCharges &&
+      checkedItems.CargoDelivery
+    ) {
+      tosValue = "FCA";
+    } else if (checkedItems.DestinationCharges && checkedItems.originCharges) {
+      tosValue = "FCA";
+    } else if (checkedItems.DestinationCharges && checkedItems.CargoDelivery) {
+      tosValue = "FOB";
+    } else if (checkedItems.DestinationCharges) {
+      tosValue = "FOB";
+    }
+  } else if (exim === "E") {
+    if (
+      checkedItems.originCharges &&
+      checkedItems.cargoPickup &&
+      checkedItems.CargoDelivery &&
+      checkedItems.DestinationCharges
+    ) {
+      tosValue = "DAP";
+    } else if (checkedItems.originCharges && checkedItems.cargoPickup) {
+      tosValue = "CFR";
+    } else if (checkedItems.originCharges) {
+      tosValue = "CFR";
+    }
+  }
   const inputdata = {
     freight_mode: "S",
     lcl_fcl_air: "LCL",
-    import_export: exim ,
+    import_export: exim,
     package_type: "BOX",
     no_of_units: "1",
     total_volume: "5",
@@ -133,6 +141,7 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
     UID: "15085",
     currency: selectedCurrency,
   };
+
   const handleSearch = () => {
     if(originPort && destPort && finalDetails){
       setShowReselt(true);
@@ -191,20 +200,27 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
       }
     }
   };
-  // useEffect(() => { 
-  //   dispatch(FindNewRateRequest({ inputdata }));
-  // }, [selectedCurrency, checkedItems]);
 
   console.log(searchDestCode)
   console.log(finalDetails)
   console.log(mode)
 
+  useEffect(() => {
+    if (exim === "I") {
+      setCheckedItems({ ...checkedItems, DestinationCharges: true });
+    } else if (exim === "E") {
+      setCheckedItems({ ...checkedItems, originCharges: true });
+    }
+  }, [exim]);
+  useEffect(() => {
+    dispatch(FindNewRateRequest({ inputdata }));
+  }, [selectedCurrency, checkedItems]);
   return (
     <div style={{ maxWidth: "1255px" }} className="mx-auto">
       <div
         className="card shadow"
         style={{
-          minWidth: "1270px",
+          minWidth: "1255px",
           border: "1px solid #E7EAF0",
           borderRadius: "8px",
         }}

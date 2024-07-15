@@ -122,14 +122,15 @@
 // export default QuoteRequest;
 
 import React, { useState } from "react";
-import { Card, Col, Row, Button } from "antd";
+import { Card, Col, Row, Button, Image } from "antd";
 import "./FindNewRate.css";
 import Stripes from "../../../../../assets/Stripes.png";
 import Avatar from "../../../../../assets/Avatar.png";
-import RightArrow from "../../../../../assets/rightarrow.png";
+import RightArrow from "../../../../../assets/rightarrow.svg";
 import QuoteRequestModal from "./QuoteRequestModal";
+import { LeftOutlined } from "@ant-design/icons";
 
-function QuoteRequest({ setShowReselt }) {
+function QuoteRequest({ setShowReselt, checkedItems, setCheckedItems }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
@@ -145,31 +146,130 @@ function QuoteRequest({ setShowReselt }) {
   if (Footer) {
     Footer.remove();
   }
+  const contentPara = () => {
+    if (checkedItems?.StackableCargo === false) {
+      return (
+        <>
+          Apologies for the inconvenience. At present, we are unable to provide
+          instant results for non-stackable cargo. Kindly submit a non-instant
+          quote request, and our dedicated customer service team will promptly
+          review your request, providing you with the applicable non-stackable
+          charges as soon as possible.
+        </>
+      );
+    } else if (checkedItems?.NonHarzardousCargo === false) {
+      return (
+        <>
+          Apologies for the inconvenience. At present, we are unable to provide
+          instant results for hazardous cargo. Kindly submit a non-instant quote
+          request, and our dedicated customer service team will promptly address
+          your inquiry, providing you with the applicable charges for hazardous
+          cargo as soon as possible.
+        </>
+      );
+    } else {
+      return (
+        <>
+          Apologies for the inconvenience. At present, we are unable to provide
+          instant results for this cargo. Kindly submit a non-instant quote
+          request, and our dedicated customer service team will promptly review
+          your request, providing you with the applicable freight charges as
+          soon as possible.
+        </>
+      );
+    }
+  };
+
+  const ButtonLabel = () => {
+    if (checkedItems?.StackableCargo === false) {
+      return <>Add Stackable Cargo charges</>;
+    } else if (checkedItems?.NonHarzardousCargo === false) {
+      return <>Add Harzardous Cargo charges</>;
+    }else if(checkedItems?.exportClearance === true){
+      return <>Remove Export Clearance</>;
+    }else if(checkedItems?.ImportClearance === true){
+      return <>Remove Import Clearance</>;
+    } else {
+      return (
+        <div
+          onClick={() => setShowReselt(false)}
+          className="d-flex flex-direction-row gap-1"
+        >
+          <LeftOutlined
+            style={{
+              width: "13px",
+              height: "13px",
+              marginTop: "8px",
+            }}
+          />
+          <span
+            style={{
+              width: "18px",
+              height: "18px",
+              marginTop: "4px",
+            }}
+          >
+            Go Back
+          </span>
+        </div>
+      );
+    }
+  };
+  const handleClick = () => {
+    setCheckedItems((prevCheckedItems) => {
+      if (prevCheckedItems.StackableCargo === false) {
+        return { ...prevCheckedItems, StackableCargo: true };
+      } else if (prevCheckedItems.NonHarzardousCargo === false) {
+        return { ...prevCheckedItems, NonHarzardousCargo: true };
+      }else if (prevCheckedItems.exportClearance === true) {
+        return { ...prevCheckedItems, exportClearance: false };
+      }else if (prevCheckedItems.ImportClearance === true) {
+        return { ...prevCheckedItems, ImportClearance: false };
+      }
+      return prevCheckedItems;
+    });
+  };
+  const image =
+    checkedItems?.NonHarzardousCargo !== false &&
+    checkedItems?.StackableCargo !== false ? (
+      <Image
+        src={RightArrow}
+        alt="arrow"
+        className="me-3"
+        preview={false}
+        style={{
+          cursor: "pointer",
+          color: "#69b1ff",
+        }}
+      />
+    ) : (
+      ""
+    );
   return (
     <>
-      <Card className="Quote-Card">
-        <Row>
+      <Card className="Quote-Card" style={{ padding: "0px" }}>
+        <Row style={{ rowGap: "40px", padding: "55px 8px" }}>
           <Col span={24}>
             <img src={Stripes} alt="lines" className="img-stripe" />
             <img src={Avatar} alt="Avatar" className="img-avatar" />
           </Col>
-          <Col span={24}>
-            <div className="content">
-              <p className="content-title">Non-Instant Quote request</p>
-              <p className="content-description">
-                Apologies for the inconvenience. At present, we are unable to
-                provide instant results for this cargo. Kindly submit a
-                non-instant quote request, and our dedicated customer service
-                team will promptly review your request, providing you with the
-                applicable freight charges as soon as possible.
-                <br />
-                <span className="mt-2">
-                  Thank you for considering FSL GO for your shipping needs.
-                </span>
-              </p>
-            </div>
+          <Col span={24} className="content" style={{ textAlign: "center" }}>
+            <p className="content-title">Non-Instant Quote request</p>
+            <p
+              className="content-description mb-0"
+              style={{
+                maxWidth: "571px",
+                marginRight: "auto",
+                marginLeft: "auto",
+              }}
+            >
+              {contentPara()}
+            </p>
+            <p className="mb-0" style={{ marginTop: "16px" }}>
+              Thank you for considering FSL GO for your shipping needs.
+            </p>
           </Col>
-          <Col span={24} className="mt-5">
+          <Col span={24}>
             <div
               className="Requestbtn-div"
               style={{
@@ -177,7 +277,6 @@ function QuoteRequest({ setShowReselt }) {
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",
-                marginTop: "20px",
               }}
             >
               <Button
@@ -189,29 +288,60 @@ function QuoteRequest({ setShowReselt }) {
                 Request Non-Instant Quote
               </Button>
             </div>
-            <div className="go-back">
-              <div>
-                <img
-                  src={RightArrow}
-                  alt="arrow"
-                  className="me-1"
-                  style={{ width: "18px", height: "18px", cursor: "pointer",color:"#03b2cb" }}
-                />
-              </div>
-              <div onClick={() => setShowReselt(false)}>
-                <span
-                  style={{
-                    fontSize: "14px",
-                    fontWeight: "400",
-                    lineHeight: "24px",
-                    letterSpacing: "1%",
-                    color: "#03b2cb",
-                    cursor: "pointer",
-                  }}
-                >
-                  Go Back
-                </span>
-              </div>
+            <div
+              className="div-rowcentered"
+              style={{ marginTop: "20px", justifyContent: "center" }}
+            >
+              <Button
+                type="link"
+                // icon={
+                //   checkedItems?.NonHarzardousCargo !== false &&
+                //   checkedItems?.StackableCargo !== false ? (
+                //     <LeftOutlined
+                //       style={{
+                //         width: "13px",
+                //         height: "13px",
+                //         marginTop: "8px",
+                //       }}
+                //     />
+                //   ) : (
+                //     ""
+                //   )
+                // }
+                onClick={handleClick}
+              >
+                {ButtonLabel()}
+              </Button>
+              {/* <div className="go-back">
+                  <div>
+                    <img
+                      src={RightArrow}
+                      alt="arrow"
+                      className="me-1"
+                      style={{
+                        width: "18px",
+                        height: "18px",
+                        cursor: "pointer",
+                        color: "#03b2cb",
+                      }}
+                    />
+                  </div>
+
+                  <div onClick={() => setShowReselt(false)}>
+                    <span
+                      style={{
+                        fontSize: "14px",
+                        fontWeight: "400",
+                        lineHeight: "24px",
+                        letterSpacing: "1%",
+                        color: "#03b2cb",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Go Back
+                    </span>
+                  </div>
+                </div> */}
             </div>
           </Col>
         </Row>

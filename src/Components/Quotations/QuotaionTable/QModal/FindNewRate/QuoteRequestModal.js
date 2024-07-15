@@ -6,8 +6,8 @@ import "./FindNewRate.css";
 function QuoteRequestModal({ showModal, onCancel, setShowReselt }) {
   // const navigate= useNavigate()
   const handleNAv = () => {
-    onCancel();
     setShowReselt(false);
+    // onCancel();
   };
   return (
     <Modal
