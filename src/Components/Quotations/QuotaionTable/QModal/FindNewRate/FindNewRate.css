@@ -546,20 +546,34 @@
 }
 
 .request-btn {
-  margin-top: 40px;
+  background: #d32d2f;
   width: 206px;
-  height: 40px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #d32d2f;
   border-radius: 8px;
-  padding: 8px 16px 0px 16px;
-  background-color: #d32d2f;
-  text-align: center;
   font-size: 14px;
   font-weight: 500;
   line-height: 24px;
   letter-spacing: 1%;
   color: #ffffff;
-  margin-left: auto;
-  margin-right: auto;
+}
+
+.Requestbtn-div .ant-btn.ant-btn-primary:focus {
+  border-radius: 8px;
+  outline: 0;
+  box-shadow: 0 0 0 0 red, 0 0 0 4px #ffc0c0 !important;
+  background-color: #d32d2f;
+}
+.Requestbtn-div .ant-btn.ant-btn-primary:active {
+  border-radius: 8px;
+  background-color: #d32d2f;
+}
+.Requestbtn-div .ant-btn.ant-btn-primary:hover {
+  border-radius: 8px;
+  background-color: #d32d2f;
 }
 
 .go-back {
@@ -620,4 +634,14 @@
   .fixed {
     left: 40px !important;
   }
+}
+
+
+/* modal for bookingRequest */
+
+.ant-modal-content .ant-modal-body{
+  padding: 30px;
+  font-size: 14px;
+  line-height: 1.5714285714285714;
+  word-wrap: break-word;
 }

@@ -19,7 +19,7 @@ function FindNewRateReducer(state = initialState, action) {
         ...state,
         error: null,
         loading: false,
-        booking: action.payload,
+        findRate: action.payload,
       };
     case FIND_NEW_RATE_FAILURE:
       return {

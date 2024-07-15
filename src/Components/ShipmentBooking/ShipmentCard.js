@@ -1,15 +1,15 @@
 import React, { useState, useRef, useEffect } from "react";
-import { Typography } from "@mui/material";
-import { HiOutlineLocationMarker } from "react-icons/hi";
-import { FaArrowRightArrowLeft } from "react-icons/fa6";
-import { IoIosSearch } from "react-icons/io";
-import { RiShipFill } from "react-icons/ri";
+// import { Typography } from "@mui/material";
+// import { HiOutlineLocationMarker } from "react-icons/hi";
+// import { FaArrowRightArrowLeft } from "react-icons/fa6";
+// import { IoIosSearch } from "react-icons/io";
+// import { RiShipFill } from "react-icons/ri";
 import "./ShipmentCard.css";
 import Cargo from "./cargo/Cargo";
 import Origin from "./Origin/Origin";
 import Destination from "./Destination/Destination";
-import { Link } from "react-router-dom";
-import Line from "../../assets/line.png";
+// import { Link } from "react-router-dom";
+// import Line from "../../assets/line.png";
 import { SearchOutlined } from "@ant-design/icons";
 import Arrow from "../../assets/arrow.png";
 import { useDispatch } from "react-redux";
@@ -17,9 +17,9 @@ import { FindNewRateRequest } from "../../Redux/Actions/FindNewRateAction";
 
 const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
   const dispatch = useDispatch();
-  const [destination, setDestination] = useState("");
-  const [isCargoOpen, setIsCargoOpen] = useState(false);
-  const [active, setActive] = useState(false);
+  const [destination] = useState("");
+  // const [isCargoOpen, setIsCargoOpen] = useState(false);
+  // const [active, setActive] = useState(false);
   const cargoRef = useRef(null);
   const [originPortOptionsVisible, setOriginPortOptionsVisible] =
     useState(false);
@@ -29,7 +29,7 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
   const [destPort, setDestPort] = useState(null);
   const [searchOriginPort, setSearchOriginPort] = useState("");
   const [searchDestPort, setSearchDestPort] = useState("");
-  const [eximchange, seteximchange] = useState(false);
+  const [eximchange] = useState(false);
   const [tsexim, settsexim] = useState("I");
   const [utexim, setutexim] = useState("I");
   const [fclexim, setfclexim] = useState("I");
@@ -40,73 +40,59 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
     }
   }, [destination]);
 
-  const handleCargoFocus = () => {
-    setIsCargoOpen(true);
-  };
-  const handleConfirmCargo = () => {
-    setIsCargoOpen(false);
-  };
+  // const handleCargoFocus = () => {
+  //   setIsCargoOpen(true);
+  // };
+  // const handleConfirmCargo = () => {
+  //   setIsCargoOpen(false);
+  // };
 
-  const [error, seterror] = useState();
-  // let tosValue = "";
-  //   if (checkedItems.internationalFreight && checkedItems.DestinationCharges) {
-  //     tosValue = "FOB";
-  //   } else if (
-  //     checkedItems.internationalFreight &&
-  //     checkedItems.DestinationCharges &&
-  //     checkedItems.originCharges
-  //   ) {
-  //     tosValue = "FCA";
-  //   } else if (
-  //     checkedItems.internationalFreight &&
-  //     checkedItems.DestinationCharges &&
-  //     checkedItems.CargoDelivery
-  //   ) {
-  //     tosValue = "FOB";
-  //   } else if (
-  //     checkedItems.internationalFreight &&
-  //     checkedItems.DestinationCharges &&
-  //     checkedItems.originCharges &&
-  //     checkedItems.CargoDelivery
-  //   ) {
-  //     tosValue = "FCA";
-  //   } else if (
-  //     checkedItems.internationalFreight &&
-  //     checkedItems.DestinationCharges &&
-  //     checkedItems.originCharges &&
-  //     checkedItems.cargoPickup
-  //   ) {
-  //     tosValue = "EXW";
-  //   } else if (
-  //     checkedItems.internationalFreight &&
-  //     checkedItems.DestinationCharges &&
-  //     checkedItems.originCharges &&
-  //     checkedItems.cargoPickup &&
-  //     checkedItems.CargoDelivery
-  //   ) {
-  //     tosValue = "EXW";
-  //   }
+  // const [error, seterror] = useState();
+
   let tosValue = "";
+ if (
+  checkedItems.DestinationCharges &&
+  checkedItems.originCharges &&
+  checkedItems.cargoPickup &&
+  checkedItems.CargoDelivery
+) {
+  tosValue = "EXW";
+} else if (
+  checkedItems.DestinationCharges &&
+  checkedItems.originCharges &&
+  checkedItems.cargoPickup
+) {
+  tosValue = "EXW";
+} else if (
+  checkedItems.DestinationCharges &&
+  checkedItems.originCharges &&
+  checkedItems.CargoDelivery
+) {
+  tosValue = "FCA";
+} else if (
+  checkedItems.DestinationCharges &&
+  checkedItems.originCharges
+) {
+  tosValue = "FCA";
+} else if (
+  checkedItems.DestinationCharges &&
+  checkedItems.CargoDelivery
+) {
+  tosValue = "FOB";
+} else if (
+  checkedItems.DestinationCharges
+) {
+  tosValue = "FOB";
+}
 
-  if (checkedItems.internationalFreight && checkedItems.DestinationCharges) {
-    if (
-      checkedItems.originCharges &&
-      checkedItems.cargoPickup &&
-      checkedItems.CargoDelivery
-    ) {
-      tosValue = "FCA";
-    } else if (checkedItems.originCharges && checkedItems.cargoPickup) {
-      tosValue = "EXW";
-    } else {
-      tosValue = "FOB";
-    }
-  } else {
-    tosValue = ""; 
-  }
+  console.log(
+    checkedItems.DestinationCharges && checkedItems.originCharges,
+    "checked..."
+  );
   const inputdata = {
     freight_mode: "S",
     lcl_fcl_air: "LCL",
-    import_export: "I",
+    import_export: "I" ,
     package_type: "BOX",
     no_of_units: "1",
     total_volume: "5",
@@ -127,11 +113,12 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
     ],
     volume_type: "C",
     weight_type: "CBM",
+    // origin: "DEACH",
     origin: "INNSA",
     destination: "AEJEA",
     origin_country_code: "IN",
     dest_country_code: "AE",
-    TOS: checkedItems.originCharges ? "FCA" : "FOB",
+    TOS: tosValue,
     is_pickup_req: checkedItems.cargoPickup ? "Y" : "N",
     pickup_place: "N",
     is_hazardous: checkedItems.NonHarzardousCargo ? "N" : "Y",
@@ -174,7 +161,7 @@ const ShipmentCard = ({ setShowReselt, selectedCurrency, checkedItems }) => {
   };
   useEffect(() => {
     dispatch(FindNewRateRequest({ inputdata }));
-  }, [handleSearch, selectedCurrency, checkedItems]);
+  }, [selectedCurrency, checkedItems]);
   return (
     <div style={{ maxWidth: "1255px" }} className="mx-auto">
       <div
