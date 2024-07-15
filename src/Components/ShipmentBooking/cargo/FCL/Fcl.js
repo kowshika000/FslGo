@@ -28,6 +28,7 @@ const Fcl = ({
   setCargo,
   setCargoOptionsVisible,
   seterrmsg,
+  setmode,
   // fclexim,
   // setfclexim,
   // fclinputFields,
@@ -49,12 +50,14 @@ const Fcl = ({
   setshowcargo,
   container_types,
   setlastsaved,
+  setFinaldetails
 }) => {
   console.log(container_types);
   const [disabled, setDisabled] = useState(false);
   const [errors, setErrors] = useState({});
   const [hasErrors, setHasErrors] = useState(false);
   console.log(disabled);
+  const hasPageBeenRendered = useRef(false)
   // Define a mapping for container type abbreviations
   const containerTypeMap = {
     '20 GENERAL PURPOSE': '20 GP',
@@ -251,7 +254,7 @@ const Fcl = ({
     }, {});
 
     // Convert the map to a formatted string
-    return Object.entries(aggregateMap)
+    return "FCL | " + Object.entries(aggregateMap)
       .map(([type, qty]) => `${type} X ${qty} `)
       .join(', ');
   };
@@ -262,6 +265,8 @@ const Fcl = ({
       if(!hasErrors){
         console.log("success")
         setCargo(()=>aggregateData())
+        setFinaldetails(()=>aggregateData())
+        setmode("FCL")
         setshowcargo(true)
         setCargoOptionsVisible(false)
 
@@ -269,8 +274,11 @@ const Fcl = ({
   }
 
   useEffect(() => {
+    if(hasPageBeenRendered.current){
     setCargo(()=>aggregateData())
         setshowcargo(true)
+    }
+        hasPageBeenRendered.current = true;
   }, [aggregateData])
   
 
@@ -489,7 +497,8 @@ const Fcl = ({
                         backgroundColor: "transparent",
                         boxShadow: "unset",
                         border: "none",
-                        opacity: "1",
+                        opacity: !(fclDatas[fclDatas.length - 1].containerType && fclDatas[fclDatas.length - 1].quantity || index !==fclDatas.length - 1 ) || (hasErrors && !!errors[index]?.containerType || !!errors[index]?.quantity)?".5":"1",
+                        color:"#1677FF"
                       }}
                       onClick={() => handleSave(index)}
                       disabled={!(fclDatas[fclDatas.length - 1].containerType && fclDatas[fclDatas.length - 1].quantity || index !==fclDatas.length - 1 ) || (hasErrors && !!errors[index]?.containerType || !!errors[index]?.quantity)}
@@ -530,7 +539,7 @@ const Fcl = ({
                       color: "rgba(41, 51, 61, 1)",
                     }}
                   >
-                    : {item.units} X {item.containerType}
+                    : {item.quantity} X {item.containerType}
                   </span>
                 </div>
                 <div>
@@ -581,7 +590,7 @@ const Fcl = ({
                 fontSize: "13px",
                 lineHeight: "19px",
                 letterSpacing: ".01em",
-                color: "rgba(73, 90, 110, 1)",
+                color: "#1677FF",
                 textTransform: "capitalize",
               }}
             >

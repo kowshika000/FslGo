@@ -27,6 +27,10 @@ const Cargo = ({
   cargoOptionsVisible,
   exim,
   setexim,
+  setFinaldetails,
+  setmode,
+  tserrmsg, 
+  seterrmsg,
   // fclexim,
   // setfclexim,
   // utexim,
@@ -77,44 +81,6 @@ const Cargo = ({
 
   //This is for Unit Shipment
 
-  const [inputFields, setInputFields] = useState([{}] );
-  const [saveddatas, setsaveddatas] = useState([]);
-  console.log(saveddatas);
-  const [editeddata, setediteddata] = useState({});
-  const [editedId, seteditedId] = useState("");
-
-  const [uterrors, setuterrors] = useState({
-      units: false,
-      lengths: false,
-      width: false,
-      height: false,
-      weight: false,
-    }
-  );
-  console.log(uterrors);
-  const [utediterrors, setutediterrors] = useState({
-    units: false,
-    lengths: false,
-    width: false,
-    height: false,
-    weight: false,
-  });
-  console.log(uterrors);
-
-  // const [utDatas, setutDatas] = useState({
-  //     package_type: "BOX",
-  //     units: "",
-  //     height: "",
-  //     lengths: "",
-  //     width: "",
-  //     dimensionUnit: "CM",
-  //     weight: "",
-  //     weightUnit: "KG",
-  //     mode:"UT"
-  //   }
-  // );
-  console.log(saveddatas)
-
   const [utDatas, setutDatas] = useState([
     {
       package_type: "BOX",
@@ -159,12 +125,16 @@ const Cargo = ({
 
   //This is for error
 
-  const [tserrmsg, seterrmsg] = useState("");
+  
   const handleClose = () => {
     setCargoOptionsVisible(false);
+    setFinaldetails("")
     setCargo("");
+    setmode("")
     setlastsaved("LCLTOTAL")
   };
+
+  console.log(lastsaved)
 
   // useEffect(() => {
   //   dispatch(containerpackRequest())
@@ -172,14 +142,14 @@ const Cargo = ({
   // }, [])
 
   useEffect(() => {
-    if(lastsaved === 'LCLUNIT'){
-      setIsByUnitTypeOpen(true);
-      setIsByTotalShipmentOpen(false);
-      setactiveIndex(0)
-    }
-    else if(lastsaved === 'LCLTOTAL'){
+    if(lastsaved === 'LCLTOTAL'){
       setIsByUnitTypeOpen(false);
       setIsByTotalShipmentOpen(true);
+      setactiveIndex(0)
+    }
+    else if(lastsaved === 'LCLUNIT'){
+      setIsByUnitTypeOpen(true);
+      setIsByTotalShipmentOpen(false);
       setactiveIndex(0)
     }
     else if(lastsaved === 'FCL'){
@@ -259,6 +229,8 @@ const Cargo = ({
                 settsDatas={settsDatas}
                 exim={exim}
                 setexim={setexim}
+                setFinaldetails={setFinaldetails}
+                setmode={setmode}
                 // utexim={utexim}
                 // setutexim={setutexim}
                 // fclexim={fclexim}
