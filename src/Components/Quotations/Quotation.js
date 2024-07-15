@@ -18,13 +18,14 @@ const Quotation = ({
     exportClearance: false,
     cargoPickup: false,
     internationalFreight: false,
-    DestinationCharges: true,
+    DestinationCharges: false,
     ImportClearance: false,
     CargoDelivery: false,
     CargoInsurance: false,
     StackableCargo: true,
     NonHarzardousCargo: true,
   });
+  const [exim, setexim] = useState("E");
   // if ((checkedItems.cargoPickup = true)) {
   //   checkedItems.originCharges = true;
   // } else if ((checkedItems.cargoPickup = false)) {
@@ -80,6 +81,9 @@ const Quotation = ({
               // setShowHeader={setShowHeader}
               // showReselt={showReselt}
               checkedItems={checkedItems}
+              setCheckedItems={setCheckedItems}
+              exim={exim}
+              setexim={setexim}
             />
           </div>
         </div>
@@ -103,6 +107,7 @@ const Quotation = ({
               setCheckedItems={setCheckedItems}
               showHeader={showHeader}
               setShowReselt={setShowReselt}
+              exim={exim}
             />
           ) : (
             <QuotationTabs />

@@ -24,6 +24,7 @@ function ShipmentTracker({
   checkedItems,
   selectedDeliveryValue,
   setShowReselt,
+  exim,
 }) {
   const [showAllData, setShowAllData] = useState(false);
   const [showCharges, setShowCharges] = useState(null);
@@ -150,8 +151,12 @@ function ShipmentTracker({
         </div>
       </Card>
       {findRate?.statusmessage === "information not available" ||
-      checkedItems.DestinationCharges === false ? (
-        <QuoteRequest setShowReselt={setShowReselt} />
+      (exim === "I" && checkedItems?.DestinationCharges === false) ||
+      (exim === "E" && checkedItems?.originCharges === false) ? (
+        <QuoteRequest
+          setShowReselt={setShowReselt}
+          checkedItems={checkedItems}
+        />
       ) : (
         <>
           {displayedData?.map(

@@ -20,6 +20,7 @@ function FindNewRate({
   setCheckedItems,
   showHeader,
   setShowReselt,
+  exim,
 }) {
   const [isPopoverOpen, setPopoverOpen] = useState(false);
   const [isDeliveryPopoverOpen, setDeliveryPopoverOpen] = useState(false);
@@ -479,6 +480,7 @@ function FindNewRate({
           selectedValue={selectedValue}
           checkedItems={checkedItems}
           setShowReselt={setShowReselt}
+          exim={exim}
         />
       </div>
     </div>
