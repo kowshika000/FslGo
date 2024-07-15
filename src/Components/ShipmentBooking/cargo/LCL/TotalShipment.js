@@ -23,7 +23,6 @@ import editicon from "../../../../assets/editpencil.f11da97f.svg";
 
 const TotalShipment = ({
   onClose,
-  eximchange,
   setCargo,
   setCargoOptionsVisible,
   seterrmsg,
@@ -31,19 +30,15 @@ const TotalShipment = ({
   settsDatas,
   errors,
   seterrors,
-  tsexim,
-  settsexim,
+  exim,
+  setexim,
   setshowcargo,
   packages,
   setlastsaved
 }) => {
-  console.log(eximchange);
-  // const [tsexim, settsexim] = useState("E");
-  // useEffect(() => {
-  //   settsexim((prev) => (prev === "I" ? "E" : "I"));
-  // }, [eximchange]);
 
-  console.log(tsexim);
+
+  console.log(exim);
 
   const [change, setchange] = useState(false)
 
@@ -1221,7 +1216,7 @@ useEffect(() => {
             row
             aria-labelledby="demo-row-radio-buttons-group-label"
             name="row-radio-buttons-group"
-            value={tsexim}
+            value={exim}
           >
             <FormControlLabel
               value="I"
@@ -1236,7 +1231,7 @@ useEffect(() => {
                 <Radio
                   name="import_export"
                   value="I"
-                  onChange={(e) => settsexim(e.target.value)}
+                  onChange={(e) => setexim(e.target.value)}
                   size="small"
                   label="Import"
                   sx={{
@@ -1263,7 +1258,7 @@ useEffect(() => {
                 <Radio
                   name="import_export"
                   value="E"
-                  onChange={(e) => settsexim(e.target.value)}
+                  onChange={(e) => setexim(e.target.value)}
                   size="small"
                   label="Export"
                   sx={{

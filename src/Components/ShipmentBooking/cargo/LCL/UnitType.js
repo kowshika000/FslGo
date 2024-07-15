@@ -20,12 +20,13 @@ import e from "cors";
 
 const UnitType = ({
   onClose,
-  eximchange,
   setCargo,
   setCargoOptionsVisible,
   seterrmsg,
-  utexim,
-  setutexim,
+  // utexim,
+  // setutexim,
+  exim,
+  setexim,
   // inputFields,
   // setInputFields,
   // saveddatas,
@@ -893,7 +894,7 @@ const UnitType = ({
             row
             aria-labelledby="demo-row-radio-buttons-group-label"
             name="row-radio-buttons-group"
-            value={utexim}
+            value={exim}
           >
             <FormControlLabel
               value="I"
@@ -908,7 +909,7 @@ const UnitType = ({
                 <Radio
                   name="import_export"
                   value="I"
-                  onChange={(e) => setutexim(e.target.value)}
+                  onChange={(e) => setexim(e.target.value)}
                   size="small"
                   label="Import"
                   sx={{
@@ -935,7 +936,7 @@ const UnitType = ({
                 <Radio
                   name="import_export"
                   value="E"
-                  onChange={(e) => setutexim(e.target.value)}
+                  onChange={(e) => setexim(e.target.value)}
                   size="small"
                   label="Export"
                   sx={{

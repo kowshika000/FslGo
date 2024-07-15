@@ -25,13 +25,12 @@ const style = {
 const Cargo = ({
   setCargoOptionsVisible,
   cargoOptionsVisible,
-  eximchange,
-  tsexim,
-  settsexim,
-  fclexim,
-  setfclexim,
-  utexim,
-  setutexim,
+  exim,
+  setexim,
+  // fclexim,
+  // setfclexim,
+  // utexim,
+  // setutexim,
 }) => {
   const dispatch = useDispatch()
   const [lastsaved,setlastsaved] = useState("")
@@ -251,7 +250,6 @@ const Cargo = ({
           {cargoOptionsVisible && (
             <div className="outer-cargo-port">
               <CargoDetails
-                eximchange={eximchange}
                 setCargo={setCargo}
                 setCargoOptionsVisible={setCargoOptionsVisible}
                 seterrmsg={seterrmsg}
@@ -259,12 +257,12 @@ const Cargo = ({
                 seterrors={seterrors}
                 tsDatas={tsDatas}
                 settsDatas={settsDatas}
-                tsexim={tsexim}
-                settsexim={settsexim}
-                utexim={utexim}
-                setutexim={setutexim}
-                fclexim={fclexim}
-                setfclexim={setfclexim}
+                exim={exim}
+                setexim={setexim}
+                // utexim={utexim}
+                // setutexim={setutexim}
+                // fclexim={fclexim}
+                // setfclexim={setfclexim}
                 setshowcargo={setshowcargo}
                 // inputFields={inputFields}
                 // setInputFields={setInputFields}

@@ -25,12 +25,11 @@ import { Button } from "antd";
 
 const Fcl = ({
   onClose,
-  eximchange,
   setCargo,
   setCargoOptionsVisible,
   seterrmsg,
-  fclexim,
-  setfclexim,
+  // fclexim,
+  // setfclexim,
   // fclinputFields,
   // setfclInputFields,
   // fclsaveddatas,
@@ -43,6 +42,8 @@ const Fcl = ({
   setfclDatas,
   clickedId,
   setclickedId,
+  exim,
+  setexim,
   // fclediterrors,
   // setfclediterrors,
   setshowcargo,
@@ -610,7 +611,7 @@ const Fcl = ({
             row
             aria-labelledby="demo-row-radio-buttons-group-label"
             name="row-radio-buttons-group"
-            value={fclexim}
+            value={exim}
           >
             <FormControlLabel
               value="I"
@@ -626,7 +627,7 @@ const Fcl = ({
                   name="import_export"
                   value="I"
                   size="small"
-                  onChange={(e) => setfclexim(e.target.value)}
+                  onChange={(e) => setexim(e.target.value)}
                   label="Import"
                   sx={{
                     color: "black",
@@ -653,7 +654,7 @@ const Fcl = ({
                   name="import_export"
                   value="E"
                   size="small"
-                  onChange={(e) => setfclexim(e.target.value)}
+                  onChange={(e) => setexim(e.target.value)}
                   label="Export"
                   sx={{
                     color: "black",
