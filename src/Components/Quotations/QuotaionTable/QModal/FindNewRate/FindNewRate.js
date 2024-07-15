@@ -19,7 +19,6 @@ function FindNewRate({
   checkedItems,
   setCheckedItems,
   showHeader,
-  setShowReselt
 }) {
   const [isPopoverOpen, setPopoverOpen] = useState(false);
   const [isDeliveryPopoverOpen, setDeliveryPopoverOpen] = useState(false);
@@ -415,7 +414,8 @@ function FindNewRate({
 
   return (
     <div className="quotationresult-div">
-      <div className={`quotationresult-leftdiv ${showHeader ? "" : "fixed"}`}>
+      <div className={`quotationresult-leftdiv`}>
+        <div className={`${showHeader ? "" : "fixed"}`}>
         <Card title="Service Included" style={{ overflowX: "auto" }}>
           <div className="Service-card">
             <Collapse
@@ -460,6 +460,7 @@ function FindNewRate({
             />
           </div>
         </Card>
+        </div>
       </div>
       <div
         className={`quotationresult-rightdiv ${showHeader ? "" : "fixedleft"}`}
@@ -470,7 +471,6 @@ function FindNewRate({
           setSelectedCurrency={setSelectedCurrency}
           selectedValue={selectedValue}
           checkedItems={checkedItems}
-          setShowReselt={setShowReselt}
         />
       </div>
     </div>
