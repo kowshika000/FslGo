@@ -197,9 +197,9 @@
 }
 
 .centerdiv-white {
-  background-color: #fff;
-  display: flex !important;
-  justify-content: center !important;
+  /* background-color: #fff; */
+  /* display: flex ; */
+  /* justify-content: center ; */
   padding: 20px;
 }
 .ant-modal-close {
