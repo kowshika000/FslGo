@@ -72,7 +72,7 @@ const Fcl = ({
     setfclDatas((prevData) =>
       prevData.map((item, index) =>
         index === id
-          ? { ...item, [name]: name === "quantity" ? parseInt(value) : value }
+          ? { ...item, [name]: name === "no_of_containers" ? parseInt(value) : value }
           : item
       )
     );
@@ -81,7 +81,7 @@ const Fcl = ({
 
   const handleAddLoad = () => {
     setfclDatas((prevData) => {
-      return [...prevData, { containerType: "", quantity: "" }];
+      return [...prevData, { container_type: "", no_of_containers: "" }];
     });
     setclickedId((prevData) => {
       console.log(prevData);
@@ -115,8 +115,8 @@ const Fcl = ({
         index === id
           ? {
               ...item,
-              quantity:
-                parseInt(item.quantity) > 1 ? parseInt(item.quantity) - 1 : 1,
+              no_of_containers:
+                parseInt(item.no_of_containers) > 1 ? parseInt(item.no_of_containers) - 1 : 1,
             }
           : item
       )
@@ -128,10 +128,10 @@ const Fcl = ({
         index === id
           ? {
               ...item,
-              quantity:
-                parseInt(item.quantity) < 99
-                  ? parseInt(item.quantity) + 1
-                  : parseInt(item.quantity) >= 99
+              no_of_containers:
+                parseInt(item.no_of_containers) < 99
+                  ? parseInt(item.no_of_containers) + 1
+                  : parseInt(item.no_of_containers) >= 99
                   ? 99
                   : 1,
             }
@@ -144,11 +144,11 @@ const Fcl = ({
     //   let clickeditem = fclDatas[id];
     //   console.log("clicked", clickeditem);
     //   return (
-    //     !clickedId.containerType ||
-    //     clickeditem.quantity < 1 ||
-    //     clickedId.quantity > 99 ||
-    //     clickedId.quantity === null ||
-    //     clickedId.quantity === NaN
+    //     !clickedId.container_type ||
+    //     clickeditem.no_of_containers < 1 ||
+    //     clickedId.no_of_containers > 99 ||
+    //     clickedId.no_of_containers === null ||
+    //     clickedId.no_of_containers === NaN
     //   );
     // };
 
@@ -180,11 +180,11 @@ const Fcl = ({
         total = 0;
       fclDatas.forEach((ele) => {
         console.log(ele);
-        total += parseInt(ele.quantity);
-        ele.quantity < 1 && (e = true);
-        ele.quantity > 99 && (e = true);
-        ele.quantity === null && (e = false);
-        // e.containerType===0 || e.containerType?.includes(null) && (e=true)
+        total += parseInt(ele.no_of_containers);
+        ele.no_of_containers < 1 && (e = true);
+        ele.no_of_containers > 99 && (e = true);
+        ele.no_of_containers === null && (e = false);
+        // e.container_type===0 || e.container_type?.includes(null) && (e=true)
       });
       console.log("total", total);
       if (total > 99) {
@@ -209,21 +209,21 @@ const Fcl = ({
   // Validate input on blur
   const handleBlur = (index, field) => {
     const newErrors = { ...errors };
-    if (field === "containerType") {
+    if (field === "container_type") {
       newErrors[index] = {
         ...newErrors[index],
-        containerType: validateContainerType(fclDatas[index][field]),
+        container_type: validateContainerType(fclDatas[index][field]),
       };
-    } else if (field === "quantity") {
+    } else if (field === "no_of_containers") {
       newErrors[index] = {
         ...newErrors[index],
-        quantity: validateQuantity(fclDatas[index][field]),
+        no_of_containers: validateQuantity(fclDatas[index][field]),
       };
     }
     setErrors(newErrors);
     // Check if there are any errors
     const hasError = Object.values(newErrors).some(
-      (error) => error.containerType || error.quantity
+      (error) => error.container_type || error.no_of_containers
     );
     setHasErrors(hasError);
   };
@@ -232,8 +232,8 @@ const Fcl = ({
   // useEffect(() => {
   //   const lastItem = fclDatas[fclDatas.length - 1];
   //   const lastItemErrors = {
-  //   containerType: validateContainerType(lastItem.containerType),
-  //   quantity: validateQuantity(lastItem.quantity),
+  //   container_type: validateContainerType(lastItem.container_type),
+  //   no_of_containers: validateQuantity(lastItem.no_of_containers),
   // };
   // }, [fclDatas])
   
@@ -243,13 +243,13 @@ const Fcl = ({
   
 
   const aggregateData = () => {
-    // Create a map to aggregate quantities by containerType
-    const aggregateMap = fclDatas.reduce((acc, { containerType, quantity }) => {
-      if (!containerType || isNaN(quantity)) return acc;
+    // Create a map to aggregate quantities by container_type
+    const aggregateMap = fclDatas.reduce((acc, { container_type, no_of_containers }) => {
+      if (!container_type || isNaN(no_of_containers)) return acc;
 
-      const abbreviatedType = containerTypeMap[containerType] || containerType;
+      const abbreviatedType = containerTypeMap[container_type] || container_type;
       const existingQuantity = acc[abbreviatedType] || 0;
-      acc[abbreviatedType] = existingQuantity + Number(quantity);
+      acc[abbreviatedType] = existingQuantity + Number(no_of_containers);
       return acc;
     }, {});
 
@@ -262,14 +262,17 @@ const Fcl = ({
 
   const handleFclSubmit =(e)=>{
     e.preventDefault()
-      if(!hasErrors){
+      if((fclDatas[fclDatas.length - 1].container_type && fclDatas[fclDatas.length - 1].no_of_containers && fclDatas[fclDatas.length-1]) && !disabled && !hasErrors){
         console.log("success")
         setCargo(()=>aggregateData())
         setFinaldetails(()=>aggregateData())
         setmode("FCL")
         setshowcargo(true)
         setCargoOptionsVisible(false)
-
+        seterrmsg("")
+      }
+      else{
+        seterrmsg("please add proper details for previous loads")
       }
   }
 
@@ -351,16 +354,17 @@ const Fcl = ({
                           className="placeholder_style"
                           // style={{ height: "45px" }}
                           style={{
-                            borderColor: errors[index]?.containerType
+                            borderColor: errors[index]?.container_type
                               ? "red"
                               : "initial",
                             height: "45px",
                           }}
-                          value={item.containerType}
+                          value={item.container_type}
                           onChange={(e) => handleChange(index, e)}
-                          onBlur={() => handleBlur(index, "containerType")}
-                          name="containerType"
+                          onBlur={() => handleBlur(index, "container_type")}
+                          name="container_type"
                           displayEmpty
+                          renderValue={item.container_type !== "" ? undefined : () => <><span style={{fontSize: "14px",fontWeight: "400",color: "rgb(212, 212, 212)"}}>Select Type</span></> }
                           placeholder="Select Type"
                           inputProps={{ "aria-label": "Without label" }}
                         >
@@ -380,9 +384,9 @@ const Fcl = ({
               <MenuItem value="40 HICH CUBE">40 HICH CUBE</MenuItem> */}
                         </Select>
                       </FormControl>{" "}
-                      {errors[index]?.containerType && (
+                      {errors[index]?.container_type && (
                         <span style={{ color: "red",fontStyle:"italic",fontSize:"12px" }}>
-                          {errors[index].containerType}
+                          {errors[index].container_type}
                         </span>
                       )}
                     </div>
@@ -404,9 +408,9 @@ const Fcl = ({
                         style={{
                           border: "1px solid rgb(207, 214, 223)",
                           height: "45px",
-                          borderColor: errors[index]?.quantity
+                          borderColor: errors[index]?.no_of_containers
                             ? "red"
-                            : "initial",
+                            : "rgba(207, 214, 223, 1)",
                         }}
                       >
                         <input
@@ -424,20 +428,20 @@ const Fcl = ({
                             }
                           }}
                           // onBlur={() =>
-                          //   fclDatas[index]?.quantity < 0 || fclDatas[index]?.quantity > 99
+                          //   fclDatas[index]?.no_of_containers < 0 || fclDatas[index]?.no_of_containers > 99
                           //     ? setfclerrors((prev) => {
                           //       console.log("hii")
-                          //         return { ...prev, quantity: true };
+                          //         return { ...prev, no_of_containers: true };
                           //       })
                           //     : setfclerrors((prev) => {
-                          //         return { ...prev, quantity: false };
+                          //         return { ...prev, no_of_containers: false };
                           //       })
                           // }
-                          onBlur={() => handleBlur(index, "quantity")}
+                          onBlur={() => handleBlur(index, "no_of_containers")}
                           onWheel={(e) => e.target.blur()}
                           // value={noofunits ? noofunits : ""}
-                          value={item.quantity}
-                          name="quantity"
+                          value={item.no_of_containers}
+                          name="no_of_containers"
                           // onChange={(e)=>setNoofunits(parseInt(e.target.value))}
                           onChange={(e) => handleChange(index, e)}
                           minLength={12}
@@ -484,9 +488,9 @@ const Fcl = ({
                           />
                         </button>
                       </div>
-                      {errors[index]?.quantity && (
+                      {errors[index]?.no_of_containers && (
                         <span style={{ color: "red",fontStyle:"italic",fontSize:"12px" }}>
-                          {errors[index].quantity}
+                          {errors[index].no_of_containers}
                         </span>
                       )}
                     </div>
@@ -497,11 +501,11 @@ const Fcl = ({
                         backgroundColor: "transparent",
                         boxShadow: "unset",
                         border: "none",
-                        opacity: !(fclDatas[fclDatas.length - 1].containerType && fclDatas[fclDatas.length - 1].quantity || index !==fclDatas.length - 1 ) || (hasErrors && !!errors[index]?.containerType || !!errors[index]?.quantity)?".5":"1",
+                        opacity: !(fclDatas[fclDatas.length - 1].container_type && fclDatas[fclDatas.length - 1].no_of_containers || index !==fclDatas.length - 1 ) || (hasErrors && !!errors[index]?.container_type || !!errors[index]?.no_of_containers)?".5":"1",
                         color:"#1677FF"
                       }}
                       onClick={() => handleSave(index)}
-                      disabled={!(fclDatas[fclDatas.length - 1].containerType && fclDatas[fclDatas.length - 1].quantity || index !==fclDatas.length - 1 ) || (hasErrors && !!errors[index]?.containerType || !!errors[index]?.quantity)}
+                      disabled={!(fclDatas[fclDatas.length - 1].container_type && fclDatas[fclDatas.length - 1].no_of_containers || index !==fclDatas.length - 1 ) || (hasErrors && !!errors[index]?.container_type || !!errors[index]?.no_of_containers)}
                     >
                       save
                     </Button>
@@ -539,7 +543,7 @@ const Fcl = ({
                       color: "rgba(41, 51, 61, 1)",
                     }}
                   >
-                    : {item.quantity} X {item.containerType}
+                    : {item.no_of_containers} X {item.container_type}
                   </span>
                 </div>
                 <div>
@@ -571,18 +575,18 @@ const Fcl = ({
       <div className="d-flex">
         <Tooltip
           placement="top"
-          title={`${!(fclDatas[fclDatas.length - 1].containerType && fclDatas[fclDatas.length - 1].quantity) ? "Please add proper details for previous loads" : disabled?"Your total containers exceeds 99": "Add Another Load"} `}
+          title={`${!(fclDatas[fclDatas.length - 1].container_type && fclDatas[fclDatas.length - 1].no_of_containers) ? "Please add proper details for previous loads" : disabled?"Your total containers exceeds 99": "Add Another Load"} `}
           // trigger={ && "hover"}
         >
           <Button
             style={{
               border: "none",
               background: "none",
-              opacity: !(fclDatas[fclDatas.length - 1].containerType && fclDatas[fclDatas.length - 1].quantity) || disabled || hasErrors ?".5":"1" ,
+              opacity: !(fclDatas[fclDatas.length - 1].container_type && fclDatas[fclDatas.length - 1].no_of_containers) || disabled || hasErrors ?".5":"1" ,
               boxShadow: "unset",
             }}
             onClick={handleAddLoad}
-            disabled={!(fclDatas[fclDatas.length - 1].containerType && fclDatas[fclDatas.length - 1].quantity) || disabled || hasErrors}
+            disabled={!(fclDatas[fclDatas.length - 1].container_type && fclDatas[fclDatas.length - 1].no_of_containers) || disabled || hasErrors}
           >
             <Typography
               sx={{

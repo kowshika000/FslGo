@@ -68,7 +68,13 @@ export default function CargoDetails({
   isByTotalShipmentOpen,
   setIsByTotalShipmentOpen,
   isByUnitTypeOpen,
-  setIsByUnitTypeOpen
+  setIsByUnitTypeOpen,
+  cbm, 
+  setcbm,
+  kg,
+  setkg,
+  unit, 
+  setunits
 }) {
   
   const hasPageBeenRendered = useRef(false);
@@ -215,6 +221,12 @@ export default function CargoDetails({
               setlastsaved={setlastsaved}
               setFinaldetails={setFinaldetails}
               setmode={setmode}
+              cbm={cbm} 
+              setcbm={setcbm}
+              kg={kg} 
+              setkg={setkg}
+              unit={unit}
+              setunits={setunits}
             />
           )}
         </TabPanel>
