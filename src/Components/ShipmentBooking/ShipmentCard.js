@@ -45,6 +45,43 @@ const ShipmentCard = ({
   const [deserrormsg, setdeserrormsg] = useState(null);
   const [orgerrormsg, setorgerrormsg] = useState(null);
   const [tserrmsg, seterrmsg] = useState("");
+  const [cbm, setcbm] = useState("")
+  const [kg, setkg] = useState("")
+  const [unit, setunits] = useState("");
+  const [tsDatas, settsDatas] = useState({
+    package_type: "",
+    no_of_units: "",
+    total_volume: "",
+    total_weight: "",
+    volume_type: "CBM",
+    weight_type: "KG",
+  });
+  const [fclDatas, setfclDatas] = useState([
+    {
+      container_type: "",
+      no_of_containers: null,
+    },
+  ]
+  );
+  const [utDatas, setutDatas] = useState([
+    {
+      package_type: "",
+      unit: "",
+      height: "",
+      length: "",
+      width: "",
+      dimensionUnit: "CM",
+      weight: "",
+      weightUnit: "KG",
+    },
+  ]
+  );
+  
+  // const copyutDatas = [...utDatas]
+  const createNewArrayWithoutPackageType = () => {
+    const newArray = utDatas.map(({ package_type, ...rest }) => rest);
+    return newArray;
+  };
 
   useEffect(() => {
     if (destination && cargoRef.current) {
@@ -105,33 +142,21 @@ const ShipmentCard = ({
   }
   const inputdata = {
     freight_mode: "S",
-    lcl_fcl_air: "LCL",
+    lcl_fcl_air: mode === 'LCLTOTAL' || mode === "LCLUNIT" ? "LCL" : "FCL",
     import_export: exim,
-    package_type: "BOX",
-    no_of_units: "1",
-    total_volume: "5",
-    total_weight: "100",
-    lcl_dimensions: [
-      {
-        length: 0,
-        width: 0,
-        height: 0,
-        type: "KG",
-      },
-    ],
-    fcl_dimensions: [
-      {
-        container_type: "",
-        no_of_containers: 0,
-      },
-    ],
-    volume_type: "C",
-    weight_type: "CBM",
+    package_type: mode === 'LCLTOTAL' ? tsDatas?.package_type : mode === 'LCLUNIT' ? utDatas[0]?.package_type:mode === 'FCL' ? tsDatas?.container_type:null ,
+    no_of_units: mode === 'LCLTOTAL' ? tsDatas?.no_of_units : mode === 'LCLUNIT' ?unit: 0,
+    total_volume: mode === 'LCLTOTAL' ? tsDatas?.total_volume.toString() : mode === "LCLUNIT" ? cbm.toString():0,
+    total_weight: mode === 'LCLTOTAL' ? tsDatas?.total_weight.toString() : mode === "LCLUNIT" ? kg.toString():0,
+    lcl_dimensions: mode==="LCLUNIT" ?createNewArrayWithoutPackageType():[],
+    fcl_dimensions: mode==="FCL" ? fclDatas : [],
+    volume_type: mode === 'LCLTOTAL' ? "CBM": mode === 'LCLUNIT' ? "CBM":null,
+    weight_type: mode === 'LCLTOTAL' ? "KG": mode === 'LCLUNIT' ? "KG":null,
     // origin: "DEACH",
-    origin: searchOriginCode && searchOriginCode,
-    destination: searchDestCode && searchDestCode,
-    origin_country_code: originPort?.port_country,
-    dest_country_code: destPort?.port_country,
+    origin: searchOriginCode ? searchOriginCode : null,
+    destination: searchDestCode ? searchDestCode : null,
+    origin_country_code: originPort ? originPort?.port_country: null,
+    dest_country_code: destPort ? destPort?.port_country:null,
     TOS: tosValue,
     is_pickup_req: checkedItems.cargoPickup ? "Y" : "N",
     pickup_place: "N",
@@ -293,6 +318,18 @@ const ShipmentCard = ({
             // setutexim={setutexim}
             // fclexim={fclexim}
             // setfclexim={setfclexim}
+            tsDatas={tsDatas}
+            settsDatas={settsDatas}
+            fclDatas={fclDatas}
+            setfclDatas={setfclDatas}
+            utDatas={utDatas}
+            setutDatas={setutDatas}
+            cbm={cbm}
+            setcbm={setcbm}
+            kg={kg}
+            setkg={setkg}
+            unit={unit}
+            setunits={setunits}
           />
           {/* Search button */}
           <div
