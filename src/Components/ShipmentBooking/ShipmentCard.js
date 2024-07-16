@@ -58,8 +58,9 @@ const ShipmentCard = ({
   const [cbm, setcbm] = useState("");
   const [kg, setkg] = useState("");
   const [unit, setunits] = useState("");
+  const [tosfirst, settosfirst] = useState("")
   const [tsDatas, settsDatas] = useState({
-    package_type: "",
+    package_type: "PKG",
     no_of_units: "",
     total_volume: "",
     total_weight: "",
@@ -74,7 +75,7 @@ const ShipmentCard = ({
   ]);
   const [utDatas, setutDatas] = useState([
     {
-      package_type: "",
+      package_type: "PKG",
       unit: "",
       height: "",
       length: "",
@@ -157,8 +158,8 @@ const ShipmentCard = ({
     }
   }
   const inputdata = {
-    freight_mode: "S",
-    lcl_fcl_air: mode === "LCLTOTAL" || mode === "LCLUNIT" ? "LCL" : "FCL",
+    freight_mode: originPort && originPort?.Transport_mode === "SEA" || originPort?.Transport_mode === "CITY"  ? "S" : "A",
+    lcl_fcl_air: (mode === 'LCLTOTAL' || mode === "LCLUNIT") && (originPort?.Transport_mode !== "AIR" || destPort?.Transport_mode !== "AIR") ? "LCL" : mode === 'FCL' && originPort?.Transport_mode !== "AIR" || destPort?.Transport_mode !== "AIR"  ? "FCL": originPort?.Transport_mode === "AIR" || destPort?.Transport_mode === "AIR" ? "AIR":null,
     import_export: exim,
     package_type:
       mode === "LCLTOTAL"
@@ -192,11 +193,11 @@ const ShipmentCard = ({
     volume_type:
       mode === "LCLTOTAL" ? "CBM" : mode === "LCLUNIT" ? "CBM" : null,
     weight_type: mode === "LCLTOTAL" ? "KG" : mode === "LCLUNIT" ? "KG" : null,
-    origin: searchOriginCode ? searchOriginCode : null,
-    destination: searchDestCode ? searchDestCode : null,
+    origin: searchOriginCode ? originPort?.port_code : null,
+    destination: searchDestCode ? destPort?.port_code : null,
     origin_country_code: originPort ? originPort?.port_country : null,
     dest_country_code: destPort ? destPort?.port_country : null,
-    TOS: tosValue,
+    TOS: tosfirst,
     is_pickup_req: checkedItems.cargoPickup ? "Y" : "N",
     pickup_place: checkedItems.cargoPickup ? selectedCode : "N",
     is_hazardous: checkedItems.NonHarzardousCargo ? "N" : "Y",
@@ -206,10 +207,104 @@ const ShipmentCard = ({
     currency: selectedCurrency,
   };
 
+   //This is for AirRate Search
+   const inputAirData = {
+    freight_mode: "A",
+    lcl_fcl_air: "AIR" ,
+    import_export: exim,
+    package_type: mode === 'LCLTOTAL' ? tsDatas?.package_type : mode === 'LCLUNIT' ? utDatas[0]?.package_type:mode === 'FCL' ? tsDatas?.container_type:null ,
+    no_of_units: mode === 'LCLTOTAL' ? tsDatas?.no_of_units : mode === 'LCLUNIT' ?unit: 0,
+    total_volume: mode === 'LCLTOTAL' ? tsDatas?.total_volume.toString() : mode === "LCLUNIT" ? cbm.toString():0,
+    total_weight: mode === 'LCLTOTAL' ? tsDatas?.total_weight.toString() : mode === "LCLUNIT" ? kg.toString():0,
+    lcl_dimensions: mode==="LCLUNIT" ?createNewArrayWithoutPackageType():[],
+    fcl_dimensions: mode==="FCL" ? fclDatas : [],
+    volume_type: mode === 'LCLTOTAL' ? "CBM": mode === 'LCLUNIT' ? "CBM":null,
+    weight_type: mode === 'LCLTOTAL' ? "KG": mode === 'LCLUNIT' ? "KG":null,
+    // origin: "DEACH",
+    // origin: searchOriginCode ? searchOriginCode : null,
+    // destination: searchDestCode ? searchDestCode : null,
+    origin: originPort ? originPort?.air_port_code: null,
+    destination: destPort ? destPort?.air_port_code:null,
+    origin_country_code: originPort ? originPort?.port_country: null,
+    dest_country_code: destPort ? destPort?.port_country:null,
+    TOS: tosValue,
+    is_pickup_req: checkedItems.cargoPickup ? "Y" : "N",
+    is_hazardous: checkedItems.NonHarzardousCargo ? "N" : "Y",
+    is_stackable: checkedItems.StackableCargo ? "Y" : "N",
+    is_insurance: checkedItems.CargoInsurance ? "Y" : "N",
+    UID: "15085",
+    currency: selectedCurrency,
+    is_delivery_req : "N",
+    is_export_added: "N",
+    is_import_added: "N",
+  };
+  console.log(inputAirData)
+
+  const air ={
+  TOS : "FOB",
+  UID: "15085",
+  currency: "USD",
+  dest_country_code: "AE",
+  destination: "DXB",
+  fcl_dimensions: [],
+  freight_mode: "A",
+  import_export: "I",
+  is_delivery_req: "N",
+  is_export_added: "N",
+  is_hazardous: "N",
+  is_import_added: "N",
+  is_insurance: "N",
+  is_pickup_req:"N",
+  is_stackable: "Y",
+  lcl_dimensions: [],
+  lcl_fcl_air: "AIR",
+  no_of_units: 1,
+  origin: "BOM",
+  origin_country_code: "IN",
+  package_type: "PKG",
+  total_volume: "5",
+  total_weight: "100",
+  volume_type: "CBM",
+  weight_type: "KG"
+  }
+
+  const TOSLogic =()=>{
+    if(originPort?.type === "PORT" && destPort?.type === "PORT" && exim === "I" ){
+        settosfirst("FOB")
+    }
+    else if(originPort?.type === "PORT"  && destPort?.type === "PORT" && exim === "E"){
+      settosfirst("CFR")
+    }
+    else if(originPort?.type === "PORT" && destPort?.type === "PICKUP" && exim === "I"){
+      settosfirst("FCA")
+    }
+    else if(originPort?.type === "PORT" && destPort?.type === "PICKUP" && exim === "E"){
+      settosfirst("DAP")
+    }
+    else if(originPort?.type === "PICKUP" && destPort?.type === "PORT" && exim === "I"){
+      settosfirst("EXW")
+    }
+    else if(originPort?.type === "PICKUP" && destPort?.type === "PORT" && exim === "E"){
+      settosfirst("CFR")
+    }
+    else if(originPort?.type === "PICKUP" && destPort?.type === "PICKUP" && exim === "I"){
+      settosfirst("EXW")
+    }
+    else if(originPort?.type === "PICKUP" && destPort?.type === "PICKUP" && exim === "E"){
+      settosfirst("DAP")
+    }
+
+  }
+
+  useEffect(()=>{
+    TOSLogic()
+  },[originPort,destPort,exim])
+
   const handleSearch = () => {
     if (originPort && destPort && finalDetails) {
       setShowReselt(true);
       dispatch(FindNewRateRequest({ inputdata }));
+         // dispatch(FindNewRateRequest({ air }));
     } else {
       if (!originPort) {
         setorgerrormsg("Please add Origin");
@@ -321,7 +416,7 @@ const ShipmentCard = ({
           borderRadius: "8px",
         }}
       >
-        <div className="card-body d-flex p-0">
+        <div className="card-body d-flex p-0" style={{height:"150px"}}>
           <Origin
             setOriginPortOptionsVisible={setOriginPortOptionsVisible}
             originPortOptionsVisible={originPortOptionsVisible}
@@ -397,6 +492,8 @@ const ShipmentCard = ({
             setkg={setkg}
             unit={unit}
             setunits={setunits}
+            originPort={originPort}
+            destPort={destPort}
           />
           {/* Search button */}
           <div
