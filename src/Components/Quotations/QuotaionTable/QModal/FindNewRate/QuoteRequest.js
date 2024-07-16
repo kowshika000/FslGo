@@ -66,6 +66,10 @@ function QuoteRequest({ setShowReselt, checkedItems, setCheckedItems }) {
       return <>Remove Export Clearance</>;
     }else if(checkedItems?.ImportClearance === true){
       return <>Remove Import Clearance</>;
+    }else if (checkedItems?.cargoPickup === true) {
+      return <>Remove Cargo Pickup Charges</>;
+    } else if (checkedItems?.CargoDelivery === true) {
+      return <>Remove Cargo Delivery Charges</>;
     } else {
       return (
         <div
@@ -102,6 +106,10 @@ function QuoteRequest({ setShowReselt, checkedItems, setCheckedItems }) {
         return { ...prevCheckedItems, exportClearance: false };
       }else if (prevCheckedItems.ImportClearance === true) {
         return { ...prevCheckedItems, ImportClearance: false };
+      }else if (prevCheckedItems.cargoPickup === true) {
+        return { ...prevCheckedItems, cargoPickup: false };
+      }else if (prevCheckedItems.CargoDelivery === true) {
+        return { ...prevCheckedItems, CargoDelivery: false };
       }
       return prevCheckedItems;
     });

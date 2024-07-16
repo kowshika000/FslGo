@@ -53,7 +53,9 @@ const UnitType = ({
   kg,
   setkg,
   unit, 
-  setunits
+  setunits,
+  originPort,
+  destPort,
 }) => {
   console.log("ut", utDatas);
   console.log("clickedut", utclickedId);
@@ -93,7 +95,7 @@ const UnitType = ({
     setutDatas((prevData) =>
       prevData.map((item, index) =>
         index === id
-          ? { ...item, [name]: name === "unit" ? parseInt(value) : value }
+          ? { ...item, [name]: name === "unit" ? parseFloat(value) : value }
           : item
       )
     );
@@ -406,7 +408,7 @@ const UnitType = ({
   };
 
   const aggregateData = () => {
-    return `LCL | ${Number(unit)} Units ${Number(cbm).toFixed(3)} CBM ${Number(
+    return `${(originPort?.Transport_mode === "AIR" || destPort?.Transport_mode === "AIR" )?"AIR":"LCL"} | ${Number(unit)} Units ${Number(cbm).toFixed(3)} CBM ${Number(
       kg
     ).toFixed(3)} KG`;
   };
@@ -573,13 +575,14 @@ const UnitType = ({
                           placeholder="Units"
                           onKeyDown={(e) => {
                             if (
-                              !/[0-9]|Backspace|Tab|Enter|Delete|ArrowLeft|ArrowRight/.test(
+                              !/[0-9]|\.|Backspace|Tab|Enter|Delete|ArrowLeft|ArrowRight/.test(
                                 e.key
                               )
                             ) {
                               e.preventDefault();
                             }
                           }}
+                          step={'any'}
                           onBlur={() => handleBlur(index, "unit")}
                           // onBlur={() =>
                           //   utDatas?.unit < 0 || utDatas?.unit > 999
@@ -684,13 +687,14 @@ const UnitType = ({
                           autoComplete="off"
                           onKeyDown={(e) => {
                             if (
-                              !/[0-9]|Backspace|Tab|Enter|Delete|ArrowLeft|ArrowRight/.test(
+                              !/[0-9]|\.|Backspace|Tab|Enter|Delete|ArrowLeft|ArrowRight/.test(
                                 e.key
                               )
                             ) {
                               e.preventDefault();
                             }
                           }}
+                          step={'any'}
                           // onBlur={() =>
                           //   utDatas?.length < 10 || utDatas?.length > 310
                           //     ? setuterrors((prev) => {
@@ -724,13 +728,14 @@ const UnitType = ({
                           autoComplete="off"
                           onKeyDown={(e) => {
                             if (
-                              !/[0-9]|Backspace|Tab|Enter|Delete|ArrowLeft|ArrowRight/.test(
+                              !/[0-9]|\.|Backspace|Tab|Enter|Delete|ArrowLeft|ArrowRight/.test(
                                 e.key
                               )
                             ) {
                               e.preventDefault();
                             }
                           }}
+                          step={'any'}
                           // onBlur={() =>
                           //   utDatas?.width < 10 || utDatas?.width > 310
                           //     ? setuterrors((prev) => {
@@ -763,13 +768,14 @@ const UnitType = ({
                           autoComplete="off"
                           onKeyDown={(e) => {
                             if (
-                              !/[0-9]|Backspace|Tab|Enter|Delete|ArrowLeft|ArrowRight/.test(
+                              !/[0-9]|\.|Backspace|Tab|Enter|Delete|ArrowLeft|ArrowRight/.test(
                                 e.key
                               )
                             ) {
                               e.preventDefault();
                             }
                           }}
+                          step={'any'}
                           // onBlur={() =>
                           //   utDatas?.height < 10 || utDatas?.height > 310
                           //     ? setuterrors((prev) => {
@@ -966,13 +972,14 @@ const UnitType = ({
                           autoComplete="off"
                           onKeyDown={(e) => {
                             if (
-                              !/[0-9]|Backspace|Tab|Enter|Delete|ArrowLeft|ArrowRight/.test(
+                              !/[0-9]|\.|Backspace|Tab|Enter|Delete|ArrowLeft|ArrowRight/.test(
                                 e.key
                               )
                             ) {
                               e.preventDefault();
                             }
                           }}
+                          step={'any'}
                           // onBlur={() =>
                           //   utDatas?.weight <= 0 || utDatas?.weight > 3000
                           //     ? setuterrors((prev) => {

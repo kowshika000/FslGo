@@ -32,6 +32,8 @@ function FindNewRate({
   setSelectedCode,
   selectedCode1,
   setSelectedCode1,
+  originPort,
+  destPort,
 }) {
   const [isPopoverOpen, setPopoverOpen] = useState(false);
   const [isDeliveryPopoverOpen, setDeliveryPopoverOpen] = useState(false);
@@ -83,6 +85,8 @@ function FindNewRate({
           setPopoverOpen={setPopoverOpen}
           selectedCode={selectedCode}
           setSelectedCode={setSelectedCode}
+          originPort={originPort}
+          destPort={ destPort}
         />
       );
     } else if (value === "CargoDelivery") {
@@ -92,6 +96,7 @@ function FindNewRate({
           setPopoverOpen={setDeliveryPopoverOpen}
           selectedCode1={selectedCode1}
           setSelectedCode1={setSelectedCode1}
+          destPort={destPort}
         />
       );
     } else if (value === "CargoInsurance") {
@@ -488,6 +493,8 @@ function FindNewRate({
           exim={exim}
           setCheckedItems={setCheckedItems}
           selectedDeliveryValue={selectedDeliveryValue}
+          originPort={originPort}
+          destPort={destPort}
         />
       </div>
     </div>

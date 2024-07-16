@@ -32,6 +32,8 @@ const Quotation = ({
   const [insuranceValue, setInsuranceValue] = useState("");
   const [selectedCode, setSelectedCode] = useState(null);
   const [selectedCode1, setSelectedCode1] = useState(null);
+  const [originPort, setOriginPort] = useState(null);
+  const [destPort, setDestPort] = useState(null);
   const handleScroll = () => {
     if (showReselt) {
       const scrollTop = window.scrollY;
@@ -81,7 +83,6 @@ const Quotation = ({
            ${highlightShipmentCard ? "dimmed-background1" : ""}
              `}
           >
-            
             <ShipmentCard
               setShowReselt={setShowReselt}
               selectedCurrency={selectedCurrency}
@@ -99,6 +100,10 @@ const Quotation = ({
               setSelectedCode={setSelectedCode}
               selectedCode1={selectedCode1}
               setSelectedCode1={setSelectedCode1}
+              originPort={originPort}
+              setOriginPort={setOriginPort}
+              destPort={destPort}
+              setDestPort={setDestPort}
             />
           </div>
         </div>
@@ -133,7 +138,8 @@ const Quotation = ({
               setSelectedCode={setSelectedCode}
               selectedCode1={selectedCode1}
               setSelectedCode1={setSelectedCode1}
-
+              originPort={originPort}
+              destPort={destPort}
             />
           ) : (
             <div className={`${highlightShipmentCard ? "marginTop" : ""}`}>

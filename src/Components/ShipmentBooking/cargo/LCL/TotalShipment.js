@@ -30,7 +30,9 @@ const TotalShipment = ({
   packages,
   setlastsaved,
   setFinaldetails,
-  setmode
+  setmode,
+  originPort,
+  destPort,
 }) => {
 
 
@@ -117,7 +119,7 @@ const TotalShipment = ({
     const { name, value } = e.target;
     console.log(typeof value);
     settsDatas((prev) => {
-      return { ...prev, [name]: parseInt(value) };
+      return { ...prev, [name]: parseFloat(value) };
     });
   };
   const handlePackChange = (e) => {
@@ -134,7 +136,7 @@ const TotalShipment = ({
     settsDatas((prev) => {
       return {
         ...prev,
-        [name]: !value ? "" : value <= 0 ? 1 : parseInt(value),
+        [name]: !value ? "" : value <= 0 ? 1 : parseFloat(value),
       };
     });
   };
@@ -205,7 +207,7 @@ const TotalShipment = ({
   //     hasPageBeenRendered.current = true;
   // }, [passwordResponse])
 
-const values = `LCL | ${tsDatas?.no_of_units} Units, ${tsDatas?.volume_type === 'CFT'?`${tsDatas?.total_volume*0.028} CBM`:`${tsDatas?.total_volume} CBM`},  ${tsDatas?.weight_type === 'LB'?`${(tsDatas?.total_weight/2.20462).toFixed(3)} KG`:`${tsDatas?.total_weight} KG`}`;
+const values = `${(originPort?.Transport_mode === "AIR" || destPort?.Transport_mode === "AIR" )?"AIR":"LCL"} | ${tsDatas?.no_of_units} Units, ${tsDatas?.volume_type === 'CFT'?`${tsDatas?.total_volume*0.028} CBM`:`${tsDatas?.total_volume} CBM`},  ${tsDatas?.weight_type === 'LB'?`${(tsDatas?.total_weight/2.20462).toFixed(3)} KG`:`${tsDatas?.total_weight} KG`}`;
 
 useEffect(() => {
   if(hasPageBeenRendered.current){
@@ -906,7 +908,7 @@ useEffect(() => {
               placeholder="Units"
               onKeyDown={(e) => {
                 if (
-                  !/[0-9]|Backspace|Tab|Enter|Delete|ArrowLeft|ArrowRight/.test(
+                  !/[0-9]|\.|Backspace|Tab|Enter|Delete|ArrowLeft|ArrowRight/.test(
                     e.key
                   )
                 ) {
@@ -922,6 +924,7 @@ useEffect(() => {
                       return { ...prev, no_of_units: false };
                     })
               }
+              step={'any'}
               onWheel={(e) => e.target.blur()}
               value={tsDatas?.no_of_units}
               name="no_of_units"
@@ -997,13 +1000,14 @@ useEffect(() => {
               autoComplete="off"
               onKeyDown={(e) => {
                 if (
-                  !/[0-9]|Backspace|Tab|Enter|Delete|ArrowLeft|ArrowRight/.test(
+                  !/[0-9]|\.|Backspace|Tab|Enter|Delete|ArrowLeft|ArrowRight/.test(
                     e.key
                   )
                 ) {
                   e.preventDefault();
                 }
               }}
+              step={'any'}
               onBlur={() =>
                 tsDatas?.total_volume > 15
                   ? seterrors((prev) => {
@@ -1084,13 +1088,14 @@ useEffect(() => {
               autoComplete="off"
               onKeyDown={(e) => {
                 if (
-                  !/[0-9]|Backspace|Tab|Enter|Delete|ArrowLeft|ArrowRight/.test(
+                  !/[0-9]|\.|Backspace|Tab|Enter|Delete|ArrowLeft|ArrowRight/.test(
                     e.key
                   )
                 ) {
                   e.preventDefault();
                 }
               }}
+              step={'any'}
               onBlur={() =>
                 tsDatas?.total_weight < 10 || tsDatas?.total_weight > 15000
                   ? seterrors((prev) => {

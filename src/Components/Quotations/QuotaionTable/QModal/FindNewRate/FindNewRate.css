@@ -93,18 +93,18 @@
   border: 0;
 }
 
-.Service-card .ant-checkbox-wrapper .ant-checkbox-checked .ant-checkbox-inner {
+.Service-card .ant-checkbox-checked .ant-checkbox-inner {
   background-color: #d32d2f !important;
   border: none;
 }
 .ant-checkbox-disabled .ant-checkbox-inner:after {
   border-color: white;
 }
-.ant-checkbox-disabled .ant-checkbox-inner {
-  background-color: rgb(245, 126, 126) !important;
+.Service-card .ant-checkbox-disabled .ant-checkbox-inner {
+  opacity: 0.5;
 }
 /* .Service-card .ant-checkbox-wrapper .ant-checkbox-checked .ant-checkbox-inner:hover{
-  background-color: #d32d2f ;
+  background-color: #d32d2f !important;
 } */
 .Service-card .ant-checkbox + span {
   padding-inline-start: 8px;
