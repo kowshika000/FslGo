@@ -15,7 +15,7 @@ function ShowChargesModal({ FindNRate }) {
             <tbody>
               {FindNRate?.origin_charge > 0 && (
                 <tr className="header">
-                  <td className="origincharge">Origin Charges</td>
+                  <td className="origincharge">ORIGIN CHARGES</td>
                   <td className="one">{FindNRate?.origin_charge}</td>
                 </tr>
               )}
@@ -25,15 +25,22 @@ function ShowChargesModal({ FindNRate }) {
                   <td className="price-value">{item?.value}</td>
                 </tr>
               ))}
-
-              {/* <tr>
-                <td className="pickupcharge ps-4">B/L Issuance</td>
-                <td className="price-value">0</td>
-              </tr> */}
+              {FindNRate?.cargopickup_charge > 0 && (
+                <tr className="header">
+                  <td className="origincharge">PICKUP CHARGES</td>
+                  <td className="one">{FindNRate?.cargopickup_charge}</td>
+                </tr>
+              )}
+              {/* {origin?.map((item, index) => (
+                <tr key={index}>
+                  <td className="pickupcharge ps-4">{item?.text}</td>
+                  <td className="price-value">{item?.value}</td>
+                </tr>
+              ))} */}
               {FindNRate?.freight_charge > 0 && (
                 <tr className="header">
                   <td className="origincharge">
-                    International Freight Charges
+                    INTERNATIONAL FREIGHT CHARGES
                   </td>
                   <td className="one">{FindNRate?.freight_charge}</td>
                 </tr>
@@ -46,7 +53,7 @@ function ShowChargesModal({ FindNRate }) {
               ))}
               {FindNRate?.destination_charge > 0 && (
                 <tr className="header">
-                  <td className="origincharge">Destination Charges</td>
+                  <td className="origincharge">DESTINATION CHARGES</td>
                   <td className="one">{FindNRate?.destination_charge}</td>
                 </tr>
               )}
@@ -56,6 +63,12 @@ function ShowChargesModal({ FindNRate }) {
                   <td className="price-value">{item?.value}</td>
                 </tr>
               ))}
+              {FindNRate?.cargodelivery_charge > 0 && (
+                <tr className="header">
+                  <td className="origincharge">PICKUP CHARGES</td>
+                  <td className="one">{FindNRate?.cargodelivery_charge}</td>
+                </tr>
+              )}
               {/* <tr>
                   <td className="pickupcharge ps-4">dd</td>
                   <td className="price-value">9</td>
@@ -71,7 +84,7 @@ function ShowChargesModal({ FindNRate }) {
               ))} */}
 
               <tr className="total">
-                <th className="totaoriginchargelamount">Total amount :</th>
+                <th className="totaoriginchargelamount">TOTAL AMOUNT :</th>
                 <th className="one">{FindNRate?.total_amount_in_usd}</th>
               </tr>
             </tbody>

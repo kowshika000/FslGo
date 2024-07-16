@@ -6,7 +6,7 @@ import { DeliveryRequest } from "../../../../../Redux/Actions/DeliveryAction";
 function CargoDeliveryPopOver({
   setSelectedValue,
   setPopoverOpen,
- 
+  destPort,
   setSelectedCode1,
 }) {
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ function CargoDeliveryPopOver({
   };
   const onSearch = (value) => {
     if (value.length >= 3) {
-      dispatch(DeliveryRequest({ country: "AE", delivery_place: value }));
+      dispatch(DeliveryRequest({ country: destPort?.port_country, delivery_place: value }));
     }
   };
   useEffect(() => {

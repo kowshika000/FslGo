@@ -25,7 +25,9 @@ function ShipmentTracker({
   selectedDeliveryValue,
   setShowReselt,
   exim,
-  setCheckedItems 
+  setCheckedItems,
+  originPort,
+  destPort,
 }) {
   const [showAllData, setShowAllData] = useState(false);
   const [showCharges, setShowCharges] = useState(null);
@@ -33,9 +35,29 @@ function ShipmentTracker({
   const FindNRate = useSelector((state) => state?.findRate?.findRate?.rates);
   const { findRate, loading } = useSelector((state) => state?.findRate);
   console.log(FindNRate, "FindNRate");
+  function showAll() {
+    if (
+      findRate?.statusmessage === "information not available" ||
+      (exim === "I" && checkedItems?.DestinationCharges === false) ||
+      (exim === "E" && checkedItems?.originCharges === false) ||
+      checkedItems?.StackableCargo === false ||
+      checkedItems?.NonHarzardousCargo === false ||
+      checkedItems?.exportClearance === true ||
+      checkedItems?.ImportClearance === true ||
+      (checkedItems?.originCharges && FindNRate[0]?.origin_charges === "") ||
+      (checkedItems?.cargoPickup && FindNRate[0]?.cargopickup_charge === "") ||
+      (checkedItems?.DestinationCharges &&
+        FindNRate[0]?.destination_charges === "") ||
+      (checkedItems?.CargoDelivery && FindNRate[0]?.cargodelivery_charge === "")
+    ) {
+      return 0;
+    }else {
+      return FindNRate?.length
+    }
+  }
   const tabs = [
-    { label: "All(0)", key: "1" },
-    { label: "Ocean(0)", key: "2" },
+    { label: `All{${showAll()})`, key: "1" },
+    { label: `Ocean(${showAll()})`, key: "2" },
     { label: "Air(0)", key: "3" },
   ];
   const currencyOptions = ["USD", "INR", "AED"];
@@ -151,13 +173,184 @@ function ShipmentTracker({
           </div>
         </div>
       </Card>
+
+      {displayedData?.map(
+        (data, index) =>
+          index === 0 &&
+          data?.mode === "SEA" && (
+            <Card className="cargo-pick mb-2">
+              <div
+                key={index}
+                className="d-flex justify-content-between align-items-center"
+              >
+                <div
+                  style={{
+                    opacity: !checkedItems.cargoPickup ? "40%" : "100%",
+                  }}
+                  className="cargo-pickup-p"
+                >
+                  <img
+                    src={icon}
+                    alt="icon"
+                    className="me-1"
+                    style={{ marginBottom: "0.1rem" }}
+                  />
+                  {renderSelectedValue()}
+                </div>
+                <div
+                  style={{
+                    opacity: !checkedItems.cargoPickup ? "40%" : "100%",
+                  }}
+                >
+                  <img
+                    src="https://www.fslgo.com/_next/static/media/pickup.f4ca650f.svg"
+                    alt="line"
+                  />
+                  {/* <img src={Vector} alt="car" className="mx-2" />
+                      <img src={Line} alt="line" /> */}
+                </div>
+                <div>
+                  <p
+                    className="m-0 cargo-pickup-p"
+                    style={{ fontWeight: "800" }}
+                  >
+                    {originPort?.port_name}
+                  </p>
+                </div>
+                <div style={{ height: "20px", opacity: "100%" }}>
+                  <span
+                    style={{
+                      display: "block",
+                      marginTop: "-5px",
+                      textAlign: "center",
+                      height: "10px",
+                    }}
+                  >
+                    <img
+                      src="https://www.fslgo.com/_next/static/media/ship.2f4cd5cc.svg"
+                      alt="union"
+                      className="mb-2"
+                    />
+                  </span>
+                  {/* <span style={{ height: "10px" }}>
+                        <img src={flow} alt="flow" />
+                        <img src={flow} alt="flow" />
+                      </span> */}
+                </div>
+                <div>
+                  <p
+                    className="m-0 cargo-pickup-p"
+                    style={{ fontWeight: "800" }}
+                  >
+                    {destPort?.port_name}
+                  </p>
+                </div>
+                <div
+                  style={{
+                    opacity: !checkedItems.CargoDelivery ? "40%" : "100%",
+                  }}
+                >
+                  <img
+                    src="https://www.fslgo.com/_next/static/media/pickup.f4ca650f.svg"
+                    alt="line"
+                  />
+                  {/* <img src={Vector} alt="car" className="mx-2" />
+                      <img src={Line} alt="line" /> */}
+                </div>
+                <div>
+                  <p
+                    className="m-0 cargo-pickup-p"
+                    style={{
+                      opacity: !checkedItems.CargoDelivery ? "40%" : "100%",
+                    }}
+                  >
+                    <img
+                      src={Cargo}
+                      alt="cargo"
+                      className="me-1 mb-1"
+                      style={{ width: "13px", height: "17px" }}
+                    />
+                    {renderSelectedValue1()}
+                  </p>
+                </div>
+              </div>
+            </Card>
+          )
+      )}
+      {displayedData?.map(
+        (data, index) =>
+          index === 0 &&
+          data?.mode === "AIR" && (
+            <Card className="cargo-pick mb-2">
+              <div
+                key={index}
+                className="d-flex justify-content-between align-items-center"
+              >
+                <div style={{ opacity: "40%" }} className="cargo-pickup-p">
+                  <img src={icon} alt="icon" className="me-1" />
+                  Cargo Pickup
+                </div>
+                <div style={{ opacity: "40%" }}>
+                  <img src={Line} alt="line" />
+                  <img src={Vector} alt="car" className="mx-2" />
+                  <img src={Line} alt="line" />
+                </div>
+                <div>
+                  <p className="m-0 cargo-pickup-p">{data?.origin}</p>
+                </div>
+                <div style={{ height: "20px", opacity: "60%" }}>
+                  <span
+                    style={{
+                      display: "block",
+                      marginTop: "-5px",
+                      textAlign: "center",
+                      height: "10px",
+                    }}
+                  >
+                    <img src={airplane} alt="union" className="mb-2" />
+                  </span>
+                  <span style={{ height: "10px" }}>
+                    <img src={flow} alt="flow" />
+                    <img src={flow} alt="flow" />
+                  </span>
+                </div>
+                <div>
+                  <p className="m-0 cargo-pickup-p">{data?.destination}</p>
+                </div>
+                <div style={{ opacity: "40%" }}>
+                  <img src={Line} alt="line" />
+                  <img src={Vector} alt="car" className="mx-2" />
+                  <img src={Line} alt="line" />
+                </div>
+                <div>
+                  <p className="m-0 cargo-pickup-p" style={{ opacity: "40%" }}>
+                    <img
+                      src={Cargo}
+                      alt="cargo"
+                      className="me-1 mb-1"
+                      style={{ width: "13px", height: "17px" }}
+                    />
+                    Cargo Delivery
+                  </p>
+                </div>
+              </div>
+            </Card>
+          )
+      )}
+
       {findRate?.statusmessage === "information not available" ||
       (exim === "I" && checkedItems?.DestinationCharges === false) ||
       (exim === "E" && checkedItems?.originCharges === false) ||
       checkedItems?.StackableCargo === false ||
-      checkedItems?.NonHarzardousCargo === false||
+      checkedItems?.NonHarzardousCargo === false ||
       checkedItems?.exportClearance === true ||
-      checkedItems?.ImportClearance === true ? (
+      checkedItems?.ImportClearance === true ||
+      (checkedItems?.originCharges && FindNRate[0]?.origin_charges === "") ||
+      (checkedItems?.cargoPickup && FindNRate[0]?.cargopickup_charge === "") ||
+      (checkedItems?.DestinationCharges &&
+        FindNRate[0]?.destination_charges === "") ||
+      (checkedItems?.CargoDelivery &&
+        FindNRate[0]?.cargodelivery_charge === "") ? (
         <QuoteRequest
           setShowReselt={setShowReselt}
           checkedItems={checkedItems}
@@ -165,82 +358,6 @@ function ShipmentTracker({
         />
       ) : (
         <>
-          {displayedData?.map(
-            (data, index) =>
-              index === 0 &&
-              data?.mode === "SEA" && (
-                <Card className="cargo-pick mb-2">
-                  <div
-                    key={index}
-                    className="d-flex justify-content-between align-items-center"
-                  >
-                    <div
-                      style={{
-                        opacity: !checkedItems.cargoPickup ? "40%" : "100%",
-                      }}
-                      className="cargo-pickup-p"
-                    >
-                      <img
-                        src={icon}
-                        alt="icon"
-                        className="me-1"
-                        style={{ marginBottom: "0.1rem" }}
-                      />
-                      {renderSelectedValue()}
-                    </div>
-                    <div style={{  opacity: !checkedItems.cargoPickup ? "40%" : "100%", }}>
-                      <img src="https://www.fslgo.com/_next/static/media/pickup.f4ca650f.svg" alt="line" />
-                      {/* <img src={Vector} alt="car" className="mx-2" />
-                      <img src={Line} alt="line" /> */}
-                    </div>
-                    <div>
-                      <p className="m-0 cargo-pickup-p" style={{fontWeight:"800"}}>{data?.origin}</p>
-                    </div>
-                    <div style={{ height: "20px", opacity: "100%" }}>
-                      <span
-                        style={{
-                          display: "block",
-                          marginTop: "-5px",
-                          textAlign: "center",
-                          height: "10px",
-                        }}
-                      >
-                        <img src="https://www.fslgo.com/_next/static/media/ship.2f4cd5cc.svg" alt="union" className="mb-2" />
-                      </span>
-                      <span style={{ height: "10px" }}>
-                        <img src={flow} alt="flow" />
-                        <img src={flow} alt="flow" />
-                      </span>
-                    </div>
-                    <div>
-                      <p className="m-0 cargo-pickup-p" style={{fontWeight:"800"}}>{data?.destination}</p>
-                    </div>
-                    <div style={{ opacity: !checkedItems.CargoDelivery ? "40%" : "100%",}}>
-                      <img src="https://www.fslgo.com/_next/static/media/pickup.f4ca650f.svg" alt="line" />
-                      {/* <img src={Vector} alt="car" className="mx-2" />
-                      <img src={Line} alt="line" /> */}
-                    </div>
-                    <div>
-                      <p
-                        className="m-0 cargo-pickup-p"
-                        style={{
-                          opacity: !checkedItems.CargoDelivery ? "40%" : "100%",
-                        }}
-                      >
-                        <img
-                          src={Cargo}
-                          alt="cargo"
-                          className="me-1 mb-1"
-                          style={{ width: "13px", height: "17px" }}
-                        />
-                        {renderSelectedValue1()}
-                      </p>
-                    </div>
-                  </div>
-                </Card>
-              )
-          )}
-
           {displayedData?.map(
             (data, index) =>
               data.mode == "SEA" && (
@@ -382,69 +499,7 @@ function ShipmentTracker({
                 </Card>
               )
           )}
-          {displayedData?.map(
-            (data, index) =>
-              index === 0 &&
-              data?.mode === "AIR" && (
-                <Card className="cargo-pick mb-2">
-                  <div
-                    key={index}
-                    className="d-flex justify-content-between align-items-center"
-                  >
-                    <div style={{ opacity: "40%" }} className="cargo-pickup-p">
-                      <img src={icon} alt="icon" className="me-1" />
-                      Cargo Pickup
-                    </div>
-                    <div style={{ opacity: "40%" }}>
-                      <img src={Line} alt="line" />
-                      <img src={Vector} alt="car" className="mx-2" />
-                      <img src={Line} alt="line" />
-                    </div>
-                    <div>
-                      <p className="m-0 cargo-pickup-p">{data?.origin}</p>
-                    </div>
-                    <div style={{ height: "20px", opacity: "60%" }}>
-                      <span
-                        style={{
-                          display: "block",
-                          marginTop: "-5px",
-                          textAlign: "center",
-                          height: "10px",
-                        }}
-                      >
-                        <img src={airplane} alt="union" className="mb-2" />
-                      </span>
-                      <span style={{ height: "10px" }}>
-                        <img src={flow} alt="flow" />
-                        <img src={flow} alt="flow" />
-                      </span>
-                    </div>
-                    <div>
-                      <p className="m-0 cargo-pickup-p">{data?.destination}</p>
-                    </div>
-                    <div style={{ opacity: "40%" }}>
-                      <img src={Line} alt="line" />
-                      <img src={Vector} alt="car" className="mx-2" />
-                      <img src={Line} alt="line" />
-                    </div>
-                    <div>
-                      <p
-                        className="m-0 cargo-pickup-p"
-                        style={{ opacity: "40%" }}
-                      >
-                        <img
-                          src={Cargo}
-                          alt="cargo"
-                          className="me-1 mb-1"
-                          style={{ width: "13px", height: "17px" }}
-                        />
-                        Cargo Delivery
-                      </p>
-                    </div>
-                  </div>
-                </Card>
-              )
-          )}
+
           {displayedData?.map(
             (data, index) =>
               data.mode == "AIR" && (

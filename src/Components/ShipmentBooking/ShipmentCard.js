@@ -23,14 +23,18 @@ const ShipmentCard = ({
   setexim,
   exim,
   setHighlightShipmentCard,
-  selectedValue,
-  selectedDeliveryValue,
-  insuranceValue,
+  // selectedValue,
+  // selectedDeliveryValue,
+  // insuranceValue,
   setSelectedValue,
   selectedCode,
   setSelectedCode,
   selectedCode1,
   setSelectedCode1,
+  originPort,
+  setOriginPort,
+  destPort,
+  setDestPort,
 }) => {
   const dispatch = useDispatch();
   const [destination] = useState("");
@@ -41,8 +45,6 @@ const ShipmentCard = ({
     useState(false);
   const [destPortOptionsVisible, setDestPortOptionsVisible] = useState(false);
   const [cargoOptionsVisible, setCargoOptionsVisible] = useState(false);
-  const [originPort, setOriginPort] = useState(null);
-  const [destPort, setDestPort] = useState(null);
   const [searchOriginPort, setSearchOriginPort] = useState("");
   const [searchDestPort, setSearchDestPort] = useState("");
   const [searchOriginCode, setSearchOriginCode] = useState("");
@@ -111,8 +113,6 @@ const ShipmentCard = ({
   // }
   // const inputString = selectedValue;
   // const OriginCode = "extractOriginCode(inputString)";
-
-  console.log(selectedCode, "cose");
 
   let tosValue = "";
   if (exim === "I") {
@@ -288,7 +288,14 @@ const ShipmentCard = ({
     setSelectedCode1(false);
   }
   useEffect(() => {
-    dispatch(FindNewRateRequest({ inputdata }));
+    if (
+      (checkedItems.originCharges && checkedItems.cargoPickup) ||
+      (checkedItems.DestinationCharges && checkedItems.CargoDelivery)
+    ) {
+      return;
+    } else {
+      dispatch(FindNewRateRequest({ inputdata }));
+    }
   }, [
     selectedCurrency,
     checkedItems.originCharges && !checkedItems.cargoPickup,
