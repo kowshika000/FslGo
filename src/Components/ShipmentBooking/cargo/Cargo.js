@@ -43,7 +43,9 @@ const Cargo = ({
   setutDatas,
   cbm, setcbm,
    kg, setkg,
-   unit, setunits
+   unit, setunits,
+   originPort,
+   destPort,
 }) => {
   const [lastsaved,setlastsaved] = useState("")
   const [activeIndex,setactiveIndex] = useState(0)
@@ -221,6 +223,8 @@ const Cargo = ({
                 setexim={setexim}
                 setFinaldetails={setFinaldetails}
                 setmode={setmode}
+                originPort={originPort}
+                destPort={destPort}
                 // utexim={utexim}
                 // setutexim={setutexim}
                 // fclexim={fclexim}

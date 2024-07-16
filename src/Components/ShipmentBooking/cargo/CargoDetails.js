@@ -74,7 +74,9 @@ export default function CargoDetails({
   kg,
   setkg,
   unit, 
-  setunits
+  setunits,
+  originPort,
+  destPort,
 }) {
   
   const hasPageBeenRendered = useRef(false);
@@ -89,7 +91,7 @@ export default function CargoDetails({
   // console.log(cargo)
   // const tos = cargo.substring(0,3)
   // console.log(tos)
-  
+  console.log(originPort,destPort)
 
   
 
@@ -186,6 +188,8 @@ export default function CargoDetails({
               setlastsaved={setlastsaved}
               setFinaldetails={setFinaldetails}
               setmode={setmode}
+              originPort={originPort}
+              destPort={destPort}
             />
           )}
 
@@ -227,11 +231,16 @@ export default function CargoDetails({
               setkg={setkg}
               unit={unit}
               setunits={setunits}
+              originPort={originPort}
+              destPort={destPort}
             />
           )}
         </TabPanel>
 
         {/* FCL */}
+
+          {
+             (originPort?.Transport_mode !== "AIR" && destPort?.Transport_mode !== "AIR") || (originPort?.Transport_mode !== "AIR" && destPort?.Transport_mode !== "AIR")  ?
 
         <TabPanel
           header="FCL"
@@ -274,6 +283,8 @@ export default function CargoDetails({
             // setlastsaved={setlastsaved}
           />
         </TabPanel>
+        :null
+                 }
       </TabView>
       {/* </div> */}
     </div>

@@ -72,7 +72,7 @@ const Fcl = ({
     setfclDatas((prevData) =>
       prevData.map((item, index) =>
         index === id
-          ? { ...item, [name]: name === "no_of_containers" ? parseInt(value) : value }
+          ? { ...item, [name]: name === "no_of_containers" ? parseFloat(value) : value }
           : item
       )
     );
@@ -255,7 +255,7 @@ const Fcl = ({
 
     // Convert the map to a formatted string
     return "FCL | " + Object.entries(aggregateMap)
-      .map(([type, qty]) => `${type} X ${qty} `)
+      .map(([type, qty]) => `${qty} X ${type} `)
       .join(', ');
   };
 
@@ -420,13 +420,14 @@ const Fcl = ({
                           placeholder="Quantity"
                           onKeyDown={(e) => {
                             if (
-                              !/[0-9]|Backspace|Tab|Enter|Delete|ArrowLeft|ArrowRight/.test(
+                              !/[0-9]|\.|Backspace|Tab|Enter|Delete|ArrowLeft|ArrowRight/.test(
                                 e.key
                               )
                             ) {
                               e.preventDefault();
                             }
                           }}
+                          step={"any"}
                           // onBlur={() =>
                           //   fclDatas[index]?.no_of_containers < 0 || fclDatas[index]?.no_of_containers > 99
                           //     ? setfclerrors((prev) => {
