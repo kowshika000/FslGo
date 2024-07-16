@@ -3,23 +3,17 @@ import {
   Typography,
   MenuItem,
   Select,
-  InputLabel,
   FormControl,
-  TextField,
   Radio,
   FormControlLabel,
   RadioGroup,
-  Box,
   FormHelperText,
 } from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
 import "../cargo.css";
 import minus from "../../../../assets/9021673_minus_bold_icon 1.svg";
 import plus from "../../../../assets/material-symbols_add-rounded.svg";
-import { Input, Select as AntSelect, Space, Button, Tooltip } from "antd";
-import { Option } from "antd/es/mentions";
-import deletedicon from "../../../../assets/ic_outline-delete.svg";
-import editicon from "../../../../assets/editpencil.f11da97f.svg";
+
+
 
 const TotalShipment = ({
   onClose,
@@ -242,8 +236,8 @@ useEffect(() => {
         console.log("err");
         seterrmsg("Please add proper values for load");
       } else if (errors.no_of_units) {
-        console.log("units");
-        seterrmsg("Please add proper units for load");
+        console.log("unit");
+        seterrmsg("Please add proper unit for load");
       } else if (errors.total_volume) {
         seterrmsg("Please add proper volume for load");
       } else if (errors.total_weight) {
@@ -872,6 +866,7 @@ useEffect(() => {
               onChange={handlePackChange}
               name="package_type"
               displayEmpty
+              renderValue={tsDatas.package_type !== "" ? undefined : () => <><span style={{fontSize: "14px",fontWeight: "400",color: "rgb(212, 212, 212)"}}>Select Type</span></> }
               inputProps={{ "aria-label": "Without label" }}
             >
               {
@@ -901,7 +896,7 @@ useEffect(() => {
             style={{
               border: "1px solid rgba(207, 214, 223, 1)",
               height: "45px",
-              borderColor: errors.no_of_units ? "red" : null,
+              borderColor: errors.no_of_units ? "red" : "rgba(207, 214, 223, 1)",
             }}
           >
             <input
