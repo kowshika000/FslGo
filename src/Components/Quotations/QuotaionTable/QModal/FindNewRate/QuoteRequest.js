@@ -7,7 +7,7 @@ import RightArrow from "../../../../../assets/rightarrow.svg";
 import QuoteRequestModal from "./QuoteRequestModal";
 import { LeftOutlined } from "@ant-design/icons";
 
-function QuoteRequest({ setShowReselt, checkedItems }) {
+function QuoteRequest({ setShowReselt, checkedItems, setCheckedItems }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
@@ -62,10 +62,66 @@ function QuoteRequest({ setShowReselt, checkedItems }) {
       return <>Add Stackable Cargo charges</>;
     } else if (checkedItems?.NonHarzardousCargo === false) {
       return <>Add Harzardous Cargo charges</>;
+    }else if(checkedItems?.exportClearance === true){
+      return <>Remove Export Clearance</>;
+    }else if(checkedItems?.ImportClearance === true){
+      return <>Remove Import Clearance</>;
     } else {
-      return <>Go Back</>;
+      return (
+        <div
+          onClick={() => setShowReselt(false)}
+          className="d-flex flex-direction-row gap-1"
+        >
+          <LeftOutlined
+            style={{
+              width: "13px",
+              height: "13px",
+              marginTop: "8px",
+            }}
+          />
+          <span
+            style={{
+              width: "18px",
+              height: "18px",
+              marginTop: "4px",
+            }}
+          >
+            Go Back
+          </span>
+        </div>
+      );
     }
   };
+  const handleClick = () => {
+    setCheckedItems((prevCheckedItems) => {
+      if (prevCheckedItems.StackableCargo === false) {
+        return { ...prevCheckedItems, StackableCargo: true };
+      } else if (prevCheckedItems.NonHarzardousCargo === false) {
+        return { ...prevCheckedItems, NonHarzardousCargo: true };
+      }else if (prevCheckedItems.exportClearance === true) {
+        return { ...prevCheckedItems, exportClearance: false };
+      }else if (prevCheckedItems.ImportClearance === true) {
+        return { ...prevCheckedItems, ImportClearance: false };
+      }
+      return prevCheckedItems;
+    });
+  };
+  const image =
+    checkedItems?.NonHarzardousCargo !== false &&
+    checkedItems?.StackableCargo !== false ? (
+      <Image
+        src={RightArrow}
+        alt="arrow"
+        className="me-3"
+        preview={false}
+        style={{
+          cursor: "pointer",
+          color: "#69b1ff",
+        }}
+      />
+    ) : (
+      ""
+    );
   return (
     <>
       <Card className="Quote-Card" style={{ padding: "0px" }}>
@@ -115,30 +171,54 @@ function QuoteRequest({ setShowReselt, checkedItems }) {
             >
               <Button
                 type="link"
-                icon={
-                  checkedItems?.NonHarzardousCargo !== false &&
-                  checkedItems?.StackableCargo !== false ? (
-                    <LeftOutlined
-                      style={{
-                        width: "12px",
-                        height: "12px",
-                        marginTop: "10px",
-                      }}
-                    />
-                  ) : (
-                    ""
-                  )
-                }
-                style={{
-                  fontSize: "14px",
-                  fontWeight: "400",
-                  lineHeight: "24px",
-                  letterSpacing: "1%",
-                  cursor: "pointer",
-                }}
+                // icon={
+                //   checkedItems?.NonHarzardousCargo !== false &&
+                //   checkedItems?.StackableCargo !== false ? (
+                //     <LeftOutlined
+                //       style={{
+                //         width: "13px",
+                //         height: "13px",
+                //         marginTop: "8px",
+                //       }}
+                //     />
+                //   ) : (
+                //     ""
+                //   )
+                // }
+                onClick={handleClick}
               >
                 {ButtonLabel()}
               </Button>
+              {/* <div className="go-back">
+                  <div>
+                    <img
+                      src={RightArrow}
+                      alt="arrow"
+                      className="me-1"
+                      style={{
+                        width: "18px",
+                        height: "18px",
+                        cursor: "pointer",
+                        color: "#03b2cb",
+                      }}
+                    />
+                  </div>
+
+                  <div onClick={() => setShowReselt(false)}>
+                    <span
+                      style={{
+                        fontSize: "14px",
+                        fontWeight: "400",
+                        lineHeight: "24px",
+                        letterSpacing: "1%",
+                        color: "#03b2cb",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Go Back
+                    </span>
+                  </div>
+                </div> */}
             </div>
           </Col>
         </Row>

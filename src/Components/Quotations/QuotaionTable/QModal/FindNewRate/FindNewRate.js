@@ -481,6 +481,8 @@ function FindNewRate({
           checkedItems={checkedItems}
           setShowReselt={setShowReselt}
           exim={exim}
+          setCheckedItems={setCheckedItems}
+          selectedDeliveryValue={selectedDeliveryValue}
         />
       </div>
     </div>
