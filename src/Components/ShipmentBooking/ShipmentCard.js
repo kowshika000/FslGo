@@ -22,6 +22,7 @@ const ShipmentCard = ({
   setCheckedItems,
   setexim,
   exim,
+  setHighlightShipmentCard,
 }) => {
   const dispatch = useDispatch();
   const [destination] = useState("");
@@ -38,13 +39,12 @@ const ShipmentCard = ({
   const [searchDestPort, setSearchDestPort] = useState("");
   const [searchOriginCode, setSearchOriginCode] = useState("");
   const [searchDestCode, setSearchDestCode] = useState("");
-  const [finalDetails,setFinaldetails] = useState("")
-  const [mode, setmode] = useState("")
-  const [exim, setexim] = useState("I");
-  const [deserrormsg, setdeserrormsg] = useState(null)
-  const [orgerrormsg, setorgerrormsg] = useState(null)
+  const [finalDetails, setFinaldetails] = useState("");
+  const [mode, setmode] = useState("");
+  // const [exim, setexim] = useState("I");
+  const [deserrormsg, setdeserrormsg] = useState(null);
+  const [orgerrormsg, setorgerrormsg] = useState(null);
   const [tserrmsg, seterrmsg] = useState("");
-
 
   useEffect(() => {
     if (destination && cargoRef.current) {
@@ -143,38 +143,34 @@ const ShipmentCard = ({
   };
 
   const handleSearch = () => {
-    if(originPort && destPort && finalDetails){
+    if (originPort && destPort && finalDetails) {
       setShowReselt(true);
       dispatch(FindNewRateRequest({ inputdata }));
-    }
-    else{
-      if(!originPort){
-        setorgerrormsg("Please add Origin")
+    } else {
+      if (!originPort) {
+        setorgerrormsg("Please add Origin");
+      } else {
+        setorgerrormsg("");
       }
-      else{
-        setorgerrormsg("")
+      if (!destPort) {
+        setdeserrormsg("Please add Destination");
+      } else {
+        setdeserrormsg("");
       }
-      if(!destPort){
-        setdeserrormsg("Please add Destination")
-      }
-      else{
-        setdeserrormsg("")
-      }
-      if(!finalDetails){
-          seterrmsg("Please add Caro details")
-      }
-      else{
-        seterrmsg("")
+      if (!finalDetails) {
+        seterrmsg("Please add Caro details");
+      } else {
+        seterrmsg("");
       }
     }
-    
+    setHighlightShipmentCard(false);
   };
   const handleSwap = () => {
     if (originPort && destPort && searchOriginPort && searchDestPort) {
       setSearchDestPort(searchOriginPort);
       setSearchOriginPort(searchDestPort);
-      setSearchDestCode(searchOriginCode)
-      setSearchOriginCode(searchDestCode)
+      setSearchDestCode(searchOriginCode);
+      setSearchOriginCode(searchDestCode);
       setDestPort(originPort);
       setOriginPort(destPort);
       setexim((prev) => (prev === "I" ? "E" : "I"));
@@ -201,9 +197,9 @@ const ShipmentCard = ({
     }
   };
 
-  console.log(searchDestCode)
-  console.log(finalDetails)
-  console.log(mode)
+  console.log(searchDestCode);
+  console.log(finalDetails);
+  console.log(mode);
 
   useEffect(() => {
     if (exim === "I") {
@@ -214,7 +210,15 @@ const ShipmentCard = ({
   }, [exim]);
   useEffect(() => {
     dispatch(FindNewRateRequest({ inputdata }));
-  }, [selectedCurrency, checkedItems]);
+  }, [
+    selectedCurrency,
+    checkedItems.originCharges,
+    checkedItems.exportClearance,
+    checkedItems.DestinationCharges,
+    checkedItems.ImportClearance,
+    checkedItems.StackableCargo,
+    checkedItems.NonHarzardousCargo,
+  ]);
   return (
     <div style={{ maxWidth: "1255px" }} className="mx-auto">
       <div
@@ -284,7 +288,7 @@ const ShipmentCard = ({
             setexim={setexim}
             setmode={setmode}
             tserrmsg={tserrmsg}
-            seterrmsg = {seterrmsg}
+            seterrmsg={seterrmsg}
             // utexim={utexim}
             // setutexim={setutexim}
             // fclexim={fclexim}
