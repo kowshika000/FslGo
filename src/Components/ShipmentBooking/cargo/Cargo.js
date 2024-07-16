@@ -35,8 +35,16 @@ const Cargo = ({
   // setfclexim,
   // utexim,
   // setutexim,
+  tsDatas, 
+  settsDatas,
+  fclDatas, 
+  setfclDatas,
+  utDatas, 
+  setutDatas,
+  cbm, setcbm,
+   kg, setkg,
+   unit, setunits
 }) => {
-  const dispatch = useDispatch()
   const [lastsaved,setlastsaved] = useState("")
   const [activeIndex,setactiveIndex] = useState(0)
   const [cargo, setCargo] = useState("");
@@ -62,16 +70,14 @@ const Cargo = ({
 
   //This is for total shipment
 
-  const [tsDatas, settsDatas] = useState({
-    package_type: "BOX",
-    no_of_units: "",
-    total_volume: "",
-    total_weight: "",
-    // import_export: "I",
-    volume_type: "CBM",
-    weight_type: "KG",
-    mode:"TS"
-  });
+  // const [tsDatas, settsDatas] = useState({
+  //   package_type: "",
+  //   no_of_units: "",
+  //   total_volume: "",
+  //   total_weight: "",
+  //   volume_type: "CBM",
+  //   weight_type: "KG",
+  // });
 
   const [errors, seterrors] = useState({
     no_of_units: false,
@@ -81,19 +87,6 @@ const Cargo = ({
 
   //This is for Unit Shipment
 
-  const [utDatas, setutDatas] = useState([
-    {
-      package_type: "BOX",
-      units: "",
-      height: "",
-      lengths: "",
-      width: "",
-      dimensionUnit: "CM",
-      weight: "",
-      weightUnit: "KG",
-    },
-  ]
-  );
   const [utclickedId, setutclickedId] = useState([0])
 
   //this is for fcl
@@ -104,23 +97,16 @@ const Cargo = ({
   // );
   // const [fclediteddata, setfclediteddata] = useState({});
   // const [fcleditedId, setfcleditedId] = useState("");
-  const [fclDatas, setfclDatas] = useState([
-    {
-      containerType: "",
-      quantity: null,
-    },
-  ]
-  );
   const [clickedId, setclickedId] = useState([0])
 
 
   // const [fclerrors, setfclerrors] = useState({
-  //     quantity: false,
-  //     containerType:false,
+  //     no_of_containers: false,
+  //     container_type:false,
   //   }
   // );
   // const [fclediterrors, setfclediterrors] = useState({
-  //   quantity: false,
+  //   no_of_containers: false,
   // });
 
   //This is for error
@@ -187,6 +173,10 @@ const Cargo = ({
               outline: "none",
               width: "90%",
               background: "transparent",
+              fontWeight:"600",
+              fontSize:"16",
+              lineHeight:"22px",
+              letterSpacing:".01em"
             }}
             className="input-field "
             placeholder="Enter your Cargo details"
@@ -278,6 +268,12 @@ const Cargo = ({
                 setIsByTotalShipmentOpen={setIsByTotalShipmentOpen}
                 isByUnitTypeOpen={isByUnitTypeOpen}
                 setIsByUnitTypeOpen={setIsByUnitTypeOpen}
+                cbm={cbm} 
+                setcbm={setcbm}
+                kg={kg} 
+                setkg={setkg}
+                unit={unit}
+                setunits={setunits}
               />
             </div>
           )}

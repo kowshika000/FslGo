@@ -1,40 +1,32 @@
-import { Select } from "antd";
+import { Input ,Button} from "antd";
 import React from "react";
 
-function CargoInsurance({ setSelectedValue, setPopoverOpen }) {
-  const handleSelectChange = (value) => {
-    if (value) {
-      setSelectedValue(value);
-      setPopoverOpen(false);
-    }
-    console.log(`selected ${value}`);
+function CargoInsurance({ insuranceValue, setInsuranceValue,setInsurance }) {
+  const handleCalculateClick = () => {
+    setInsurance(false)
   };
-  const onSearch = (value) => {
-    console.log("search:", value);
+  const handleInputChange = (e) => {
+    setInsuranceValue(e.target.value);
   };
   return (
     <div className="div-colaligned popover-checkbox1 popover-open w-200">
-      <Select
-        showSearch
-        placeholder="Select City or Zipcode"
-        optionFilterProp="label"
-        onChange={handleSelectChange}
-        onSearch={onSearch}
-        options={[
-          {
-            value: "jack1133",
-            label: "Jack1133",
-          },
-          {
-            value: "lucy2233",
-            label: "Lucy2233",
-          },
-          {
-            value: "tom3333",
-            label: "Tom3333",
-          },
-        ]}
-      />
+      <Input
+            className="cargo-insurance-input"
+            placeholder="Goods Value in USD"
+            type="text"
+            value={insuranceValue}
+            onChange={handleInputChange}
+            suffix={
+              <Button
+                type="ant-btn-primary"
+                className="calculate-btn"
+                size="small"
+                onClick={handleCalculateClick}
+              >
+                Calculate
+              </Button>
+            }
+          />
     </div>
   );
 }
