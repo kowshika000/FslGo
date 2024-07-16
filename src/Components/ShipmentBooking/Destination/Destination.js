@@ -40,7 +40,11 @@ const Destination = ({
   destPort,
   originPort,
   searchDestPort,
-  setSearchDestPort
+  setSearchDestPort,
+  searchDestCode,
+  setSearchDestCode,
+  deserrormsg, 
+  setdeserrormsg 
 }) => {
   // const [searchDestPort, setSearchDestPort] = useState("");
   // const [originPortOptionsVisible, setOriginPortOptionsVisible] = useState(false);
@@ -49,7 +53,6 @@ const Destination = ({
   console.log(searchDestPort)
   const [prevValue, setPrevValue] = useState("");
   const [checkleave, setcheckleave] = useState("");
-  const [errormsg, seterrormsg] = useState(null)
   const dispatch = useDispatch();
   const DestinationPortData = useSelector((state) => state.allPort);
   const { loading, error } = useSelector((state) => state.allPort);
@@ -118,23 +121,24 @@ const Destination = ({
       port?.Transport_mode === "SEA" &&
       originPort?.Transport_mode === "AIR"
     ) {
-      seterrormsg("Please select either AIR Port or City as destination");
+      setdeserrormsg("Please select either AIR Port or City as destination");
       setSearchDestPort("");
       setDestPort(null);
     } else if (
       port?.Transport_mode === "AIR" &&
       originPort?.Transport_mode === "SEA"
     ) {
-      seterrormsg("Please select either SEA Port or City as destination");
+      setdeserrormsg("Please select either SEA Port or City as destination");
       setSearchDestPort("");
       setDestPort(null);
     } else if (port?.port_country === originPort?.port_country) {
-      seterrormsg("Please select a different country than origin");
+      setdeserrormsg("Please select a different country than origin");
       setSearchDestPort("");
       setDestPort(null);
     } else {
       setSearchDestPort(port?.port_name);
-      seterrormsg(null)
+      setSearchDestCode(port?.port_code)
+      setdeserrormsg(null)
     }
   };
 
@@ -217,8 +221,8 @@ const Destination = ({
             <IoClose role="button" style={{position:"absolute",top:"51%",right:"20px",}} onClick={handleClose} />
           }
           {
-            errormsg && <FormHelperText style={{ color: "red", fontStyle: "italic" }}>
-            {errormsg}
+            deserrormsg && <FormHelperText style={{ color: "red", fontStyle: "italic" }}>
+            {deserrormsg}
           </FormHelperText>
           }
           

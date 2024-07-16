@@ -25,6 +25,7 @@ function ShipmentTracker({
   selectedDeliveryValue,
   setShowReselt,
   exim,
+  setCheckedItems 
 }) {
   const [showAllData, setShowAllData] = useState(false);
   const [showCharges, setShowCharges] = useState(null);
@@ -99,7 +100,7 @@ function ShipmentTracker({
     }
   };
   const renderSelectedValue1 = () => {
-    if (!checkedItems.CargoDelivery) return "Cargo Pickup";
+    if (!checkedItems.CargoDelivery) return "Cargo Delivery";
 
     if (selectedDeliveryValue?.length > 10) {
       return (
@@ -152,10 +153,15 @@ function ShipmentTracker({
       </Card>
       {findRate?.statusmessage === "information not available" ||
       (exim === "I" && checkedItems?.DestinationCharges === false) ||
-      (exim === "E" && checkedItems?.originCharges === false) ? (
+      (exim === "E" && checkedItems?.originCharges === false) ||
+      checkedItems?.StackableCargo === false ||
+      checkedItems?.NonHarzardousCargo === false||
+      checkedItems?.exportClearance === true ||
+      checkedItems?.ImportClearance === true ? (
         <QuoteRequest
           setShowReselt={setShowReselt}
           checkedItems={checkedItems}
+          setCheckedItems={setCheckedItems}
         />
       ) : (
         <>
@@ -182,15 +188,15 @@ function ShipmentTracker({
                       />
                       {renderSelectedValue()}
                     </div>
-                    <div style={{ opacity: "40%" }}>
-                      <img src={Line} alt="line" />
-                      <img src={Vector} alt="car" className="mx-2" />
-                      <img src={Line} alt="line" />
+                    <div style={{  opacity: !checkedItems.cargoPickup ? "40%" : "100%", }}>
+                      <img src="https://www.fslgo.com/_next/static/media/pickup.f4ca650f.svg" alt="line" />
+                      {/* <img src={Vector} alt="car" className="mx-2" />
+                      <img src={Line} alt="line" /> */}
                     </div>
                     <div>
-                      <p className="m-0 cargo-pickup-p">{data?.origin}</p>
+                      <p className="m-0 cargo-pickup-p" style={{fontWeight:"800"}}>{data?.origin}</p>
                     </div>
-                    <div style={{ height: "20px", opacity: "60%" }}>
+                    <div style={{ height: "20px", opacity: "100%" }}>
                       <span
                         style={{
                           display: "block",
@@ -199,7 +205,7 @@ function ShipmentTracker({
                           height: "10px",
                         }}
                       >
-                        <img src={Union} alt="union" className="mb-2" />
+                        <img src="https://www.fslgo.com/_next/static/media/ship.2f4cd5cc.svg" alt="union" className="mb-2" />
                       </span>
                       <span style={{ height: "10px" }}>
                         <img src={flow} alt="flow" />
@@ -207,12 +213,12 @@ function ShipmentTracker({
                       </span>
                     </div>
                     <div>
-                      <p className="m-0 cargo-pickup-p">{data?.destination}</p>
+                      <p className="m-0 cargo-pickup-p" style={{fontWeight:"800"}}>{data?.destination}</p>
                     </div>
-                    <div style={{ opacity: "40%" }}>
-                      <img src={Line} alt="line" />
-                      <img src={Vector} alt="car" className="mx-2" />
-                      <img src={Line} alt="line" />
+                    <div style={{ opacity: !checkedItems.CargoDelivery ? "40%" : "100%",}}>
+                      <img src="https://www.fslgo.com/_next/static/media/pickup.f4ca650f.svg" alt="line" />
+                      {/* <img src={Vector} alt="car" className="mx-2" />
+                      <img src={Line} alt="line" /> */}
                     </div>
                     <div>
                       <p

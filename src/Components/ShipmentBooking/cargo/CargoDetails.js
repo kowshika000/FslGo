@@ -20,6 +20,7 @@ export default function CargoDetails({
   seterrors,
   exim,
   setexim,
+  setFinaldetails,
   // fclexim,
   // setfclexim,
   // utexim,
@@ -37,6 +38,7 @@ export default function CargoDetails({
   // setuterrors,
   // utediterrors,
   // setutediterrors,
+  setmode,
   utDatas,
   setutDatas,
   utclickedId,
@@ -103,13 +105,13 @@ export default function CargoDetails({
   const toggleByTotalShipment = () => {
     setIsByTotalShipmentOpen(true);
     setIsByUnitTypeOpen(false);
-    // setshowcargo("")
+    setshowcargo("")
   };
 
   const toggleByUnitType = () => {
     setIsByUnitTypeOpen(true);
     setIsByTotalShipmentOpen(false);
-    // setshowcargo("")
+    setshowcargo("")
   };
 
   useEffect(() => {
@@ -176,6 +178,8 @@ export default function CargoDetails({
               setshowcargo={setshowcargo}
               packages={packages}
               setlastsaved={setlastsaved}
+              setFinaldetails={setFinaldetails}
+              setmode={setmode}
             />
           )}
 
@@ -209,6 +213,8 @@ export default function CargoDetails({
               setshowcargo={setshowcargo}
               packages={packages}
               setlastsaved={setlastsaved}
+              setFinaldetails={setFinaldetails}
+              setmode={setmode}
             />
           )}
         </TabPanel>
@@ -245,6 +251,8 @@ export default function CargoDetails({
             setfclDatas={ setfclDatas}
             clickedId={clickedId}
             setclickedId={setclickedId}
+            setFinaldetails={setFinaldetails}
+            setmode={setmode}
             // fclerrors={fclerrors}
             // setfclerrors={setfclerrors}
             // fclediterrors={fclediterrors}

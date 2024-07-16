@@ -7,17 +7,18 @@ function CargoDeliveryPopOver({ setSelectedValue, setPopoverOpen }) {
   const dispatch = useDispatch();
   const delivery = useSelector((state) => state?.Delivery?.Delivery?.deliverypointlist);
   console.log(delivery,"delivery data");
-
   const [options, setOptions] = useState([]);
+
   const handleSelectChange = (value) => {
     if (value) {
+      console.log("vvv",value);
       setSelectedValue(value);
       setPopoverOpen(false);
     }
   };
   const onSearch = (value) => {
     if (value.length >= 3) {
-      dispatch(DeliveryRequest({ country: "IN", delivery_place: value}));
+      dispatch(DeliveryRequest({ country: "AE", delivery_place: value}));
     }
   };
   useEffect(() => {

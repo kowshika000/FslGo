@@ -23,6 +23,7 @@ const UnitType = ({
   setCargo,
   setCargoOptionsVisible,
   seterrmsg,
+  setmode,
   // utexim,
   // setutexim,
   exim,
@@ -45,12 +46,19 @@ const UnitType = ({
   utclickedId,
   setshowcargo,
   packages,
-  setlastsaved
+  setlastsaved,
+  setFinaldetails
 }) => {
  
   console.log("ut",utDatas)
   console.log("clickedut",utclickedId)
+  const [hasErrors, setHasErrors] = useState(false);
   const [disabled, setDisabled] = useState(false);
+  const [errors, setErrors] = useState([]);
+  const [cbm, setcbm] = useState("")
+  const [kg, setkg] = useState("")
+  const [units, setunits] = useState("")
+  const hasPageBeenRendered = useRef(false)
 
   const handleAddLoad = () => {
     setutDatas((prevData) => {
@@ -117,7 +125,7 @@ const UnitType = ({
     setutDatas(deletedItems);
   };
   const handleEdit = (id) => {
-    // const EditedItems = fclDatas.map((item,index)=>index === id? id:index)
+    // const EditedItems = utDatas.map((item,index)=>index === id? id:index)
     setutclickedId((prev) => {
       return [...prev, id];
     });
@@ -162,35 +170,63 @@ const UnitType = ({
 
   const handleWholeValue = () => {
     if (utDatas.length > 0) {
-      let e,
-        total = 0;
-      utDatas.forEach((ele) => {
-        console.log(ele);
-        total += parseInt(ele.quantity);
-        ele.quantity < 1 && (e = true);
-        ele.quantity > 99 && (e = true);
-        ele.quantity === null && (e = false);
-        // e.containerType===0 || e.containerType?.includes(null) && (e=true)
-      });
-      console.log("total", total);
-      if (total > 99) {
-        seterrmsg("Your total containers exceeds 99");
-        setDisabled(true)
-      } else {
-        seterrmsg("");
+      let e, t = 0, a = 0,u=0;
+      utDatas.forEach(l=>{
+         return ( t += parseInt(l.units) * KGandLB(l.weightUnit, l.weight),
+          a += parseInt(l.units) * CMandIN(l.dimensionUnit, l.lengths, l.width, l.height),
+          u += parseInt(l.units),
+          (!l.units || l.units < 1 || l.units > 999) && (e = !0),
+          (!l.height || l.height < 10 || l.height > 220) && (e = !0),
+          (!l.width || l.width < 10 || l.width > 220) && (e = !0),
+          (!l.lengths || l.lengths < 10 || l.lengths > 310) && (e = !0),
+          (!l.weight || l.weight < 1 || l.weight > 3e3) && (e = !0))
+      }
+      );
+      setcbm(a)
+      setkg(t)
+      setunits(u)
+      if (t >= 15e3) {
+          return (seterrmsg("Your total Load exceeds ".concat(15e3, " KG.")),
+          setshowcargo(true),
+          setDisabled(true)
+      )
+          // return;
+      }
+      else{
+        seterrmsg("")
         setDisabled(false)
       }
-      // if(e){
-      //   seterrmsg("Please add proper details for previous loads")
+      if (a >= 15) {
+          return (seterrmsg("Your total Load exceeds ".concat(15, " CBM.")),
+          setshowcargo(true),
+          setDisabled(true))
+          // return;
+      }
+      else{
+        seterrmsg("")
+        setDisabled(false)
+      }
+      // if (e) {
+      //     return (seterrmsg("Please add proper details for previous loads"),
+      //     setshowcargo(true))
+      //     // return
       // }
       // else{
       //   seterrmsg("")
       // }
+  // }
+//   eD(!0)
+// }
+// , tr = e=>{
+//   let t = eg[e];
+//   if (!t.noOfUnits || t.noOfUnits < 1 || t.noOfUnits > 999 || !t.height || t.height < 10 || t.height > 220 || !t.width || t.width < 10 || t.width > 220 || !t.length || t.length < 10 || t.length > 310 || !t.totalWeight || t.totalWeight < 1 || t.totalWeight > 3e3)
+//       return !0
+// }
     }
-  };
-  useEffect(() => {
-    handleWholeValue();
-  }, [utDatas]);
+    }
+
+  console.log("cbm",cbm)
+  console.log("kg",kg)
 
   //For Mathematical Operations 
 
@@ -205,8 +241,187 @@ const UnitType = ({
     parseFloat(t) * parseFloat(a) * parseFloat(l) / n
   }
 
+  const CFT = (e,t)=>{
+    let a = 1;
+    return "CFT" == e && (a = .028),
+    parseFloat(t) * a
+}
+
   console.log(KGandLB("KG",11))
   console.log(CMandIN("CM",11,11,11))
+  console.log(CFT())
+
+  const triming=(un,le,wi,he,diun,weun,we)=>{
+    const res = `${un} Units ${le} x  ${wi} x  ${he} ${diun} | ${Number.parseFloat((parseInt(un) * we).toFixed(3))}  ${weun} | ${Number.parseFloat((parseInt(un) * CMandIN(diun, le, wi, he)).toFixed(3))} CBM`
+    console.log(res)
+    if(res.length <= 40){
+        return res
+    }
+    else{
+      return <Tooltip placement="topLeft" zIndex={9999} title={res}>
+        <span role="button">
+          {res?.slice(0, 40).trim().split("").join("") +
+            "..."}
+        </span>
+      </Tooltip>
+    }     
+  }
+
+  const validateData = () => {
+    let newErrors = [];
+  
+    utDatas.forEach((item, index) => {
+      let error = {};
+      console.log(error)
+  
+      // Validate package_type
+      if (!item.package_type || item.package_type.trim() === '') {
+        error.package_type = 'Package type is required';
+      }
+  
+      // Validate units
+      if (!Number.isInteger(item.units) || item.units < 1 || item.units > 999) {
+        if( item.units < 1){
+          error.units = 'Min 1';
+        }
+        else if(item.units > 999){
+          error.units = 'Max 999';
+        }
+        
+      }
+  
+      // Validate lengths
+      if (item.lengths < 10 || item.lengths > 310) {
+        if (item.lengths < 10) {
+          error.lengths = 'L Min 10';
+        } else if (item.lengths > 310) {
+          error.lengths = 'L Max 310';
+        }
+      }
+  
+      // Validate width
+      if (item.width < 10 || item.width > 220) {
+        if (item.width < 10) {
+          error.width = 'W Min 10';
+        } else if (item.width > 220) {
+          error.width = 'W Max 220';
+        }
+      }
+  
+      // Validate height
+      if (item.height < 10 || item.height > 220) {
+        if (item.height < 10) {
+          error.height = ' H Min 10';
+        } else if (item.height > 220) {
+          error.height = 'H Min 220';
+        }
+      }
+  
+      // Validate weight
+      if (item.weight <= 0 || item.weight > 3000) {
+        if (item.weight <= 0) {
+          error.weight = 'Min 1';
+        } else if (item.weight > 3000) {
+          error.weight = 'Max 3000';
+        }
+      }
+  
+      // Validate dimensionUnit
+      if (!['CM', 'IN'].includes(item.dimensionUnit)) {
+        error.dimensionUnit = 'Invalid dimension unit';
+      }
+  
+      // Validate weightUnit
+      if (!['KG', 'LB'].includes(item.weightUnit)) {
+        error.weightUnit = 'Invalid weight unit';
+      }
+  
+      // If there are errors, add them to the newErrors array
+      if (Object.keys(error).length > 0) {
+        newErrors[index] = error;
+      }
+     
+      
+      
+    })
+    const hasError = Object.values(newErrors).some(
+      (error) => error.package_type || error.unity || error.lengths || error.width || error.height || error.weight
+    );
+    setHasErrors(hasError);
+
+    return newErrors
+
+    
+  };
+
+  console.log(hasErrors)
+
+    const handleBlur = (index, name) => {
+      const validationErrors = validateData();
+      console.log(validationErrors)
+  
+      if (validationErrors?.[index] && validationErrors?.[index][name]) {
+        console.log(`Blur validation error for ${name}:`, validationErrors[index][name]);
+        setErrors((prevErrors) => {
+          const updatedErrors = [...prevErrors];
+          updatedErrors[index] = { ...updatedErrors[index], [name]: validationErrors[index][name] };
+          return updatedErrors;
+        });
+      } else {
+        setErrors((prevErrors) => {
+          const updatedErrors = [...prevErrors];
+          if (updatedErrors[index]) {
+            delete updatedErrors[index][name];
+            if (Object.keys(updatedErrors[index]).length === 0) {
+              updatedErrors[index] = undefined;
+            }
+          }
+          return updatedErrors;
+        });
+      }
+    };
+
+    const aggregateData = () => {
+      // Create a map to aggregate quantities by containerType
+      // const aggregateMap = ut.reduce((acc, { containerType, quantity }) => {
+      //   if (!containerType || isNaN(quantity)) return acc;
+  
+      //   const abbreviatedType = containerTypeMap[containerType] || containerType;
+      //   const existingQuantity = acc[abbreviatedType] || 0;
+      //   acc[abbreviatedType] = existingQuantity + Number(quantity);
+      //   return acc;
+      // }, {});
+  
+      // Convert the map to a formatted string
+      return  `LCL | ${Number(units)} Units ${Number(cbm).toFixed(3)} CBM ${Number(kg).toFixed(3)} KG`;
+    };
+
+    const handleUtypeSubmit =(e)=>{
+      e.preventDefault()
+        if(!hasErrors && !disabled){
+          console.log("success")
+          setCargo(()=>aggregateData())
+          setFinaldetails(()=>aggregateData())
+          setmode("LCLUNIT")
+          setshowcargo(true)
+          setCargoOptionsVisible(false)
+  
+        }
+    }
+
+    useEffect(() => {
+      handleWholeValue();
+    }, [utDatas]);
+
+    useEffect(() => {
+      if(hasPageBeenRendered.current){
+      setCargo(()=>aggregateData())
+      setshowcargo(true)
+      }
+      hasPageBeenRendered.current = true
+    }, [aggregateData]);
+
+    console.log(errors)
 
   return (
     <>
@@ -274,8 +489,10 @@ const UnitType = ({
                     style={{ height: "45px" }}
                     // value={utDatas.package_type}
                     // onChange={handleChange}
+                    className={`form-control ${errors[index]?.units ? 'error' : ''}`}
                     value={item.package_type}
                     onChange={(e) => handleChange(index, e)}
+                    onBlur={() => handleBlur(index, 'package_type')}
                     name="package_type"
                     displayEmpty
                     inputProps={{ "aria-label": "Without label" }}
@@ -285,6 +502,7 @@ const UnitType = ({
                     })}
                   </Select>
                 </FormControl>{" "}
+                {errors[index]?.package_type && <p className="error-text" style={{fontSize:"12px",color:"red",fontStyle:"italic"}}>{errors[index]?.package_type}</p>}
               </div>
               <div className="w-50 my-3 ms-3 me-0">
                 <Typography
@@ -310,7 +528,7 @@ const UnitType = ({
                   <input
                     type="number"
                     autoComplete="off"
-                    className="placeholder_style form-control"
+                    className={`form-control placeholder_style ${errors[index]?.units ? 'error' : ''}`}
                     placeholder="Units"
                     onKeyDown={(e) => {
                       if (
@@ -321,6 +539,7 @@ const UnitType = ({
                         e.preventDefault();
                       }
                     }}
+                    onBlur={() => handleBlur(index, 'units')}
                     // onBlur={() =>
                     //   utDatas?.units < 0 || utDatas?.units > 999
                     //     ? setuterrors((prev) => {
@@ -380,6 +599,8 @@ const UnitType = ({
                     ? "Min 1"
                     : null}
                 </FormHelperText> */}
+                
+                {errors[index]?.units && <p className="error-text" style={{fontSize:"12px",color:"red",fontStyle:"italic"}}>{errors[index]?.units}</p>}
               </div>
             </div>
             <div className="d-flex">
@@ -430,6 +651,7 @@ const UnitType = ({
                     onWheel={(e) => e.target.blur()}
                     value={item.lengths}
                     onChange={(e) => handleChange(index, e)}
+                    onBlur={() => handleBlur(index, 'lengths')}
                     style={{
                       // border: "0px",
                       border: "1px solid rgb(207, 214, 223)",
@@ -469,6 +691,7 @@ const UnitType = ({
                     value={item.width}
                     onChange={(e) => handleChange(index, e)}
                     onWheel={(e) => e.target.blur()}
+                    onBlur={() => handleBlur(index, 'width')}
                     style={{
                       border: "1px solid rgb(207, 214, 223)",
                       borderRight: "1px solid rgb(207, 214, 223)",
@@ -507,6 +730,7 @@ const UnitType = ({
                     onWheel={(e) => e.target.blur()}
                     value={item.height}
                     onChange={(e) => handleChange(index, e)}
+                    onBlur={() => handleBlur(index, 'height')}
                     style={{
                       border: "1px solid rgb(207, 214, 223)",
                       borderRight: "1px solid rgb(207, 214, 223)",
@@ -539,6 +763,7 @@ const UnitType = ({
                       defaultValue="KG"
                       value={item.dimensionUnit}
                       onChange={(e) => handleChangeDimensionDropDown(index, e)}
+                      onBlur={() => handleBlur(index, 'dimensionUnit')}
                       // value={age}
                       // onChange={handleChange}
                       // input={<BootstrapInput />}
@@ -618,6 +843,15 @@ const UnitType = ({
                         ? "Min 10CM"
                         : null)}
                   </FormHelperText> */}
+                  <div style={{width:"30%"}}>
+                  {errors[index]?.lengths && <p className="error-text" style={{fontSize:"12px",color:"red",fontStyle:"italic"}}>{errors[index]?.lengths}</p>}
+                  </div>
+                  <div style={{width:"30%"}}>
+                  {errors[index]?.width && <p className="error-text" style={{fontSize:"12px",color:"red",fontStyle:"italic"}}>{errors[index]?.width}</p>}
+                  </div>
+                  <div style={{width:"30%"}}>
+                  {errors[index]?.height && <p className="error-text" style={{fontSize:"12px",color:"red",fontStyle:"italic"}}>{errors[index]?.height}</p>}
+                  </div>
                 </div>
               </div>
             </div>
@@ -664,6 +898,7 @@ const UnitType = ({
                     value={item.weight}
                     onChange={(e) => handleChange(index, e)}
                     onWheel={(e) => e.target.blur()}
+                    onBlur={() => handleBlur(index, 'weight')}
                     className="placeholder_style w-100"
                     style={{
                       border: "1px solid rgb(207, 214, 223)",
@@ -742,21 +977,26 @@ const UnitType = ({
                       : null
                     : ""}
                 </FormHelperText> */}
+                {errors[index]?.weightUnit && <p className="error-text" style={{fontSize:"12px",color:"red",fontStyle:"italic"}}>{errors[index]?.weightUnit}</p>}
               </div>
             </div>
                     </div>
+                    {utDatas.length > 1 && (
                     <Button
                 style={{
                   backgroundColor: "transparent",
                   border: "none",
                   boxShadow: "unset",
-                  // opacity: !canSave ? ".5" : "1",
+                  color: "#1677FF",
+                  opacity: !(utDatas[utDatas.length - 1].package_type && utDatas[utDatas.length - 1].units && utDatas[utDatas.length - 1].lengths && utDatas[utDatas.length - 1].width && utDatas[utDatas.length - 1].height && utDatas[utDatas.length - 1].weight ||  index !==utDatas.length - 1) || (hasErrors && !!errors[index]?.package_type || !!errors[index]?.units || !!errors[index]?.lengths || !!errors[index]?.width || !!errors[index]?.height || !!errors[index]?.weight) ? ".5" : "1",
                 }}
                 onClick={()=>handleSave(index)}
+                disabled={!(utDatas[utDatas.length - 1].package_type && utDatas[utDatas.length - 1].units && utDatas[utDatas.length - 1].lengths && utDatas[utDatas.length - 1].width && utDatas[utDatas.length - 1].height && utDatas[utDatas.length - 1].weight ||  index !==utDatas.length - 1) || (hasErrors && !!errors[index]?.package_type || !!errors[index]?.units || !!errors[index]?.lengths || !!errors[index]?.width || !!errors[index]?.height || !!errors[index]?.weight)}
                 // disabled={!canSave || IsError}
               >
                 save
-              </Button>
+              </Button>)
+}
             </div>
               </>
             ):
@@ -791,8 +1031,9 @@ const UnitType = ({
                       color: "rgba(41, 51, 61, 1)",
                     }}
                   >
+                   {triming(item.units,item.lengths,item.width,item.height,item.dimensionUnit,item.weightUnit,item.weight)}
                     {/* : {item.units} Units X {item.lengths}X{item.width}X{item.height} {item.dimensionUnit} | {item.weight}{item.weightUnit} */}
-                    {item.units} Units {item.lengths} x  {item.width} x  {item.height} {item.dimensionUnit} | {Number.parseFloat((parseInt(item.units) * item.weight).toFixed(3))}  {item.weightUnit} | {Number.parseFloat((parseInt(item.units) * CMandIN(item.dimensionUnit, item.lengths, item.width, item.height)).toFixed(3))} CBM   
+                    {/* {item.units} Units {item.lengths} x  {item.width} x  {item.height} {item.dimensionUnit} | {Number.parseFloat((parseInt(item.units) * item.weight).toFixed(3))}  {item.weightUnit} | {Number.parseFloat((parseInt(item.units) * CMandIN(item.dimensionUnit, item.lengths, item.width, item.height)).toFixed(3))} CBM    */}
                   </span>
                 </div>
                 <div>
@@ -849,7 +1090,8 @@ const UnitType = ({
       ))}
       <Tooltip
         placement="top"
-        title={"Please add proper details for previous loads"}
+        title={`${!(utDatas[utDatas.length - 1].package_type && utDatas[utDatas.length - 1].units && utDatas[utDatas.length - 1].lengths && utDatas[utDatas.length - 1].width && utDatas[utDatas.length - 1].height && utDatas[utDatas.length - 1].weight)  ? "Please add proper details for previous loads" : disabled?"Your total load exceeds 15CBM": "Add Another Load"} `}
+
         // trigger={IsError || (!canAdd && "hover")}
       >
         <Button
@@ -857,10 +1099,12 @@ const UnitType = ({
             border: "none",
             background: "none",
             // opacity: !CanField ? "1" : canAdd && !IsError ? "1" : ".5",
+            opacity:!(utDatas[utDatas.length - 1].package_type && utDatas[utDatas.length - 1].units && utDatas[utDatas.length - 1].lengths && utDatas[utDatas.length - 1].width && utDatas[utDatas.length - 1].height && utDatas[utDatas.length - 1].weight) || disabled || hasErrors ?".5":"1",
             boxShadow: "unset",
           }}
           // onClick={handleAddLoad}
           // disabled={!CanField ? false : !canAdd || IsError}
+          disabled={!(utDatas[utDatas.length - 1].package_type && utDatas[utDatas.length - 1].units && utDatas[utDatas.length - 1].lengths && utDatas[utDatas.length - 1].width && utDatas[utDatas.length - 1].height && utDatas[utDatas.length - 1].weight) || disabled || hasErrors}
           onClick={handleAddLoad}
         >
           <Typography
@@ -869,7 +1113,7 @@ const UnitType = ({
               fontSize: "13px",
               lineHeight: "19px",
               letterSpacing: ".01em",
-              color: "rgba(73, 90, 110, 1)",
+              color: "#1677FF",
             }}
           >
             + Add Another Load
@@ -953,7 +1197,7 @@ const UnitType = ({
           </RadioGroup>
         </div>
         <div className="d-flex justify-content-center align-items-center">
-          <button className="confirm" >
+          <button className="confirm" onClick={handleUtypeSubmit} >
             Confirm
           </button>
         </div>

@@ -36,6 +36,15 @@ const ShipmentCard = ({
   const [destPort, setDestPort] = useState(null);
   const [searchOriginPort, setSearchOriginPort] = useState("");
   const [searchDestPort, setSearchDestPort] = useState("");
+  const [searchOriginCode, setSearchOriginCode] = useState("");
+  const [searchDestCode, setSearchDestCode] = useState("");
+  const [finalDetails,setFinaldetails] = useState("")
+  const [mode, setmode] = useState("")
+  const [exim, setexim] = useState("I");
+  const [deserrormsg, setdeserrormsg] = useState(null)
+  const [orgerrormsg, setorgerrormsg] = useState(null)
+  const [tserrmsg, seterrmsg] = useState("");
+
 
   useEffect(() => {
     if (destination && cargoRef.current) {
@@ -119,10 +128,10 @@ const ShipmentCard = ({
     volume_type: "C",
     weight_type: "CBM",
     // origin: "DEACH",
-    origin: "INNSA",
-    destination: "AEJEA",
-    origin_country_code: "IN",
-    dest_country_code: "AE",
+    origin: searchOriginCode && searchOriginCode,
+    destination: searchDestCode && searchDestCode,
+    origin_country_code: originPort?.port_country,
+    dest_country_code: destPort?.port_country,
     TOS: tosValue,
     is_pickup_req: checkedItems.cargoPickup ? "Y" : "N",
     pickup_place: "N",
@@ -134,12 +143,38 @@ const ShipmentCard = ({
   };
 
   const handleSearch = () => {
-    setShowReselt(true);
+    if(originPort && destPort && finalDetails){
+      setShowReselt(true);
+      dispatch(FindNewRateRequest({ inputdata }));
+    }
+    else{
+      if(!originPort){
+        setorgerrormsg("Please add Origin")
+      }
+      else{
+        setorgerrormsg("")
+      }
+      if(!destPort){
+        setdeserrormsg("Please add Destination")
+      }
+      else{
+        setdeserrormsg("")
+      }
+      if(!finalDetails){
+          seterrmsg("Please add Caro details")
+      }
+      else{
+        seterrmsg("")
+      }
+    }
+    
   };
   const handleSwap = () => {
     if (originPort && destPort && searchOriginPort && searchDestPort) {
       setSearchDestPort(searchOriginPort);
       setSearchOriginPort(searchDestPort);
+      setSearchDestCode(searchOriginCode)
+      setSearchOriginCode(searchDestCode)
       setDestPort(originPort);
       setOriginPort(destPort);
       setexim((prev) => (prev === "I" ? "E" : "I"));
@@ -165,6 +200,11 @@ const ShipmentCard = ({
       }
     }
   };
+
+  console.log(searchDestCode)
+  console.log(finalDetails)
+  console.log(mode)
+
   useEffect(() => {
     if (exim === "I") {
       setCheckedItems({ ...checkedItems, DestinationCharges: true });
@@ -196,6 +236,10 @@ const ShipmentCard = ({
             destPort={destPort}
             setSearchOriginPort={setSearchOriginPort}
             searchOriginPort={searchOriginPort}
+            setSearchOriginCode={setSearchOriginCode}
+            searchOriginCode={searchOriginCode}
+            orgerrormsg={orgerrormsg}
+            setorgerrormsg={setorgerrormsg}
           />
           <div
             className="align-content-center ps-2"
@@ -224,6 +268,10 @@ const ShipmentCard = ({
             originPort={originPort}
             setSearchDestPort={setSearchDestPort}
             searchDestPort={searchDestPort}
+            setSearchDestCode={setSearchDestCode}
+            searchDestCode={searchDestCode}
+            deserrormsg={deserrormsg}
+            setdeserrormsg={setdeserrormsg}
           />
           {/* <div className="icon">
             <div className="divider"></div>
@@ -231,8 +279,12 @@ const ShipmentCard = ({
           <Cargo
             cargoOptionsVisible={cargoOptionsVisible}
             setCargoOptionsVisible={setCargoOptionsVisible}
+            setFinaldetails={setFinaldetails}
             exim={exim}
             setexim={setexim}
+            setmode={setmode}
+            tserrmsg={tserrmsg}
+            seterrmsg = {seterrmsg}
             // utexim={utexim}
             // setutexim={setutexim}
             // fclexim={fclexim}
