@@ -23,6 +23,18 @@ const ShipmentCard = ({
   setexim,
   exim,
   setHighlightShipmentCard,
+  // selectedValue,
+  // selectedDeliveryValue,
+  // insuranceValue,
+  setSelectedValue,
+  selectedCode,
+  setSelectedCode,
+  selectedCode1,
+  setSelectedCode1,
+  originPort,
+  setOriginPort,
+  destPort,
+  setDestPort,
 }) => {
   const dispatch = useDispatch();
   const [destination] = useState("");
@@ -33,8 +45,6 @@ const ShipmentCard = ({
     useState(false);
   const [destPortOptionsVisible, setDestPortOptionsVisible] = useState(false);
   const [cargoOptionsVisible, setCargoOptionsVisible] = useState(false);
-  const [originPort, setOriginPort] = useState(null);
-  const [destPort, setDestPort] = useState(null);
   const [searchOriginPort, setSearchOriginPort] = useState("");
   const [searchDestPort, setSearchDestPort] = useState("");
   const [searchOriginCode, setSearchOriginCode] = useState("");
@@ -45,8 +55,8 @@ const ShipmentCard = ({
   const [deserrormsg, setdeserrormsg] = useState(null);
   const [orgerrormsg, setorgerrormsg] = useState(null);
   const [tserrmsg, seterrmsg] = useState("");
-  const [cbm, setcbm] = useState("")
-  const [kg, setkg] = useState("")
+  const [cbm, setcbm] = useState("");
+  const [kg, setkg] = useState("");
   const [unit, setunits] = useState("");
   const [tsDatas, settsDatas] = useState({
     package_type: "",
@@ -61,8 +71,7 @@ const ShipmentCard = ({
       container_type: "",
       no_of_containers: null,
     },
-  ]
-  );
+  ]);
   const [utDatas, setutDatas] = useState([
     {
       package_type: "",
@@ -74,9 +83,8 @@ const ShipmentCard = ({
       weight: "",
       weightUnit: "KG",
     },
-  ]
-  );
-  
+  ]);
+
   // const copyutDatas = [...utDatas]
   const createNewArrayWithoutPackageType = () => {
     const newArray = utDatas.map(({ package_type, ...rest }) => rest);
@@ -97,6 +105,14 @@ const ShipmentCard = ({
   // };
 
   // const [error, seterror] = useState();
+  // function extractOriginCode(input) {
+  //   const regex = /\b[A-Z0-9]{6}\b/;
+  //   const match = (input ?? "").match(regex);
+
+  //   return match ? match[0] : null;
+  // }
+  // const inputString = selectedValue;
+  // const OriginCode = "extractOriginCode(inputString)";
 
   let tosValue = "";
   if (exim === "I") {
@@ -142,24 +158,47 @@ const ShipmentCard = ({
   }
   const inputdata = {
     freight_mode: "S",
-    lcl_fcl_air: mode === 'LCLTOTAL' || mode === "LCLUNIT" ? "LCL" : "FCL",
+    lcl_fcl_air: mode === "LCLTOTAL" || mode === "LCLUNIT" ? "LCL" : "FCL",
     import_export: exim,
-    package_type: mode === 'LCLTOTAL' ? tsDatas?.package_type : mode === 'LCLUNIT' ? utDatas[0]?.package_type:mode === 'FCL' ? tsDatas?.container_type:null ,
-    no_of_units: mode === 'LCLTOTAL' ? tsDatas?.no_of_units : mode === 'LCLUNIT' ?unit: 0,
-    total_volume: mode === 'LCLTOTAL' ? tsDatas?.total_volume.toString() : mode === "LCLUNIT" ? cbm.toString():0,
-    total_weight: mode === 'LCLTOTAL' ? tsDatas?.total_weight.toString() : mode === "LCLUNIT" ? kg.toString():0,
-    lcl_dimensions: mode==="LCLUNIT" ?createNewArrayWithoutPackageType():[],
-    fcl_dimensions: mode==="FCL" ? fclDatas : [],
-    volume_type: mode === 'LCLTOTAL' ? "CBM": mode === 'LCLUNIT' ? "CBM":null,
-    weight_type: mode === 'LCLTOTAL' ? "KG": mode === 'LCLUNIT' ? "KG":null,
-    // origin: "DEACH",
+    package_type:
+      mode === "LCLTOTAL"
+        ? tsDatas?.package_type
+        : mode === "LCLUNIT"
+        ? utDatas[0]?.package_type
+        : mode === "FCL"
+        ? tsDatas?.container_type
+        : null,
+    no_of_units:
+      mode === "LCLTOTAL"
+        ? tsDatas?.no_of_units
+        : mode === "LCLUNIT"
+        ? unit
+        : 0,
+    total_volume:
+      mode === "LCLTOTAL"
+        ? tsDatas?.total_volume.toString()
+        : mode === "LCLUNIT"
+        ? cbm.toString()
+        : 0,
+    total_weight:
+      mode === "LCLTOTAL"
+        ? tsDatas?.total_weight.toString()
+        : mode === "LCLUNIT"
+        ? kg.toString()
+        : 0,
+    lcl_dimensions:
+      mode === "LCLUNIT" ? createNewArrayWithoutPackageType() : [],
+    fcl_dimensions: mode === "FCL" ? fclDatas : [],
+    volume_type:
+      mode === "LCLTOTAL" ? "CBM" : mode === "LCLUNIT" ? "CBM" : null,
+    weight_type: mode === "LCLTOTAL" ? "KG" : mode === "LCLUNIT" ? "KG" : null,
     origin: searchOriginCode ? searchOriginCode : null,
     destination: searchDestCode ? searchDestCode : null,
-    origin_country_code: originPort ? originPort?.port_country: null,
-    dest_country_code: destPort ? destPort?.port_country:null,
+    origin_country_code: originPort ? originPort?.port_country : null,
+    dest_country_code: destPort ? destPort?.port_country : null,
     TOS: tosValue,
     is_pickup_req: checkedItems.cargoPickup ? "Y" : "N",
-    pickup_place: "N",
+    pickup_place: checkedItems.cargoPickup ? selectedCode : "N",
     is_hazardous: checkedItems.NonHarzardousCargo ? "N" : "Y",
     is_stackable: checkedItems.StackableCargo ? "Y" : "N",
     is_insurance: checkedItems.CargoInsurance ? "Y" : "N",
@@ -222,28 +261,56 @@ const ShipmentCard = ({
     }
   };
 
-  console.log(searchDestCode);
-  console.log(finalDetails);
-  console.log(mode);
+  // console.log(searchDestCode);
+  // console.log(finalDetails);
+  // console.log(mode);
 
   useEffect(() => {
     if (exim === "I") {
-      setCheckedItems({ ...checkedItems, DestinationCharges: true });
+      setCheckedItems({
+        ...checkedItems,
+        DestinationCharges: true,
+        originCharges: false,
+      });
     } else if (exim === "E") {
-      setCheckedItems({ ...checkedItems, originCharges: true });
+      setCheckedItems({
+        ...checkedItems,
+        originCharges: true,
+        DestinationCharges: false,
+      });
     }
   }, [exim]);
+
+  if (checkedItems.cargoPickup === false) {
+    setSelectedCode(false);
+  }
+  if (checkedItems.CargoDelivery === false) {
+    setSelectedCode1(false);
+  }
   useEffect(() => {
-    dispatch(FindNewRateRequest({ inputdata }));
+    if (
+      (checkedItems.originCharges && checkedItems.cargoPickup) ||
+      (checkedItems.DestinationCharges && checkedItems.CargoDelivery)
+    ) {
+      return;
+    } else {
+      dispatch(FindNewRateRequest({ inputdata }));
+    }
   }, [
     selectedCurrency,
-    checkedItems.originCharges,
+    checkedItems.originCharges && !checkedItems.cargoPickup,
     checkedItems.exportClearance,
-    checkedItems.DestinationCharges,
+    checkedItems.DestinationCharges && !checkedItems.CargoDelivery,
     checkedItems.ImportClearance,
     checkedItems.StackableCargo,
     checkedItems.NonHarzardousCargo,
+    selectedCode,
+    // insuranceValue,
+    setSelectedValue,
+    selectedCode1,
+    setSelectedCode1,
   ]);
+
   return (
     <div style={{ maxWidth: "1255px" }} className="mx-auto">
       <div

@@ -11,6 +11,7 @@ import CargoDeliveryPopOver from "./CargoDeliveryPopOver";
 import pencil from "../../../../../assets/Pencil.svg";
 import img from "../../../../../assets/thumbsgr.svg";
 import uparrow from "../../../../../assets/uparrowcargo.svg";
+import CargoInsurance from "./CargoInsurance";
 // import CargoInsurance from "./CargoInsurance";
 
 function FindNewRate({
@@ -21,14 +22,27 @@ function FindNewRate({
   showHeader,
   setShowReselt,
   exim,
+  selectedValue,
+  setSelectedValue,
+  selectedDeliveryValue,
+  setSelectedDeliveryValue,
+  insuranceValue,
+  setInsuranceValue,  
+  selectedCode,
+  setSelectedCode,
+  selectedCode1,
+  setSelectedCode1,
+  originPort,
+  destPort,
 }) {
   const [isPopoverOpen, setPopoverOpen] = useState(false);
   const [isDeliveryPopoverOpen, setDeliveryPopoverOpen] = useState(false);
   const [isInsurance, setInsurance] = useState(false);
+  // console.log("insure",insuranceValue);
 
-  const [selectedValue, setSelectedValue] = useState("");
-  const [selectedDeliveryValue, setSelectedDeliveryValue] = useState("");
-  const [insuranceValue, setInsuranceValue] = useState("");
+  // const [selectedValue, setSelectedValue] = useState("");
+  // const [selectedDeliveryValue, setSelectedDeliveryValue] = useState("");
+ 
 
   const onChange = (e) => {
     const { name, checked } = e.target;
@@ -69,6 +83,10 @@ function FindNewRate({
         <CargoPickupPopOver
           setSelectedValue={setSelectedValue}
           setPopoverOpen={setPopoverOpen}
+          selectedCode={selectedCode}
+          setSelectedCode={setSelectedCode}
+          originPort={originPort}
+          destPort={ destPort}
         />
       );
     } else if (value === "CargoDelivery") {
@@ -76,26 +94,18 @@ function FindNewRate({
         <CargoDeliveryPopOver
           setSelectedValue={setSelectedDeliveryValue}
           setPopoverOpen={setDeliveryPopoverOpen}
+          selectedCode1={selectedCode1}
+          setSelectedCode1={setSelectedCode1}
+          destPort={destPort}
         />
       );
     } else if (value === "CargoInsurance") {
       return (
-        <div class="div-colaligned popover-checkbox popover-open w-200">
-          <Input
-            className="cargo-insurance-input"
-            placeholder="Goods Value in USD"
-            type="text"
-            suffix={
-              <Button
-                type="ant-btn-primary"
-                className="calculate-btn"
-                size="small"
-              >
-                Calculate
-              </Button>
-            }
-          />
-        </div>
+        <CargoInsurance
+        insuranceValue={insuranceValue}
+        setInsuranceValue={setInsuranceValue}
+        setInsurance={setInsurance}
+        />
       );
     }
     return null;
@@ -483,6 +493,8 @@ function FindNewRate({
           exim={exim}
           setCheckedItems={setCheckedItems}
           selectedDeliveryValue={selectedDeliveryValue}
+          originPort={originPort}
+          destPort={destPort}
         />
       </div>
     </div>

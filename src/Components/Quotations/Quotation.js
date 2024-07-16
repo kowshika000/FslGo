@@ -27,6 +27,13 @@ const Quotation = ({
   });
   const [exim, setexim] = useState("I");
   const [highlightShipmentCard, setHighlightShipmentCard] = useState(false);
+  const [selectedValue, setSelectedValue] = useState("");
+  const [selectedDeliveryValue, setSelectedDeliveryValue] = useState("");
+  const [insuranceValue, setInsuranceValue] = useState("");
+  const [selectedCode, setSelectedCode] = useState(null);
+  const [selectedCode1, setSelectedCode1] = useState(null);
+  const [originPort, setOriginPort] = useState(null);
+  const [destPort, setDestPort] = useState(null);
   const handleScroll = () => {
     if (showReselt) {
       const scrollTop = window.scrollY;
@@ -85,6 +92,18 @@ const Quotation = ({
               setCheckedItems={setCheckedItems}
               exim={exim}
               setexim={setexim}
+              selectedValue={selectedValue}
+              selectedDeliveryValue={selectedDeliveryValue}
+              insuranceValue={insuranceValue}
+              setSelectedValue={setSelectedValue}
+              selectedCode={selectedCode}
+              setSelectedCode={setSelectedCode}
+              selectedCode1={selectedCode1}
+              setSelectedCode1={setSelectedCode1}
+              originPort={originPort}
+              setOriginPort={setOriginPort}
+              destPort={destPort}
+              setDestPort={setDestPort}
             />
           </div>
         </div>
@@ -109,6 +128,18 @@ const Quotation = ({
               showHeader={showHeader}
               setShowReselt={setShowReselt}
               exim={exim}
+              selectedValue={selectedValue}
+              setSelectedValue={setSelectedValue}
+              selectedDeliveryValue={selectedDeliveryValue}
+              setSelectedDeliveryValue={setSelectedDeliveryValue}
+              insuranceValue={insuranceValue}
+              setInsuranceValue={setInsuranceValue}
+              selectedCode={selectedCode}
+              setSelectedCode={setSelectedCode}
+              selectedCode1={selectedCode1}
+              setSelectedCode1={setSelectedCode1}
+              originPort={originPort}
+              destPort={destPort}
             />
           ) : (
             <div className={`${highlightShipmentCard ? "marginTop" : ""}`}>
