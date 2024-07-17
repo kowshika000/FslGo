@@ -135,7 +135,7 @@ const Origin = ({
   const handleOriginPortSelect = (port) => {
     console.log("Port selected:", port);
     setcheckleave(port);
-    setSearchOriginPort(port?.port_name);
+    // setSearchOriginPort(port?.list_value);
     // setOrgPortCode(port?.port_code);
     setOriginPortOptionsVisible(false);
     setOriginPort(port);
@@ -158,7 +158,7 @@ const Origin = ({
       setSearchOriginPort("");
       setOriginPort(null);
     } else {
-      setSearchOriginPort(port?.port_name);
+      setSearchOriginPort(port?.list_value);
       setSearchOriginCode(port?.port_code)
       setorgerrormsg(null)
     }
@@ -169,6 +169,7 @@ const Origin = ({
       setSearchOriginPort("")
       setOriginPortOptionsVisible(false)
   }
+  console.log(searchOriginPort)
 
   return (
     <>
@@ -203,7 +204,7 @@ const Origin = ({
               width: "90%",
               background: "transparent",
               fontWeight: "600",
-              fontSize: "16px",
+              fontSize: "12px",
               lineHeight: "22px",
               letterSpacing: ".01em",
             }}
