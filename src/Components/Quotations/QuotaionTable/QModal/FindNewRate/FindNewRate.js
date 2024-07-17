@@ -38,6 +38,7 @@ function FindNewRate({
   const [isPopoverOpen, setPopoverOpen] = useState(false);
   const [isDeliveryPopoverOpen, setDeliveryPopoverOpen] = useState(false);
   const [isInsurance, setInsurance] = useState(false);
+  // const [insuranceValue, setInsuranceValue] = useState("");
   // console.log("insure",insuranceValue);
 
   // const [selectedValue, setSelectedValue] = useState("");
