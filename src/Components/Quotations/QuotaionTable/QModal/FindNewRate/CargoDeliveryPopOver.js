@@ -20,7 +20,6 @@ function CargoDeliveryPopOver({
     const selectedOption = options.find((option) => option.value === value);
     const code = selectedOption ? selectedOption.code : null;
     if (value) {
-      console.log("vvv", value);
       setSelectedValue(value);
       setSelectedCode1(code);
       setPopoverOpen(false);
@@ -28,7 +27,12 @@ function CargoDeliveryPopOver({
   };
   const onSearch = (value) => {
     if (value.length >= 3) {
-      dispatch(DeliveryRequest({ country: destPort?.port_country, delivery_place: value }));
+      dispatch(
+        DeliveryRequest({
+          country: destPort?.port_country,
+          delivery_place: value,
+        })
+      );
     }
   };
   useEffect(() => {
@@ -37,7 +41,7 @@ function CargoDeliveryPopOver({
         value: item.list_value,
         label: item.list_value,
         key: index,
-        code: item.list_code
+        code: item.list_code,
       }));
       setOptions(updatedOptions);
     }
