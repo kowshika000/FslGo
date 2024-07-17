@@ -3,10 +3,18 @@ import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { PickupRequest } from "../../../../../Redux/Actions/PickupAction";
 
-function CargoPickupPopOver({ setSelectedValue, setPopoverOpen ,setSelectedCode,originPort}) {
+function CargoPickupPopOver({
+  setSelectedValue,
+  setPopoverOpen,
+  setSelectedCode,
+  originPort,
+}) {
   const dispatch = useDispatch();
-  const pickupdata = useSelector((state) => state?.Pickup?.pickuppointlist?.pickuppointlist);
+  const pickupdata = useSelector(
+    (state) => state?.Pickup?.pickuppointlist?.pickuppointlist
+  );
   const [options, setOptions] = useState([]);
+  const [showOption, setShowOption] = useState(false);
 
   const handleSelectChange = (value) => {
     const selectedOption = options.find((option) => option.value === value);
@@ -16,26 +24,35 @@ function CargoPickupPopOver({ setSelectedValue, setPopoverOpen ,setSelectedCode,
       setSelectedCode(code);
       setPopoverOpen(false);
     }
+    setShowOption(false);
   };
 
   const onSearch = (value) => {
+    console.log("value", value);
     if (value.length >= 3) {
-      dispatch(PickupRequest({ country: originPort?.port_country, pickup_place: value }));
-    }else{
+      setShowOption(true);
+      dispatch(
+        PickupRequest({
+          country: originPort?.port_country,
+          pickup_place: value,
+        })
+      );
+    } else {
+      setShowOption(false);
       setOptions([]);
     }
   };
   useEffect(() => {
     if (pickupdata && Array.isArray(pickupdata)) {
-    const updatedOptions = pickupdata?.map((item, index) => ({
-      value: item.list_value,
-      label: item.list_value,
-      code: item.code,
-      key: index,
-    }));
-    setOptions(updatedOptions);
+      const updatedOptions = pickupdata?.map((item, index) => ({
+        value: item.list_value,
+        label: item.list_value,
+        code: item.code,
+        key: index,
+      }));
+      setOptions(updatedOptions);
     }
-  }, [pickupdata]); 
+  }, [pickupdata]);
 
   return (
     <div className="div-colaligned popover-checkbox popover-open w-200">
@@ -45,7 +62,7 @@ function CargoPickupPopOver({ setSelectedValue, setPopoverOpen ,setSelectedCode,
         optionFilterProp="label"
         onChange={handleSelectChange}
         onSearch={onSearch}
-        options={options}
+        options={showOption ? options : []}
         filterOption={(input, option) =>
           option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }

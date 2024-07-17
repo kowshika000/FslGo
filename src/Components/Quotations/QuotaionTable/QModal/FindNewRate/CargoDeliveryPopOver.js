@@ -15,6 +15,7 @@ function CargoDeliveryPopOver({
   );
   console.log(delivery, "delivery data");
   const [options, setOptions] = useState([]);
+  const [showOption, setShowOption] = useState(false);
 
   const handleSelectChange = (value) => {
     const selectedOption = options.find((option) => option.value === value);
@@ -24,9 +25,11 @@ function CargoDeliveryPopOver({
       setSelectedCode1(code);
       setPopoverOpen(false);
     }
+    setShowOption(false);
   };
   const onSearch = (value) => {
     if (value.length >= 3) {
+      setShowOption(true);
       dispatch(
         DeliveryRequest({
           country: destPort?.port_country,
@@ -54,7 +57,7 @@ function CargoDeliveryPopOver({
         optionFilterProp="label"
         onChange={handleSelectChange}
         onSearch={onSearch}
-        options={options}
+        options={showOption ? options : []}
         filterOption={(input, option) =>
           option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0
         }
