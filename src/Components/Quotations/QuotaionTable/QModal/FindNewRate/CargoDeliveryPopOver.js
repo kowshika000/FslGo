@@ -13,7 +13,6 @@ function CargoDeliveryPopOver({
   const delivery = useSelector(
     (state) => state?.Delivery?.Delivery?.deliverypointlist
   );
-  console.log(delivery, "delivery data");
   const [options, setOptions] = useState([]);
   const [showOption, setShowOption] = useState(false);
 

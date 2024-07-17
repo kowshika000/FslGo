@@ -6,6 +6,8 @@ function CargoInsurance({
   setInsuranceValue,
   setInsurance,
   editiconClickedIns,
+  setediticonClickedIns,
+  isInsurance,
 }) {
   const [inputValue, setInputValue] = useState("");
   const handleCalculateClick = () => {
@@ -15,11 +17,14 @@ function CargoInsurance({
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
   };
+  console.log(editiconClickedIns);
   useEffect(() => {
     if (editiconClickedIns) {
       setInputValue(insuranceValue);
+    } else {
+      setInputValue("");
     }
-  }, [insuranceValue]);
+  }, []);
 
   return (
     <div className="div-colaligned popover-checkbox1 popover-open w-200">

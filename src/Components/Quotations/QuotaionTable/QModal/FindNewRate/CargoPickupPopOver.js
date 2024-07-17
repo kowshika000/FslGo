@@ -53,6 +53,7 @@ function CargoPickupPopOver({
       setOptions(updatedOptions);
     }
   }, [pickupdata]);
+  
 
   return (
     <div className="div-colaligned popover-checkbox popover-open w-200">
