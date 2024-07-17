@@ -35,6 +35,7 @@ const ShipmentCard = ({
   setOriginPort,
   destPort,
   setDestPort,
+  showReselt,
 }) => {
   const dispatch = useDispatch();
   const [destination] = useState("");
@@ -215,10 +216,6 @@ const ShipmentCard = ({
     TOSLogic();
   }, [originPort, destPort, exim]);
 
-
-  
-
-  
   const inputdata = {
     freight_mode:
       (originPort && originPort?.Transport_mode === "SEA") ||
@@ -369,14 +366,13 @@ const ShipmentCard = ({
     weight_type: "KG",
   };
 
-
   const handleSearch = () => {
     if (originPort && destPort && finalDetails) {
       setShowReselt(true);
-      console.log("mounted in")
+      console.log("mounted in");
       settoscheck(true);
       dispatch(FindNewRateRequest({ inputdata }));
-      
+
       // if(tosfirst === "FOB" && exim === "I" && originPort?.type === "PORT" && destPort?.type === "PORT" ){
       //     setCheckedItems((prev)=>{
       //       return {...prev,DestinationCharges:true}
@@ -564,15 +560,18 @@ const ShipmentCard = ({
   if (checkedItems.CargoDelivery === false) {
     setSelectedCode1(false);
   }
- 
+
   useEffect(() => {
     if (
       (checkedItems.cargoPickup && !selectedCode) ||
-      (checkedItems.CargoDelivery && !selectedDeliveryValue && !selectedCode1)
+      (checkedItems.CargoDelivery &&
+        !selectedDeliveryValue &&
+        !selectedCode1) ||
+      !showReselt
     ) {
       return;
     } else {
-      settoscheck(false)
+      settoscheck(false);
       dispatch(FindNewRateRequest({ inputdata }));
     }
   }, [
@@ -697,7 +696,7 @@ const ShipmentCard = ({
                   alignContent: "center ",
                   alignItems: "center",
                 }}
-                role = "button"
+                role="button"
               >
                 <SearchOutlined
                   width="20px"

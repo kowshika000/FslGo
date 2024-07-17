@@ -104,6 +104,7 @@ const Quotation = ({
               setOriginPort={setOriginPort}
               destPort={destPort}
               setDestPort={setDestPort}
+              showReselt={showReselt}
             />
           </div>
         </div>
