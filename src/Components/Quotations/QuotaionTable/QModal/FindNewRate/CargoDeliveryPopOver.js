@@ -26,6 +26,7 @@ function CargoDeliveryPopOver({
     }
     setShowOption(false);
   };
+  
   const onSearch = (value) => {
     if (value.length >= 3) {
       setShowOption(true);
@@ -37,6 +38,7 @@ function CargoDeliveryPopOver({
       );
     }
   };
+
   useEffect(() => {
     if (delivery && Array.isArray(delivery)) {
       const updatedOptions = delivery?.map((item, index) => ({

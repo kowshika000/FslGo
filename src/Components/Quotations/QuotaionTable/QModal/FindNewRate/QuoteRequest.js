@@ -130,6 +130,7 @@ function QuoteRequest({ setShowReselt, checkedItems, setCheckedItems }) {
     ) : (
       ""
     );
+
   return (
     <>
       <Card className="Quote-Card" style={{ padding: "0px" }}>
