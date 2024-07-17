@@ -176,7 +176,7 @@ const Cargo = ({
               width: "90%",
               background: "transparent",
               fontWeight:"600",
-              fontSize:"16",
+              fontSize:"13px",
               lineHeight:"22px",
               letterSpacing:".01em"
             }}

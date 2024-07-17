@@ -35,6 +35,7 @@ const ShipmentCard = ({
   setOriginPort,
   destPort,
   setDestPort,
+  showReselt,
 }) => {
   const dispatch = useDispatch();
   const [destination] = useState("");
@@ -59,6 +60,7 @@ const ShipmentCard = ({
   const [kg, setkg] = useState("");
   const [unit, setunits] = useState("");
   const [tosfirst, settosfirst] = useState("");
+  const [toscheck, settoscheck] = useState(false);
   const [tsDatas, settsDatas] = useState({
     package_type: "PKG",
     no_of_units: "",
@@ -157,7 +159,63 @@ const ShipmentCard = ({
       tosValue = "CFR";
     }
   }
-  
+
+  const TOSLogic = () => {
+    if (
+      originPort?.type === "PORT" &&
+      destPort?.type === "PORT" &&
+      exim === "I"
+    ) {
+      settosfirst("FOB");
+    } else if (
+      originPort?.type === "PORT" &&
+      destPort?.type === "PORT" &&
+      exim === "E"
+    ) {
+      settosfirst("CFR");
+    } else if (
+      originPort?.type === "PORT" &&
+      destPort?.type === "PICKUP" &&
+      exim === "I"
+    ) {
+      settosfirst("FCA");
+    } else if (
+      originPort?.type === "PORT" &&
+      destPort?.type === "PICKUP" &&
+      exim === "E"
+    ) {
+      settosfirst("DAP");
+    } else if (
+      originPort?.type === "PICKUP" &&
+      destPort?.type === "PORT" &&
+      exim === "I"
+    ) {
+      settosfirst("EXW");
+    } else if (
+      originPort?.type === "PICKUP" &&
+      destPort?.type === "PORT" &&
+      exim === "E"
+    ) {
+      settosfirst("CFR");
+    } else if (
+      originPort?.type === "PICKUP" &&
+      destPort?.type === "PICKUP" &&
+      exim === "I"
+    ) {
+      settosfirst("EXW");
+    } else if (
+      originPort?.type === "PICKUP" &&
+      destPort?.type === "PICKUP" &&
+      exim === "E"
+    ) {
+      settosfirst("DAP");
+    }
+  };
+
+  useEffect(() => {
+    TOSLogic();
+  }, [originPort, destPort, exim]);
+
   const inputdata = {
     freight_mode:
       (originPort && originPort?.Transport_mode === "SEA") ||
@@ -213,7 +271,7 @@ const ShipmentCard = ({
     destination: searchDestCode ? destPort?.port_code : null,
     origin_country_code: originPort ? originPort?.port_country : null,
     dest_country_code: destPort ? destPort?.port_country : null,
-    TOS: tosValue,
+    TOS: toscheck ? tosfirst : tosValue,
     is_pickup_req: checkedItems.cargoPickup ? "Y" : "N",
     pickup_place: checkedItems.cargoPickup ? selectedCode : "N",
     is_hazardous: checkedItems.NonHarzardousCargo ? "N" : "Y",
@@ -308,70 +366,122 @@ const ShipmentCard = ({
     weight_type: "KG",
   };
 
-  const TOSLogic = () => {
-    if (
-      originPort?.type === "PORT" &&
-      destPort?.type === "PORT" &&
-      exim === "I"
-    ) {
-      settosfirst("FOB");
-    } else if (
-      originPort?.type === "PORT" &&
-      destPort?.type === "PORT" &&
-      exim === "E"
-    ) {
-      settosfirst("CFR");
-    } else if (
-      originPort?.type === "PORT" &&
-      destPort?.type === "PICKUP" &&
-      exim === "I"
-    ) {
-      settosfirst("FCA");
-    } else if (
-      originPort?.type === "PORT" &&
-      destPort?.type === "PICKUP" &&
-      exim === "E"
-    ) {
-      settosfirst("DAP");
-    } else if (
-      originPort?.type === "PICKUP" &&
-      destPort?.type === "PORT" &&
-      exim === "I"
-    ) {
-      settosfirst("EXW");
-    } else if (
-      originPort?.type === "PICKUP" &&
-      destPort?.type === "PORT" &&
-      exim === "E"
-    ) {
-      settosfirst("CFR");
-    } else if (
-      originPort?.type === "PICKUP" &&
-      destPort?.type === "PICKUP" &&
-      exim === "I"
-    ) {
-      settosfirst("EXW");
-    } else if (
-      originPort?.type === "PICKUP" &&
-      destPort?.type === "PICKUP" &&
-      exim === "E"
-    ) {
-      settosfirst("DAP");
-    }
-  };
-
-  useEffect(() => {
-    TOSLogic();
-  }, [originPort, destPort, exim]);
-
-  useEffect(() => {
-    TOSLogic();
-  }, [originPort, destPort, exim]);
-
   const handleSearch = () => {
     if (originPort && destPort && finalDetails) {
       setShowReselt(true);
+      console.log("mounted in");
+      settoscheck(true);
       dispatch(FindNewRateRequest({ inputdata }));
+
+      // if(tosfirst === "FOB" && exim === "I" && originPort?.type === "PORT" && destPort?.type === "PORT" ){
+      //     setCheckedItems((prev)=>{
+      //       return {...prev,DestinationCharges:true}
+      //     })
+      // }
+      if (
+        (toscheck ? tosfirst : tosValue) === "FOB" &&
+        originPort?.type === "PORT" &&
+        destPort?.type === "PORT" &&
+        exim === "I"
+      ) {
+        setCheckedItems((prev) => {
+          return { ...prev, DestinationCharges: true };
+        });
+      } else if (
+        (toscheck ? tosfirst : tosValue) === "FCA" &&
+        originPort?.type === "PORT" &&
+        destPort?.type === "PORT" &&
+        exim === "I"
+      ) {
+        setCheckedItems((prev) => {
+          return { ...prev, DestinationCharges: true, originCharges: true };
+        });
+      } else if (
+        (toscheck ? tosfirst : tosValue) === "CFR" &&
+        originPort?.type === "PORT" &&
+        destPort?.type === "PORT" &&
+        exim === "E"
+      ) {
+        setCheckedItems((prev) => {
+          return { ...prev, originCharges: true };
+        });
+      } else if (
+        (toscheck ? tosfirst : tosValue) === "FOB" &&
+        originPort?.type === "PORT" &&
+        destPort?.type === "PICKUP" &&
+        exim === "I"
+      ) {
+        setCheckedItems((prev) => {
+          return { ...prev, DestinationCharges: true, CargoDelivery: true };
+        });
+      } else if (
+        (toscheck ? tosfirst : tosValue) === "FCA" &&
+        originPort?.type === "PORT" &&
+        destPort?.type === "PICKUP" &&
+        exim === "I"
+      ) {
+        setCheckedItems((prev) => {
+          return {
+            ...prev,
+            DestinationCharges: true,
+            CargoDelivery: true,
+            originCharges: true,
+          };
+        });
+      } else if (
+        (toscheck ? tosfirst : tosValue) === "EXW" &&
+        originPort?.type === "PICKUP" &&
+        destPort?.type === "PORT" &&
+        exim === "I"
+      ) {
+        setCheckedItems((prev) => {
+          return {
+            ...prev,
+            DestinationCharges: true,
+            originCharges: true,
+            cargoPickup: true,
+          };
+        });
+      } else if (
+        (toscheck ? tosfirst : tosValue) === "CFR" &&
+        originPort?.type === "PICKUP" &&
+        destPort?.type === "PORT" &&
+        exim === "E"
+      ) {
+        setCheckedItems((prev) => {
+          return { ...prev, originCharges: true, cargoPickup: true };
+        });
+      } else if (
+        (toscheck ? tosfirst : tosValue) === "EXW" &&
+        originPort?.type === "PICKUP" &&
+        destPort?.type === "PICKUP" &&
+        exim === "I"
+      ) {
+        setCheckedItems((prev) => {
+          return {
+            ...prev,
+            DestinationCharges: true,
+            originCharges: true,
+            cargoPickup: true,
+            CargoDelivery: true,
+          };
+        });
+      } else if (
+        (toscheck ? tosfirst : tosValue) === "DAP" &&
+        originPort?.type === "PICKUP" &&
+        destPort?.type === "PICKUP" &&
+        exim === "E"
+      ) {
+        setCheckedItems((prev) => {
+          return {
+            ...prev,
+            DestinationCharges: true,
+            originCharges: true,
+            cargoPickup: true,
+            CargoDelivery: true,
+          };
+        });
+      }
       // dispatch(FindNewRateRequest({ air }));
     } else {
       if (!originPort) {
@@ -450,14 +560,18 @@ const ShipmentCard = ({
   if (checkedItems.CargoDelivery === false) {
     setSelectedCode1(false);
   }
- 
+
   useEffect(() => {
     if (
       (checkedItems.cargoPickup && !selectedCode) ||
-      (checkedItems.CargoDelivery && !selectedDeliveryValue && !selectedCode1)
+      (checkedItems.CargoDelivery &&
+        !selectedDeliveryValue &&
+        !selectedCode1) ||
+      !showReselt
     ) {
       return;
     } else {
+      settoscheck(false);
       dispatch(FindNewRateRequest({ inputdata }));
     }
   }, [
@@ -485,7 +599,7 @@ const ShipmentCard = ({
           borderRadius: "8px",
         }}
       >
-        <div className="card-body d-flex p-0" style={{ height: "150px" }}>
+        <div className="card-body d-flex p-0" style={{ height: "130px" }}>
           <Origin
             setOriginPortOptionsVisible={setOriginPortOptionsVisible}
             originPortOptionsVisible={originPortOptionsVisible}
@@ -582,6 +696,7 @@ const ShipmentCard = ({
                   alignContent: "center ",
                   alignItems: "center",
                 }}
+                role="button"
               >
                 <SearchOutlined
                   width="20px"

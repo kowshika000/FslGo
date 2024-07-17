@@ -136,7 +136,7 @@ const Destination = ({
       setSearchDestPort("");
       setDestPort(null);
     } else {
-      setSearchDestPort(port?.port_name);
+      setSearchDestPort(port?.list_value);
       setSearchDestCode(port?.port_code)
       setdeserrormsg(null)
     }
@@ -195,7 +195,7 @@ const Destination = ({
               width: "90%",
               background: "transparent",
               fontWeight: "600",
-              fontSize: "16px",
+              fontSize: "12px",
               lineHeight: "22px",
               letterSpacing: ".01em",
             }}
