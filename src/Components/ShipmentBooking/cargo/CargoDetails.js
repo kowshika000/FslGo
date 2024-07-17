@@ -239,8 +239,8 @@ export default function CargoDetails({
 
         {/* FCL */}
 
-          {
-             (originPort?.Transport_mode !== "AIR" && destPort?.Transport_mode !== "AIR") || (originPort?.Transport_mode !== "AIR" && destPort?.Transport_mode !== "AIR")  ?
+          {/* {
+             (originPort?.Transport_mode !== "AIR" && destPort?.Transport_mode !== "AIR") || (originPort?.Transport_mode !== "AIR" && destPort?.Transport_mode !== "AIR")  ? */}
 
         <TabPanel
           header="FCL"
@@ -249,7 +249,7 @@ export default function CargoDetails({
             <img src={fcl} alt="fcl" className="me-2" />
           }
           style={{ fontSize: "25px", width: "100%" }}
-          
+          disabled = {!(originPort?.Transport_mode !== "AIR" && destPort?.Transport_mode !== "AIR") || !(originPort?.Transport_mode !== "AIR" && destPort?.Transport_mode !== "AIR")}
         >
           <Fcl
             onClose={onClose}
@@ -283,8 +283,8 @@ export default function CargoDetails({
             // setlastsaved={setlastsaved}
           />
         </TabPanel>
-        :null
-                 }
+        {/* :null
+                 } */}
       </TabView>
       {/* </div> */}
     </div>

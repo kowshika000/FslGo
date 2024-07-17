@@ -123,7 +123,7 @@
    width: 50% !important;
 }
 .placeholder_style::placeholder{
-   font-size: 14px;
+   font-size: 13px !important;
    font-weight: 400;
    color: rgb(212, 212, 212);
 }
