@@ -27,7 +27,7 @@ function FindNewRate({
   selectedDeliveryValue,
   setSelectedDeliveryValue,
   insuranceValue,
-  setInsuranceValue,  
+  setInsuranceValue,
   selectedCode,
   setSelectedCode,
   selectedCode1,
@@ -43,7 +43,6 @@ function FindNewRate({
 
   // const [selectedValue, setSelectedValue] = useState("");
   // const [selectedDeliveryValue, setSelectedDeliveryValue] = useState("");
- 
 
   const onChange = (e) => {
     const { name, checked } = e.target;
@@ -78,6 +77,13 @@ function FindNewRate({
       return insuranceValue;
     }
   };
+
+  const [editiconClickedIns, setediticonClickedIns] = useState(false);
+  useEffect(() => {
+    if (!isInsurance && editiconClickedIns) {
+      setediticonClickedIns(false);
+    }
+  }, [isInsurance]);
   const getPopoverContent = (value) => {
     if (value === "cargoPickup") {
       return (
@@ -87,7 +93,7 @@ function FindNewRate({
           selectedCode={selectedCode}
           setSelectedCode={setSelectedCode}
           originPort={originPort}
-          destPort={ destPort}
+          destPort={destPort}
         />
       );
     } else if (value === "CargoDelivery") {
@@ -103,9 +109,12 @@ function FindNewRate({
     } else if (value === "CargoInsurance") {
       return (
         <CargoInsurance
-        insuranceValue={insuranceValue}
-        setInsuranceValue={setInsuranceValue}
-        setInsurance={setInsurance}
+          insuranceValue={insuranceValue}
+          setInsuranceValue={setInsuranceValue}
+          setInsurance={setInsurance}
+          editiconClickedIns={editiconClickedIns}
+          setediticonClickedIns={setediticonClickedIns}
+          isInsurance={isInsurance}
         />
       );
     }
@@ -263,6 +272,7 @@ function FindNewRate({
                         setDeliveryPopoverOpen(true);
                       } else if (value === "CargoInsurance") {
                         setInsurance(true);
+                        setediticonClickedIns(true);
                       }
                     }}
                   >
