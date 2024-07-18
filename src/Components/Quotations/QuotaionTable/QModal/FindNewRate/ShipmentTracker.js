@@ -43,7 +43,7 @@ function ShipmentTracker({
       checkedItems?.StackableCargo === false ||
       checkedItems?.NonHarzardousCargo === false ||
       checkedItems?.exportClearance === true ||
-      checkedItems?.ImportClearance === true
+      checkedItems?.ImportClearance === true ||
       //  ||
       // (checkedItems?.originCharges && FindNRate[0]
       //   ? FindNRate[0]?.origin_charges === ""
@@ -57,6 +57,18 @@ function ShipmentTracker({
       // (checkedItems?.CargoDelivery && FindNRate[0]
       //   ? FindNRate[0]?.cargodelivery_charge === ""
       //   : "")
+      (checkedItems?.originCharges && FindNRate && FindNRate.length > 0
+        ? FindNRate[0]?.origin_charges === ""
+        : "") ||
+      (checkedItems?.cargoPickup && FindNRate && FindNRate.length > 0
+        ? FindNRate[0]?.cargopickup_charge === ""
+        : "") ||
+      (checkedItems?.DestinationCharges && FindNRate && FindNRate.length > 0
+        ? FindNRate[0]?.destination_charges === ""
+        : "") ||
+      (checkedItems?.CargoDelivery && FindNRate && FindNRate.length > 0
+        ? FindNRate[0]?.cargodelivery_charge === ""
+        : "")
     ) {
       return 0;
     } else {
@@ -352,7 +364,7 @@ function ShipmentTracker({
       checkedItems?.StackableCargo === false ||
       checkedItems?.NonHarzardousCargo === false ||
       checkedItems?.exportClearance === true ||
-      checkedItems?.ImportClearance === true
+      checkedItems?.ImportClearance === true ||
       //  ||
       // (checkedItems?.originCharges && FindNRate[0]
       //   ? FindNRate[0]?.origin_charges === ""
@@ -366,6 +378,18 @@ function ShipmentTracker({
       // (checkedItems?.CargoDelivery && FindNRate[0]
       //   ? FindNRate[0]?.cargodelivery_charge === ""
       //   : "")
+      (checkedItems?.originCharges && FindNRate && FindNRate.length > 0
+        ? FindNRate[0]?.origin_charges === ""
+        : "") ||
+      (checkedItems?.cargoPickup && FindNRate && FindNRate.length > 0
+        ? FindNRate[0]?.cargopickup_charge === ""
+        : "") ||
+      (checkedItems?.DestinationCharges && FindNRate && FindNRate.length > 0
+        ? FindNRate[0]?.destination_charges === ""
+        : "") ||
+      (checkedItems?.CargoDelivery && FindNRate && FindNRate.length > 0
+        ? FindNRate[0]?.cargodelivery_charge === ""
+        : "")
          ? (
         <QuoteRequest
           setShowReselt={setShowReselt}
