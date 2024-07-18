@@ -44,30 +44,24 @@ function ShipmentTracker({
       checkedItems?.NonHarzardousCargo === false ||
       checkedItems?.exportClearance === true ||
       checkedItems?.ImportClearance === true ||
-      //  ||
-      // (checkedItems?.originCharges && FindNRate[0]
-      //   ? FindNRate[0]?.origin_charges === ""
-      //   : "") ||
-      // (checkedItems?.cargoPickup && FindNRate[0]
-      //   ? FindNRate[0]?.cargopickup_charge === ""
-      //   : "") ||
-      // (checkedItems?.DestinationCharges && FindNRate[0]
-      //   ? FindNRate[0]?.destination_charges === ""
-      //   : "") ||
-      // (checkedItems?.CargoDelivery && FindNRate[0]
-      //   ? FindNRate[0]?.cargodelivery_charge === ""
-      //   : "")
+      findRate?.statusmessage === "information not available" ||
+      // (exim === "I" && checkedItems?.DestinationCharges === false) ||
+      // (exim === "E" && checkedItems?.originCharges === false) ||
+      checkedItems?.StackableCargo === false ||
+      checkedItems?.NonHarzardousCargo === false ||
+      checkedItems?.exportClearance === true ||
+      checkedItems?.ImportClearance === true ||
       (checkedItems?.originCharges && FindNRate && FindNRate.length > 0
-        ? FindNRate[0]?.origin_charges === ""
+        ? FindNRate[0]?.origin_charge === "" || 0 || null
         : "") ||
       (checkedItems?.cargoPickup && FindNRate && FindNRate.length > 0
-        ? FindNRate[0]?.cargopickup_charge === ""
+        ? FindNRate[0]?.cargopickup_charge === "" || 0 || null
         : "") ||
       (checkedItems?.DestinationCharges && FindNRate && FindNRate.length > 0
-        ? FindNRate[0]?.destination_charges === ""
+        ? FindNRate[0]?.destination_charge === "" || 0 || null
         : "") ||
       (checkedItems?.CargoDelivery && FindNRate && FindNRate.length > 0
-        ? FindNRate[0]?.cargodelivery_charge === ""
+        ? FindNRate[0]?.cargodelivery_charge === "" || 0 || null
         : "")
     ) {
       return 0;
@@ -378,17 +372,24 @@ function ShipmentTracker({
       // (checkedItems?.CargoDelivery && FindNRate[0]
       //   ? FindNRate[0]?.cargodelivery_charge === ""
       //   : "")
+      findRate?.statusmessage === "information not available" ||
+      // (exim === "I" && checkedItems?.DestinationCharges === false) ||
+      // (exim === "E" && checkedItems?.originCharges === false) ||
+      checkedItems?.StackableCargo === false ||
+      checkedItems?.NonHarzardousCargo === false ||
+      checkedItems?.exportClearance === true ||
+      checkedItems?.ImportClearance === true ||
       (checkedItems?.originCharges && FindNRate && FindNRate.length > 0
-        ? FindNRate[0]?.origin_charges === ""
+        ? FindNRate[0]?.origin_charge === "" || 0 || null
         : "") ||
       (checkedItems?.cargoPickup && FindNRate && FindNRate.length > 0
-        ? FindNRate[0]?.cargopickup_charge === ""
+        ? FindNRate[0]?.cargopickup_charge === "" || 0 || null
         : "") ||
       (checkedItems?.DestinationCharges && FindNRate && FindNRate.length > 0
-        ? FindNRate[0]?.destination_charges === ""
+        ? FindNRate[0]?.destination_charge === "" || 0 || null
         : "") ||
       (checkedItems?.CargoDelivery && FindNRate && FindNRate.length > 0
-        ? FindNRate[0]?.cargodelivery_charge === ""
+        ? FindNRate[0]?.cargodelivery_charge === "" || 0 || null
         : "")
          ? (
         <QuoteRequest
