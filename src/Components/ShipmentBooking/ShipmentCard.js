@@ -27,6 +27,7 @@ const ShipmentCard = ({
   selectedDeliveryValue,
   insuranceValue,
   setSelectedValue,
+  setSelectedDeliveryValue,
   selectedCode,
   setSelectedCode,
   selectedCode1,
@@ -36,6 +37,10 @@ const ShipmentCard = ({
   destPort,
   setDestPort,
   showReselt,
+  selectedValue,
+  toscheck,
+  settoscheck
+  
 }) => {
   const dispatch = useDispatch();
   const [destination] = useState("");
@@ -60,7 +65,7 @@ const ShipmentCard = ({
   const [kg, setkg] = useState("");
   const [unit, setunits] = useState("");
   const [tosfirst, settosfirst] = useState("");
-  const [toscheck, settoscheck] = useState(false);
+  // const [toscheck, settoscheck] = useState(false);
   const [tsDatas, settsDatas] = useState({
     package_type: "PKG",
     no_of_units: "",
@@ -118,12 +123,13 @@ const ShipmentCard = ({
   // const OriginCode = "extractOriginCode(inputString)";
 
   let tosValue = "";
+
   if (exim === "I") {
     if (
       checkedItems.DestinationCharges &&
       checkedItems.originCharges &&
       checkedItems.cargoPickup &&
-      checkedItems.CargoDelivery
+      checkedItems.CargoDelivery  
     ) {
       tosValue = "EXW";
     } else if (
@@ -135,16 +141,19 @@ const ShipmentCard = ({
     } else if (
       checkedItems.DestinationCharges &&
       checkedItems.originCharges &&
-      checkedItems.CargoDelivery
+      checkedItems.CargoDelivery 
     ) {
       tosValue = "FCA";
-    } else if (checkedItems.DestinationCharges && checkedItems.originCharges) {
+    } else if (checkedItems.DestinationCharges && checkedItems.originCharges ) {
       tosValue = "FCA";
-    } else if (checkedItems.DestinationCharges && checkedItems.CargoDelivery) {
+    } else if (checkedItems.DestinationCharges && checkedItems.CargoDelivery ) {
       tosValue = "FOB";
-    } else if (checkedItems.DestinationCharges) {
+    } else if (checkedItems.DestinationCharges ) {
       tosValue = "FOB";
     }
+    // else{
+    //   tosValue = null
+    // }
   } else if (exim === "E") {
     if (
       checkedItems.originCharges &&
@@ -153,11 +162,14 @@ const ShipmentCard = ({
       checkedItems.DestinationCharges
     ) {
       tosValue = "DAP";
-    } else if (checkedItems.originCharges && checkedItems.cargoPickup) {
+    } else if (checkedItems.originCharges) {
       tosValue = "CFR";
     } else if (checkedItems.originCharges) {
       tosValue = "CFR";
     }
+    // else{
+    //   tosValue = null
+    // }
   }
 
   const TOSLogic = () => {
@@ -271,7 +283,9 @@ const ShipmentCard = ({
     destination: searchDestCode ? destPort?.port_code : null,
     origin_country_code: originPort ? originPort?.port_country : null,
     dest_country_code: destPort ? destPort?.port_country : null,
-    TOS: toscheck ? tosfirst : tosValue,
+    // TOS: toscheck ? console.log("my",tosfirst : toscheck? console.log("k",tosValue) : null,
+    TOS: !toscheck ? tosfirst : toscheck? tosValue : null,
+    // TOS: tosfirst?tosfirst:tosValue,
     is_pickup_req: checkedItems.cargoPickup ? "Y" : "N",
     pickup_place: checkedItems.cargoPickup ? selectedCode : "N",
     is_hazardous: checkedItems.NonHarzardousCargo ? "N" : "Y",
@@ -280,6 +294,8 @@ const ShipmentCard = ({
     UID: "15085",
     currency: selectedCurrency,
   };
+  console.log(tosfirst,tosValue)
+  console.log(tosValue)
 
   //This is for AirRate Search
   const inputAirData = {
@@ -366,20 +382,62 @@ const ShipmentCard = ({
     weight_type: "KG",
   };
 
+  const initialChecks = {
+    originCharges: false,
+    exportClearance: false,
+    cargoPickup: false,
+    internationalFreight: false,
+    DestinationCharges: false,
+    ImportClearance: false,
+    CargoDelivery: false,
+    CargoInsurance: false,
+    StackableCargo: true,
+    NonHarzardousCargo: true,
+  }
+
+console.log(originPort)
   const handleSearch = () => {
+    // settoscheck(false)
     if (originPort && destPort && finalDetails) {
       setShowReselt(true);
+      settoscheck(false)
       console.log("mounted in");
-      settoscheck(true);
-      dispatch(FindNewRateRequest({ inputdata }));
+      setCheckedItems(initialChecks)
+      // settoscheck(false);
+      // dispatch(FindNewRateRequest({ inputdata }));
 
       // if(tosfirst === "FOB" && exim === "I" && originPort?.type === "PORT" && destPort?.type === "PORT" ){
       //     setCheckedItems((prev)=>{
       //       return {...prev,DestinationCharges:true}
       //     })
       // }
+      setSelectedValue(originPort && originPort?.zip_code)
+      setSelectedDeliveryValue(destPort && destPort?.zip_code)
+      setSelectedCode(originPort && originPort?.zip_code)
+      setSelectedCode1(destPort && destPort?.zip_code)
+      // if(originPort && originPort?.Transport_mode === "CITY"){
+      //   setCheckedItems((prev) => {
+      //         return { ...prev, originCharges: true,cargoPickup:true };
+      //       });
+      // }
+      // if(destPort && destPort?.Transport_mode === "CITY"){
+      //   setCheckedItems((prev)=>{
+      //     return { ...prev, DestinationCharges: true,CargoDelivery:true };
+      //   })
+      // }
+      // if(exim && exim === "I" && !checkedItems?.DestinationCharges){
+      //   setCheckedItems((prev)=>{
+      //     return { ...prev, DestinationCharges: true };
+      //   })
+      // }
+      // if(exim && exim === "E" && !checkedItems?.originCharges){
+      //   setCheckedItems((prev)=>{
+      //     return { ...prev, originCharges: true };
+      //   })
+      // }
+
       if (
-        (toscheck ? tosfirst : tosValue) === "FOB" &&
+        (tosfirst) === "FOB" &&
         originPort?.type === "PORT" &&
         destPort?.type === "PORT" &&
         exim === "I"
@@ -388,7 +446,7 @@ const ShipmentCard = ({
           return { ...prev, DestinationCharges: true };
         });
       } else if (
-        (toscheck ? tosfirst : tosValue) === "FCA" &&
+        (tosfirst) === "FCA" &&
         originPort?.type === "PORT" &&
         destPort?.type === "PORT" &&
         exim === "I"
@@ -397,7 +455,7 @@ const ShipmentCard = ({
           return { ...prev, DestinationCharges: true, originCharges: true };
         });
       } else if (
-        (toscheck ? tosfirst : tosValue) === "CFR" &&
+        (tosfirst) === "CFR" &&
         originPort?.type === "PORT" &&
         destPort?.type === "PORT" &&
         exim === "E"
@@ -406,7 +464,7 @@ const ShipmentCard = ({
           return { ...prev, originCharges: true };
         });
       } else if (
-        (toscheck ? tosfirst : tosValue) === "FOB" &&
+        (tosfirst) === "FOB" &&
         originPort?.type === "PORT" &&
         destPort?.type === "PICKUP" &&
         exim === "I"
@@ -415,7 +473,7 @@ const ShipmentCard = ({
           return { ...prev, DestinationCharges: true, CargoDelivery: true };
         });
       } else if (
-        (toscheck ? tosfirst : tosValue) === "FCA" &&
+        (tosfirst) === "FCA" &&
         originPort?.type === "PORT" &&
         destPort?.type === "PICKUP" &&
         exim === "I"
@@ -429,7 +487,7 @@ const ShipmentCard = ({
           };
         });
       } else if (
-        (toscheck ? tosfirst : tosValue) === "EXW" &&
+        (tosfirst) === "EXW" &&
         originPort?.type === "PICKUP" &&
         destPort?.type === "PORT" &&
         exim === "I"
@@ -443,7 +501,7 @@ const ShipmentCard = ({
           };
         });
       } else if (
-        (toscheck ? tosfirst : tosValue) === "CFR" &&
+        (tosfirst) === "CFR" &&
         originPort?.type === "PICKUP" &&
         destPort?.type === "PORT" &&
         exim === "E"
@@ -452,7 +510,7 @@ const ShipmentCard = ({
           return { ...prev, originCharges: true, cargoPickup: true };
         });
       } else if (
-        (toscheck ? tosfirst : tosValue) === "EXW" &&
+        (tosfirst) === "EXW" &&
         originPort?.type === "PICKUP" &&
         destPort?.type === "PICKUP" &&
         exim === "I"
@@ -467,7 +525,22 @@ const ShipmentCard = ({
           };
         });
       } else if (
-        (toscheck ? tosfirst : tosValue) === "DAP" &&
+        (tosfirst) === "DAP" &&
+        originPort?.type === "PICKUP" &&
+        destPort?.type === "PICKUP" &&
+        exim === "E"
+      ) {
+        setCheckedItems((prev) => {
+          return {
+            ...prev,
+            DestinationCharges: true,
+            originCharges: true,
+            cargoPickup: true,
+            CargoDelivery: true,
+          };
+        });
+      } else if (
+        (tosfirst) === "DDP" &&
         originPort?.type === "PICKUP" &&
         destPort?.type === "PICKUP" &&
         exim === "E"
@@ -482,6 +555,8 @@ const ShipmentCard = ({
           };
         });
       }
+      dispatch(FindNewRateRequest({ inputdata }));
+      // settoscheck(true);
       // dispatch(FindNewRateRequest({ air }));
     } else {
       if (!originPort) {
@@ -501,6 +576,7 @@ const ShipmentCard = ({
       }
     }
     setHighlightShipmentCard(false);
+
   };
   const handleSwap = () => {
     if (originPort && destPort && searchOriginPort && searchDestPort) {
@@ -561,7 +637,12 @@ const ShipmentCard = ({
     setSelectedCode1(false);
   }
 
+  console.log(selectedCode,selectedCode1)
+  const hasPageBeenrendered = useRef(false)
+
   useEffect(() => {
+    if(hasPageBeenrendered.current){
+      console.log("rendred")
     if (
       (checkedItems.cargoPickup && !selectedCode) ||
       (checkedItems.CargoDelivery &&
@@ -570,12 +651,18 @@ const ShipmentCard = ({
       !showReselt
     ) {
       return;
-    } else {
-      settoscheck(false);
+    } 
+    else if(toscheck){
+      console.log("ren")
       dispatch(FindNewRateRequest({ inputdata }));
     }
+    
+  }
+
+    hasPageBeenrendered.current = true
+
   }, [
-    selectedCurrency,
+    // selectedCurrency,
     checkedItems.originCharges && !checkedItems.cargoPickup,
     checkedItems.DestinationCharges && !checkedItems.CargoDelivery,
     checkedItems.exportClearance,
@@ -584,10 +671,12 @@ const ShipmentCard = ({
     checkedItems.NonHarzardousCargo,
     selectedCode && checkedItems.cargoPickup,
     insuranceValue,
-    setSelectedValue,
+    selectedValue,
     selectedCode1 && checkedItems.CargoDelivery,
-    setSelectedCode1,
+    selectedCode1,
   ]);
+
+  console.log(hasPageBeenrendered)
 
   return (
     <div style={{ maxWidth: "1255px" }} className="mx-auto">
