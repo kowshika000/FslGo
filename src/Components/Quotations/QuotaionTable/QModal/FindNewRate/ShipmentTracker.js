@@ -38,13 +38,6 @@ function ShipmentTracker({
   function showAll() {
     if (
       findRate?.statusmessage === "information not available" ||
-      (exim === "I" && checkedItems?.DestinationCharges === false) ||
-      (exim === "E" && checkedItems?.originCharges === false) ||
-      checkedItems?.StackableCargo === false ||
-      checkedItems?.NonHarzardousCargo === false ||
-      checkedItems?.exportClearance === true ||
-      checkedItems?.ImportClearance === true ||
-      findRate?.statusmessage === "information not available" ||
       // (exim === "I" && checkedItems?.DestinationCharges === false) ||
       // (exim === "E" && checkedItems?.originCharges === false) ||
       checkedItems?.StackableCargo === false ||
@@ -254,7 +247,6 @@ function ShipmentTracker({
                 <div>
                   <p
                     className="m-0 cargo-pickup-p"
-                    style={{ fontWeight: "800" }}
                   >
                     {destPort?.port_name}
                   </p>
@@ -310,7 +302,12 @@ function ShipmentTracker({
                   <img src={Line} alt="line" />
                 </div>
                 <div>
-                  <p className="m-0 cargo-pickup-p">{data?.origin}</p>
+                  <p
+                    className="m-0 cargo-pickup-p"
+                    style={{ fontWeight: "800" }}
+                  >
+                    {data?.origin}
+                  </p>
                 </div>
                 <div style={{ height: "20px", opacity: "60%" }}>
                   <span
@@ -329,7 +326,12 @@ function ShipmentTracker({
                   </span>
                 </div>
                 <div>
-                  <p className="m-0 cargo-pickup-p">{data?.destination}</p>
+                  <p
+                    className="m-0 cargo-pickup-p"
+                    style={{ fontWeight: "800" }}
+                  >
+                    {data?.destination}
+                  </p>
                 </div>
                 <div style={{ opacity: "40%" }}>
                   <img src={Line} alt="line" />
@@ -351,28 +353,7 @@ function ShipmentTracker({
             </Card>
           )
       )}
-
       {findRate?.statusmessage === "information not available" ||
-      (exim === "I" && checkedItems?.DestinationCharges === false) ||
-      (exim === "E" && checkedItems?.originCharges === false) ||
-      checkedItems?.StackableCargo === false ||
-      checkedItems?.NonHarzardousCargo === false ||
-      checkedItems?.exportClearance === true ||
-      checkedItems?.ImportClearance === true ||
-      //  ||
-      // (checkedItems?.originCharges && FindNRate[0]
-      //   ? FindNRate[0]?.origin_charges === ""
-      //   : "") ||
-      // (checkedItems?.cargoPickup && FindNRate[0]
-      //   ? FindNRate[0]?.cargopickup_charge === ""
-      //   : "") ||
-      // (checkedItems?.DestinationCharges && FindNRate[0]
-      //   ? FindNRate[0]?.destination_charges === ""
-      //   : "") ||
-      // (checkedItems?.CargoDelivery && FindNRate[0]
-      //   ? FindNRate[0]?.cargodelivery_charge === ""
-      //   : "")
-      findRate?.statusmessage === "information not available" ||
       // (exim === "I" && checkedItems?.DestinationCharges === false) ||
       // (exim === "E" && checkedItems?.originCharges === false) ||
       checkedItems?.StackableCargo === false ||
@@ -390,8 +371,7 @@ function ShipmentTracker({
         : "") ||
       (checkedItems?.CargoDelivery && FindNRate && FindNRate.length > 0
         ? FindNRate[0]?.cargodelivery_charge === "" || 0 || null
-        : "")
-         ? (
+        : "") ? (
         <QuoteRequest
           setShowReselt={setShowReselt}
           checkedItems={checkedItems}
@@ -446,7 +426,7 @@ function ShipmentTracker({
                       >
                         {" "}
                         {selectedCurrency}&nbsp;&nbsp;
-                        {data.total_amount_in_usd}
+                        {data?.total_amount_in_usd}
                         <span className="ms-2">
                           <img src={Share} alt="share" />
                         </span>
