@@ -34,6 +34,7 @@ function FindNewRate({
   setSelectedCode1,
   originPort,
   destPort,
+  settoscheck
 }) {
   const [isPopoverOpen, setPopoverOpen] = useState(false);
   const [isDeliveryPopoverOpen, setDeliveryPopoverOpen] = useState(false);
@@ -45,6 +46,7 @@ function FindNewRate({
   // const [selectedDeliveryValue, setSelectedDeliveryValue] = useState("");
 
   const onChange = (e) => {
+    settoscheck(true)
     const { name, checked } = e.target;
     setCheckedItems((prevItems) => {
       const updatedItems = { ...prevItems, [name]: checked };
@@ -53,6 +55,17 @@ function FindNewRate({
         updatedItems.originCharges = true;
       } else if (name === "CargoDelivery" && checked) {
         updatedItems.DestinationCharges = true;
+      }
+
+      if(name == "originCharges" && !checked ){
+        if(updatedItems.cargoPickup){
+          updatedItems.cargoPickup = false
+        }
+      }
+      if(name == "DestinationCharges" && !checked ){
+        if(updatedItems.CargoDelivery){
+          updatedItems.CargoDelivery = false
+        }
       }
 
       return updatedItems;

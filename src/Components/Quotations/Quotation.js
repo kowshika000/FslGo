@@ -34,6 +34,7 @@ const Quotation = ({
   const [selectedCode1, setSelectedCode1] = useState(null);
   const [originPort, setOriginPort] = useState(null);
   const [destPort, setDestPort] = useState(null);
+  const [toscheck, settoscheck] = useState(false);
   const handleScroll = () => {
     if (showReselt) {
       const scrollTop = window.scrollY;
@@ -105,6 +106,9 @@ const Quotation = ({
               destPort={destPort}
               setDestPort={setDestPort}
               showReselt={showReselt}
+              toscheck={toscheck}
+              settoscheck={settoscheck}
+              setSelectedDeliveryValue={setSelectedDeliveryValue}
             />
           </div>
         </div>
@@ -141,6 +145,7 @@ const Quotation = ({
               setSelectedCode1={setSelectedCode1}
               originPort={originPort}
               destPort={destPort}
+              settoscheck={settoscheck}
             />
           ) : (
             <div className={`${highlightShipmentCard ? "marginTop" : ""}`}>
