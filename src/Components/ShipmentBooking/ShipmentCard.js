@@ -568,6 +568,7 @@ console.log(originPort)
         });
       }
       dispatch(FindNewRateRequest({ inputdata }));
+      
       // settoscheck(true);
       // dispatch(FindNewRateRequest({ air }));
     } else {
@@ -591,10 +592,12 @@ console.log(originPort)
 
   };
   const handleSwap = () => {
-    setCheckedItems(initialChecks)
+    // console.log(initialChecks)
+    // console.log(checkedItems)
+    // setCheckedItems(initialChecks)
     if (originPort && destPort && searchOriginPort && searchDestPort) {
       settoscheck(false)
-      // setCheckedItems(initialChecks)
+      setCheckedItems(initialChecks)
       setSearchDestPort(searchOriginPort);
       setSearchOriginPort(searchDestPort);
       setSearchDestCode(searchOriginCode);
@@ -677,7 +680,7 @@ console.log(originPort)
     hasPageBeenrendered.current = true
 
   }, [
-    // selectedCurrency,
+    selectedCurrency,
     checkedItems.originCharges && !checkedItems.cargoPickup,
     checkedItems.DestinationCharges && !checkedItems.CargoDelivery,
     checkedItems.exportClearance,
@@ -694,16 +697,10 @@ console.log(originPort)
   console.log(hasPageBeenrendered)
 
   const shrinkValues = (text) =>{
-      if (text?.length <= 20) {
+      if (text?.length <= 28) {
         return text;
       } else {
-        return text?.slice(0, 19).trim().split("").join("") + "..."
-        //   // <Tooltip placement="topLeft" zIndex={9999} title={text}>
-        //   //   <span role="button">
-        //       text?.slice(0, 19).trim().split("").join("") + "..."
-        //     {/* </span>
-        //   </Tooltip> */}
-        // // );
+        return text?.slice(0, 27).trim().split("").join("") + "..."
       }
     }
 
