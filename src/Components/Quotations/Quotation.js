@@ -25,7 +25,7 @@ const Quotation = ({
     StackableCargo: true,
     NonHarzardousCargo: true,
   });
-  console.log(checkedItems)
+  console.log(checkedItems);
   const [exim, setexim] = useState("I");
   const [highlightShipmentCard, setHighlightShipmentCard] = useState(false);
   const [selectedValue, setSelectedValue] = useState("");
@@ -36,6 +36,7 @@ const Quotation = ({
   const [originPort, setOriginPort] = useState(null);
   const [destPort, setDestPort] = useState(null);
   const [toscheck, settoscheck] = useState(false);
+  const [selectedDataToPatch, setSelectedDataToPatch] = useState();
   const handleScroll = () => {
     if (showReselt) {
       const scrollTop = window.scrollY;
@@ -110,6 +111,7 @@ const Quotation = ({
               toscheck={toscheck}
               settoscheck={settoscheck}
               setSelectedDeliveryValue={setSelectedDeliveryValue}
+              selectedDataToPatch={selectedDataToPatch}
             />
           </div>
         </div>
@@ -150,7 +152,11 @@ const Quotation = ({
             />
           ) : (
             <div className={`${highlightShipmentCard ? "marginTop" : ""}`}>
-            <QuotationTabs  setHighlightShipmentCard={setHighlightShipmentCard}/>
+              <QuotationTabs
+                setHighlightShipmentCard={setHighlightShipmentCard}
+                selectedDataToPatch={selectedDataToPatch}
+                setSelectedDataToPatch={setSelectedDataToPatch}
+              />
             </div>
           )}
         </div>

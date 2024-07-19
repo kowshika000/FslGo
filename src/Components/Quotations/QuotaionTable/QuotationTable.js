@@ -23,7 +23,7 @@ import { CircularProgress, Box } from "@mui/material";
 import { MultiSelect } from "primereact/multiselect";
 import { Tag } from "primereact/tag";
 import { CloseOutlined } from "@ant-design/icons";
-import "../../Dashboard/ShipmentHistory/ShipmentHistory.css"
+import "../../Dashboard/ShipmentHistory/ShipmentHistory.css";
 // import { FindNewRateRequest } from "../../../Redux/Actions/FindNewRateAction";
 
 const QuotationTable = ({
@@ -33,6 +33,8 @@ const QuotationTable = ({
   setCurrentPage,
   selectedDropdownItem,
   setHighlightShipmentCard,
+  selectedDataToPatch,
+  setSelectedDataToPatch,
   // setSelectedDropdownItem,
 }) => {
   const navigate = useNavigate();
@@ -297,7 +299,8 @@ const QuotationTable = ({
       } else if (rowData.status === "Active") {
         navigate("/quick");
       } else if (rowData.status === "Expired") {
-        setHighlightShipmentCard(true)
+        setHighlightShipmentCard(true);
+        setSelectedDataToPatch(rowData);
       }
     };
     return (

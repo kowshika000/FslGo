@@ -1,5 +1,11 @@
-import React, { useState, useRef } from "react";
-import { Typography, Box, TextField, CircularProgress, FormHelperText } from "@mui/material";
+import React, { useState, useRef, useEffect } from "react";
+import {
+  Typography,
+  Box,
+  TextField,
+  CircularProgress,
+  FormHelperText,
+} from "@mui/material";
 import { HiOutlineLocationMarker } from "react-icons/hi";
 import Modal from "@mui/material/Modal";
 import "../ShipmentCard.css";
@@ -40,11 +46,17 @@ const Origin = ({
   setSearchOriginCode,
   orgerrormsg,
   setorgerrormsg,
-  shrinkValues
+  shrinkValues,
+  selectedDataToPatch,
 }) => {
   // const [origin, setOrigin] = useState("");
   // const [modalOpen, setModalOpen] = useState(false);
   // const originRef = useRef(null);
+  useEffect(() => {
+    if (selectedDataToPatch) {
+      setSearchOriginPort(selectedDataToPatch?.origin);
+    }
+  }, [selectedDataToPatch]);
 
   // const [searchOriginPort, setSearchOriginPort] = useState("");
   const [orgPortCode, setOrgPortCode] = useState("");
@@ -55,7 +67,7 @@ const Origin = ({
   const originPortData = useSelector((state) => state.allPort);
   const { loading, error } = useSelector((state) => state.allPort);
   const originPortDataValue = originPortData?.allportData?.Data;
-  
+
   console.log(originPortDataValue);
   const [prevValue, setPrevValue] = useState("");
   // const [destPortOptionsVisible, setDestPortOptionsVisible] = useState(false);
@@ -129,7 +141,7 @@ const Origin = ({
       setSearchOriginPort(value);
     }
     setDestPortOptionsVisible(false);
-    setCargoOptionsVisible(false)
+    setCargoOptionsVisible(false);
   };
 
   const handleOriginPortSelect = (port) => {
@@ -139,10 +151,7 @@ const Origin = ({
     // setOrgPortCode(port?.port_code);
     setOriginPortOptionsVisible(false);
     setOriginPort(port);
-    if (
-      port?.Transport_mode === "SEA" &&
-      destPort?.Transport_mode === "AIR"
-    ) {
+    if (port?.Transport_mode === "SEA" && destPort?.Transport_mode === "AIR") {
       setorgerrormsg("Please select either AIR Port or City as origin");
       setSearchOriginPort("");
       setOriginPort(null);
@@ -159,17 +168,17 @@ const Origin = ({
       setOriginPort(null);
     } else {
       setSearchOriginPort(port?.list_value);
-      setSearchOriginCode(port?.port_code)
-      setorgerrormsg(null)
+      setSearchOriginCode(port?.port_code);
+      setorgerrormsg(null);
     }
   };
 
-  const handleClose = () =>{
-      setOriginPort("")
-      setSearchOriginPort("")
-      setOriginPortOptionsVisible(false)
-  }
-  console.log(searchOriginPort)
+  const handleClose = () => {
+    setOriginPort("");
+    setSearchOriginPort("");
+    setOriginPortOptionsVisible(false);
+  };
+  console.log(searchOriginPort);
 
   return (
     <>
@@ -224,15 +233,18 @@ const Origin = ({
             value={shrinkValues(searchOriginPort)}
           />
           {/* <IoIosClose size=15  /> */}
-          {
-            searchOriginPort && 
-            <IoClose role="button" style={{position:"absolute",top:"51%",right:"20px",}} onClick={handleClose} />
-          }
-          {
-            orgerrormsg && <FormHelperText style={{ color: "red", fontStyle: "italic" }}>
-            {orgerrormsg}
-          </FormHelperText>
-          }
+          {searchOriginPort && (
+            <IoClose
+              role="button"
+              style={{ position: "absolute", top: "51%", right: "20px" }}
+              onClick={handleClose}
+            />
+          )}
+          {orgerrormsg && (
+            <FormHelperText style={{ color: "red", fontStyle: "italic" }}>
+              {orgerrormsg}
+            </FormHelperText>
+          )}
           {originPortOptionsVisible && (
             <div className="outer-all-port">
               {loading ? (

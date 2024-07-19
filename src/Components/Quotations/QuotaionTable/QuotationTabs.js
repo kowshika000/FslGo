@@ -7,7 +7,7 @@ import { Dropdown } from "primereact/dropdown";
 import {  CaretDownOutlined } from "@ant-design/icons";
 import cal from "../../../assets/calVector.svg";
 
-const QuotationTabs = ({setHighlightShipmentCard}) => {
+const QuotationTabs = ({setHighlightShipmentCard,selectedDataToPatch,setSelectedDataToPatch}) => {
   const [activeKey, setActiveKey] = useState("1");
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState([]);
@@ -172,6 +172,8 @@ const QuotationTabs = ({setHighlightShipmentCard}) => {
             selectedDropdownItem={selectedDropdownItem}
             setSelectedDropdownItem={setSelectedDropdownItem}
             setHighlightShipmentCard={setHighlightShipmentCard}
+            selectedDataToPatch={selectedDataToPatch}
+            setSelectedDataToPatch={setSelectedDataToPatch} 
           />
         </Col>
       </Row>

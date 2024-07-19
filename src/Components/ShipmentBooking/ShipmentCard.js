@@ -40,7 +40,8 @@ const ShipmentCard = ({
   showReselt,
   selectedValue,
   toscheck,
-  settoscheck
+  settoscheck,
+  selectedDataToPatch
   
 }) => {
   const dispatch = useDispatch();
@@ -693,7 +694,7 @@ console.log(originPort)
   console.log(hasPageBeenrendered)
 
   const shrinkValues = (text) =>{
-      if (text.length <= 20) {
+      if (text?.length <= 20) {
         return text;
       } else {
         return text?.slice(0, 19).trim().split("").join("") + "..."
@@ -732,6 +733,7 @@ console.log(originPort)
             orgerrormsg={orgerrormsg}
             setorgerrormsg={setorgerrormsg}
             shrinkValues={shrinkValues}
+            selectedDataToPatch={selectedDataToPatch}
           />
           <div
             className="align-content-center ps-2"
@@ -765,6 +767,7 @@ console.log(originPort)
             deserrormsg={deserrormsg}
             setdeserrormsg={setdeserrormsg}
             shrinkValues={shrinkValues}
+            selectedDataToPatch={selectedDataToPatch}
           />
           {/* <div className="icon">
             <div className="divider"></div>
