@@ -519,6 +519,7 @@ function FindNewRate({
           selectedDeliveryValue={selectedDeliveryValue}
           originPort={originPort}
           destPort={destPort}
+          settoscheck={settoscheck}
         />
       </div>
     </div>

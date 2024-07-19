@@ -14,6 +14,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import Arrow from "../../assets/arrow.png";
 import { useDispatch } from "react-redux";
 import { FindNewRateRequest } from "../../Redux/Actions/FindNewRateAction";
+import { Tooltip } from "antd";
 
 const ShipmentCard = ({
   setShowReselt,
@@ -129,7 +130,7 @@ const ShipmentCard = ({
       checkedItems.DestinationCharges &&
       checkedItems.originCharges &&
       checkedItems.cargoPickup &&
-      checkedItems.CargoDelivery  
+      checkedItems.CargoDelivery
     ) {
       tosValue = "EXW";
     } else if (
@@ -141,19 +142,25 @@ const ShipmentCard = ({
     } else if (
       checkedItems.DestinationCharges &&
       checkedItems.originCharges &&
-      checkedItems.CargoDelivery 
+      checkedItems.CargoDelivery
     ) {
       tosValue = "FCA";
-    } else if (checkedItems.DestinationCharges && checkedItems.originCharges ) {
+    } else if (checkedItems.DestinationCharges && checkedItems.originCharges  ) {
       tosValue = "FCA";
     } else if (checkedItems.DestinationCharges && checkedItems.CargoDelivery ) {
       tosValue = "FOB";
     } else if (checkedItems.DestinationCharges ) {
       tosValue = "FOB";
     }
-    // else{
-    //   tosValue = null
-    // }
+    else if (checkedItems.originCharges && checkedItems.cargoPickup ) {
+      tosValue = "EXW";
+    } 
+    else if (checkedItems.originCharges) {
+      tosValue = "FCA";
+    } 
+    else{
+        tosValue = "FOB";      
+    }
   } else if (exim === "E") {
     if (
       checkedItems.originCharges &&
@@ -162,15 +169,19 @@ const ShipmentCard = ({
       checkedItems.DestinationCharges
     ) {
       tosValue = "DAP";
-    } else if (checkedItems.originCharges) {
+    } else if (checkedItems.originCharges && checkedItems.cargoPickup) {
       tosValue = "CFR";
+    } else if (checkedItems.DestinationCharges && checkedItems.CargoDelivery) {
+      tosValue = "DAP";
     } else if (checkedItems.originCharges) {
       tosValue = "CFR";
     }
-    // else{
-    //   tosValue = null
-    // }
+    else{
+      tosValue = "CFR";
+    }
   }
+
+  console.log(tosValue)
 
   const TOSLogic = () => {
     if (
@@ -296,6 +307,7 @@ const ShipmentCard = ({
   };
   console.log(tosfirst,tosValue)
   console.log(tosValue)
+  console.log(inputdata)
 
   //This is for AirRate Search
   const inputAirData = {
@@ -352,7 +364,6 @@ const ShipmentCard = ({
     is_export_added: "N",
     is_import_added: "N",
   };
-  console.log(inputAirData);
 
   const air = {
     TOS: "FOB",
@@ -386,7 +397,7 @@ const ShipmentCard = ({
     originCharges: false,
     exportClearance: false,
     cargoPickup: false,
-    internationalFreight: false,
+    internationalFreight: true,
     DestinationCharges: false,
     ImportClearance: false,
     CargoDelivery: false,
@@ -579,7 +590,10 @@ console.log(originPort)
 
   };
   const handleSwap = () => {
+    setCheckedItems(initialChecks)
     if (originPort && destPort && searchOriginPort && searchDestPort) {
+      settoscheck(false)
+      // setCheckedItems(initialChecks)
       setSearchDestPort(searchOriginPort);
       setSearchOriginPort(searchDestPort);
       setSearchDestCode(searchOriginCode);
@@ -678,6 +692,20 @@ console.log(originPort)
 
   console.log(hasPageBeenrendered)
 
+  const shrinkValues = (text) =>{
+      if (text.length <= 20) {
+        return text;
+      } else {
+        return text?.slice(0, 19).trim().split("").join("") + "..."
+        //   // <Tooltip placement="topLeft" zIndex={9999} title={text}>
+        //   //   <span role="button">
+        //       text?.slice(0, 19).trim().split("").join("") + "..."
+        //     {/* </span>
+        //   </Tooltip> */}
+        // // );
+      }
+    }
+
   return (
     <div style={{ maxWidth: "1255px" }} className="mx-auto">
       <div
@@ -703,6 +731,7 @@ console.log(originPort)
             searchOriginCode={searchOriginCode}
             orgerrormsg={orgerrormsg}
             setorgerrormsg={setorgerrormsg}
+            shrinkValues={shrinkValues}
           />
           <div
             className="align-content-center ps-2"
@@ -735,6 +764,7 @@ console.log(originPort)
             searchDestCode={searchDestCode}
             deserrormsg={deserrormsg}
             setdeserrormsg={setdeserrormsg}
+            shrinkValues={shrinkValues}
           />
           {/* <div className="icon">
             <div className="divider"></div>

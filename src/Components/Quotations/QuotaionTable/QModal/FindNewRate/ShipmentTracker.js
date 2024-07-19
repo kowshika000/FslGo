@@ -28,6 +28,7 @@ function ShipmentTracker({
   setCheckedItems,
   originPort,
   destPort,
+  settoscheck
 }) {
   const [showAllData, setShowAllData] = useState(false);
   const [showCharges, setShowCharges] = useState(null);
@@ -45,16 +46,19 @@ function ShipmentTracker({
       checkedItems?.exportClearance === true ||
       checkedItems?.ImportClearance === true ||
       (checkedItems?.originCharges && FindNRate && FindNRate.length > 0
-        ? FindNRate[0]?.origin_charge === "" || 0 || null
+        ? (FindNRate[0]?.origin_charge === "") || (FindNRate[0]?.origin_charge === "0")
         : "") ||
       (checkedItems?.cargoPickup && FindNRate && FindNRate.length > 0
-        ? FindNRate[0]?.cargopickup_charge === "" || 0 || null
+        ? (FindNRate[0]?.cargopickup_charge === "") || (FindNRate[0]?.cargopickup_charge === "0")
         : "") ||
       (checkedItems?.DestinationCharges && FindNRate && FindNRate.length > 0
-        ? FindNRate[0]?.destination_charge === "" || 0 || null
+        ? (FindNRate[0]?.destination_charge === "") || (FindNRate[0]?.destination_charge === "0")
         : "") ||
       (checkedItems?.CargoDelivery && FindNRate && FindNRate.length > 0
-        ? FindNRate[0]?.cargodelivery_charge === "" || 0 || null
+        ? (FindNRate[0]?.cargodelivery_charge === "") || (FindNRate[0]?.cargodelivery_charge === "0")
+        : "") ||
+      (checkedItems?.internationalFreight && FindNRate && FindNRate.length > 0
+        ? (FindNRate[0]?.freight_charge === "") || (FindNRate[0]?.cargodelivery_charge === "0")
         : "")
     ) {
       return 0;
@@ -361,21 +365,26 @@ function ShipmentTracker({
       checkedItems?.exportClearance === true ||
       checkedItems?.ImportClearance === true ||
       (checkedItems?.originCharges && FindNRate && FindNRate.length > 0
-        ? FindNRate[0]?.origin_charge === "" || 0 || null
+        ? (FindNRate[0]?.origin_charge === "") || (FindNRate[0]?.origin_charge === "0")
         : "") ||
       (checkedItems?.cargoPickup && FindNRate && FindNRate.length > 0
-        ? FindNRate[0]?.cargopickup_charge === "" || 0 || null
+        ? (FindNRate[0]?.cargopickup_charge === "") || (FindNRate[0]?.cargopickup_charge === "0")
         : "") ||
       (checkedItems?.DestinationCharges && FindNRate && FindNRate.length > 0
-        ? FindNRate[0]?.destination_charge === "" || 0 || null
+        ? (FindNRate[0]?.destination_charge === "") || (FindNRate[0]?.destination_charge === "0")
         : "") ||
       (checkedItems?.CargoDelivery && FindNRate && FindNRate.length > 0
-        ? FindNRate[0]?.cargodelivery_charge === "" || 0 || null
-        : "") ? (
+        ? (FindNRate[0]?.cargodelivery_charge === "") || (FindNRate[0]?.cargodelivery_charge === "0")
+        : "") ||
+        (checkedItems?.internationalFreight && FindNRate && FindNRate.length > 0
+          ? (FindNRate[0]?.freight_charge === "") || (FindNRate[0]?.freight_charge === "0")
+          : "")
+        ? (
         <QuoteRequest
           setShowReselt={setShowReselt}
           checkedItems={checkedItems}
           setCheckedItems={setCheckedItems}
+          settoscheck={settoscheck}
         />
       ) : (
         <>
@@ -491,7 +500,7 @@ function ShipmentTracker({
                     </div>
                   </div>
                   {showCharges === index && (
-                    <ShowChargesModal FindNRate={data} />
+                    <ShowChargesModal checkedItems={checkedItems} FindNRate={data} />
                   )}
                   <div className="d-flex align-items-center">
                     <div>

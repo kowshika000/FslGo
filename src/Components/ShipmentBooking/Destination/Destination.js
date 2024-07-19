@@ -44,7 +44,8 @@ const Destination = ({
   searchDestCode,
   setSearchDestCode,
   deserrormsg, 
-  setdeserrormsg 
+  setdeserrormsg,
+  shrinkValues 
 }) => {
   // const [searchDestPort, setSearchDestPort] = useState("");
   // const [originPortOptionsVisible, setOriginPortOptionsVisible] = useState(false);
@@ -206,7 +207,7 @@ const Destination = ({
             // onClick={handleDestinationFocus}
             // value={destination}
             onChange={handleDestPortChange}
-            value={searchDestPort}
+            value={shrinkValues(searchDestPort)}
             // onBlur={() => {
             //   console.log(destPort)
             //   if (!destPort) {
