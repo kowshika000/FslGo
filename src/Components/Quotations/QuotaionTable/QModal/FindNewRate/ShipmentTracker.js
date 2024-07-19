@@ -118,7 +118,15 @@ function ShipmentTracker({
       </Box>
     );
   }
-  const displayedData = showAllData ? FindNRate : FindNRate?.slice(0, 4);
+  
+ const sortedData = [...FindNRate].sort((a, b) => {
+  if (selectedSort === "Low to High") {
+    return a.total_amount_in_usd - b.total_amount_in_usd;
+  } else {
+    return b.total_amount_in_usd - a.total_amount_in_usd;
+  }
+});
+const displayedData = showAllData ? sortedData : sortedData?.slice(0, 4);
   const renderSelectedValue = () => {
     if (!checkedItems.cargoPickup) return "Cargo Pickup";
 

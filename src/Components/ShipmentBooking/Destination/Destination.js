@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Typography,
   Box,
@@ -43,15 +43,21 @@ const Destination = ({
   setSearchDestPort,
   searchDestCode,
   setSearchDestCode,
-  deserrormsg, 
+  deserrormsg,
   setdeserrormsg,
-  shrinkValues 
+  shrinkValues,
+  selectedDataToPatch,
 }) => {
   // const [searchDestPort, setSearchDestPort] = useState("");
   // const [originPortOptionsVisible, setOriginPortOptionsVisible] = useState(false);
   // const [destPortOptionsVisible, setDestPortOptionsVisible] = useState(false);
+  useEffect(() => {
+    if (selectedDataToPatch) {
+      setSearchDestPort(selectedDataToPatch?.destination);
+    }
+  }, [selectedDataToPatch]);
   const [desPortCode, setDesPortCode] = useState("");
-  console.log(searchDestPort)
+  console.log(searchDestPort);
   const [prevValue, setPrevValue] = useState("");
   const [checkleave, setcheckleave] = useState("");
   const dispatch = useDispatch();
@@ -59,6 +65,7 @@ const Destination = ({
   const { loading, error } = useSelector((state) => state.allPort);
   const destinationPortDataValue = DestinationPortData?.allportData?.Data;
   console.log(destinationPortDataValue);
+
   const filteredSeaPorts = destinationPortDataValue?.filter(
     (item) => item.Transport_mode === "SEA"
   );
@@ -138,8 +145,8 @@ const Destination = ({
       setDestPort(null);
     } else {
       setSearchDestPort(port?.list_value);
-      setSearchDestCode(port?.port_code)
-      setdeserrormsg(null)
+      setSearchDestCode(port?.port_code);
+      setdeserrormsg(null);
     }
   };
 
@@ -157,11 +164,11 @@ const Destination = ({
     setCargoOptionsVisible(false);
   };
 
-  const handleClose = () =>{
-    setDestPort("")
-    setSearchDestPort("")
-    setDestPortOptionsVisible(false)
-}
+  const handleClose = () => {
+    setDestPort("");
+    setSearchDestPort("");
+    setDestPortOptionsVisible(false);
+  };
 
   return (
     <>
@@ -217,16 +224,19 @@ const Destination = ({
 
             // }}
           />
-          {
-            searchDestPort && 
-            <IoClose role="button" style={{position:"absolute",top:"51%",right:"20px",}} onClick={handleClose} />
-          }
-          {
-            deserrormsg && <FormHelperText style={{ color: "red", fontStyle: "italic" }}>
-            {deserrormsg}
-          </FormHelperText>
-          }
-          
+          {searchDestPort && (
+            <IoClose
+              role="button"
+              style={{ position: "absolute", top: "51%", right: "20px" }}
+              onClick={handleClose}
+            />
+          )}
+          {deserrormsg && (
+            <FormHelperText style={{ color: "red", fontStyle: "italic" }}>
+              {deserrormsg}
+            </FormHelperText>
+          )}
+
           {destPortOptionsVisible && (
             <div className="outer-all-port">
               {loading ? (
