@@ -7,7 +7,7 @@ import RightArrow from "../../../../../assets/rightarrow.svg";
 import QuoteRequestModal from "./QuoteRequestModal";
 import { LeftOutlined } from "@ant-design/icons";
 
-function QuoteRequest({ setShowReselt, checkedItems, setCheckedItems }) {
+function QuoteRequest({ setShowReselt, checkedItems, setCheckedItems,settoscheck }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const showModal = () => {
     setIsModalOpen(true);
@@ -97,6 +97,7 @@ function QuoteRequest({ setShowReselt, checkedItems, setCheckedItems }) {
     }
   };
   const handleClick = () => {
+    settoscheck(true)
     setCheckedItems((prevCheckedItems) => {
       if (prevCheckedItems.StackableCargo === false) {
         return { ...prevCheckedItems, StackableCargo: true };
@@ -237,6 +238,7 @@ function QuoteRequest({ setShowReselt, checkedItems, setCheckedItems }) {
           showModal={isModalOpen}
           onCancel={handleCancel}
           setShowReselt={setShowReselt}
+          
         />
       )}
     </>

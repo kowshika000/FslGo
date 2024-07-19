@@ -17,7 +17,7 @@ const Quotation = ({
     originCharges: false,
     exportClearance: false,
     cargoPickup: false,
-    internationalFreight: false,
+    internationalFreight: true,
     DestinationCharges: false,
     ImportClearance: false,
     CargoDelivery: false,
@@ -25,6 +25,7 @@ const Quotation = ({
     StackableCargo: true,
     NonHarzardousCargo: true,
   });
+  console.log(checkedItems)
   const [exim, setexim] = useState("I");
   const [highlightShipmentCard, setHighlightShipmentCard] = useState(false);
   const [selectedValue, setSelectedValue] = useState("");

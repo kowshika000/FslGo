@@ -1,6 +1,6 @@
 import React from "react";
 
-function ShowChargesModal({ FindNRate }) {
+function ShowChargesModal({ FindNRate,checkedItems }) {
   const deliveryC = FindNRate?.delivery_charges;
   const origin = FindNRate?.origin_charges;
   const dest = FindNRate?.destination_charges;
@@ -13,19 +13,19 @@ function ShowChargesModal({ FindNRate }) {
         <div className="table-responsive">
           <table class="table">
             <tbody>
-              {FindNRate?.origin_charge > 0 && (
+              {FindNRate?.origin_charge > 0 && checkedItems?.originCharges && (
                 <tr className="header">
                   <td className="origincharge">ORIGIN CHARGES</td>
                   <td className="one">{FindNRate?.origin_charge}</td>
                 </tr>
               )}
-              {origin?.map((item, index) => (
+              {FindNRate?.origin_charge > 0 && checkedItems?.originCharges && origin?.map((item, index) => (
                 <tr key={index}>
                   <td className="pickupcharge ps-4">{item?.text}</td>
                   <td className="price-value">{item?.value}</td>
                 </tr>
               ))}
-              {FindNRate?.cargopickup_charge > 0 && (
+              {FindNRate?.cargopickup_charge > 0 && checkedItems?.cargoPickup && (
                 <tr className="header">
                   <td className="origincharge">PICKUP CHARGES</td>
                   <td className="one">{FindNRate?.cargopickup_charge}</td>
@@ -37,7 +37,7 @@ function ShowChargesModal({ FindNRate }) {
                   <td className="price-value">{item?.value}</td>
                 </tr>
               ))} */}
-              {FindNRate?.freight_charge > 0 && (
+              {FindNRate?.freight_charge > 0 && checkedItems?.internationalFreight && (
                 <tr className="header">
                   <td className="origincharge">
                     INTERNATIONAL FREIGHT CHARGES
@@ -45,25 +45,25 @@ function ShowChargesModal({ FindNRate }) {
                   <td className="one">{FindNRate?.freight_charge}</td>
                 </tr>
               )}
-              {freight?.map((item, index) => (
+              {FindNRate?.freight_charge > 0 && checkedItems?.internationalFreight && freight?.map((item, index) => (
                 <tr key={index}>
                   <td className="pickupcharge ps-4">{item?.text}</td>
                   <td className="price-value">{item?.value}</td>
                 </tr>
               ))}
-              {FindNRate?.destination_charge > 0 && (
+              {FindNRate?.destination_charge > 0 && checkedItems?.DestinationCharges && (
                 <tr className="header">
                   <td className="origincharge">DESTINATION CHARGES</td>
                   <td className="one">{FindNRate?.destination_charge}</td>
                 </tr>
               )}
-              {dest?.map((item, index) => (
+              {FindNRate?.destination_charge > 0 && checkedItems?.DestinationCharges && dest?.map((item, index) => (
                 <tr key={index}>
                   <td className="pickupcharge ps-4">{item?.text}</td>
                   <td className="price-value">{item?.value}</td>
                 </tr>
               ))}
-              {FindNRate?.cargodelivery_charge > 0 && (
+              {FindNRate?.cargodelivery_charge > 0 && checkedItems?.CargoDelivery && (
                 <tr className="header">
                   <td className="origincharge">PICKUP CHARGES</td>
                   <td className="one">{FindNRate?.cargodelivery_charge}</td>

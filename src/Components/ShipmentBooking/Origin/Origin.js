@@ -39,8 +39,8 @@ const Origin = ({
   searchOriginCode,
   setSearchOriginCode,
   orgerrormsg,
-  setorgerrormsg
-
+  setorgerrormsg,
+  shrinkValues
 }) => {
   // const [origin, setOrigin] = useState("");
   // const [modalOpen, setModalOpen] = useState(false);
@@ -221,7 +221,7 @@ const Origin = ({
             //   }
             // }}
             onChange={handleOriginPortChange}
-            value={searchOriginPort}
+            value={shrinkValues(searchOriginPort)}
           />
           {/* <IoIosClose size=15  /> */}
           {
