@@ -11,7 +11,7 @@ import Modal from "@mui/material/Modal";
 import "../ShipmentCard.css";
 import { ReactComponent as Location } from "../../../assets/location.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { Col, Row } from "antd";
+import { Col, Row, Tooltip } from "antd";
 import { allportRequest } from "../../../Redux/Actions/AllPortAction";
 import CountryFlag from "../../Core-Components/CountryFlag";
 import air from "../../../assets/Air.svg";
@@ -182,6 +182,7 @@ const Destination = ({
             className="mx-2"
           />
         </div>
+        <Tooltip trigger={"hover"} title={searchDestPort}>
         <div className="w-100">
           <Typography
             className="fw-bold"
@@ -458,6 +459,7 @@ const Destination = ({
             </div>
           )}
         </div>
+        </Tooltip>
       </div>
 
       {/* <Modal
