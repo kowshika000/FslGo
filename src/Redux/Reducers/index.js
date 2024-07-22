@@ -8,7 +8,22 @@ import portReducer from './PortReducer';
 import loginReducer from './LoginReducer';
 import openSailingReducer from './OpenSailingReducer';
 import MapReducer from './MapReducer';
-
+import ViewBookingReducer from "./ViewBookingReducer"
+import UploadDocumentReducer from './UploadDocumentReducer';
+import CancelBookingReducer from './CancelBookingReducer';
+import QuotationReducer from './QuotationReducer';
+import ProfileReducer from './ProfileReducer';
+import UpdatePasswordReducer from './UpdatePasswordReducer';
+import DsrReportReducer from './DsrReportReducer';
+import saveDsrReducer from './SaveDstReducer';
+import DsrDownloadReducer from './DsrDownloadReducer';
+import DsrScheduleReducer from './DsrScheduleReducer';
+import allportReducer from './AllPortReducer';
+import FindNewRateReducer from './FindNewRateReducer';
+import NotificationReducer from './NotificationReducer';
+import PickupReducer from './PickupReducer';
+import DeliveryReducer from './DeleiveryReducer';
+import ContainerPackReducer from './ContainerPackReducer';
 
 const rootReducer = combineReducers({
     ShipmentCount: shipmentCountReducer,
@@ -20,6 +35,24 @@ const rootReducer = combineReducers({
     Login: loginReducer,
     OpenSailing: openSailingReducer,
     Map: MapReducer,
+    ViewBooking: ViewBookingReducer,
+    UploadDocument:UploadDocumentReducer,
+    CancelBooking: CancelBookingReducer,
+    QuotationList: QuotationReducer,
+    ProfileData: ProfileReducer,
+    UpdatePassword: UpdatePasswordReducer,
+    DsrReport: DsrReportReducer,
+    SaveDsr: saveDsrReducer,
+    DsrDownload: DsrDownloadReducer,
+    DsrSchedule: DsrScheduleReducer,
+    allPort: allportReducer,
+    findRate:FindNewRateReducer,
+    DsrDownload:DsrDownloadReducer,
+    DsrSchedule:DsrScheduleReducer,
+    Notification:NotificationReducer,
+    Pickup:PickupReducer,
+    Delivery:DeliveryReducer,
+    ContainerPack: ContainerPackReducer
 });
 
 export default rootReducer;

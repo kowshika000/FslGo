@@ -1,13 +1,15 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Stepper from "./Stepper";
 import { Modal } from "antd";
 import CountryFlag from "../../Core-Components/CountryFlag";
 import arrow1 from "../../../assets/arrow1.png";
 import Union from "../../../assets/Union.png";
 import menu from "../../../assets/menustepper.png";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import "../../ShipmentDetails/ShipmentTable/ShipmentHeader.css";
+import { useNavigate } from "react-router-dom";
 
 function Steppertrack({ isModalOpen, handleCancel, rowData }) {
-
   const handleStatusLabel = () => {
     if (rowData?.status === "Arrived") {
       return <button className="Booked me-3">Arrived</button>;
@@ -25,6 +27,62 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
       return <button className="Booked me-3">In Transit</button>;
     }
   };
+  //dragging
+  const navigate=useNavigate()
+  const stepbox = useRef(null);
+  const [isDragging, setIsDragging] = useState(false);
+  const [showLeftArrow, setShowLeftArrow] = useState(true);
+  const [showRightArrow, setShowRightArrow] = useState(true);
+  const getlastStatus = document.getElementsByClassName("Inprogress");
+  useEffect(() => {
+    if(rowData?.milestones?.length>5){
+    if (stepbox.current) {
+      const getlastStatus = document.getElementsByClassName("Inprogress");
+      if (getlastStatus.length > 0) {
+        stepbox.current.scrollLeft = getlastStatus[0].offsetLeft;
+      }
+    }
+    } 
+  }, [stepbox.current]);
+
+  const manageIcons = () => {
+    let ScrollValue = Math.round(stepbox.current.scrollLeft);
+    let maxscrollwidth =
+      stepbox.current.scrollWidth - stepbox.current.clientWidth;
+    if (ScrollValue > 0) {
+      setShowLeftArrow(true);
+    } else {
+      setShowLeftArrow(false);
+    }
+
+    if (maxscrollwidth > ScrollValue) {
+      setShowRightArrow(true);
+    } else {
+      setShowRightArrow(false);
+    }
+  };
+  const dragging = (e) => {
+    // if(!isDragging) return;
+    stepbox.current.scrollLeft -= e.movementX;
+    manageIcons();
+  };
+  const dragStop = () => {
+    setIsDragging(false);
+  };
+  const handleScrollRight = () => {
+    stepbox.current.scrollLeft += 125;
+    manageIcons();
+  };
+  const handleScrollLeft = () => {
+    stepbox.current.scrollLeft -= 125;
+    manageIcons();
+  };
+
+  //remove close button
+  const button = document.querySelector(".ant-modal-close");
+  if (button) {
+    button.remove();
+  }
   return (
     <Modal open={isModalOpen} onCancel={handleCancel} width="1146px">
       <div className="tracker">
@@ -76,7 +134,7 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
                   letterSpacing: "1%",
                 }}
               >
-               {rowData?.destination}
+                {rowData?.destination}
               </p>
               <p className="mx-3">|</p>
 
@@ -105,7 +163,7 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
               </p>
             </div>
             <div>
-            {handleStatusLabel()}
+              {handleStatusLabel()}
               <span
                 style={{
                   backgroundColor: "#F2F4F8",
@@ -119,19 +177,47 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
               </span>
             </div>
           </div>
-          <div
-            className="mt-2"
-            style={{
-              width: "1106px",
-              height: "107px",
-              padding: "20px 0px 20px 0px",
-              backgroundColor: "#F3F5F7",
-              borderRadius: "8px",
-              overflowX:"auto",
-              overflowY:"hidden",
-            }}
-          >
-            <Stepper data={rowData} />
+          <div className="ship_section">
+            <div
+              className="booking_status_row"
+              style={{ position: "relative" }}
+            >
+              <div
+                className="table-responsive dragging"
+                ref={stepbox}
+                id="tab"
+                onMouseDown={() => setIsDragging(true)}
+                onMouseUp={() => dragStop()}
+                onMouseMove={(e) => dragging(e)}
+              >
+                {
+                  rowData?.milestones?.length>5 &&
+                <div className="arrow_icon">
+                  {showLeftArrow && (
+                    <IoIosArrowBack
+                      size={17}
+                      color="rgb(109 114 120)"
+                      onClick={() => handleScrollLeft()}
+                    />
+                  )}
+                </div>
+                }
+                <Stepper data={rowData} />
+                {
+                  rowData?.milestones?.length>5 &&
+                <div className="arrow_icon">
+                  {showRightArrow && (
+                    <IoIosArrowForward
+                      size={17}
+                      color="rgb(109 114 120)"
+                      onClick={() => handleScrollRight()}
+                    />
+                  )}
+                </div>
+                }
+
+              </div>
+            </div>
           </div>
         </div>
         <div
@@ -143,7 +229,7 @@ function Steppertrack({ isModalOpen, handleCancel, rowData }) {
             borderRadius: "0px 0px 8px 8px",
           }}
         >
-          <button className="viewDetails d-block ms-auto">
+          <button className="viewDetails d-block ms-auto" onClick={()=>navigate("/shipmentdetails" , { state: { rowData } })}>
             View Detailed Tracking
           </button>
         </div>

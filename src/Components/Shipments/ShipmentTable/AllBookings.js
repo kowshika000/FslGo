@@ -1,50 +1,55 @@
-
 import React, { useState, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import { Button } from "primereact/button";
-import sort from "../../../assets/sort.png";
 import Pagination from "../../Core-Components/Pagination";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { bookingRequest } from "../../../Redux/Actions/BookingAction";
 import { Tooltip } from "antd";
 import CountryFlag from "../../Core-Components/CountryFlag";
-import Steppertrack from "../Track/StepperTrack";
 import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
-import { FilterMatchMode } from "primereact/api";
 import "./Booking.css";
-import { Row, Col, Input, Image } from "antd";
-import { SearchOutlined, CaretDownFilled } from "@ant-design/icons";
-import FilterDrawer from "./Filter";
-import filter from "../../../assets/Filter 2.png";
-import calendar from "../../../assets/calendar.png";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { IconButton } from "@mui/material";
-import { Dropdown } from "primereact/dropdown";
+import ShipmentBase from "../../ShipmentDetails/ShipmentTable/ShipmentBase";
+import { MultiSelect } from "primereact/multiselect";
+import { useSelector } from "react-redux";
+import { Tag } from "primereact/tag";
+import { CloseOutlined } from "@ant-design/icons";
+import { CircularProgress, Box } from "@mui/material";
+import "../../Dashboard/ShipmentHistory/ShipmentHistory.css"
 
-const AllBookings = ({ filterData, selectedStatus }) => {
-  const [filters, setFilters] = useState({
-    global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-    id: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    origin: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    destination: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    booked_on: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    // etd/atd: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    // eta/ata: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-    status: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-  });
-  const [globalFilterValue, setGlobalFilterValue] = useState("");
-  const [filterValue, setFilterValue] = useState(15);
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5; // Number of items per page
+const AllBookings = ({
+  filterData,
+  filterValue,
+  currentPage,
+  setCurrentPage,
+  filterMonthValue,
+  selectedStatus,
+}) => {
+  const itemsPerPage = 5;
   const dispatch = useDispatch();
-
+  const [filteredData, setFilteredData] = useState(filterData);
+  const [clicked, setClicked] = useState(false);
+  const [data, setData] = useState(filteredData);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalRowData, setModalRowData] = useState(null);
+  const { loading } = useSelector((state) => state.Booking);
+  const [tblFilter, setTblFilter] = useState({
+    id: [],
+    order_no: [],
+    mode: [],
+    origin: [],
+    destination: [],
+    eta_ata: [],
+    etd_atd: [],
+    status: [],
+  });
   const payload = {
-    filter_month: "",
+    filter_month: filterMonthValue ? filterMonthValue : "",
     booking_type: "",
     status: "",
     spagesize: "",
@@ -55,46 +60,145 @@ const AllBookings = ({ filterData, selectedStatus }) => {
     mode: "",
     etd: "",
     eta: "",
-    filter_days: filterValue,
+    filter_days: filterValue ? filterValue : "",
   };
 
   useEffect(() => {
     dispatch(bookingRequest({ payload }));
-  }, [filterValue]);
-
-  const [filteredData, setFilteredData] = useState([]);
+  }, [filterValue, filterMonthValue]);
 
   useEffect(() => {
-    setFilteredData(filterData);
+    const filterDataTable = filterData.map((item, index) => ({
+      key: index,
+      ...item, 
+    })).filter((filteredItem) =>
+      Object.keys(tblFilter).every(
+        (key) =>
+          tblFilter[key]?.length === 0 || tblFilter[key]?.includes(filteredItem[key])
+      )
+    );
+    setFilteredData(filterDataTable);
+    setCurrentPage(1);
+  }, [tblFilter, filterData]);
+
+  const getUniqueOptions = (array, key) => {
+    if (!Array.isArray(array) || !array?.length) {
+      return [];
+    }
+    return Array.from(new Set(array.map((data) => data[key]))).map((value,index) => ({
+      key:index,
+      label: value,
+      value,
+    }));
+  };
+
+  useEffect(() => {
+    if (clicked) {
+      setData(filteredData);
+    }
+  }, [clicked]);
+
+  const ShipId = getUniqueOptions(data, "id");
+  const orderId_ = getUniqueOptions(data, "order_no");
+  const Mode_ = getUniqueOptions(data, "mode");
+  const Org_ = getUniqueOptions(data, "origin");
+  const dest_ = getUniqueOptions(data, "destination");
+  const eta_ = getUniqueOptions(data, "eta_ata");
+  const etd_ = getUniqueOptions(data, "etd_atd");
+  const status_ = getUniqueOptions(data, "status");
+
+  const handleChangeFilter = (field, filterValues) => {
+    if (field === "all") {
+      setTblFilter({
+        id: [],
+        order_no: [],
+        mode: [],
+        origin: [],
+        destination: [],
+        eta_ata: [],
+        etd_atd: [],
+        status: [],
+      });
+    } else {
+      setTblFilter((prevFilters) => ({
+        ...prevFilters,
+        [field]: filterValues,
+      }));
+    }
+  };
+
+  useEffect(() => {
+    if (selectedStatus !== null) {
+      setTblFilter({
+        id: [],
+        order_no: [],
+        mode: [],
+        origin: [],
+        destination: [],
+        eta_ata: [],
+        etd_atd: [],
+        status: [],
+      });
+    }
   }, [selectedStatus]);
-  console.log("booking", filteredData);
-  
+
+  function MultiSelectFilter(filterKey, options, value, additionalStyles) {
+    const renderOption = (option) => {
+      if (option.label.length <= 14) {
+        return <span>{option.label}</span>;
+      } else {
+        const truncatedText = option.label?.slice(0, 14).trim() + "..";
+        return (
+          <Tooltip placement="topLeft" title={option.label}>
+            <span role="button">{truncatedText}</span>
+          </Tooltip>
+        );
+      }
+    };
+
+    return (
+      <MultiSelect
+        className="custom-multi-select"
+        value={value}
+        options={options}
+        filter
+        style={{
+          position: "absolute",
+          opacity: "0",
+          width: "20px",
+          fontSize: "10px",
+          ...additionalStyles,
+        }}
+        showSelectAll={false}
+        onChange={(e) => handleChangeFilter(filterKey, e.value)}
+        onFocus={() => setClicked(true)}
+        onBlur={() => setClicked(false)}
+        display="chip"
+        placeholder="Select"
+        itemTemplate={renderOption}
+        filterPlaceholder="Search"
+      />
+    );
+  }
+
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = Math.min(startIndex + itemsPerPage, filteredData?.length);
+  // const endIndex = Math.min(startIndex + itemsPerPage, filteredData?.length);
 
-  // Extract the data for the current page
-  const currentPageData = filteredData?.slice(startIndex, endIndex);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [modalRowData, setModalRowData] = useState(null);
   const showModal = (rowData) => {
     setModalRowData(rowData);
     setIsModalOpen(true);
-  };
-  const handleCancel = () => {
-    setIsModalOpen(false);
   };
 
   const actionBodyTemplate = (rowData) => {
     let buttonLabel;
     let btnClass;
     if (rowData.action === "Track") {
-      buttonLabel = "Track";
+      buttonLabel = "More";
       btnClass = "cargo-picked-up";
     } else if (rowData.action === "Booking In Progress") {
       buttonLabel = "-";
     } else if (rowData.action === "Cargo Picked Up") {
-      buttonLabel = "Track";
+      buttonLabel = "More";
       btnClass = "cargo-picked-up";
     }
     return (
@@ -105,7 +209,7 @@ const AllBookings = ({ filterData, selectedStatus }) => {
           background: "rgba(240, 30, 30, 1)",
           color: "white",
           borderRadius: "8px",
-          width: "160px",
+          width: "80px",
           height: "30px",
           padding: "",
           gap: "8px",
@@ -116,45 +220,60 @@ const AllBookings = ({ filterData, selectedStatus }) => {
     );
   };
 
-  const rowClassName = () => {
-    return "custom-row";
-  };
-  const shipmentTemplate = (rowData) => {
+  const shipmentTemplateId = (rowData) => {
     return (
       <div style={{ textAlign: "start" }}>
-        <span className="bold px-4">{rowData?.id}</span>
-        <div
-          style={{
-            color: "rgba(103, 120, 142, 1)",
-            fontSize: "13px",
-            textAlign: "start",
-          }}
-          className="mt-1 px-4"
-        >
-          LCL
-        </div>
+        <span className="">
+          {rowData?.order_no?.length <= 20 ? (
+            rowData?.order_no
+          ) : (
+            <Tooltip placement="topLeft" title={rowData?.order_no}>
+              <span role="button">
+                {rowData?.order_no?.slice(0, 20)?.trim()?.split(" ")?.join("") +
+                  ".."}
+              </span>
+            </Tooltip>
+          )}
+        </span>
+      </div>
+    );
+  };
+  const shipmentTemplateFilterData = (rowData) => {
+    return (
+      <div style={{ textAlign: "start" }}>
+        <span className="">
+          {rowData?.id?.length <= 20 ? (
+            rowData?.id
+          ) : (
+            <Tooltip placement="topLeft" title={rowData?.id}>
+              <span role="button">
+                {rowData?.id?.slice(0, 20)?.trim()?.split(" ")?.join("") + ".."}
+              </span>
+            </Tooltip>
+          )}
+        </span>
       </div>
     );
   };
   const originBodyTemplate = (rowData) => {
     return (
-      <div className="origin-cell">
+      <div className="origin-cell" style={{ textAlign: "start" }}>
         <CountryFlag countryCode={rowData?.origin_countrycode} />
         <span
           style={{
-            padding: "8px",
+            paddingLeft: "8px",
             fontWeight: "400",
-            width: "50px",
-            textWrap: "wrap",
+            // width: "50px",
             textAlign: "start",
           }}
         >
-          {rowData?.origin.length <= 20 ? (
+          {rowData?.origin?.length <= 20 ? (
             rowData?.origin
           ) : (
             <Tooltip placement="topLeft" title={rowData?.origin}>
               <span role="button">
-                {rowData?.origin.slice(0, 20).trim().split(" ").join("") + ".."}
+                {rowData?.origin?.slice(0, 20)?.trim()?.split(" ")?.join("") +
+                  ".."}
               </span>
             </Tooltip>
           )}
@@ -164,16 +283,21 @@ const AllBookings = ({ filterData, selectedStatus }) => {
   };
   const destinationBodyTemplate = (rowData) => {
     return (
-      <div className="origin-cell">
+      <div className="origin-cell" style={{ textAlign: "start" }}>
         <CountryFlag countryCode={rowData?.destination_countrycode} />
-        <span style={{ padding: "8px", fontWeight: "400", textWrap: "wrap" }}>
-          {rowData?.destination.length <= 20 ? (
+        <span
+          style={{ paddingLeft: "8px", fontWeight: "400", textWrap: "wrap" }}
+        >
+          {rowData?.destination?.length <= 20 ? (
             rowData?.destination
           ) : (
             <Tooltip placement="topLeft" title={rowData?.destination}>
               <span role="button">
-                {rowData?.destination.slice(0, 20).trim().split("").join("") +
-                  ".."}
+                {rowData?.destination
+                  ?.slice(0, 20)
+                  ?.trim()
+                  ?.split("")
+                  ?.join("") + ".."}
               </span>
             </Tooltip>
           )}
@@ -181,435 +305,392 @@ const AllBookings = ({ filterData, selectedStatus }) => {
       </div>
     );
   };
-  const handleSort = (col) => {
-    console.log("Ascending");
-    const sorted = [...filteredData].sort((a, b) => {
-      const valA = a[col];
-      const valB = b[col];
-      if (!isNaN(valA) && !isNaN(valB)) {
-        return valA - valB;
-      }
-      if (col === "etd/atd" || col === "eta/ata") {
-        const dateA = parseDate1(valA);
-        const dateB = parseDate1(valB);
-        return dateA - dateB;
-      }
-      return valA > valB ? 1 : -1;
-    });
-    setFilteredData(sorted);
-  };
-  const parseDate1 = (dateString) => {
-    const parts = dateString.split("/");
-    return new Date(parts[2], parts[1] - 1, parts[0]);
-  };
-  const parseDate2 = (dateString) => {
-    const parts = dateString.split("/");
-    return new Date(parts[2], parts[1] - 1, parts[0]);
-  };
+  const bodyTemplate = (rowData) => {
+    const hasUpdated =
+      rowData?.is_updated === "Y" ? rowData?.updated_message : "";
 
-  const handleSortDown = (col) => {
-    console.log("Descending");
-    const sorted = [...filteredData].sort((a, b) => {
-      const valA = a[col];
-      const valB = b[col];
-
-      // Check if the values are numbers
-      if (!isNaN(valA) && !isNaN(valB)) {
-        return valB - valA;
-      }
-
-      // Handle date strings
-      if (col === "etd/atd" || col === "eta/ata") {
-        const dateA = parseDate2(valA);
-        const dateB = parseDate2(valB);
-        return dateB - dateA;
-      }
-
-      // Default string comparison
-      return valA < valB ? 1 : -1;
-    });
-    setFilteredData(sorted);
-  };
-
-  // Function to parse dates in the "dd/mm/yyyy" format
-  const parseDate = (dateString) => {
-    const parts = dateString.split("/");
-    // month is 0-based, so subtract 1 from the month
-    return new Date(parts[2], parts[1] - 1, parts[0]);
-  };
-
-  const [visible, setVisible] = useState(false);
-
-  const showDrawer = () => {
-    setVisible(true);
-  };
-
-  const onClose = () => {
-    setVisible(false);
-  };
-  const onGlobalFilterChange = (e) => {
-    const value = e.target.value;
-    let _filters = { ...filters };
-
-    _filters["global"].value = value;
-
-    setFilters(_filters);
-    setGlobalFilterValue(value);
-  };
-
-  const [selectedDropdownItem, setSelectedDropdownItem] =
-    useState("Past 15 Days");
-
-  const items = ["Past 15 Days", "Past 30 Days", "Past 60 Days"];
-  useEffect(() => {
-    if (selectedDropdownItem === "Past 15 Days") {
-      setFilterValue(15);
-    } else if (selectedDropdownItem === "Past 30 Days") {
-      setFilterValue(30);
-    } else if (selectedDropdownItem === "Past 60 Days") {
-      setFilterValue(60);
-    }
-  }, [selectedDropdownItem]);
-
-  console.log("tab FilterValue", filterValue);
-
-  const renderHeader = () => {
     return (
-      <Row
-        justify="space-between"
-        className="w-full"
-        style={{ padding: "0px 0px 20px 0px",backgroundColor:"white" }}
-      >
-        <Col>
-          <Input
-            placeholder="Search booking id , origin, destination... "
-            prefix={<SearchOutlined style={{ color: "#94A2B2" }} />}
-            style={{
-              width: "368.13px",
-              padding: "4px 11px",
-              borderRadius: "4px",
-            }}
-            value={globalFilterValue}
-            onChange={onGlobalFilterChange}
-          />
-        </Col>
-        <Col className="d-flex ">
-          <div
-            style={{ border: "1px solid #E7EAF0", borderRadius: "8px" }}
-            className="px-1 d-flex me-2"
-          >
-            <Image
-              src={calendar}
-              width="16px"
-              height="12px"
-              className="mt-2 pe-1"
-            />
-
-            <div
-              style={{
-                alignContent: "center",
-                border: "none ",
-                outline: "none ",
-              }}
+      <div className="message">
+        <span className={hasUpdated ? "text-red" : ""}>
+          {hasUpdated ? (
+            <Tooltip
+              placement="topLeft"
+              title={
+                <span>
+                  <div style={{ fontSize: "13px" }}>ETD Changed</div>
+                  <div style={{ fontSize: "10px" }}>
+                    {/* {rowData?.updated_message} */}
+                    Previous ETD : 10/05/2024 <br />
+                    New ETD : 12/05/2024
+                  </div>
+                </span>
+              }
             >
-              <Dropdown
-                value={selectedDropdownItem}
-                onChange={(e) => {
-                  console.log("Selected item:", e.value); // Add logging statement
-                  setSelectedDropdownItem(e.value);
-                }}
-                options={items}
-                placeholder="Past 15 Days"
-                className="w-full md:w-14rem"
-                style={{ border: "none" }}
-              />
-            </div>
-          </div>
-          <div
-            className="filter d-flex py-1 px-2"
-            style={{
-              border: "1px solid rgb(231,234,240",
-              borderRadius: "8px",
-            }}
-          >
-            <div className="ant-image cursor-pointer" onClick={showDrawer}>
-              <img
-                src={filter}
-                className="ant-image-img me-1 my-1"
-                style={{
-                  verticalAlign: "center",
-                  marginTop: "2px",
-                  cursor: "pointer",
-                }}
-              />
-            </div>
-            <span className="align-items-center">Filters</span>
-          </div>
-
-          <FilterDrawer visible={visible} onClose={onClose} />
-        </Col>
-      </Row>
+              <span role="button">{rowData?.etd_atd}</span>
+            </Tooltip>
+          ) : (
+            rowData?.etd_atd
+          )}
+        </span>
+      </div>
     );
   };
-  const header = renderHeader();
+
+  const bodyTemplateEta = (rowData) => {
+    const hasUpdated =
+      rowData?.is_updated === "Y" ? rowData?.updated_message : "";
+    return (
+      <div className="message">
+        <span className={hasUpdated ? "text-red" : ""}>
+          {hasUpdated ? (
+            <Tooltip
+              placement="topLeft"
+              title={
+                <span>
+                  <div style={{ fontSize: "13px" }}>ETA Changed</div>
+                  <div style={{ fontSize: "10px" }}>
+                    Previous ETA : 10/05/2024 <br />
+                    New ETA : 12/05/2024
+                  </div>
+                </span>
+              }
+            >
+              <span role="button">{rowData?.eta_ata}</span>
+            </Tooltip>
+          ) : (
+            rowData?.eta_ata
+          )}
+        </span>
+      </div>
+    );
+  };
+  const sort = (col) => {
+    const handleSort = (col) => {
+      const sorted = [...filteredData].sort((a, b) => {
+        const valA = a[col];
+        const valB = b[col];
+        if (!isNaN(valA) && !isNaN(valB)) {
+          return valA - valB;
+        }
+        return valA > valB ? 1 : -1;
+      });
+      setFilteredData(sorted);
+    };
+
+    const handleSortDown = (col) => {
+      const sorted = [...filteredData].sort((a, b) => {
+        const valA = a[col];
+        const valB = b[col];
+        if (!isNaN(valA) && !isNaN(valB)) {
+          return valB - valA;
+        }
+        return valA < valB ? 1 : -1;
+      });
+      setFilteredData(sorted);
+    };
+
+    return (
+      <div>
+        <div className="d-flex sorticon" style={{ flexDirection: "column" }}>
+          <IconButton
+            onClick={() => {
+              handleSort(col, "asc");
+            }}
+            className="p-0"
+          >
+            <ExpandLessIcon className="sortup" />
+          </IconButton>
+          <IconButton
+            onClick={() => {
+              handleSortDown(col, "desc");
+            }}
+            className="p-0"
+          >
+            <ExpandMoreIcon className="sortdown" />
+          </IconButton>
+        </div>
+      </div>
+    );
+  };
+
+  const paginatedData = filteredData?.slice(
+    startIndex,
+    startIndex + itemsPerPage
+  );
+  const noData = () => {
+    return (
+      <div
+        className="no-options "
+        style={{ alignSelf: "center", height: "353px" }}
+      >
+        No Data Found
+      </div>
+    );
+  };
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "353px",
+          // alignSelf:"center"
+        }}
+      >
+        <CircularProgress style={{ color: "red" }} />
+      </Box>
+    );
+  }
+  const FilterTag = ({ field, filterValues, handleChangeFilter }) => {
+    if (!Array.isArray(filterValues)) {
+      return null;
+    }
+    const renderedColumns = new Set();
+    return (
+      <>
+        {filterValues.map((option) => {
+          if (!renderedColumns.has(field)) {
+            renderedColumns.add(field);
+            return (
+              <Tag
+                key={field}
+                style={{
+                  backgroundColor: "#F01E1E",
+                  marginRight: "10px",
+                  position: "relative",
+                  fontSize: "10px",
+                }}
+                className="px-2 py-1"
+                rounded
+              >
+                <div>
+                  {field === "order_no" ? "Order No" : ""}
+                  {field === "id" ? "Shipment Id" : ""}
+                  {field === "mode" ? "Mode" : ""}
+                  {field === "eta_ata" ? "ETA/ATA" : ""}
+                  {field === "etd_atd" ? "ETD/ATD" : ""}
+                  {field === "status" ? "Status" : ""}
+                  {field === "origin" ? "Origin" : ""}
+                  {field === "destination" ? "Destination" : ""}
+                  <span className="ms-2">
+                    <CloseOutlined
+                      onClick={() => {
+                        handleChangeFilter(field, []);
+                      }}
+                    />
+                  </span>
+                </div>
+              </Tag>
+            );
+          }
+          return null;
+        })}
+      </>
+    );
+  };
 
   return (
     <div
       style={{
-        backgroundColor: "white"
+        backgroundColor: "white",
       }}
     >
+      {Object.keys(tblFilter)?.some((key) => tblFilter[key]?.length > 0) && (
+        <div
+          className="d-flex ps-2"
+          style={{
+            backgroundColor: "#F8FAFC",
+            marginBottom: "9px",
+            padding: "5px 0px",
+            marginTop: "-11px",
+          }}
+        >
+          {Object.entries(tblFilter).map(([field, filterValues]) => (
+            <FilterTag
+              key={field}
+              field={field}
+              filterValues={filterValues}
+              handleChangeFilter={handleChangeFilter}
+            />
+          ))}
+          {Object.keys(tblFilter)?.some(
+            (key) => tblFilter[key]?.length > 0
+          ) && (
+            <Tag
+              style={{
+                backgroundColor: "#F01E1E",
+                marginRight: "10px",
+                position: "relative",
+                fontSize: "10px",
+                marginLeft: "auto",
+              }}
+              className="px-2 py-1"
+              rounded
+            >
+              <div>
+                Clear All
+                <span className="ms-2">
+                  <CloseOutlined
+                    onClick={() => handleChangeFilter("all", [])}
+                  />
+                </span>
+              </div>
+            </Tag>
+          )}
+        </div>
+      )}
       <DataTable
-        value={currentPageData}
+        value={paginatedData}
         dataKey="shipmentId"
-        paginator={false}
-        rows={10}
-        rowsPerPageOptions={[5, 10, 25]}
-        currentPageReportTemplate="{first} to {last} out of {totalRecords} "
-        // paginatorTemplate=" PrevPageLink PageLinks NextPageLink  CurrentPageReport "
-        removableSort
-        header={header}
-        filters={filters}
-        globalFilterFields={[
-          "id",
-          "origin",
-          "destination",
-          "booked_on",
-          "etd/atd",
-          "eta/ata",
-          "status",
-        ]}
-        rowClassName={rowClassName}
+        className={`${filteredData?.length === 0 ? "text-center" : ""}`}
+        style={{ height: "353px" }}
+        emptyMessage={noData()}
       >
         <Column
           field="id"
-          style={{width:"153px"}}
           header={
             <span
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
-              className="px-4 d-flex"
+              className=" d-flex"
             >
               Shipment ID
-              <div
-                className="d-flex sorticon"
-                style={{ flexDirection: "column" }}
-              >
-                <IconButton
-                  onClick={() => {
-                    handleSort("id");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandLessIcon className="sortup" />
-                </IconButton>
-                <IconButton
-                  onClick={() => {
-                    handleSortDown("id");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandMoreIcon className="sortdown" />
-                </IconButton>
-              </div>
+              {MultiSelectFilter("id", ShipId, tblFilter.id)}
+              {sort("id")}
             </span>
           }
-          body={shipmentTemplate}
+          body={shipmentTemplateFilterData}
+          style={{ paddingRight: "10px", width: "170px" }}
+        ></Column>
+        <Column
+          field="order_no"
+          header={
+            <span
+              style={{ fontFamily: "Roboto", cursor: "pointer" }}
+              className="py-3 d-flex "
+            >
+              Order No
+              {MultiSelectFilter("order_no", orderId_, tblFilter.order_no)}
+              {sort("order_no")}
+            </span>
+          }
+          body={shipmentTemplateId}
+          style={{ paddingLeft: "10px", paddingRight: "10px", width: "185px" }}
+          headerClassName="custom-header"
+        ></Column>
+        <Column
+          field="mode"
+          header={
+            <span
+              style={{ fontFamily: "Roboto", cursor: "pointer" }}
+              className=" d-flex"
+            >
+              Mode
+              {MultiSelectFilter("mode", Mode_, tblFilter.mode)}
+              {sort("mode")}
+            </span>
+          }
+          style={{ paddingLeft: "10px", paddingRight: "10px" }}
         ></Column>
 
         <Column
           field="origin"
-          style={{width:"200px"}}
           header={
             <span
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
               className="d-flex"
             >
               Origin
-              <div
-                className="d-flex sorticon"
-                style={{ flexDirection: "column" }}
-              >
-                <IconButton
-                  onClick={() => {
-                    handleSort("origin");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandLessIcon className="sortup" />
-                </IconButton>
-                <IconButton
-                  onClick={() => {
-                    handleSortDown("origin");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandMoreIcon className="sortdown" />
-                </IconButton>
-              </div>
+              {MultiSelectFilter("origin", Org_, tblFilter.origin)}
+              {sort("origin")}
             </span>
           }
           body={originBodyTemplate}
-          headerClassName="custom-header p-3"
-          className="p-3"
+          headerClassName="custom-header"
+          style={{ width: "185px", paddingLeft: "10px", paddingRight: "10px" }}
         ></Column>
         <Column
           field="destination"
-          style={{width:"200px"}}
           header={
             <span
-              className="p-3 d-flex"
+              className=" d-flex"
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
             >
               Destination
-              <div
-                className="d-flex sorticon"
-                style={{ flexDirection: "column" }}
-              >
-                <IconButton
-                  onClick={() => {
-                    handleSort("destination");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandLessIcon className="sortup" />
-                </IconButton>
-                <IconButton
-                  onClick={() => {
-                    handleSortDown("destination");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandMoreIcon className="sortdown" />
-                </IconButton>
-              </div>
+              {MultiSelectFilter("destination", dest_, tblFilter.destination)}
+              {sort("destination")}
             </span>
           }
           body={destinationBodyTemplate}
-          className="p-3"
+          style={{ width: "185px", paddingLeft: "10px", paddingRight: "10px" }}
         ></Column>
+
         <Column
-          field="booked_on"
-          style={{width:"121px"}}
+          field="etd_atd"
           header={
-            <span className="p-3 d-flex">
-              Booked on
-              <div
-                className="d-flex sorticon"
-                style={{ flexDirection: "column" }}
-              >
-                <IconButton
-                  onClick={() => {
-                    handleSort("booked_on");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandLessIcon className="sortup" />
-                </IconButton>
-                <IconButton
-                  onClick={() => {
-                    handleSortDown("booked_on");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandMoreIcon className="sortdown" />
-                </IconButton>
-              </div>
-            </span>
-          }
-          bodyClassName="custom-cell"
-          className="p-3"
-        ></Column>
-        <Column
-          field="etd/atd"
-          style={{width:"100px"}}
-          header={
-            <span className="p-3 d-flex">
+            <span className=" d-flex" style={{ position: "relative" }}>
               ETD/ATD
-              <div
-                className="d-flex sorticon"
-                style={{ flexDirection: "column" }}
-              >
-                <IconButton
-                  onClick={() => {
-                    handleSort("etd/atd");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandLessIcon className="sortup" />
-                </IconButton>
-                <IconButton
-                  onClick={() => {
-                    handleSortDown("etd/atd");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandMoreIcon className="sortdown" />
-                </IconButton>
-              </div>
+              {MultiSelectFilter("etd_atd", etd_, tblFilter.etd_atd)}
+              {sort("etd_atd")}
             </span>
           }
+          body={bodyTemplate}
           bodyClassName="custom-cell"
-          className="p-3"
+          style={{ paddingLeft: "10px", paddingRight: "10px" }}
         ></Column>
         <Column
-          field="eta/ata"
-          style={{width:"100px"}}
+          field="eta_ata"
           header={
-            <span className="p-3 d-flex">
+            <span className=" d-flex">
               ETA/ATA
-              <div
-                className="d-flex sorticon"
-                style={{ flexDirection: "column" }}
-              >
-                <IconButton
-                  onClick={() => {
-                    handleSort("eta/ata");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandLessIcon className="sortup" />
-                </IconButton>
-                <IconButton
-                  onClick={() => {
-                    handleSortDown("eta/ata");
-                  }}
-                  className="p-0"
-                >
-                  <ExpandMoreIcon className="sortdown" />
-                </IconButton>
-              </div>
+              {MultiSelectFilter("eta_ata", eta_, tblFilter.eta_ata)}
+              {sort("eta_ata")}
             </span>
           }
+          body={bodyTemplateEta}
           bodyClassName="custom-cell"
-          className="p-3"
+          style={{ paddingLeft: "10px", paddingRight: "10px" }}
         ></Column>
         <Column
           field="status"
-          style={{width:"115px"}}
-          header={<span className="p-3">Status</span>}
+          header={
+            <span className=" d-flex">
+              Status
+              {MultiSelectFilter("status", status_, tblFilter.status)}
+              {sort("status")}
+            </span>
+          }
+          headerStyle={{
+            width: "130px",
+            paddingLeft: "10px",
+            paddingRight: "10px",
+          }}
           bodyClassName={(rowData) =>
             rowData.status === "Booking In Progress"
               ? "booking-progress-cell"
               : "booked-cell "
           }
-          className=" m-3 px-2"
+          className="text-start my-3"
+          style={{ marginLeft: "10px", marginRight: "10px" }}
         ></Column>
         <Column
           field="action"
           body={actionBodyTemplate}
-          header={<span className="p-3">Action</span>}
-          className="p-3"
+          header={<span>Action</span>}
+          className=" text-start"
+          headerStyle={{ paddingLeft: "10px" }}
         ></Column>
       </DataTable>
-
       <Pagination
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         totalItems={filteredData?.length}
+        onPageChange={() => setCurrentPage(1)}
+        itemsPerPage={itemsPerPage}
       />
-      <Steppertrack
-        isModalOpen={isModalOpen}
-        handleCancel={handleCancel}
+      <ShipmentBase
+        open={isModalOpen}
+        close={setIsModalOpen}
         rowData={modalRowData}
       />
     </div>

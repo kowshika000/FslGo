@@ -8,6 +8,22 @@ import watchPort from "./PortSaga";
 import watchLogin from "./LoginSaga";
 import watchOpenSailing from "./OpenSailingSaga";
 import watchMap from "./MapSaga";
+import watchViewBooking from "./ViewBookingSaga";
+import watchUploadDocument from "./UploadDocumentSaga";
+import WatchCancelBooking from "./CancelBookingSaga";
+import watchQuotation from "./QuotationSaga";
+import watchProfile from "./ProfileSaga";
+import watchUpdatePassword from "./UpdatePasswordSaga";
+import watchDsr from "./DsrSaga";
+import watchSaveDsr from "./SaveDsrSaga";
+import watchDsrDownload from "./DsrDownloadSaga";
+import watchDsrSchedule from "./DsrScheduleSaga";
+import WatchNotification from "./NotificationSaga";
+import watchallPort from "./AllPortSaga";
+import watchFindNewRate from "./FindNewRateSaga";
+import watchPickup from "./PickupSaga";
+import watchDelivery from "./DeliverySaga";
+import watchCPack from "./ContainerPackSaga";
 
 export default function* rootSaga() {
   yield all([
@@ -20,5 +36,21 @@ export default function* rootSaga() {
     watchLogin(),
     watchOpenSailing(),
     watchMap(),
+    watchViewBooking(),
+    watchUploadDocument(),
+    WatchCancelBooking(),
+    watchQuotation(),
+    watchProfile(),
+    watchUpdatePassword(),
+    watchDsr(),
+    watchSaveDsr(),
+    watchDsrDownload(),
+    watchDsrSchedule(),
+    WatchNotification(),
+    watchallPort(),
+    watchFindNewRate(),
+    watchPickup(),
+    watchDelivery(),
+    watchCPack()
   ]);
 }

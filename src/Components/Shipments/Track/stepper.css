@@ -39,12 +39,12 @@
     left: 12px;
     background-color: none;
 }
- p{
+ /* p{
     font-weight: 400;
     font-size: 14px;
     line-height: 24px;
     letter-spacing: 1%;
-}
+} */
 .step{
     width: 25px;
     height: 25px;
@@ -133,7 +133,7 @@
 .viewDetails{
     width:211px;
     height:46px;
-    padding: 0px, 22px, 0px, 22px ;
+    padding: 0px 22px 0px 22px ;
     color: white;
     border-radius: 8px !important;
     background-color: #D32D2F;
@@ -146,9 +146,12 @@
 }
 
 
-.ant-modal-close-x{
+/* .ant-modal-close-x{
     display: none !important;
 }
+.ant-modal-close-x:hover{
+    background-color: none !important;
+} */
 .ant-modal-footer{
     display: none;
 }
@@ -162,6 +165,12 @@
 }
 
 .tracker{
-    width:1146px;
+    max-width:1146px;
     height:261px;    
 }
+
+.dragging{
+    scroll-behavior: auto;
+    cursor: grab;
+}
+

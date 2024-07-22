@@ -16,13 +16,13 @@
 }
 .p-datatable .p-datatable-tbody > tr > td {
   /* text-align: start !important; */
-  padding: 12px, 10px, 12px, 10px !important;
-  text-align: center;
+  /* padding: 12px 10px 12px 10px !important; */
   font-size: 14px;
   font-weight: 400;
   color: rgba(24, 30, 37, 1);
   align-items: center;
 }
+
 .upcoming-dep {
   width: 152px;
   height: 25px;
@@ -42,7 +42,7 @@
   background-color: #384656 !important;
   color: white !important;
 }
-.booked-cell {
+/* .booked-cell {
   border-left: 1px solid #008000;
   display: flex;
   justify-content: start;
@@ -65,26 +65,30 @@
   height: 27px;
   align-content: center !important;
   align-self: center !important;
+} */
+/* .cargo-picked-up {
+  background-color: #F01E1E  !important;
 }
-.cargo-picked-up {
-  background-color: #008000 !important;
-}
+.cargo-picked-up:hover{
+  background-color: #DA1E28   !important;
+} */
 .custom-row:hover {
-  background-color: rgba(247, 252, 255, 1);
-  border-bottom: 1px solid #acacac;
+  background-color: #F8FAFC !important;
+  border-bottom: 1px solid #F3F5F7 !important;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.25);
 }
+
 .sorticon {
   margin-left: 3px;
 }
 .sortup {
   font-size: small !important;
-  opacity: 50%;
+  opacity: 50% !important;
 }
 .sortdown {
   font-size: small !important;
   margin-top: -6px !important;
-  opacity: 50%;
-
+  opacity: 50% !important;
 }
 .ant-modal-content
 {

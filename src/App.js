@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  // Navigate,
+  useLocation,
+} from "react-router-dom";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import Header from "./Components/Layout/Header";
 import RecentBooking from "./Components/QuickBooking/RecentBooking";
-import Dashboard from "./Components/Dashboard";
-import Home from "./Components/Inbox";
+// import Dashboard from "./Components/Dashboard";
+// import Home from "./Components/Inbox";
 import ShipmentsHome from "./Components/Shipments";
 import Invoice from "./Components/Invoice/Invoice";
 import { Footer } from "./Components/Layout/Footer";
@@ -12,70 +18,180 @@ import Quotation from "./Components/Quotations/Quotation";
 import { useSelector, useDispatch } from "react-redux";
 import { LoginRequest } from "./Redux/Actions/LoginAction";
 import Cookies from "js-cookie";
+import Inbox from "./Components/Inbox/Inbox";
+import ShipmentBase from "./Components/ShipmentDetails/ShipmentTable/ShipmentBase";
+import { CircularProgress, Box } from "@mui/material";
+import ProfileBase from "./Components/Profile/ProfileBase";
+import FindNewRate from "./Components/Quotations/QuotaionTable/QModal/FindNewRate/FindNewRate";
+import Quick from "./Components/QuickBooking/Quick";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+const MainContent = ({
+  showmap,
+  setShowmap,
+  showText,
+  setShowText,
+  showReselt,
+  setShowReselt,
+}) => {
+  const location = useLocation();
+  const showfooter = location.pathname !== "/quotation" || !showReselt;
+  const [showHeader, setShowHeader] = useState(true);
+
+  const handleScroll = () => {
+    if (location.pathname === "/quotation" && showReselt) {
+      const scrollTop = window.scrollY;
+      setShowHeader(scrollTop <= 0);
+    } else {
+      setShowHeader(true);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [location, showReselt]);
+  return (
+    <>
+      {showHeader && (
+        <Header
+          setShowmap={setShowmap}
+          setShowText={setShowText}
+          setShowReselt={setShowReselt}
+        />
+      )}
+      <div style={{ marginTop: "76px" }}></div>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <ShipmentsHome
+                showmap={showmap}
+                setShowmap={setShowmap}
+                showText={showText}
+                setShowText={setShowText}
+              />
+            }
+          />
+          <Route path="/recentBooking" element={<RecentBooking />} />
+          <Route path="/inbox" element={<Inbox />} />
+          <Route path="/invoice" element={<Invoice />} />
+          <Route
+            path="/quotation"
+            element={
+              <Quotation
+                showReselt={showReselt}
+                setShowReselt={setShowReselt}
+                showHeader={showHeader}
+                setShowHeader={setShowHeader}
+              />
+            }
+          />
+          <Route path="/shipmentdetails" element={<ShipmentBase />} />
+          <Route path="/findnewrate" element={<FindNewRate />} />
+          <Route path="/profile" element={<ProfileBase />} />
+          <Route path="/quick" element={<Quick />} />
+        </Routes>
+      {showfooter && <Footer />}
+      <ToastContainer
+        position="top-right"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
+      <ToastContainer />
+    </>
+  );
+};
 
 function App() {
   const dispatch = useDispatch();
   const jwtToken = useSelector((state) => state.Login?.booking?.Token);
   const [loading, setLoading] = useState(true);
-  let isTokenReceived = false;
-
-  useEffect(() => {
+  const [showmap, setShowmap] = useState(false);
+  const [showText, setShowText] = useState(false);
+  const [showReselt, setShowReselt] = useState(false);
+  const parseUrlParams = () => {
     const currentUrl = window.location.href;
-    const queryString = currentUrl?.split("?")[1];
-    const paramsArray = queryString?.split("&");
+    const queryString = currentUrl.split("?")[1];
     const params = {};
-  
-    if (paramsArray) {
-      paramsArray.forEach((param) => {
-        const [key, value] = param?.split("=");
+
+    if (queryString) {
+      queryString.split("&").forEach((param) => {
+        const [key, value] = param.split("=");
         params[key] = value;
       });
     }
-  
-    const id = params["id"];
-    const token = params["token"];
-    console.log(token);
-  
-    dispatch(LoginRequest({ sUsername: id, spassword: token }));
-  
-    if (jwtToken) {
+
+    return params;
+  };
+
+  useEffect(() => {
+    const savedToken = Cookies.get("jwtToken");
+
+    if (savedToken) {
+      setLoading(false);
+      return;
+    }
+
+    const { id, token } = parseUrlParams();
+
+    if (id && token && !jwtToken) {
+      dispatch(LoginRequest({ sUsername: id, spassword: token }));
+    } else {
       setLoading(false);
     }
-  
+
     const timeout = setTimeout(() => {
       if (!jwtToken) {
         window.location.href = "http://www.freightsystems.com";
       }
     }, 5000);
-  
-    return () => clearTimeout(timeout); 
+
+    return () => clearTimeout(timeout);
   }, [dispatch, jwtToken]);
-  
+
+  useEffect(() => {
+    if (jwtToken) {
+      Cookies.set("jwtToken", jwtToken, { expires: 7 });
+      setLoading(false);
+    }
+  }, [jwtToken]);
 
   if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (jwtToken) {
-    Cookies.set("jwtToken", jwtToken, { expires: 7 });
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+        }}
+      >
+        <CircularProgress style={{ color: "red" }} />
+      </Box>
+    );
   }
 
   return (
     <BrowserRouter>
-      <Header />
-      <div style={{ marginTop: "4rem" }}>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/shipments" element={<ShipmentsHome />} />
-          <Route path="/recentBooking" element={<RecentBooking />} />
-          <Route path="/inbox" element={<Home />} />
-          <Route path="/invoice" element={<Invoice />} />
-          <Route path="/quotation" element={<Quotation />} />
-        </Routes>
-      </div>
-      <Footer />
+      <MainContent
+        showmap={showmap}
+        setShowmap={setShowmap}
+        showText={showText}
+        setShowText={setShowText}
+        showReselt={showReselt}
+        setShowReselt={setShowReselt}
+      />
     </BrowserRouter>
   );
 }
 
-export default App;
+export default React.memo(App);

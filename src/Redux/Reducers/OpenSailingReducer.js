@@ -1,4 +1,4 @@
-import {PORT_REQUEST, PORT_SUCCESS, PORT_FAILURE, OPENSAILING_REQUEST, OPENSAILING_SUCCESS, OPENSAILING_FAILURE} from '../ActionTypes'
+import {OPENSAILING_REQUEST, OPENSAILING_SUCCESS, OPENSAILING_FAILURE} from '../ActionTypes'
 const initialState = {
   error: null,
   loading: false,
