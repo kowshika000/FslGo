@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  // Navigate,
+  useLocation,
+} from "react-router-dom";
 import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 import Header from "./Components/Layout/Header";
 import RecentBooking from "./Components/QuickBooking/RecentBooking";
-import Dashboard from "./Components/Dashboard";
-import Home from "./Components/Inbox";
+// import Dashboard from "./Components/Dashboard";
+// import Home from "./Components/Inbox";
 import ShipmentsHome from "./Components/Shipments";
 import Invoice from "./Components/Invoice/Invoice";
 import { Footer } from "./Components/Layout/Footer";
@@ -21,14 +27,41 @@ import Quick from "./Components/QuickBooking/Quick";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const MainContent = ({ showmap, setShowmap, showText, setShowText }) => {
+const MainContent = ({
+  showmap,
+  setShowmap,
+  showText,
+  setShowText,
+  showReselt,
+  setShowReselt,
+}) => {
   const location = useLocation();
-  const showfooter = location.pathname !== "/findnewrate";
+  const showfooter = location.pathname !== "/quotation" || !showReselt;
+  const [showHeader, setShowHeader] = useState(true);
 
+  const handleScroll = () => {
+    if (location.pathname === "/quotation" && showReselt) {
+      const scrollTop = window.scrollY;
+      setShowHeader(scrollTop <= 0);
+    } else {
+      setShowHeader(true);
+    }
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [location, showReselt]);
   return (
     <>
-      <Header setShowmap={setShowmap} setShowText={setShowText} />
-      <div style={{ marginTop: "4rem" }}>
+      {showHeader && (
+        <Header
+          setShowmap={setShowmap}
+          setShowText={setShowText}
+          setShowReselt={setShowReselt}
+        />
+      )}
+      <div style={{ marginTop: "76px" }}></div>
         <Routes>
           <Route
             path="/"
@@ -44,13 +77,22 @@ const MainContent = ({ showmap, setShowmap, showText, setShowText }) => {
           <Route path="/recentBooking" element={<RecentBooking />} />
           <Route path="/inbox" element={<Inbox />} />
           <Route path="/invoice" element={<Invoice />} />
-          <Route path="/quotation" element={<Quotation />} />
+          <Route
+            path="/quotation"
+            element={
+              <Quotation
+                showReselt={showReselt}
+                setShowReselt={setShowReselt}
+                showHeader={showHeader}
+                setShowHeader={setShowHeader}
+              />
+            }
+          />
           <Route path="/shipmentdetails" element={<ShipmentBase />} />
           <Route path="/findnewrate" element={<FindNewRate />} />
           <Route path="/profile" element={<ProfileBase />} />
           <Route path="/quick" element={<Quick />} />
         </Routes>
-      </div>
       {showfooter && <Footer />}
       <ToastContainer
         position="top-right"
@@ -75,6 +117,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [showmap, setShowmap] = useState(false);
   const [showText, setShowText] = useState(false);
+  const [showReselt, setShowReselt] = useState(false);
   const parseUrlParams = () => {
     const currentUrl = window.location.href;
     const queryString = currentUrl.split("?")[1];
@@ -139,13 +182,15 @@ function App() {
 
   return (
     <BrowserRouter>
-    <MainContent
-      showmap={showmap}
-      setShowmap={setShowmap}
-      showText={showText}
-      setShowText={setShowText}
-    />
-  </BrowserRouter>
+      <MainContent
+        showmap={showmap}
+        setShowmap={setShowmap}
+        showText={showText}
+        setShowText={setShowText}
+        showReselt={showReselt}
+        setShowReselt={setShowReselt}
+      />
+    </BrowserRouter>
   );
 }
 

@@ -20,6 +20,7 @@ import { useSelector } from "react-redux";
 import { Tag } from "primereact/tag";
 import { CloseOutlined } from "@ant-design/icons";
 import { CircularProgress, Box } from "@mui/material";
+import "../../Dashboard/ShipmentHistory/ShipmentHistory.css"
 
 const AllBookings = ({
   filterData,

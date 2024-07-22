@@ -1,27 +1,27 @@
-import {FIND_NEW_RATE_REQUEST, FIND_NEW_RATE_SUCCESS, FIND_NEW_RATE_FAILURE} from '../ActionTypes'
+import {PICKUP_REQUEST, PICKUP_SUCCESS, PICKUP_FAILURE} from '../ActionTypes'
 const initialState = {
   error: null,
   loading: false,
-  findRate: {},
+  pickuppointlist: [],
 };
-function FindNewRateReducer(state = initialState, action) {
+function PickupReducer(state = initialState, action) {
   switch (action.type) {
    
-    case FIND_NEW_RATE_REQUEST:
+    case PICKUP_REQUEST:
       return {
         ...state,
         error: null,
         loading: true,
       };
-    case FIND_NEW_RATE_SUCCESS:
-      
+    case PICKUP_SUCCESS:
+     
       return {
         ...state,
         error: null,
         loading: false,
-        findRate: action.payload,
+        pickuppointlist: action.payload,
       };
-    case FIND_NEW_RATE_FAILURE:
+    case PICKUP_FAILURE:
       return {
         ...state,
         error: action.error,
@@ -32,4 +32,4 @@ function FindNewRateReducer(state = initialState, action) {
       return state;
   }
 }
-export default FindNewRateReducer;
+export default PickupReducer;

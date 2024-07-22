@@ -185,3 +185,57 @@
 /* .ant-tabs-top >.ant-tabs-nav{
   margin: 0 !important;
 } */
+.fixed-shipment-card {
+  min-width: 1255px;
+  position: fixed !important;
+  top: 0 !important;
+  /* width: 100% !important; */
+  background-color: black;
+  z-index: 1000;
+  margin: 0;
+  left: 0 !important;
+}
+
+.centerdiv-white {
+  /* background-color: #fff; */
+  /* display: flex ; */
+  /* justify-content: center ; */
+  padding: 20px;
+}
+.ant-modal-close {
+  color: white !important;
+}
+.quote-request .ant-modal-content {
+  top: 0 !important;
+}
+
+.booking-modal-header {
+  font-family: var(--tertiary-font) !important;
+}
+.request-modal {
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 34px;
+  letter-spacing: 0.24px;
+}
+.request-modal-p {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0.14px;
+}
+.dimmed-background1 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  padding-top: 180px !important;
+  overflow-y: none !important;
+}
+.marginTop{
+  margin-top: 150px;
+}

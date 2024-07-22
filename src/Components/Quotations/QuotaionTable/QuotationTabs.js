@@ -7,7 +7,7 @@ import { Dropdown } from "primereact/dropdown";
 import {  CaretDownOutlined } from "@ant-design/icons";
 import cal from "../../../assets/calVector.svg";
 
-const QuotationTabs = () => {
+const QuotationTabs = ({setHighlightShipmentCard,selectedDataToPatch,setSelectedDataToPatch}) => {
   const [activeKey, setActiveKey] = useState("1");
   const [currentPage, setCurrentPage] = useState(1);
   const [data, setData] = useState([]);
@@ -127,7 +127,7 @@ const QuotationTabs = () => {
   };
   return (
     <div
-      className="mx-auto mt-5 "
+      className="mx-auto"
       style={{
         minWidth: "1255px",
         borderRadius: "8px",
@@ -171,6 +171,9 @@ const QuotationTabs = () => {
             setActiveKey={setActiveKey}
             selectedDropdownItem={selectedDropdownItem}
             setSelectedDropdownItem={setSelectedDropdownItem}
+            setHighlightShipmentCard={setHighlightShipmentCard}
+            selectedDataToPatch={selectedDataToPatch}
+            setSelectedDataToPatch={setSelectedDataToPatch} 
           />
         </Col>
       </Row>

@@ -1,46 +1,76 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Button, Card, Checkbox, Popover, Image } from "antd";
+import React, { useState, useEffect } from "react";
+import { Button, Card, Checkbox, Popover, Image, Input } from "antd";
 import "./FindNewRate.css";
 import ShipmentTracker from "./ShipmentTracker";
 import info from "../../../../../assets/Info.svg";
 import { Tooltip } from "antd";
-import QuoteRequest from "./QuoteRequest";
 import { Collapse } from "antd";
-import { DownOutlined, UpOutlined } from "@ant-design/icons";
+// import { DownOutlined, UpOutlined } from "@ant-design/icons";
 import CargoPickupPopOver from "./CargoPickupPopOver";
 import CargoDeliveryPopOver from "./CargoDeliveryPopOver";
 import pencil from "../../../../../assets/Pencil.svg";
 import img from "../../../../../assets/thumbsgr.svg";
 import uparrow from "../../../../../assets/uparrowcargo.svg";
 import CargoInsurance from "./CargoInsurance";
+// import CargoInsurance from "./CargoInsurance";
 
-function FindNewRate() {
-  const [checkedItems, setCheckedItems] = useState({
-    originCharges: false,
-    exportClearance: false,
-    cargoPickup: false,
-    internationalFreight: false,
-    DestinationCharges: false,
-    ImportClearance: false,
-    CargoDelivery: false,
-    CargoInsurance: false,
-    StackableCargo: false,
-    NonHarzardousCargo: false,
-  });
+function FindNewRate({
+  selectedCurrency,
+  setSelectedCurrency,
+  checkedItems,
+  setCheckedItems,
+  showHeader,
+  setShowReselt,
+  exim,
+  selectedValue,
+  setSelectedValue,
+  selectedDeliveryValue,
+  setSelectedDeliveryValue,
+  insuranceValue,
+  setInsuranceValue,
+  selectedCode,
+  setSelectedCode,
+  selectedCode1,
+  setSelectedCode1,
+  originPort,
+  destPort,
+  settoscheck
+}) {
   const [isPopoverOpen, setPopoverOpen] = useState(false);
   const [isDeliveryPopoverOpen, setDeliveryPopoverOpen] = useState(false);
   const [isInsurance, setInsurance] = useState(false);
+  // const [insuranceValue, setInsuranceValue] = useState("");
+  // console.log("insure",insuranceValue);
 
-  const [selectedValue, setSelectedValue] = useState("");
-  const [selectedDeliveryValue, setSelectedDeliveryValue] = useState("");
-  const [insuranceValue, setInsuranceValue] = useState("");
+  // const [selectedValue, setSelectedValue] = useState("");
+  // const [selectedDeliveryValue, setSelectedDeliveryValue] = useState("");
 
   const onChange = (e) => {
+    settoscheck(true)
     const { name, checked } = e.target;
-    setCheckedItems({
-      ...checkedItems,
-      [name]: checked,
+    setCheckedItems((prevItems) => {
+      const updatedItems = { ...prevItems, [name]: checked };
+
+      if (name === "cargoPickup" && checked) {
+        updatedItems.originCharges = true;
+      } else if (name === "CargoDelivery" && checked) {
+        updatedItems.DestinationCharges = true;
+      }
+
+      if(name == "originCharges" && !checked ){
+        if(updatedItems.cargoPickup){
+          updatedItems.cargoPickup = false
+        }
+      }
+      if(name == "DestinationCharges" && !checked ){
+        if(updatedItems.CargoDelivery){
+          updatedItems.CargoDelivery = false
+        }
+      }
+
+      return updatedItems;
     });
+
     if (name === "cargoPickup") {
       setPopoverOpen(checked);
     }
@@ -60,12 +90,23 @@ function FindNewRate() {
       return insuranceValue;
     }
   };
+
+  const [editiconClickedIns, setediticonClickedIns] = useState(false);
+  useEffect(() => {
+    if (!isInsurance && editiconClickedIns) {
+      setediticonClickedIns(false);
+    }
+  }, [isInsurance]);
   const getPopoverContent = (value) => {
     if (value === "cargoPickup") {
       return (
         <CargoPickupPopOver
           setSelectedValue={setSelectedValue}
           setPopoverOpen={setPopoverOpen}
+          selectedCode={selectedCode}
+          setSelectedCode={setSelectedCode}
+          originPort={originPort}
+          destPort={destPort}
         />
       );
     } else if (value === "CargoDelivery") {
@@ -73,13 +114,20 @@ function FindNewRate() {
         <CargoDeliveryPopOver
           setSelectedValue={setSelectedDeliveryValue}
           setPopoverOpen={setDeliveryPopoverOpen}
+          selectedCode1={selectedCode1}
+          setSelectedCode1={setSelectedCode1}
+          destPort={destPort}
         />
       );
     } else if (value === "CargoInsurance") {
       return (
         <CargoInsurance
-          setSelectedValue={setInsuranceValue}
-          setPopoverOpen={setInsurance}
+          insuranceValue={insuranceValue}
+          setInsuranceValue={setInsuranceValue}
+          setInsurance={setInsurance}
+          editiconClickedIns={editiconClickedIns}
+          setediticonClickedIns={setediticonClickedIns}
+          isInsurance={isInsurance}
         />
       );
     }
@@ -101,8 +149,6 @@ function FindNewRate() {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  console.log(`selectedjhgfds ${selectedValue}`);
 
   const FilterCheckbox = ({
     label,
@@ -186,7 +232,10 @@ function FindNewRate() {
                       marginBottom: "0px",
                     }}
                   >
-                    ZIP Code :&nbsp;&nbsp;
+                    {value === "CargoInsurance"
+                      ? "Goods value in USD"
+                      : "ZIP Code"}{" "}
+                    :&nbsp;&nbsp;
                     <span
                       style={{
                         fontWeight: "500",
@@ -213,9 +262,12 @@ function FindNewRate() {
                   <Button
                     type="link"
                     className={`editpencil-btn ${
-                      (selectedValue || selectedDeliveryValue || insuranceValue) &&
+                      (selectedValue ||
+                        selectedDeliveryValue ||
+                        insuranceValue) &&
                       !isPopoverOpen &&
-                      !isDeliveryPopoverOpen && !isInsurance
+                      !isDeliveryPopoverOpen &&
+                      !isInsurance
                         ? "ms-auto"
                         : ""
                     }`}
@@ -233,6 +285,7 @@ function FindNewRate() {
                         setDeliveryPopoverOpen(true);
                       } else if (value === "CargoInsurance") {
                         setInsurance(true);
+                        setediticonClickedIns(true);
                       }
                     }}
                   >
@@ -256,14 +309,14 @@ function FindNewRate() {
             <FilterCheckbox
               label="Origin Charges"
               vname="originCharges"
-              checked={checkedItems.originCharges}
+              checked={checkedItems?.originCharges}
               value="originCharges"
               tooltipText="This includes Origin documentation, Port/Airport handling."
               onChange={onChange}
             />
             <FilterCheckbox
               label="Export Clearance"
-              checked={checkedItems.exportClearance}
+              checked={checkedItems?.exportClearance}
               value="exportClearance"
               vname="exportClearance"
               tooltipText="Charges for filing with Export customs."
@@ -275,7 +328,7 @@ function FindNewRate() {
             </FilterCheckbox>
             <FilterCheckbox
               label="Cargo Pickup"
-              checked={checkedItems.cargoPickup}
+              checked={checkedItems?.cargoPickup}
               value="cargoPickup"
               vname="cargoPickup"
               tooltipText="Transportation from factory/warehouse to Port/Airport."
@@ -305,7 +358,7 @@ function FindNewRate() {
           <div className="filterouter-leftdiv">
             <FilterCheckbox
               label="Destination Charges"
-              checked={checkedItems.DestinationCharges}
+              checked={checkedItems?.DestinationCharges}
               value="DestinationCharges"
               vname="DestinationCharges"
               tooltipText="This includes destination documentation, Port/Airport handling."
@@ -313,7 +366,7 @@ function FindNewRate() {
             />
             <FilterCheckbox
               label="Import Clearance"
-              checked={checkedItems.ImportClearance}
+              checked={checkedItems?.ImportClearance}
               value="ImportClearance"
               vname="ImportClearance"
               tooltipText="Charges only for Import clearance, duties and taxes will be billed as per receipt."
@@ -325,7 +378,7 @@ function FindNewRate() {
             </FilterCheckbox>
             <FilterCheckbox
               label="Cargo Delivery"
-              checked={checkedItems.CargoDelivery}
+              checked={checkedItems?.CargoDelivery}
               value="CargoDelivery"
               vname="CargoDelivery"
               tooltipText="Transportation from Port/Airport to Factory/Warehouse."
@@ -345,7 +398,7 @@ function FindNewRate() {
           <div className="filterouter-leftdiv">
             <FilterCheckbox
               label="Cargo Insurance"
-              checked={checkedItems.CargoInsurance}
+              checked={checkedItems?.CargoInsurance}
               value="CargoInsurance"
               vname="CargoInsurance"
               tooltipText="Insurance that generally protects shipments from loss, damage, or theft while in transit. The cargo insurance coverage includes events mentioned in the policy like vehicle accidents, cargo renunciation, damage due to natural calamities, acts of war, piracy, etc."
@@ -369,7 +422,7 @@ function FindNewRate() {
           <div className="filterouter-leftdiv">
             <FilterCheckbox
               label="Stackable Cargo"
-              checked={checkedItems.StackableCargo}
+              checked={checkedItems?.StackableCargo}
               value="StackableCargo"
               vname="StackableCargo"
               tooltipText="Cargo will be stacked. If your cargo is non-stackable rates will change."
@@ -377,7 +430,7 @@ function FindNewRate() {
             />
             <FilterCheckbox
               label="Non Harzardous Cargo"
-              checked={checkedItems.NonHarzardousCargo}
+              checked={checkedItems?.NonHarzardousCargo}
               value="NonHarzardousCargo"
               vname="NonHarzardousCargo"
               tooltipText="Cargo should not have any hazardous substances. Cargo is not corrosive, toxic, flammable, or reactive and does not require a warning label."
@@ -390,24 +443,22 @@ function FindNewRate() {
   ];
 
   const customExpandIcon = ({ isActive }) =>
-    isActive ? <Image src={uparrow} alt="arrow" /> : <DownOutlined />;
+    isActive ? (
+      <Image src={uparrow} alt="arrow" preview={false} />
+    ) : (
+      <Image
+        src={uparrow}
+        alt="arrow"
+        preview={false}
+        style={{ transform: "rotate(180deg)" }}
+      />
+    );
 
   return (
-    <div
-      style={{
-        Width: "100%",
-        minWidth: "1255px",
-        padding: "20px",
-        backgroundColor: "#f3f5f7",
-        // marginTop: "100px",
-      }}
-    >
-      <div className="quotationresult-div mx-auto">
-        <div
-          className="quotationresult-leftdiv"
-          style={{ flex: "0 0 272px", height: "100vh" }}
-        >
-          <Card title="Service Included">
+    <div className="quotationresult-div">
+      <div className={`quotationresult-leftdiv`}>
+        <div className={`${showHeader ? "" : "fixed"}`}>
+          <Card title="Service Included" style={{ overflowX: "auto" }}>
             <div className="Service-card">
               <Collapse
                 defaultActiveKey={["1"]}
@@ -452,10 +503,24 @@ function FindNewRate() {
             </div>
           </Card>
         </div>
-        <div className="quotationresult-leftdiv" style={{ flex: "1 1 auto" }}>
-          <ShipmentTracker />
-          {/* <QuoteRequest /> */}
-        </div>
+      </div>
+      <div
+        className={`quotationresult-rightdiv ${showHeader ? "" : "fixedleft"}`}
+        style={{ flex: "1 1 auto" }}
+      >
+        <ShipmentTracker
+          selectedCurrency={selectedCurrency}
+          setSelectedCurrency={setSelectedCurrency}
+          selectedValue={selectedValue}
+          checkedItems={checkedItems}
+          setShowReselt={setShowReselt}
+          exim={exim}
+          setCheckedItems={setCheckedItems}
+          selectedDeliveryValue={selectedDeliveryValue}
+          originPort={originPort}
+          destPort={destPort}
+          settoscheck={settoscheck}
+        />
       </div>
     </div>
   );

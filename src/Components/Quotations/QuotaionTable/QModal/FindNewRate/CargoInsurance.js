@@ -1,39 +1,49 @@
-import { Select } from "antd";
-import React from "react";
+import { Input, Button } from "antd";
+import React, { useEffect, useState } from "react";
 
-function CargoInsurance({ setSelectedValue, setPopoverOpen }) {
-  const handleSelectChange = (value) => {
-    if (value) {
-      setSelectedValue(value);
-      setPopoverOpen(false);
+function CargoInsurance({
+  insuranceValue,
+  setInsuranceValue,
+  setInsurance,
+  editiconClickedIns,
+  setediticonClickedIns,
+  isInsurance,
+}) {
+  const [inputValue, setInputValue] = useState("");
+  const handleCalculateClick = () => {
+    setInsuranceValue(inputValue);
+    setInsurance(false);
+  };
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+  };
+  console.log(editiconClickedIns);
+  useEffect(() => {
+    if (editiconClickedIns) {
+      setInputValue(insuranceValue);
+    } else {
+      setInputValue("");
     }
-    console.log(`selected ${value}`);
-  };
-  const onSearch = (value) => {
-    console.log("search:", value);
-  };
+  }, []);
+
   return (
     <div className="div-colaligned popover-checkbox1 popover-open w-200">
-      <Select
-        showSearch
-        placeholder="Select City or Zipcode"
-        optionFilterProp="label"
-        onChange={handleSelectChange}
-        onSearch={onSearch}
-        options={[
-          {
-            value: "jack1133",
-            label: "Jack1133",
-          },
-          {
-            value: "lucy2233",
-            label: "Lucy2233",
-          },
-          {
-            value: "tom3333",
-            label: "Tom3333",
-          },
-        ]}
+      <Input
+        className="cargo-insurance-input"
+        placeholder="Goods Value in USD"
+        type="text"
+        value={inputValue}
+        onChange={handleInputChange}
+        suffix={
+          <Button
+            type="ant-btn-primary"
+            className="calculate-btn"
+            size="small"
+            onClick={handleCalculateClick}
+          >
+            Calculate
+          </Button>
+        }
       />
     </div>
   );

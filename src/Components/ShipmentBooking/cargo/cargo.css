@@ -119,11 +119,11 @@
    padding: 1px !important;
    margin: 5px !important;
 }
-.cargo_details_section .css-1nrlq1o-MuiFormControl-root{
-   width: 40% !important;
+.cargo_details_section .css-13sljp9 {
+   width: 50% !important;
 }
 .placeholder_style::placeholder{
-   font-size: 14px;
+   font-size: 13px !important;
    font-weight: 400;
    color: rgb(212, 212, 212);
 }

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Typography,
   Box,
@@ -11,12 +11,13 @@ import Modal from "@mui/material/Modal";
 import "../ShipmentCard.css";
 import { ReactComponent as Location } from "../../../assets/location.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { Col, Row } from "antd";
+import { Col, Row, Tooltip } from "antd";
 import { allportRequest } from "../../../Redux/Actions/AllPortAction";
 import CountryFlag from "../../Core-Components/CountryFlag";
 import air from "../../../assets/Air.svg";
 import sea from "../../../assets/Shipement.svg";
 import city from "../../../assets/Business2.svg";
+import { IoClose } from "react-icons/io5";
 
 const style = {
   position: "absolute",
@@ -38,19 +39,33 @@ const Destination = ({
   setDestPort,
   destPort,
   originPort,
+  searchDestPort,
+  setSearchDestPort,
+  searchDestCode,
+  setSearchDestCode,
+  deserrormsg,
+  setdeserrormsg,
+  shrinkValues,
+  selectedDataToPatch,
 }) => {
-  const [searchDestPort, setSearchDestPort] = useState("");
+  // const [searchDestPort, setSearchDestPort] = useState("");
   // const [originPortOptionsVisible, setOriginPortOptionsVisible] = useState(false);
   // const [destPortOptionsVisible, setDestPortOptionsVisible] = useState(false);
+  useEffect(() => {
+    if (selectedDataToPatch) {
+      setSearchDestPort(selectedDataToPatch?.destination);
+    }
+  }, [selectedDataToPatch]);
   const [desPortCode, setDesPortCode] = useState("");
+  console.log(searchDestPort);
   const [prevValue, setPrevValue] = useState("");
   const [checkleave, setcheckleave] = useState("");
-  const [errormsg, seterrormsg] = useState(null)
   const dispatch = useDispatch();
   const DestinationPortData = useSelector((state) => state.allPort);
   const { loading, error } = useSelector((state) => state.allPort);
   const destinationPortDataValue = DestinationPortData?.allportData?.Data;
   console.log(destinationPortDataValue);
+
   const filteredSeaPorts = destinationPortDataValue?.filter(
     (item) => item.Transport_mode === "SEA"
   );
@@ -114,23 +129,24 @@ const Destination = ({
       port?.Transport_mode === "SEA" &&
       originPort?.Transport_mode === "AIR"
     ) {
-      seterrormsg("Please select either AIR Port or City as destination");
+      setdeserrormsg("Please select either AIR Port or City as destination");
       setSearchDestPort("");
       setDestPort(null);
     } else if (
       port?.Transport_mode === "AIR" &&
       originPort?.Transport_mode === "SEA"
     ) {
-      seterrormsg("Please select either SEA Port or City as destination");
+      setdeserrormsg("Please select either SEA Port or City as destination");
       setSearchDestPort("");
       setDestPort(null);
     } else if (port?.port_country === originPort?.port_country) {
-      seterrormsg("Please select a different country than origin");
+      setdeserrormsg("Please select a different country than origin");
       setSearchDestPort("");
       setDestPort(null);
     } else {
-      setSearchDestPort(port?.port_name);
-      seterrormsg(null)
+      setSearchDestPort(port?.list_value);
+      setSearchDestCode(port?.port_code);
+      setdeserrormsg(null);
     }
   };
 
@@ -148,6 +164,12 @@ const Destination = ({
     setCargoOptionsVisible(false);
   };
 
+  const handleClose = () => {
+    setDestPort("");
+    setSearchDestPort("");
+    setDestPortOptionsVisible(false);
+  };
+
   return (
     <>
       <div
@@ -160,6 +182,7 @@ const Destination = ({
             className="mx-2"
           />
         </div>
+        <Tooltip trigger={"hover"} title={searchDestPort}>
         <div className="w-100">
           <Typography
             className="fw-bold"
@@ -181,7 +204,7 @@ const Destination = ({
               width: "90%",
               background: "transparent",
               fontWeight: "600",
-              fontSize: "16px",
+              fontSize: "12px",
               lineHeight: "22px",
               letterSpacing: ".01em",
             }}
@@ -192,7 +215,7 @@ const Destination = ({
             // onClick={handleDestinationFocus}
             // value={destination}
             onChange={handleDestPortChange}
-            value={searchDestPort}
+            value={shrinkValues(searchDestPort)}
             // onBlur={() => {
             //   console.log(destPort)
             //   if (!destPort) {
@@ -202,12 +225,19 @@ const Destination = ({
 
             // }}
           />
-          {
-            errormsg && <FormHelperText style={{ color: "red", fontStyle: "italic" }}>
-            {errormsg}
-          </FormHelperText>
-          }
-          
+          {searchDestPort && (
+            <IoClose
+              role="button"
+              style={{ position: "absolute", top: "51%", right: "20px" }}
+              onClick={handleClose}
+            />
+          )}
+          {deserrormsg && (
+            <FormHelperText style={{ color: "red", fontStyle: "italic" }}>
+              {deserrormsg}
+            </FormHelperText>
+          )}
+
           {destPortOptionsVisible && (
             <div className="outer-all-port">
               {loading ? (
@@ -429,6 +459,7 @@ const Destination = ({
             </div>
           )}
         </div>
+        </Tooltip>
       </div>
 
       {/* <Modal

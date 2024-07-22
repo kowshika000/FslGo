@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Card, Tabs } from "antd";
+import { Card, Tabs, Tooltip } from "antd";
 import "./FindNewRate.css";
 import Share from "../../../../../assets/Share.svg";
 import Line from "../../../../../assets/Line 3.svg";
@@ -13,17 +13,62 @@ import { CaretDownOutlined } from "@ant-design/icons";
 import { Dropdown } from "primereact/dropdown";
 import { useSelector } from "react-redux";
 import ShowChargesModal from "./ShowChargesModal";
+import { CircularProgress, Box } from "@mui/material";
+import airplane from "../../../../../assets/mdi_aeroplane.svg";
+import QuoteRequest from "./QuoteRequest";
 
-function ShipmentTracker() {
+function ShipmentTracker({
+  selectedCurrency,
+  setSelectedCurrency,
+  selectedValue,
+  checkedItems,
+  selectedDeliveryValue,
+  setShowReselt,
+  exim,
+  setCheckedItems,
+  originPort,
+  destPort,
+  settoscheck
+}) {
   const [showAllData, setShowAllData] = useState(false);
   const [showCharges, setShowCharges] = useState(null);
-  const [selectedCurrency, setSelectedCurrency] = useState("USD");
   const [selectedSort, setSelectedSort] = useState("Low to High");
-  const FindNRate = useSelector((state) => state?.findRate?.booking?.rates);
+  const FindNRate = useSelector((state) => state?.findRate?.findRate?.rates);
+  const { findRate, loading } = useSelector((state) => state?.findRate);
   console.log(FindNRate, "FindNRate");
+  function showAll() {
+    if (
+      findRate?.statusmessage === "information not available" ||
+      // (exim === "I" && checkedItems?.DestinationCharges === false) ||
+      // (exim === "E" && checkedItems?.originCharges === false) ||
+      checkedItems?.StackableCargo === false ||
+      checkedItems?.NonHarzardousCargo === false ||
+      checkedItems?.exportClearance === true ||
+      checkedItems?.ImportClearance === true ||
+      (checkedItems?.originCharges && FindNRate && FindNRate.length > 0
+        ? (FindNRate[0]?.origin_charge === "") || (FindNRate[0]?.origin_charge === "0")
+        : "") ||
+      (checkedItems?.cargoPickup && FindNRate && FindNRate.length > 0
+        ? (FindNRate[0]?.cargopickup_charge === "") || (FindNRate[0]?.cargopickup_charge === "0")
+        : "") ||
+      (checkedItems?.DestinationCharges && FindNRate && FindNRate.length > 0
+        ? (FindNRate[0]?.destination_charge === "") || (FindNRate[0]?.destination_charge === "0")
+        : "") ||
+      (checkedItems?.CargoDelivery && FindNRate && FindNRate.length > 0
+        ? (FindNRate[0]?.cargodelivery_charge === "") || (FindNRate[0]?.cargodelivery_charge === "0")
+        : "") ||
+      (checkedItems?.internationalFreight && FindNRate && FindNRate.length > 0
+        ? (FindNRate[0]?.freight_charge === "") || (FindNRate[0]?.cargodelivery_charge === "0")
+        : "")
+    ) {
+      return 0;
+    } else {
+      return FindNRate?.length;
+    }
+  }
   const tabs = [
-    { label: "All(0)", key: "1" },
-    { label: "Ocean(0)", key: "2" },
+    { label: `All{${showAll()})`, key: "1" },
+    { label: `Ocean(${showAll()})`, key: "2" },
     { label: "Air(0)", key: "3" },
   ];
   const currencyOptions = ["USD", "INR", "AED"];
@@ -42,7 +87,72 @@ function ShipmentTracker() {
       <CaretDownOutlined className="ms-1" style={{ color: "#67788E" }} />
     </div>
   );
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "500px",
+          flexDirection: "column",
+        }}
+      >
+        <div
+          className="text-center"
+          style={{ fontWeight: "bold", fontSize: "16px" }}
+        >
+          Kindly hold for a moment as we search for the most competitive
+          <br />
+          shipping rates tailored to your needs.
+        </div>
+        <div
+          className="mt-4 d-flex flex-direction-row "
+          style={{ fontWeight: "bold", fontSize: "16px" }}
+        >
+          Powered by &nbsp;&nbsp; <div className="h5 text-danger">FSL GO</div>,
+          your trusted logistics partner.
+        </div>
 
+        <CircularProgress style={{ color: "red" }} className="mt-4" />
+      </Box>
+    );
+  }
+  
+ const sortedData = [...FindNRate].sort((a, b) => {
+  if (selectedSort === "Low to High") {
+    return a.total_amount_in_usd - b.total_amount_in_usd;
+  } else {
+    return b.total_amount_in_usd - a.total_amount_in_usd;
+  }
+});
+const displayedData = showAllData ? sortedData : sortedData?.slice(0, 4);
+  const renderSelectedValue = () => {
+    if (!checkedItems.cargoPickup) return "Cargo Pickup";
+
+    if (selectedValue?.length > 10) {
+      return (
+        <Tooltip placement="topLeft" title={selectedValue}>
+          <span>{selectedValue.substring(0, 10) + "..."}</span>
+        </Tooltip>
+      );
+    } else {
+      return <span>{selectedValue}</span>;
+    }
+  };
+  const renderSelectedValue1 = () => {
+    if (!checkedItems.CargoDelivery) return "Cargo Delivery";
+
+    if (selectedDeliveryValue?.length > 10) {
+      return (
+        <Tooltip placement="topLeft" title={selectedDeliveryValue}>
+          <span>{selectedDeliveryValue.substring(0, 10) + "..."}</span>
+        </Tooltip>
+      );
+    } else {
+      return <span>{selectedDeliveryValue}</span>;
+    }
+  };
   return (
     <>
       <Card className="tabs1 mb-2">
@@ -83,7 +193,7 @@ function ShipmentTracker() {
         </div>
       </Card>
 
-      {FindNRate?.map(
+      {displayedData?.map(
         (data, index) =>
           index === 0 &&
           data?.mode === "SEA" && (
@@ -92,24 +202,41 @@ function ShipmentTracker() {
                 key={index}
                 className="d-flex justify-content-between align-items-center"
               >
-                <div style={{ opacity: "40%" }} className="cargo-pickup-p">
+                <div
+                  style={{
+                    opacity: !checkedItems.cargoPickup ? "40%" : "100%",
+                  }}
+                  className="cargo-pickup-p"
+                >
                   <img
                     src={icon}
                     alt="icon"
                     className="me-1"
                     style={{ marginBottom: "0.1rem" }}
                   />
-                  Cargo Pickup
+                  {renderSelectedValue()}
                 </div>
-                <div style={{ opacity: "40%" }}>
-                  <img src={Line} alt="line" />
-                  <img src={Vector} alt="car" className="mx-2" />
-                  <img src={Line} alt="line" />
+                <div
+                  style={{
+                    opacity: !checkedItems.cargoPickup ? "40%" : "100%",
+                  }}
+                >
+                  <img
+                    src="https://www.fslgo.com/_next/static/media/pickup.f4ca650f.svg"
+                    alt="line"
+                  />
+                  {/* <img src={Vector} alt="car" className="mx-2" />
+                      <img src={Line} alt="line" /> */}
                 </div>
                 <div>
-                  <p className="m-0 cargo-pickup-p">{data?.origin}</p>
+                  <p
+                    className="m-0 cargo-pickup-p"
+                    style={{ fontWeight: "800" }}
+                  >
+                    {originPort?.port_name}
+                  </p>
                 </div>
-                <div style={{ height: "20px", opacity: "60%" }}>
+                <div style={{ height: "20px", opacity: "100%" }}>
                   <span
                     style={{
                       display: "block",
@@ -118,190 +245,57 @@ function ShipmentTracker() {
                       height: "10px",
                     }}
                   >
-                    <img src={Union} alt="union" className="mb-2" />
+                    <img
+                      src="https://www.fslgo.com/_next/static/media/ship.2f4cd5cc.svg"
+                      alt="union"
+                      className="mb-2"
+                    />
                   </span>
-                  <span style={{ height: "10px" }}>
-                    <img src={flow} alt="flow" />
-                    <img src={flow} alt="flow" />
-                  </span>
+                  {/* <span style={{ height: "10px" }}>
+                        <img src={flow} alt="flow" />
+                        <img src={flow} alt="flow" />
+                      </span> */}
                 </div>
                 <div>
-                  <p className="m-0 cargo-pickup-p">{data?.destination}</p>
+                  <p
+                    className="m-0 cargo-pickup-p"
+                  >
+                    {destPort?.port_name}
+                  </p>
                 </div>
-                <div style={{ opacity: "40%" }}>
-                  <img src={Line} alt="line" />
-                  <img src={Vector} alt="car" className="mx-2" />
-                  <img src={Line} alt="line" />
+                <div
+                  style={{
+                    opacity: !checkedItems.CargoDelivery ? "40%" : "100%",
+                  }}
+                >
+                  <img
+                    src="https://www.fslgo.com/_next/static/media/pickup.f4ca650f.svg"
+                    alt="line"
+                  />
+                  {/* <img src={Vector} alt="car" className="mx-2" />
+                      <img src={Line} alt="line" /> */}
                 </div>
                 <div>
-                  <p className="m-0 cargo-pickup-p" style={{ opacity: "40%" }}>
+                  <p
+                    className="m-0 cargo-pickup-p"
+                    style={{
+                      opacity: !checkedItems.CargoDelivery ? "40%" : "100%",
+                    }}
+                  >
                     <img
                       src={Cargo}
                       alt="cargo"
                       className="me-1 mb-1"
                       style={{ width: "13px", height: "17px" }}
                     />
-                    Cargo Delivery
+                    {renderSelectedValue1()}
                   </p>
                 </div>
               </div>
             </Card>
           )
       )}
-
-      {FindNRate?.map(
-        (data, index) =>
-          data.mode == "SEA" && (
-            <Card className="track1 mb-2" key={index}>
-              <div className="d-flex justify-content-between">
-                <div>
-                  <p style={{ fontSize: "15px" }}>
-                    <img
-                      src={Union}
-                      className="pe-2 mb-1"
-                      style={{ height: "12px", color: "#495A6E" }}
-                    />
-                    <span
-                      style={{
-                        fontweight: "400",
-                        fontSize: "15px",
-                        lineHeight: "25px",
-                        letterSpacing: "1%",
-                        color: "#495A6E",
-                      }}
-                    >
-                      Est.T/T&nbsp;&nbsp;
-                    </span>
-                    <span
-                      style={{
-                        fontWeight: "500",
-                        fontSize: "15px",
-                        lineHeight: "22px",
-                        letterSpacing: "1%",
-                        color: "#181E25",
-                      }}
-                    >
-                      {data?.total_transit_time} Days ({data?.transit_time} Days
-                      Port to Port)
-                    </span>
-                  </p>
-                </div>
-                <div>
-                  <p
-                    style={{
-                      fontSize: "25px",
-                      color: "#D32D2F",
-                      fontWeight: "500",
-                    }}
-                  >
-                    {" "}
-                    {selectedCurrency}&nbsp;&nbsp;
-                    {data.total_price_in_local_currency}
-                    <span className="ms-2">
-                      <img src={Share} alt="share" />
-                    </span>
-                  </p>
-                </div>
-              </div>
-              <div className="d-flex">
-                <div className="track-btn">LCL</div>
-                <div className="track-btn mx-2">Direct</div>
-                <div className="track-btn">Cheapest</div>
-                <div
-                  className="ms-auto align-self-center"
-                  style={{
-                    fontWeight: "400",
-                    fontSize: "14px",
-                    lineHeight: "24px",
-                    letterSpacing: "1%",
-                    color: "#495A6E",
-                  }}
-                >
-                  Validity :&nbsp;&nbsp;
-                  <span
-                    style={{
-                      fontWeight: "500",
-                      fontSize: "14px",
-                      lineHeight: "24px",
-                      letterSpacing: "1%",
-                      color: "#181E25",
-                    }}
-                  >
-                    {data.validity}
-                  </span>
-                  <span className="ms-2">
-                    <img
-                      src={info}
-                      alt="more"
-                      style={{ marginBottom: "3px" }}
-                    />
-                  </span>
-                </div>
-              </div>
-              <div className="detail-card">
-                <div>
-                  <p className="card-label">VESSEL</p>
-                  <p className="p-value">{data.vessel}</p>
-                </div>
-                <div>
-                  <p className="card-label">VOYAGE</p>
-                  <p className="p-value">{data.voyage}</p>
-                </div>
-                <div>
-                  <p className="card-label">CUT OFF</p>
-                  <p className="p-value">{data.cut_off}</p>
-                </div>
-                <div>
-                  <p className="card-label">Depature Date</p>
-                  <p className="p-value">{data.departure}</p>
-                </div>
-                <div>
-                  <p className="card-label">Arrival Date</p>
-                  <p className="p-value">{data.arrival}</p>
-                </div>
-              </div>
-              {showCharges === index && (
-                <ShowChargesModal FindNRate={FindNRate} />
-              )}
-              <div className="d-flex align-items-center">
-                <div>
-                  <p
-                    className="m-0"
-                    style={{
-                      textDecoration: "underline",
-                      cursor: "pointer",
-                      fontSize: "14px",
-                      lineHeight: "24px",
-                      letterSpacing: "1%",
-                      fontWeight: "400",
-                      textAlign: "center",
-                    }}
-                    onClick={() => handleShowCharges(index)}
-                  >
-                    {showCharges === index ? "Hide" : "Show"} Charges Breakdown
-                  </p>
-                </div>
-                {/* <div className="lock-btn ms-auto me-2">
-                  Lock Price at {data.Price}
-                </div> */}
-                <div className="book-btn ms-auto">Book Now</div>
-              </div>
-            </Card>
-          )
-      )}
-      {FindNRate?.length > 4 && (
-        <div className="hr-with-text">
-          <hr />
-          <span
-            onClick={() => setShowAllData(!showAllData)}
-            className="show-more"
-          >
-            {showAllData ? "Show Less" : "Show More"}
-          </span>
-          <hr />
-        </div>
-      )}
-      {FindNRate?.map(
+      {displayedData?.map(
         (data, index) =>
           index === 0 &&
           data?.mode === "AIR" && (
@@ -320,7 +314,12 @@ function ShipmentTracker() {
                   <img src={Line} alt="line" />
                 </div>
                 <div>
-                  <p className="m-0 cargo-pickup-p">{data?.origin}</p>
+                  <p
+                    className="m-0 cargo-pickup-p"
+                    style={{ fontWeight: "800" }}
+                  >
+                    {data?.origin}
+                  </p>
                 </div>
                 <div style={{ height: "20px", opacity: "60%" }}>
                   <span
@@ -331,7 +330,7 @@ function ShipmentTracker() {
                       height: "10px",
                     }}
                   >
-                    <img src={Union} alt="union" className="mb-2" />
+                    <img src={airplane} alt="union" className="mb-2" />
                   </span>
                   <span style={{ height: "10px" }}>
                     <img src={flow} alt="flow" />
@@ -339,7 +338,12 @@ function ShipmentTracker() {
                   </span>
                 </div>
                 <div>
-                  <p className="m-0 cargo-pickup-p">{data?.destination}</p>
+                  <p
+                    className="m-0 cargo-pickup-p"
+                    style={{ fontWeight: "800" }}
+                  >
+                    {data?.destination}
+                  </p>
                 </div>
                 <div style={{ opacity: "40%" }}>
                   <img src={Line} alt="line" />
@@ -361,209 +365,387 @@ function ShipmentTracker() {
             </Card>
           )
       )}
-      {FindNRate?.map(
-        (data, index) =>
-          data.mode == "AIR" && (
-            <Card className="track1 mb-2" key={index}>
-              <div className="d-flex justify-content-between">
-                <div>
-                  <p style={{ fontSize: "15px" }}>
-                    <img
-                      src={Union}
-                      className="pe-2 mb-1"
-                      style={{ height: "12px" }}
-                    />
-                    <span
+      {findRate?.statusmessage === "information not available" ||
+      // (exim === "I" && checkedItems?.DestinationCharges === false) ||
+      // (exim === "E" && checkedItems?.originCharges === false) ||
+      checkedItems?.StackableCargo === false ||
+      checkedItems?.NonHarzardousCargo === false ||
+      checkedItems?.exportClearance === true ||
+      checkedItems?.ImportClearance === true ||
+      (checkedItems?.originCharges && FindNRate && FindNRate.length > 0
+        ? (FindNRate[0]?.origin_charge === "") || (FindNRate[0]?.origin_charge === "0")
+        : "") ||
+      (checkedItems?.cargoPickup && FindNRate && FindNRate.length > 0
+        ? (FindNRate[0]?.cargopickup_charge === "") || (FindNRate[0]?.cargopickup_charge === "0")
+        : "") ||
+      (checkedItems?.DestinationCharges && FindNRate && FindNRate.length > 0
+        ? (FindNRate[0]?.destination_charge === "") || (FindNRate[0]?.destination_charge === "0")
+        : "") ||
+      (checkedItems?.CargoDelivery && FindNRate && FindNRate.length > 0
+        ? (FindNRate[0]?.cargodelivery_charge === "") || (FindNRate[0]?.cargodelivery_charge === "0")
+        : "") ||
+        (checkedItems?.internationalFreight && FindNRate && FindNRate.length > 0
+          ? (FindNRate[0]?.freight_charge === "") || (FindNRate[0]?.freight_charge === "0")
+          : "")
+        ? (
+        <QuoteRequest
+          setShowReselt={setShowReselt}
+          checkedItems={checkedItems}
+          setCheckedItems={setCheckedItems}
+          settoscheck={settoscheck}
+        />
+      ) : (
+        <>
+          {displayedData?.map(
+            (data, index) =>
+              data.mode == "SEA" && (
+                <Card className="track1 mb-2" key={index}>
+                  <div className="d-flex justify-content-between">
+                    <div>
+                      <p style={{ fontSize: "15px" }}>
+                        <img
+                          src={Union}
+                          className="pe-2 mb-1"
+                          style={{ height: "12px", color: "#495A6E" }}
+                        />
+                        <span
+                          style={{
+                            fontweight: "400",
+                            fontSize: "15px",
+                            lineHeight: "25px",
+                            letterSpacing: "1%",
+                            color: "#495A6E",
+                          }}
+                        >
+                          Est.T/T&nbsp;&nbsp;
+                        </span>
+                        <span
+                          style={{
+                            fontWeight: "500",
+                            fontSize: "15px",
+                            lineHeight: "22px",
+                            letterSpacing: "1%",
+                            color: "#181E25",
+                          }}
+                        >
+                          {data?.total_transit_time} Days ({data?.transit_time}{" "}
+                          Days Port to Port)
+                        </span>
+                      </p>
+                    </div>
+                    <div>
+                      <p
+                        style={{
+                          fontSize: "25px",
+                          color: "#D32D2F",
+                          fontWeight: "500",
+                        }}
+                      >
+                        {" "}
+                        {selectedCurrency}&nbsp;&nbsp;
+                        {data?.total_amount_in_usd}
+                        <span className="ms-2">
+                          <img src={Share} alt="share" />
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                  <div className="d-flex">
+                    <div className="track-btn">LCL</div>
+                    <div className="track-btn mx-2">Direct</div>
+                    <div className="track-btn">Cheapest</div>
+                    <div
+                      className="ms-auto align-self-center"
                       style={{
-                        fontweight: "400",
-                        fontSize: "15px",
-                        lineHeight: "25px",
+                        fontWeight: "400",
+                        fontSize: "14px",
+                        lineHeight: "24px",
                         letterSpacing: "1%",
                         color: "#495A6E",
                       }}
                     >
-                      Est.T/T&nbsp;&nbsp;
-                    </span>
-                    <span
+                      Validity :&nbsp;&nbsp;
+                      <span
+                        style={{
+                          fontWeight: "500",
+                          fontSize: "14px",
+                          lineHeight: "24px",
+                          letterSpacing: "1%",
+                          color: "#181E25",
+                        }}
+                      >
+                        {data.validity}
+                      </span>
+                      <span className="ms-2">
+                        <img
+                          src={info}
+                          alt="more"
+                          style={{ marginBottom: "3px" }}
+                        />
+                      </span>
+                    </div>
+                  </div>
+                  <div className="detail-card">
+                    <div>
+                      <p className="card-label">VESSEL</p>
+                      <p className="p-value">{data.vessel}</p>
+                    </div>
+                    <div>
+                      <p className="card-label">VOYAGE</p>
+                      <p className="p-value">{data.voyage}</p>
+                    </div>
+                    <div>
+                      <p className="card-label">CUT OFF</p>
+                      <p className="p-value">{data.cut_off}</p>
+                    </div>
+                    <div>
+                      <p className="card-label">Depature Date</p>
+                      <p className="p-value">{data.etd}</p>
+                    </div>
+                    <div>
+                      <p className="card-label">Arrival Date</p>
+                      <p className="p-value">{data.eta}</p>
+                    </div>
+                  </div>
+                  {showCharges === index && (
+                    <ShowChargesModal checkedItems={checkedItems} FindNRate={data} />
+                  )}
+                  <div className="d-flex align-items-center">
+                    <div>
+                      <p
+                        className="m-0"
+                        style={{
+                          textDecoration: "underline",
+                          cursor: "pointer",
+                          fontSize: "14px",
+                          lineHeight: "24px",
+                          letterSpacing: "1%",
+                          fontWeight: "400",
+                          textAlign: "center",
+                        }}
+                        onClick={() => handleShowCharges(index)}
+                      >
+                        {showCharges === index ? "Hide" : "Show"} Charges
+                        Breakdown
+                      </p>
+                    </div>
+                    {/* <div className="lock-btn ms-auto me-2">
+                  Lock Price at {data.Price}
+                </div> */}
+                    <div className="book-btn ms-auto">Book Now</div>
+                  </div>
+                </Card>
+              )
+          )}
+
+          {displayedData?.map(
+            (data, index) =>
+              data.mode == "AIR" && (
+                <Card className="track1 mb-2" key={index}>
+                  <div className="d-flex justify-content-between">
+                    <div>
+                      <p style={{ fontSize: "15px" }}>
+                        <img src={airplane} className="pe-2" />
+                        <span
+                          style={{
+                            fontweight: "400",
+                            fontSize: "15px",
+                            lineHeight: "25px",
+                            letterSpacing: "1%",
+                            color: "#495A6E",
+                          }}
+                        >
+                          Est.T/T&nbsp;&nbsp;
+                        </span>
+                        <span
+                          style={{
+                            fontWeight: "500",
+                            fontSize: "15px",
+                            lineHeight: "22px",
+                            letterSpacing: "1%",
+                            color: "#181E25",
+                          }}
+                        >
+                          9 Days (5 Days Port to Port)
+                        </span>
+                      </p>
+                    </div>
+                    <div>
+                      <p
+                        style={{
+                          fontSize: "25px",
+                          color: "#D32D2F",
+                          fontWeight: "500",
+                        }}
+                      >
+                        {selectedCurrency}
+                        {data.total_amount_in_usd}
+                        <span className="ms-2">
+                          <img src={Share} alt="share" />
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                  <div className="d-flex">
+                    <div className="track-btn">LCL</div>
+                    <div className="track-btn mx-2">Direct</div>
+                    <div className="track-btn">Cheapest</div>
+                    <div
+                      className="ms-auto align-self-center"
                       style={{
-                        fontWeight: "500",
-                        fontSize: "15px",
-                        lineHeight: "22px",
+                        fontWeight: "400",
+                        fontSize: "14px",
+                        lineHeight: "24px",
                         letterSpacing: "1%",
-                        color: "#181E25",
+                        color: "#495A6E",
                       }}
                     >
-                      9 Days (5 Days Port to Port)
-                    </span>
-                  </p>
-                </div>
-                <div>
-                  <p
-                    style={{
-                      fontSize: "25px",
-                      color: "#D32D2F",
-                      fontWeight: "500",
-                    }}
-                  >
-                    {data.total_price_in_local_currency}
-                    <span className="ms-2">
-                      <img src={Share} alt="share" />
-                    </span>
-                  </p>
-                </div>
-              </div>
-              <div className="d-flex">
-                <div className="track-btn">LCL</div>
-                <div className="track-btn mx-2">Direct</div>
-                <div className="track-btn">Cheapest</div>
-                <div
-                  className="ms-auto align-self-center"
-                  style={{
-                    fontWeight: "400",
-                    fontSize: "14px",
-                    lineHeight: "24px",
-                    letterSpacing: "1%",
-                    color: "#495A6E",
-                  }}
-                >
-                  Validity :&nbsp;&nbsp;
-                  <span
-                    style={{
-                      fontWeight: "500",
-                      fontSize: "14px",
-                      lineHeight: "24px",
-                      letterSpacing: "1%",
-                      color: "#181E25",
-                    }}
-                  >
-                    {data.validity}
-                  </span>
-                  <span className="ms-2">
-                    <img
-                      src={info}
-                      alt="more"
-                      style={{ marginBottom: "3px" }}
-                    />
-                  </span>
-                </div>
-              </div>
-              <div className="detail-card">
-                <div>
-                  <p className="card-label">VESSEL</p>
-                  <p className="p-value">{data.vessel}</p>
-                </div>
-                <div>
-                  <p className="card-label">VOYAGE</p>
-                  <p className="p-value">{data.voyage}</p>
-                </div>
-                <div>
-                  <p className="card-label">CUT OFF</p>
-                  <p className="p-value">{data.cut_off}</p>
-                </div>
-                <div>
-                  <p className="card-label">Depature Date</p>
-                  <p className="p-value">{data.departure}</p>
-                </div>
-                <div>
-                  <p className="card-label">Arrival Date</p>
-                  <p className="p-value">{data.arrival}</p>
-                </div>
-              </div>
-              {showCharges ? (
-                <div className="charges">
-                  <div className="table-responsive">
-                    <table class="table">
-                      <tbody>
-                        <tr className="header">
-                          <td className="origincharge">Origin Charges</td>
-                          <td className="one">$100</td>
-                        </tr>
-                        <tr>
-                          <td className="pickupcharge ps-4">Pickup Charges</td>
-                          <td className="price-value">$55</td>
-                        </tr>
-                        <tr>
-                          <td className="pickupcharge ps-4">B/L Issuance</td>
-                          <td className="price-value">$45</td>
-                        </tr>
-                        <tr className="header">
-                          <td className="origincharge">
-                            International Freight Charges
-                          </td>
-                          <td className="one">$80</td>
-                        </tr>
-                        <tr className="header">
-                          <td className="origincharge">Destination Charges</td>
-                          <td className="one">$120</td>
-                        </tr>
-                        <tr>
-                          <td className="pickupcharge ps-4">
-                            Handling Charges
-                          </td>
-                          <td className="price-value">$60</td>
-                        </tr>
-                        <tr>
-                          <td className="pickupcharge ps-4">
-                            Import Custom Clearance
-                          </td>
-                          <td className="price-value">$30</td>
-                        </tr>
-                        <tr>
-                          <td className="pickupcharge ps-4">
-                            Delivery Charges
-                          </td>
-                          <td className="price-value">$30</td>
-                        </tr>
-                        <tr className="total">
-                          <th className="totaoriginchargelamount">
-                            Total amount :
-                          </th>
-                          <th className="one">$300 (USD)</th>
-                        </tr>
-                      </tbody>
-                    </table>
+                      Validity :&nbsp;&nbsp;
+                      <span
+                        style={{
+                          fontWeight: "500",
+                          fontSize: "14px",
+                          lineHeight: "24px",
+                          letterSpacing: "1%",
+                          color: "#181E25",
+                        }}
+                      >
+                        {data.validity}
+                      </span>
+                      <span className="ms-2">
+                        <img
+                          src={info}
+                          alt="more"
+                          style={{ marginBottom: "3px" }}
+                        />
+                      </span>
+                    </div>
                   </div>
-                </div>
-              ) : (
-                ""
-              )}
-              <div className="d-flex align-items-center">
-                <div>
-                  <p
-                    className="m-0"
-                    style={{
-                      textDecoration: "underline",
-                      cursor: "pointer",
-                      fontSize: "14px",
-                      lineHeight: "24px",
-                      letterSpacing: "1%",
-                      fontWeight: "400",
-                      textAlign: "center",
-                    }}
-                    onClick={() => handleShowCharges(index)}
-                  >
-                    {showCharges ? "Hide" : "Show"} Charges Breakdown
-                  </p>
-                </div>
-                <div className="lock-btn ms-auto me-2">
+                  <div className="detail-card">
+                    <div>
+                      <p className="card-label">VESSEL</p>
+                      <p className="p-value">{data.vessel}</p>
+                    </div>
+                    <div>
+                      <p className="card-label">VOYAGE</p>
+                      <p className="p-value">{data.voyage}</p>
+                    </div>
+                    <div>
+                      <p className="card-label">CUT OFF</p>
+                      <p className="p-value">{data.cut_off}</p>
+                    </div>
+                    <div>
+                      <p className="card-label">Depature Date</p>
+                      <p className="p-value">{data.etd}</p>
+                    </div>
+                    <div>
+                      <p className="card-label">Arrival Date</p>
+                      <p className="p-value">{data.eta}</p>
+                    </div>
+                  </div>
+                  {showCharges ? (
+                    <div className="charges">
+                      <div className="table-responsive">
+                        <table class="table">
+                          <tbody>
+                            <tr className="header">
+                              <td className="origincharge">Origin Charges</td>
+                              <td className="one">$100</td>
+                            </tr>
+                            <tr>
+                              <td className="pickupcharge ps-4">
+                                Pickup Charges
+                              </td>
+                              <td className="price-value">$55</td>
+                            </tr>
+                            <tr>
+                              <td className="pickupcharge ps-4">
+                                B/L Issuance
+                              </td>
+                              <td className="price-value">$45</td>
+                            </tr>
+                            <tr className="header">
+                              <td className="origincharge">
+                                International Freight Charges
+                              </td>
+                              <td className="one">$80</td>
+                            </tr>
+                            <tr className="header">
+                              <td className="origincharge">
+                                Destination Charges
+                              </td>
+                              <td className="one">$120</td>
+                            </tr>
+                            <tr>
+                              <td className="pickupcharge ps-4">
+                                Handling Charges
+                              </td>
+                              <td className="price-value">$60</td>
+                            </tr>
+                            <tr>
+                              <td className="pickupcharge ps-4">
+                                Import Custom Clearance
+                              </td>
+                              <td className="price-value">$30</td>
+                            </tr>
+                            <tr>
+                              <td className="pickupcharge ps-4">
+                                Delivery Charges
+                              </td>
+                              <td className="price-value">$30</td>
+                            </tr>
+                            <tr className="total">
+                              <th className="totaoriginchargelamount">
+                                Total amount :
+                              </th>
+                              <th className="one">$300 (USD)</th>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  <div className="d-flex align-items-center">
+                    <div>
+                      <p
+                        className="m-0"
+                        style={{
+                          textDecoration: "underline",
+                          cursor: "pointer",
+                          fontSize: "14px",
+                          lineHeight: "24px",
+                          letterSpacing: "1%",
+                          fontWeight: "400",
+                          textAlign: "center",
+                        }}
+                        onClick={() => handleShowCharges(index)}
+                      >
+                        {showCharges ? "Hide" : "Show"} Charges Breakdown
+                      </p>
+                    </div>
+                    {/* <div className="lock-btn ms-auto me-2">
                   Lock Price at {data.Price}
-                </div>
-                <div className="book-btn">Book Now</div>
-              </div>
-            </Card>
-          )
-      )}
-      {FindNRate?.length > 4 && (
-        <div className="hr-with-text">
-          <hr />
-          <span
-            onClick={() => setShowAllData(!showAllData)}
-            className="show-more"
-          >
-            {showAllData ? "Show Less" : "Show More"}
-          </span>
-          <hr />
-        </div>
+                </div> */}
+                    <div className="book-btn ms-auto">Book Now</div>
+                  </div>
+                </Card>
+              )
+          )}
+          {FindNRate?.length > 4 && (
+            <div className="hr-with-text">
+              <hr />
+              <span
+                onClick={() => setShowAllData(!showAllData)}
+                className="show-more"
+              >
+                {showAllData ? "Show Less" : "Show More"}
+              </span>
+              <hr />
+            </div>
+          )}
+        </>
       )}
     </>
   );

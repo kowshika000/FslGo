@@ -2,18 +2,44 @@
   display: flex;
   flex-direction: row;
   width: 100%;
-  max-width: 1146px;
   justify-content: center;
   background: #f3f5f7;
   gap: 20px !important;
   align-items: flex-start;
-  /* min-height: 818px; */
 }
 .quotationresult-leftdiv .ant-card-head {
   padding: 16px;
   border-bottom: 1px solid #f3f5f7;
 }
 .quotationresult-leftdiv .ant-card-body {
+  padding: 0px;
+}
+.quotationresult-leftdiv {
+  flex: 0 0 272px !important;
+}
+.quotationresult-leftdiv .ant-card {
+  max-width: 272px !important;
+}
+.fixed {
+  position: fixed;
+  top: 170px;
+  width: 272px;
+  height: calc(100vh - 170px); /*Adjust height based on the fixed top value */
+}
+
+.quotationresult-leftdiv .fixed .ant-card {
+  height: 100%;
+  max-height: 647.8px;
+  overflow-y: auto;
+  scrollbar-width: none; /* For Firefox */
+  -ms-overflow-style: none;
+}
+
+/* Hide scrollbar for Chrome, Safari, and Opera */
+.quotationresult-leftdiv .fixed .ant-card::-webkit-scrollbar {
+  display: none;
+}
+.quotationresult-rightdiv .ant-card-body {
   padding: 0px;
 }
 .ant-collapse-content-box {
@@ -67,18 +93,18 @@
   border: 0;
 }
 
-.Service-card .ant-checkbox-wrapper .ant-checkbox-checked .ant-checkbox-inner {
+.Service-card .ant-checkbox-checked .ant-checkbox-inner {
   background-color: #d32d2f !important;
   border: none;
 }
-.ant-checkbox-disabled .ant-checkbox-inner:after{
+.ant-checkbox-disabled .ant-checkbox-inner:after {
   border-color: white;
 }
-.ant-checkbox-disabled .ant-checkbox-inner{
-  background-color: rgb(245, 126, 126) !important;
+.Service-card .ant-checkbox-disabled .ant-checkbox-inner {
+  opacity: 0.5;
 }
 /* .Service-card .ant-checkbox-wrapper .ant-checkbox-checked .ant-checkbox-inner:hover{
-  background-color: #d32d2f ;
+  background-color: #d32d2f !important;
 } */
 .Service-card .ant-checkbox + span {
   padding-inline-start: 8px;
@@ -90,20 +116,14 @@
   letter-spacing: 1%;
 }
 
-/* .ant-checkbox:hover {
-  border: none !important;
-}
-
-.ant-checkbox-wrapper:hover {
-  border: none !important;
-} */
-
-/* .ant-checkbox-wrapper:hover .ant-checkbox-inner,
+.singlefilter-leftstyling
+  .div-rowcentered
+  .ant-checkbox-wrapper:hover
+  .ant-checkbox-inner,
 .ant-checkbox:hover .ant-checkbox-inner,
-.ant-checkbox-input:focus + .ant-checkbox-inner {
-  border-color: #d0d1d1 !important;
-  background-color: inherit !important;
-} */
+.ant-checkbox-input:focus {
+  border-color: #d32d2f !important;
+}
 
 .filterouter-leftdiv {
   padding-left: 16px;
@@ -132,7 +152,7 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.5);  
   z-index: 1000;
 }
 
@@ -197,6 +217,78 @@
 .div-colaligned .ant-select-selector:hover {
   background-color: #fff !important;
 }
+
+.div-colaligned .ant-select-selector .ant-select-selection-placeholder {
+  color: #acb8c4 !important;
+  font-size: 14px !important;
+  font-style: normal;
+  font-weight: 400 !important;
+  letter-spacing: 0.14px !important;
+}
+.cargo-insurance-input {
+  height: 32px !important;
+  border-bottom: 2px solid #d32d2f !important;
+  border-radius: 8px !important;
+  width: 210px !important;
+}
+.div-colaligned .ant-input-affix-wrapper {
+  min-width: 0;
+  padding: 8px 12px 8px 6px;
+  border: 1px solid #cfd6df;
+  background: #fff;
+  color: rgba(0, 0, 0, 0.85);
+  font-size: 14px;
+  line-height: 1.5715;
+  transition: all 0.3s;
+  display: inline-flex;
+}
+.div-colaligned
+  :where(.css-dev-only-do-not-override-1okl62o).ant-input:placeholder-shown {
+  text-overflow: clip;
+}
+.div-colaligned .css-dev-only-do-not-override-1okl62o.ant-input::placeholder {
+  color: #acb8c4 !important;
+}
+.div-colaligned :where(.css-1vr7spz).ant-input-affix-wrapper > input.ant-input {
+  width: 126.78px;
+  padding: 0;
+  font-size: inherit;
+  border: none;
+  border-radius: 0;
+  outline: none;
+}
+
+.div-colaligned .ant-input-affix-wrapper .ant-input-suffix {
+  margin-inline-start: 4px;
+  display: flex;
+  flex: none;
+  align-items: center;
+}
+
+.calculate-btn {
+  width: 69.63px;
+  height: 24px;
+  background: #f01e1e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #f01e1e;
+  color: #fff;
+  text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12) !important;
+}
+
+:where(.css-1vr7spz).ant-btn.ant-btn-sm {
+  font-size: 14px;
+  height: 24px;
+  padding: 0px 7px;
+  border-radius: 4px;
+}
+.calculate-btn.ant-btn.ant-btn-sm {
+  min-height: 24px;
+  margin-right: -10px;
+  font-size: 13px;
+}
+
 .tabs .ant-card-body {
   padding: 0;
 }
@@ -333,7 +425,7 @@
 }
 
 .cargo-pick .cargo-pickup-p {
-  font-weight: 400;
+  font-weight: 800;
   line-height: 24px;
   letter-spacing: 1%;
   color: #181e25;
@@ -412,7 +504,6 @@
 .Quote-Card {
   /* height: 464px; */
   border-radius: 8px;
-  padding: 15px 8px 15px 8px;
   background-color: #ffffff;
 }
 
@@ -432,15 +523,7 @@
   left: 410px;
 }
 
-.Quote-Card .content {
-  width: 571.95px;
-  height: 112px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 .content .content-title {
-  text-align: center;
   margin: 0;
   font-weight: 500;
   font-size: 24px;
@@ -451,28 +534,42 @@
 
 .content .content-description {
   text-align: center;
-  margin: 0;
   font-weight: 400;
   font-size: 14px;
   line-height: 24px;
-  letter-spacing: 1%;
+  letter-spacing: 0.14px;
   color: #384656;
 }
 
 .request-btn {
+  background: #d32d2f;
   width: 206px;
-  height: 40px;
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #d32d2f;
   border-radius: 8px;
-  padding: 8px 16px 0px 16px;
-  background-color: #d32d2f;
-  text-align: center;
   font-size: 14px;
   font-weight: 500;
   line-height: 24px;
   letter-spacing: 1%;
   color: #ffffff;
-  margin-left: auto;
-  margin-right: auto;
+}
+
+.Requestbtn-div .ant-btn.ant-btn-primary:focus {
+  border-radius: 8px;
+  outline: 0;
+  box-shadow: 0 0 0 0 red, 0 0 0 4px #ffc0c0 !important;
+  background-color: #d32d2f;
+}
+.Requestbtn-div .ant-btn.ant-btn-primary:active {
+  border-radius: 8px;
+  background-color: #d32d2f;
+}
+.Requestbtn-div .ant-btn.ant-btn-primary:hover {
+  border-radius: 8px;
+  background-color: #d32d2f;
 }
 
 .go-back {
@@ -504,4 +601,21 @@
   color: #ffffff;
   text-align: center;
   margin-top: 20px;
+}
+
+.request-quote-btn {
+  background: #f01e1e;
+  min-height: 40px;
+  border: 1px solid #f01e1e;
+  border-radius: 8px;
+  height: 40px;
+}
+
+/* modal for bookingRequest */
+
+.ant-modal-content .ant-modal-body {
+  padding: 30px;
+  font-size: 14px;
+  line-height: 1.5714285714285714;
+  word-wrap: break-word;
 }

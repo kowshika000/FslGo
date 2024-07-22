@@ -12,6 +12,7 @@ import CreateNewBooking from "./Modal/CreateNewBooking";
 import BookingSuccess from "./Modal/BookingScs";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
+import "../Dashboard/ShipmentHistory/ShipmentHistory.css"
 
 const Qbooking = () => {
   const dataq = datas?.map((data) => data);

@@ -1,27 +1,27 @@
-import {FIND_NEW_RATE_REQUEST, FIND_NEW_RATE_SUCCESS, FIND_NEW_RATE_FAILURE} from '../ActionTypes'
+import {DELIVERY_REQUEST, DELIVERY_SUCCESS, DELIVERY_FAILURE} from '../ActionTypes'
 const initialState = {
   error: null,
   loading: false,
-  findRate: {},
+  Delivery: [],
 };
-function FindNewRateReducer(state = initialState, action) {
+function DeliveryReducer(state = initialState, action) {
   switch (action.type) {
    
-    case FIND_NEW_RATE_REQUEST:
+    case DELIVERY_REQUEST:
       return {
         ...state,
         error: null,
         loading: true,
       };
-    case FIND_NEW_RATE_SUCCESS:
-      
+    case DELIVERY_SUCCESS:
+     
       return {
         ...state,
         error: null,
         loading: false,
-        findRate: action.payload,
+        Delivery: action.payload,
       };
-    case FIND_NEW_RATE_FAILURE:
+    case DELIVERY_FAILURE:
       return {
         ...state,
         error: action.error,
@@ -32,4 +32,4 @@ function FindNewRateReducer(state = initialState, action) {
       return state;
   }
 }
-export default FindNewRateReducer;
+export default DeliveryReducer;
