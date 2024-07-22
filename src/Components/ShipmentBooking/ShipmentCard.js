@@ -597,7 +597,7 @@ console.log(originPort)
     // setCheckedItems(initialChecks)
     if (originPort && destPort && searchOriginPort && searchDestPort) {
       settoscheck(false)
-      setCheckedItems(initialChecks)
+      // setCheckedItems(initialChecks)
       setSearchDestPort(searchOriginPort);
       setSearchOriginPort(searchDestPort);
       setSearchDestCode(searchOriginCode);
@@ -633,18 +633,20 @@ console.log(originPort)
   // console.log(mode);
 
   useEffect(() => {
-    if (exim === "I") {
-      setCheckedItems({
-        ...checkedItems,
-        DestinationCharges: true,
-        originCharges: false,
-      });
-    } else if (exim === "E") {
-      setCheckedItems({
-        ...checkedItems,
-        originCharges: true,
-        DestinationCharges: false,
-      });
+    if(toscheck){
+      if (exim === "I") {
+        setCheckedItems({
+          ...checkedItems,
+          DestinationCharges: true,
+          originCharges: false,
+        });
+      } else if (exim === "E") {
+        setCheckedItems({
+          ...checkedItems,
+          originCharges: true,
+          DestinationCharges: false,
+        });
+      }
     }
   }, [exim]);
 

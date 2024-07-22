@@ -34,7 +34,8 @@ function FindNewRate({
   setSelectedCode1,
   originPort,
   destPort,
-  settoscheck
+  settoscheck,
+  toscheck
 }) {
   const [isPopoverOpen, setPopoverOpen] = useState(false);
   const [isDeliveryPopoverOpen, setDeliveryPopoverOpen] = useState(false);
@@ -520,6 +521,7 @@ function FindNewRate({
           originPort={originPort}
           destPort={destPort}
           settoscheck={settoscheck}
+          toscheck={toscheck}
         />
       </div>
     </div>

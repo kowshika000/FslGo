@@ -149,6 +149,7 @@ const Quotation = ({
               originPort={originPort}
               destPort={destPort}
               settoscheck={settoscheck}
+              toscheck={toscheck}
             />
           ) : (
             <div className={`${highlightShipmentCard ? "marginTop" : ""}`}>
