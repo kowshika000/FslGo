@@ -122,6 +122,9 @@
 .cargo_details_section .css-13sljp9 {
    width: 50% !important;
 }
+.cargo_details_section .css-1cccqvr.css-1cccqvr.css-1cccqvr{
+   padding-left: 3px !important;
+}
 .placeholder_style::placeholder{
    font-size: 13px !important;
    font-weight: 400;

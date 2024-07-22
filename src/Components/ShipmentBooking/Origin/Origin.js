@@ -192,7 +192,7 @@ const Origin = ({
             className="mx-2"
           />
         </div>
-        <Tooltip trigger={"hover"} title={searchOriginPort}>
+        <Tooltip trigger={"hover"} title={searchOriginPort.length > 28 && searchOriginPort}>
             <div className="w-100">
               <Typography
                 className="bold"

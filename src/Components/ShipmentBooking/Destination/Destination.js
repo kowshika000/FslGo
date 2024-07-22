@@ -182,7 +182,7 @@ const Destination = ({
             className="mx-2"
           />
         </div>
-        <Tooltip trigger={"hover"} title={searchDestPort}>
+        <Tooltip trigger={"hover"} title={searchDestPort.length > 28 && searchDestPort}>
         <div className="w-100">
           <Typography
             className="fw-bold"

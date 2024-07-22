@@ -1,10 +1,33 @@
 import React from "react";
 
-function ShowChargesModal({ FindNRate,checkedItems }) {
+function ShowChargesModal({ FindNRate,checkedItems,calcTotalAmount }) {
   const deliveryC = FindNRate?.delivery_charges;
   const origin = FindNRate?.origin_charges;
   const dest = FindNRate?.destination_charges;
   console.log(dest, "delll");
+
+  // const calcTotalAmount = () =>{
+  //     let total = 0;
+  //     if(FindNRate?.origin_charge > 0 && checkedItems?.originCharges){
+  //       total+= parseFloat(FindNRate?.origin_charge)
+  //     }
+  //     if(FindNRate?.cargopickup_charge > 0 && checkedItems?.cargoPickup){
+  //       total+= parseFloat(FindNRate?.origin_charge)
+  //     }
+  //     if(FindNRate?.freight_charge > 0 && checkedItems?.internationalFreight){
+  //       total+= parseFloat(FindNRate?.freight_charge)
+  //     }
+  //     if(FindNRate?.destination_charge > 0 && checkedItems?.DestinationCharges){
+  //       total+= parseFloat(FindNRate?.destination_charge)
+  //     }
+  //     if(FindNRate?.cargodelivery_charge > 0 && checkedItems?.CargoDelivery){
+  //       total+= parseFloat(FindNRate?.cargodelivery_charge)
+  //     }
+
+  //     return total.toFixed(2)
+  // }
+
+  
 
   const freight = FindNRate?.freight_charges;
   return (
@@ -85,7 +108,8 @@ function ShowChargesModal({ FindNRate,checkedItems }) {
 
               <tr className="total">
                 <th className="totaoriginchargelamount">TOTAL AMOUNT :</th>
-                <th className="one">{FindNRate?.total_amount_in_usd}</th>
+                {/* <th className="one">{FindNRate?.total_amount_in_usd}</th> */}
+                <th className="one">{calcTotalAmount(FindNRate)}</th>
               </tr>
             </tbody>
           </table>

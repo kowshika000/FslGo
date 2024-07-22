@@ -993,13 +993,14 @@ const UnitType = ({
                           onChange={(e) => handleChange(index, e)}
                           onWheel={(e) => e.target.blur()}
                           onBlur={() => handleBlur(index, "weight")}
-                          className="placeholder_style w-100"
+                          className="placeholder_style"
                           style={{
                             border: "1px solid rgb(207, 214, 223)",
                             borderTopLeftRadius: "5px",
                             borderBottomLeftRadius: "5px",
                             fontSize: "1rem",
                             padding: "12px",
+                            width: "330%",
                             // borderColor: uterrors.weight ? "red" : null,
                           }}
                           placeholder="Weight"

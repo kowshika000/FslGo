@@ -28,7 +28,8 @@ function ShipmentTracker({
   setCheckedItems,
   originPort,
   destPort,
-  settoscheck
+  settoscheck,
+  toscheck
 }) {
   const [showAllData, setShowAllData] = useState(false);
   const [showCharges, setShowCharges] = useState(null);
@@ -36,6 +37,12 @@ function ShipmentTracker({
   const FindNRate = useSelector((state) => state?.findRate?.findRate?.rates);
   const { findRate, loading } = useSelector((state) => state?.findRate);
   console.log(FindNRate, "FindNRate");
+
+  const [origin, setorigin] = useState(originPort?.port_name)
+  const [dest, setdes] = useState(destPort?.port_name)
+  console.log(origin,dest)
+
+
   function showAll() {
     if (
       findRate?.statusmessage === "information not available" ||
@@ -153,6 +160,28 @@ const displayedData = showAllData ? sortedData : sortedData?.slice(0, 4);
       return <span>{selectedDeliveryValue}</span>;
     }
   };
+
+  const calcTotalAmount = (data) =>{
+    let total = 0;
+    if(data?.origin_charge > 0 && checkedItems?.originCharges){
+      total+= parseFloat(data?.origin_charge)
+    }
+    if(data?.cargopickup_charge > 0 && checkedItems?.cargoPickup){
+      total+= parseFloat(data?.origin_charge)
+    }
+    if(data?.freight_charge > 0 && checkedItems?.internationalFreight){
+      total+= parseFloat(data?.freight_charge)
+    }
+    if(data?.destination_charge > 0 && checkedItems?.DestinationCharges){
+      total+= parseFloat(data?.destination_charge)
+    }
+    if(data?.cargodelivery_charge > 0 && checkedItems?.CargoDelivery){
+      total+= parseFloat(data?.cargodelivery_charge)
+    }
+
+    return total.toFixed(2)
+}
+
   return (
     <>
       <Card className="tabs1 mb-2">
@@ -233,6 +262,7 @@ const displayedData = showAllData ? sortedData : sortedData?.slice(0, 4);
                     className="m-0 cargo-pickup-p"
                     style={{ fontWeight: "800" }}
                   >
+                    {/* {!toscheck && originPort?.port_name} */}
                     {originPort?.port_name}
                   </p>
                 </div>
@@ -260,6 +290,7 @@ const displayedData = showAllData ? sortedData : sortedData?.slice(0, 4);
                   <p
                     className="m-0 cargo-pickup-p"
                   >
+                    {/* {dest} */}
                     {destPort?.port_name}
                   </p>
                 </div>
@@ -443,7 +474,8 @@ const displayedData = showAllData ? sortedData : sortedData?.slice(0, 4);
                       >
                         {" "}
                         {selectedCurrency}&nbsp;&nbsp;
-                        {data?.total_amount_in_usd}
+                        {/* {data?.total_amount_in_usd} */}
+                        {calcTotalAmount(data)}
                         <span className="ms-2">
                           <img src={Share} alt="share" />
                         </span>
@@ -508,7 +540,7 @@ const displayedData = showAllData ? sortedData : sortedData?.slice(0, 4);
                     </div>
                   </div>
                   {showCharges === index && (
-                    <ShowChargesModal checkedItems={checkedItems} FindNRate={data} />
+                    <ShowChargesModal checkedItems={checkedItems} FindNRate={data} calcTotalAmount={calcTotalAmount} />
                   )}
                   <div className="d-flex align-items-center">
                     <div>
