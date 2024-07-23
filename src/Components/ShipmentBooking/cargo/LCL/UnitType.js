@@ -310,38 +310,58 @@ const UnitType = ({
       }
 
       // Validate length
-      if (item.length < 10 || item.length > 310) {
-        if (item.length < 10) {
-          error.length = "Min 10";
-        } else if (item.length > 310) {
-          error.length = "Max 310";
+      if (item.length < 10 || item.length > 120) {
+        if (item.length < 10 && utDatas[index]?.dimensionUnit === "CM") {
+          error.length = `Min 10 ${utDatas[index]?.dimensionUnit}`;
+        } else if (item.length > 310 && utDatas[index]?.dimensionUnit === "CM") {
+          error.length = `Max 310 ${utDatas[index]?.dimensionUnit}`;
+        }
+        if (item.length < 10 && utDatas[index]?.dimensionUnit === "IN") {
+          error.length = `Min 10 ${utDatas[index]?.dimensionUnit}`;
+        } else if (item.length > 120 && utDatas[index]?.dimensionUnit === "IN") {
+          error.length = `Max 120 ${utDatas[index]?.dimensionUnit}`;
         }
       }
 
       // Validate width
-      if (item.width < 10 || item.width > 220) {
-        if (item.width < 10) {
-          error.width = "Min 10";
-        } else if (item.width > 220) {
-          error.width = "Max 220";
+      if (item.width < 10 || item.width > 86) {
+        if (item.width < 10 && utDatas[index]?.dimensionUnit === "CM") {
+          error.width = `Min 10 ${utDatas[index]?.dimensionUnit}`;
+        } else if (item.width > 220 && utDatas[index]?.dimensionUnit === "CM") {
+          error.width = `Max 220 ${utDatas[index]?.dimensionUnit}`;
+        }
+        if (item.width < 10 && utDatas[index]?.dimensionUnit === "IN") {
+          error.width = `Min 10 ${utDatas[index]?.dimensionUnit}`;
+        } else if (item.width > 86 && utDatas[index]?.dimensionUnit === "IN") {
+          error.width = `Max 86 ${utDatas[index]?.dimensionUnit}`;
         }
       }
 
       // Validate height
-      if (item.height < 10 || item.height > 220) {
-        if (item.height < 10) {
-          error.height = "Min 10";
-        } else if (item.height > 220) {
-          error.height = "Min 220";
+      if (item.height < 10 || item.height > 86) {
+        if (item.height < 10 && utDatas[index]?.dimensionUnit === "CM") {
+          error.height = `Min 10 ${utDatas[index]?.dimensionUnit}`;
+        } else if (item.height > 220 && utDatas[index]?.dimensionUnit === "CM") {
+          error.height = `Max 220 ${utDatas[index]?.dimensionUnit}`;
+        }
+        if (item.height < 10 && utDatas[index]?.dimensionUnit === "LB") {
+          error.height = `Min 10 ${utDatas[index]?.dimensionUnit}`;
+        } else if (item.height > 86 && utDatas[index]?.dimensionUnit === "LB") {
+          error.height = `Max 86 ${utDatas[index]?.dimensionUnit}`;
         }
       }
 
       // Validate weight
       if (item.weight <= 0 || item.weight > 3000) {
-        if (item.weight <= 0) {
-          error.weight = "Min 1";
-        } else if (item.weight > 3000) {
-          error.weight = "Max 3000";
+        if (item.weight <= 0 && utDatas[index]?.weightUnit === "KG") {
+          error.weight = `Min 1 ${utDatas[index]?.weightUnit}`;
+        } else if (item.weight > 3000 && utDatas[index]?.weightUnit === "KG") {
+          error.weight = `Max 3000 ${utDatas[index]?.weightUnit}`;
+        }
+        if (item.weight <= 0 && utDatas[index]?.weightUnit === "LB") {
+          error.weight = `Min 1 ${utDatas[index]?.weightUnit}`;
+        } else if (item.weight > 6600 && utDatas[index]?.weightUnit === "LB") {
+          error.weight = `Max 6600 ${utDatas[index]?.weightUnit}`;
         }
       }
 
@@ -375,6 +395,7 @@ const UnitType = ({
   };
 
   console.log(hasErrors);
+  console.log(utDatas)
 
   const handleBlur = (index, name) => {
     const validationErrors = validateData();
@@ -527,7 +548,7 @@ const UnitType = ({
                         >
                           {packages?.map((item, index) => {
                             return (
-                              <MenuItem value="BOX">{item?.label}</MenuItem>
+                              <MenuItem value={item?.code}>{item?.label}</MenuItem>
                             );
                           })}
                         </Select>
@@ -1074,7 +1095,7 @@ const UnitType = ({
                       : null
                     : ""}
                 </FormHelperText> */}
-                      {errors[index]?.weightUnit && (
+                      {errors[index]?.weight && (
                         <p
                           className="error-text"
                           style={{
@@ -1083,7 +1104,7 @@ const UnitType = ({
                             fontStyle: "italic",
                           }}
                         >
-                          {errors[index]?.weightUnit}
+                          {errors[index]?.weight}
                         </p>
                       )}
                     </div>

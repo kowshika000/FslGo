@@ -18,12 +18,20 @@ function CargoDeliveryPopOver({
 
   const handleSelectChange = (value) => {
     const selectedOption = options.find((option) => option.value === value);
+    console.log(selectedOption)
     const code = selectedOption ? selectedOption.code : null;
+    console.log(value)
     if (value) {
       setSelectedValue(value);
+      console.log(code)
       setSelectedCode1(code);
       setPopoverOpen(false);
     }
+    // else{
+    //   setSelectedValue("");
+    //   // console.log(code)
+    //   setSelectedCode1("");
+    // }
     setShowOption(false);
   };
   
@@ -45,7 +53,7 @@ function CargoDeliveryPopOver({
         value: item.list_value,
         label: item.list_value,
         key: index,
-        code: item.list_code,
+        code: item.zip_code,
       }));
       setOptions(updatedOptions);
     }

@@ -61,6 +61,7 @@ function CargoPickupPopOver({
         showSearch
         placeholder="Select City or Zipcode"
         optionFilterProp="label"
+        
         onChange={handleSelectChange}
         onSearch={onSearch}
         options={showOption ? options : []}

@@ -13,7 +13,7 @@ export const Footer = () => {
         padding: "20px 24px 20px 24px",
         position: "relative",
         bottom: "0px",
-        position:"fixed"
+        // position:"fixed"
       }}
     >
       <div

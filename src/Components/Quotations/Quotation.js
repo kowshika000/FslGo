@@ -55,6 +55,9 @@ const Quotation = ({
   //   window.scrollTo(0, 0);
   // }, [highlightShipmentCard]);
 
+  const [origin, setorigin] = useState(originPort?.port_name)
+  const [dest, setdes] = useState(destPort?.port_name)
+
   return (
     <div
       style={{
@@ -112,6 +115,8 @@ const Quotation = ({
               settoscheck={settoscheck}
               setSelectedDeliveryValue={setSelectedDeliveryValue}
               selectedDataToPatch={selectedDataToPatch}
+              setorigin={setorigin}
+              setdes={setdes}
             />
           </div>
         </div>
@@ -150,6 +155,8 @@ const Quotation = ({
               destPort={destPort}
               settoscheck={settoscheck}
               toscheck={toscheck}
+              origin={origin}
+              dest={dest}
             />
           ) : (
             <div className={`${highlightShipmentCard ? "marginTop" : ""}`}>

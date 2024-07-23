@@ -3,6 +3,7 @@ import React from "react";
 function ShowChargesModal({ FindNRate,checkedItems,calcTotalAmount }) {
   const deliveryC = FindNRate?.delivery_charges;
   const origin = FindNRate?.origin_charges;
+  const pickup = FindNRate?.pickup_charges;
   const dest = FindNRate?.destination_charges;
   console.log(dest, "delll");
 
@@ -27,7 +28,24 @@ function ShowChargesModal({ FindNRate,checkedItems,calcTotalAmount }) {
   //     return total.toFixed(2)
   // }
 
-  
+  // const capitalizeWords =(str) => {
+  //   return str
+  //       .split(' ')
+  //       .map((word, index) => index === 0 ? word.toLowerCase() : word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+  //       .join(' ');
+  // }
+
+    //   function capitalizeFirstLetter(str) {
+    //     if (str.length === 0) return str;
+    //     return str.charAt(0).toUpperCase() + str.slice(1);
+    // }
+
+    // function capitalizeWords(sentence) {
+    //     return sentence
+    //         .split(' ')
+    //         .map(capitalizeFirstLetter)
+    //         .join(' ');
+    // }
 
   const freight = FindNRate?.freight_charges;
   return (
@@ -44,7 +62,7 @@ function ShowChargesModal({ FindNRate,checkedItems,calcTotalAmount }) {
               )}
               {FindNRate?.origin_charge > 0 && checkedItems?.originCharges && origin?.map((item, index) => (
                 <tr key={index}>
-                  <td className="pickupcharge ps-4">{item?.text}</td>
+                  <td className="pickupcharge ps-4">{item?.text?.toUpperCase()}</td>
                   <td className="price-value">{item?.value}</td>
                 </tr>
               ))}
@@ -54,12 +72,12 @@ function ShowChargesModal({ FindNRate,checkedItems,calcTotalAmount }) {
                   <td className="one">{FindNRate?.cargopickup_charge}</td>
                 </tr>
               )}
-              {/* {origin?.map((item, index) => (
+              {pickup?.map((item, index) => (
                 <tr key={index}>
-                  <td className="pickupcharge ps-4">{item?.text}</td>
+                  <td className="pickupcharge ps-4">{item?.text?.toUpperCase()}</td>
                   <td className="price-value">{item?.value}</td>
                 </tr>
-              ))} */}
+              ))}
               {FindNRate?.freight_charge > 0 && checkedItems?.internationalFreight && (
                 <tr className="header">
                   <td className="origincharge">
@@ -70,7 +88,7 @@ function ShowChargesModal({ FindNRate,checkedItems,calcTotalAmount }) {
               )}
               {FindNRate?.freight_charge > 0 && checkedItems?.internationalFreight && freight?.map((item, index) => (
                 <tr key={index}>
-                  <td className="pickupcharge ps-4">{item?.text}</td>
+                  <td className="pickupcharge ps-4">{item?.text?.toUpperCase()}</td>
                   <td className="price-value">{item?.value}</td>
                 </tr>
               ))}
@@ -82,7 +100,7 @@ function ShowChargesModal({ FindNRate,checkedItems,calcTotalAmount }) {
               )}
               {FindNRate?.destination_charge > 0 && checkedItems?.DestinationCharges && dest?.map((item, index) => (
                 <tr key={index}>
-                  <td className="pickupcharge ps-4">{item?.text}</td>
+                  <td className="pickupcharge ps-4">{item?.text?.toUpperCase()}</td>
                   <td className="price-value">{item?.value}</td>
                 </tr>
               ))}
