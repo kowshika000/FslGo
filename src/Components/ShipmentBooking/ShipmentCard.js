@@ -41,8 +41,9 @@ const ShipmentCard = ({
   selectedValue,
   toscheck,
   settoscheck,
-  selectedDataToPatch
-  
+  selectedDataToPatch,
+  setorigin,
+  setdes  
 }) => {
   const dispatch = useDispatch();
   const [destination] = useState("");
@@ -142,6 +143,11 @@ const ShipmentCard = ({
       tosValue = "EXW";
     } else if (
       checkedItems.DestinationCharges &&
+      checkedItems.cargoPickup
+    ) {
+      tosValue = "EXW";
+    }else if (
+      checkedItems.DestinationCharges &&
       checkedItems.originCharges &&
       checkedItems.CargoDelivery
     ) {
@@ -149,13 +155,17 @@ const ShipmentCard = ({
     } else if (checkedItems.DestinationCharges && checkedItems.originCharges  ) {
       tosValue = "FCA";
     } else if (checkedItems.DestinationCharges && checkedItems.CargoDelivery ) {
-      tosValue = "FOB";
+      tosValue = "FCA";
     } else if (checkedItems.DestinationCharges ) {
       tosValue = "FOB";
     }
     else if (checkedItems.originCharges && checkedItems.cargoPickup ) {
       tosValue = "EXW";
     } 
+    // else if (checkedItems.DestinationCharges && checkedItems.cargoPickup && !checkedItems.CargoDelivery ) {
+    //   console.log("works")
+    //   tosValue = "EXW";
+    // } 
     else if (checkedItems.originCharges) {
       tosValue = "FCA";
     } 
@@ -164,13 +174,24 @@ const ShipmentCard = ({
     }
   } else if (exim === "E") {
     if (
-      checkedItems.originCharges &&
+      // checkedItems.originCharges &&
       checkedItems.cargoPickup &&
-      checkedItems.CargoDelivery &&
-      checkedItems.DestinationCharges
+      checkedItems.CargoDelivery 
     ) {
       tosValue = "DAP";
-    } else if (checkedItems.originCharges && checkedItems.cargoPickup) {
+    }else if (
+      // checkedItems.originCharges &&
+      !checkedItems.cargoPickup &&
+      checkedItems.CargoDelivery 
+    ) {
+      tosValue = "DAP";
+    }else if(
+      // checkedItems.originCharges &&
+      checkedItems.cargoPickup &&
+      !checkedItems.CargoDelivery 
+    ) {
+      tosValue = "CFR";
+    }else if (checkedItems.originCharges && checkedItems.cargoPickup) {
       tosValue = "CFR";
     } else if (checkedItems.DestinationCharges && checkedItems.CargoDelivery) {
       tosValue = "DAP";
@@ -309,6 +330,7 @@ const ShipmentCard = ({
   console.log(tosfirst,tosValue)
   console.log(tosValue)
   console.log(inputdata)
+  console.log(checkedItems)
 
   //This is for AirRate Search
   const inputAirData = {
@@ -415,6 +437,8 @@ console.log(originPort)
       settoscheck(false)
       console.log("mounted in");
       setCheckedItems(initialChecks)
+      setorigin(originPort?.port_name)
+      setdes(destPort?.port_name)
       // settoscheck(false);
       // dispatch(FindNewRateRequest({ inputdata }));
 
@@ -425,8 +449,8 @@ console.log(originPort)
       // }
       setSelectedValue(originPort && originPort?.zip_code)
       setSelectedDeliveryValue(destPort && destPort?.zip_code)
-      setSelectedCode(originPort && originPort?.zip_code)
-      setSelectedCode1(destPort && destPort?.zip_code)
+      // setSelectedCode(originPort && originPort?.zip_code)
+      // setSelectedCode1(destPort && destPort?.zip_code)
       // if(originPort && originPort?.Transport_mode === "CITY"){
       //   setCheckedItems((prev) => {
       //         return { ...prev, originCharges: true,cargoPickup:true };
@@ -552,6 +576,21 @@ console.log(originPort)
           };
         });
       } else if (
+        (tosfirst) === "DAP" &&
+        originPort?.type === "PORT" &&
+        destPort?.type === "PICKUP" &&
+        exim === "E"
+      ) {
+        setCheckedItems((prev) => {
+          return {
+            ...prev,
+            DestinationCharges: true,
+            originCharges: false,
+            cargoPickup: false,
+            CargoDelivery: true,
+          };
+        });
+      } else if (
         (tosfirst) === "DDP" &&
         originPort?.type === "PICKUP" &&
         destPort?.type === "PICKUP" &&
@@ -666,7 +705,7 @@ console.log(originPort)
     if (
       (checkedItems.cargoPickup && !selectedCode) ||
       (checkedItems.CargoDelivery &&
-        !selectedDeliveryValue &&
+        // !selectedDeliveryValue &&
         !selectedCode1) ||
       !showReselt
     ) {
@@ -676,6 +715,9 @@ console.log(originPort)
       console.log("ren")
       dispatch(FindNewRateRequest({ inputdata }));
     }
+    // if(!checkedItems.CargoDelivery){
+    //   setSelectedCode1(false)
+    // }
     
   }
 
@@ -683,19 +725,24 @@ console.log(originPort)
 
   }, [
     selectedCurrency,
-    checkedItems.originCharges && !checkedItems.cargoPickup,
-    checkedItems.DestinationCharges && !checkedItems.CargoDelivery,
+    checkedItems.originCharges && checkedItems.cargoPickup,
+    checkedItems.DestinationCharges && checkedItems.CargoDelivery,
+    checkedItems.originCharges,
+    checkedItems.DestinationCharges,
     checkedItems.exportClearance,
     checkedItems.ImportClearance,
     checkedItems.StackableCargo,
     checkedItems.NonHarzardousCargo,
     selectedCode && checkedItems.cargoPickup,
     insuranceValue,
-    selectedValue,
+    // selectedValue,
     selectedCode1 && checkedItems.CargoDelivery,
-    selectedCode1,
+    // selectedCode1,
   ]);
 
+  console.log("tos",tosValue)
+  console.log(selectedCode,selectedCode1)
+  console.log(selectedValue,selectedDeliveryValue)
   console.log(hasPageBeenrendered)
 
   const shrinkValues = (text) =>{

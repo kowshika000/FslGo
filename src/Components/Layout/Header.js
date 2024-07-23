@@ -240,7 +240,7 @@ const Header = ({ setShowText, setShowmap,setShowReselt }) => {
               Invoice
             </Typography>
           </Link> */}
-          {/* <Link to="/quick" style={{ textDecoration: "none" }}>
+          <Link to="/quick" style={{ textDecoration: "none" }}>
             <Typography
               sx={{
                 fontSize: "15px",
@@ -257,7 +257,7 @@ const Header = ({ setShowText, setShowmap,setShowReselt }) => {
             >
               Quick Booking
             </Typography>
-          </Link> */}
+          </Link>
         </Box>
       </div>
       <div
@@ -274,13 +274,14 @@ const Header = ({ setShowText, setShowmap,setShowReselt }) => {
             position: "relative",
           }}
           className="d-flex justify-content-end align-items-center"
-          onClick={() => setView(!view)}
+          // onClick={() => setView(!view)}
         >
           <Bell
             width="25px"
             height="25px"
             style={{ position: "absolute", left: "4px", cursor:"pointer"}}
             alt="Bell"
+            onClick={() => setView(!view)}
           />
 
           <div

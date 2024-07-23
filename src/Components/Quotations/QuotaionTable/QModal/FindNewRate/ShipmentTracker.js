@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Tabs, Tooltip } from "antd";
 import "./FindNewRate.css";
 import Share from "../../../../../assets/Share.svg";
@@ -29,7 +29,9 @@ function ShipmentTracker({
   originPort,
   destPort,
   settoscheck,
-  toscheck
+  toscheck,
+  origin,
+  dest
 }) {
   const [showAllData, setShowAllData] = useState(false);
   const [showCharges, setShowCharges] = useState(null);
@@ -38,9 +40,22 @@ function ShipmentTracker({
   const { findRate, loading } = useSelector((state) => state?.findRate);
   console.log(FindNRate, "FindNRate");
 
-  const [origin, setorigin] = useState(originPort?.port_name)
-  const [dest, setdes] = useState(destPort?.port_name)
+  // const [origin, setorigin] = useState(originPort?.port_name)
+  // const [dest, setdes] = useState(destPort?.port_name)
   console.log(origin,dest)
+  console.log(originPort?.port_name,destPort?.port_name)
+
+  console.log("sele",selectedValue)
+
+  // var origins;
+
+  // useEffect(() => {
+  //   setorigin(originPort?.port_name)
+  //   setdes(destPort?.port_name)
+  //   console.log("run")
+  // }, [])
+
+  // console.log(origins)
 
 
   function showAll() {
@@ -55,13 +70,13 @@ function ShipmentTracker({
       (checkedItems?.originCharges && FindNRate && FindNRate.length > 0
         ? (FindNRate[0]?.origin_charge === "") || (FindNRate[0]?.origin_charge === "0")
         : "") ||
-      (checkedItems?.cargoPickup && FindNRate && FindNRate.length > 0
+      (checkedItems?.cargoPickup && selectedValue.length>0 && selectedValue && FindNRate && FindNRate.length > 0
         ? (FindNRate[0]?.cargopickup_charge === "") || (FindNRate[0]?.cargopickup_charge === "0")
         : "") ||
       (checkedItems?.DestinationCharges && FindNRate && FindNRate.length > 0
         ? (FindNRate[0]?.destination_charge === "") || (FindNRate[0]?.destination_charge === "0")
         : "") ||
-      (checkedItems?.CargoDelivery && FindNRate && FindNRate.length > 0
+      (checkedItems?.CargoDelivery && FindNRate && selectedDeliveryValue && FindNRate.length > 0
         ? (FindNRate[0]?.cargodelivery_charge === "") || (FindNRate[0]?.cargodelivery_charge === "0")
         : "") ||
       (checkedItems?.internationalFreight && FindNRate && FindNRate.length > 0
@@ -117,7 +132,7 @@ function ShipmentTracker({
           className="mt-4 d-flex flex-direction-row "
           style={{ fontWeight: "bold", fontSize: "16px" }}
         >
-          Powered by &nbsp;&nbsp; <div className="h5 text-danger">FSL GO</div>,
+          Powered by &nbsp;&nbsp; <div className="h5 text-danger">FSL</div>,
           your trusted logistics partner.
         </div>
 
@@ -167,7 +182,7 @@ const displayedData = showAllData ? sortedData : sortedData?.slice(0, 4);
       total+= parseFloat(data?.origin_charge)
     }
     if(data?.cargopickup_charge > 0 && checkedItems?.cargoPickup){
-      total+= parseFloat(data?.origin_charge)
+      total+= parseFloat(data?.cargopickup_charge)
     }
     if(data?.freight_charge > 0 && checkedItems?.internationalFreight){
       total+= parseFloat(data?.freight_charge)
@@ -181,6 +196,9 @@ const displayedData = showAllData ? sortedData : sortedData?.slice(0, 4);
 
     return total.toFixed(2)
 }
+
+  
+  
 
   return (
     <>
@@ -263,7 +281,8 @@ const displayedData = showAllData ? sortedData : sortedData?.slice(0, 4);
                     style={{ fontWeight: "800" }}
                   >
                     {/* {!toscheck && originPort?.port_name} */}
-                    {originPort?.port_name}
+                    {origin}
+                    {/* {origins} */}
                   </p>
                 </div>
                 <div style={{ height: "20px", opacity: "100%" }}>
@@ -290,8 +309,8 @@ const displayedData = showAllData ? sortedData : sortedData?.slice(0, 4);
                   <p
                     className="m-0 cargo-pickup-p"
                   >
-                    {/* {dest} */}
-                    {destPort?.port_name}
+                    {dest}
+                    {/* {destPort?.port_name} */}
                   </p>
                 </div>
                 <div
@@ -406,13 +425,13 @@ const displayedData = showAllData ? sortedData : sortedData?.slice(0, 4);
       (checkedItems?.originCharges && FindNRate && FindNRate.length > 0
         ? (FindNRate[0]?.origin_charge === "") || (FindNRate[0]?.origin_charge === "0")
         : "") ||
-      (checkedItems?.cargoPickup && FindNRate && FindNRate.length > 0
+      (checkedItems?.cargoPickup && selectedValue.length>0 && selectedValue && FindNRate && FindNRate.length > 0
         ? (FindNRate[0]?.cargopickup_charge === "") || (FindNRate[0]?.cargopickup_charge === "0")
         : "") ||
       (checkedItems?.DestinationCharges && FindNRate && FindNRate.length > 0
         ? (FindNRate[0]?.destination_charge === "") || (FindNRate[0]?.destination_charge === "0")
         : "") ||
-      (checkedItems?.CargoDelivery && FindNRate && FindNRate.length > 0
+      (checkedItems?.CargoDelivery && FindNRate && selectedDeliveryValue && FindNRate.length > 0
         ? (FindNRate[0]?.cargodelivery_charge === "") || (FindNRate[0]?.cargodelivery_charge === "0")
         : "") ||
         (checkedItems?.internationalFreight && FindNRate && FindNRate.length > 0

@@ -214,7 +214,7 @@ const Origin = ({
                   width: "90%",
                   background: "transparent",
                   fontWeight: "600",
-                  fontSize: "12px",
+                  fontSize: "13px",
                   lineHeight: "22px",
                   letterSpacing: ".01em",
                 }}

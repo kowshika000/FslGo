@@ -1009,7 +1009,7 @@ useEffect(() => {
               }}
               step={'any'}
               onBlur={() =>
-                tsDatas?.total_volume > 15
+                (tsDatas?.volume_type === "CBM" && tsDatas?.total_volume > 15) || (tsDatas.total_volume > 530 && tsDatas?.volume_type === "CFT")
                   ? seterrors((prev) => {
                       return { ...prev, total_volume: true };
                     })
@@ -1057,9 +1057,12 @@ useEffect(() => {
             </FormControl>
           </div>
           <FormHelperText style={{ color: "red", fontStyle: "italic" }}>
-            {errors.total_volume &&
+            {errors.total_volume && tsDatas?.volume_type === "CBM" &&
               tsDatas.total_volume > 15 &&
-              `Maximum 15${tsDatas?.volume_type}`}
+              `Maximum 15 ${tsDatas?.volume_type}`}
+            {errors.total_volume && tsDatas?.volume_type === "CFT" &&
+            tsDatas.total_volume > 530 &&
+            `Maximum 530 ${tsDatas?.volume_type}`}
           </FormHelperText>
         </div>
         <div className="w-50 mb-3 ms-3 me-0">
@@ -1097,7 +1100,7 @@ useEffect(() => {
               }}
               step={'any'}
               onBlur={() =>
-                tsDatas?.total_weight < 10 || tsDatas?.total_weight > 15000
+                ((tsDatas?.total_weight < 10) || tsDatas?.total_weight > 15000 && tsDatas?.weight_type === "KG" ) || (tsDatas?.total_weight < 10 || tsDatas?.total_weight > 33000 && tsDatas?.weight_type === "LB")
                   ? seterrors((prev) => {
                       return { ...prev, total_weight: true };
                     })
@@ -1147,10 +1150,16 @@ useEffect(() => {
           {console.log(errors.total_weight)}
           <FormHelperText style={{ color: "red", fontStyle: "italic" }}>
             {errors.total_weight &&
-              (tsDatas.total_weight > 15000
+              ((tsDatas.total_weight > 15000 && tsDatas?.weight_type === "KG")
                 ? `Maximum 15000${tsDatas?.weight_type}`
-                : tsDatas.total_weight < 10
+                : (tsDatas.total_weight < 10 && tsDatas?.weight_type === "KG")
                 ? `Min 10${tsDatas?.weight_type}`
+                : null)}
+            {errors.total_weight &&
+              ((tsDatas.total_weight > 15000 && tsDatas?.weight_type === "LB")
+                ? `Maximum 33000 ${tsDatas?.weight_type}`
+                : (tsDatas.total_weight < 10 && tsDatas?.weight_type === "LB")
+                ? `Min 10 ${tsDatas?.weight_type}`
                 : null)}
           </FormHelperText>
         </div>

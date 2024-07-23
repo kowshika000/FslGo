@@ -55,12 +55,28 @@ const Cargo = ({
   const [isByUnitTypeOpen, setIsByUnitTypeOpen] = useState(false);
   // const [modalOpen, setModalOpen] = useState(false);
 
-  const cargoRef = useRef(null);
+  const cargoRef = useRef();
+  console.log(cargoRef.current)
 
-  const handleCargoChange = (event) => {
-    const { value } = event.target;
-    setCargo(value);
-  };
+  useEffect(() => {
+    const handler = (e) => {
+      if (!cargoRef?.current?.contains(e.target)) {
+        console.log("success")
+        setCargoOptionsVisible(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handler);
+
+    return () => {
+      document.removeEventListener("mousedown", handler);
+    };
+  });
+
+  // const handleCargoChange = (event) => {
+  //   const { value } = event.target;
+  //   setCargo(value);
+  // };
 
   // const handleCargoFocus = () => {
   //     setModalOpen(true);
@@ -210,7 +226,7 @@ const Cargo = ({
             </FormHelperText>
           )}
           {cargoOptionsVisible && (
-            <div className="outer-cargo-port">
+            <div className="outer-cargo-port" ref={cargoRef}>
               <CargoDetails
                 setCargo={setCargo}
                 setCargoOptionsVisible={setCargoOptionsVisible}

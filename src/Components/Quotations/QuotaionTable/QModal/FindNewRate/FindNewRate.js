@@ -35,8 +35,11 @@ function FindNewRate({
   originPort,
   destPort,
   settoscheck,
-  toscheck
+  toscheck,
+  dest,
+  origin
 }) {
+  console.log(selectedValue)
   const [isPopoverOpen, setPopoverOpen] = useState(false);
   const [isDeliveryPopoverOpen, setDeliveryPopoverOpen] = useState(false);
   const [isInsurance, setInsurance] = useState(false);
@@ -50,24 +53,24 @@ function FindNewRate({
     settoscheck(true)
     const { name, checked } = e.target;
     setCheckedItems((prevItems) => {
-      const updatedItems = { ...prevItems, [name]: checked };
+      const updatedItems = { ...prevItems, [name]: checked }; 
 
-      if (name === "cargoPickup" && checked) {
-        updatedItems.originCharges = true;
-      } else if (name === "CargoDelivery" && checked) {
-        updatedItems.DestinationCharges = true;
+      if (name === "CargoDelivery" && !checked) {
+        setSelectedDeliveryValue("")
+      } else if(name === "cargoPickup" && !checked){
+        setSelectedValue("")
       }
 
-      if(name == "originCharges" && !checked ){
-        if(updatedItems.cargoPickup){
-          updatedItems.cargoPickup = false
-        }
-      }
-      if(name == "DestinationCharges" && !checked ){
-        if(updatedItems.CargoDelivery){
-          updatedItems.CargoDelivery = false
-        }
-      }
+      // if(name == "originCharges" && !checked ){
+      //   if(updatedItems.CargoDelivery){
+      //     updatedItems.cargoPickup = false
+      //   }
+      // }
+      // if(name == "DestinationCharges" && !checked ){
+      //   if(updatedItems.CargoDelivery){
+      //     updatedItems.CargoDelivery = false
+      //   }
+      // }
 
       return updatedItems;
     });
@@ -162,6 +165,7 @@ function FindNewRate({
     disabled,
     defaultChecked,
   }) => {
+    console.log(value)
     const handlePopoverOpenChange = (value) => {
       if (value === "cargoPickup") {
         return setPopoverOpen;
@@ -203,7 +207,7 @@ function FindNewRate({
               className="div-rowcentered"
               style={{ justifyContent: "flex-start" }}
             >
-              <Tooltip placement="topLeft" title={tooltipText}>
+              <Tooltip trigger={"hover"} placement="topLeft" title={tooltipText}>
                 <span style={{ float: "right" }} role="button">
                   <img src={info} alt="more" />
                 </span>
@@ -522,6 +526,8 @@ function FindNewRate({
           destPort={destPort}
           settoscheck={settoscheck}
           toscheck={toscheck}
+          origin={origin}
+          dest={dest}
         />
       </div>
     </div>
