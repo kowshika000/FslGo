@@ -888,7 +888,7 @@ useEffect(() => {
           <FormControl fullWidth>
             {/* <InputLabel id="demo-simple-select-label">Package</InputLabel> */}
             <Select
-              style={{ height: "45px" }}
+              style={{ height: "45px",fontSize:" 14px" }}
               // labelId="demo-simple-select-label"
               // id="demo-simple-select"
               // label="Age"
@@ -902,7 +902,7 @@ useEffect(() => {
             >
               {
                 packages?.map((item,index)=>{
-                  return <MenuItem value={item.code}>{item?.label}</MenuItem>
+                  return <MenuItem style={{fontSize: "14px"}} value={item.code}>{item?.label}</MenuItem>
                 })
               }
               
@@ -965,7 +965,7 @@ useEffect(() => {
                 padding: "13px",
                 border: "none",
                 borderRadius:"4px",
-                fontSize:"1rem"
+                fontSize:"14px"
               }}
             />
             <button
@@ -996,7 +996,7 @@ useEffect(() => {
               <img src={plus} alt="add" />
             </button>
           </div>
-          <FormHelperText style={{ color: "red", fontStyle: "italic" }}>
+          <FormHelperText style={{ color: "red" }}>
             {errors.no_of_units && tsDatas.no_of_units > 999
               ? "Maximum 999 allowed"
               : tsDatas.no_of_units < 0
@@ -1056,7 +1056,7 @@ useEffect(() => {
                 borderTopLeftRadius: "5px",
                 borderBottomLeftRadius: "5px",
                 padding: "10px",
-                fontSize: "1rem",
+                fontSize: "14px",
                 width: "60%",
               }}
               value={tsDatas.total_volume}
@@ -1069,11 +1069,21 @@ useEffect(() => {
                 sx={{
                   height: "100%",
                   width: "100%",
+                  fontSize:"14px",
                   backgroundColor: "rgba(243, 245, 247, 1)",
                   borderTopRightRadius: "8px",
                   borderBottomRightRadius: "8px",
                   border: "1px solid rgba(207, 214, 223, 1)",
                   borderLeft: "0px",
+                  '& .MuiSelect-select': {
+                    textAlign: 'center', // Center the text
+                    '&:focus': {
+                      backgroundColor: 'transparent', // Optional: remove background on focus
+                    },
+                  },
+                  '& .MuiSelect-icon': {
+                    right: 17, // Adjust icon position
+                  },
                 }}
                 labelId="demo-customized-select-label"
                 id="demo-customized-select"
@@ -1083,12 +1093,12 @@ useEffect(() => {
                 onChange={handleVolumeDropChange}
                 name="volume_type"
               >
-                <MenuItem value="CBM">CBM</MenuItem>
-                <MenuItem value="CFT">CFT</MenuItem>
+                <MenuItem  style={{fontSize:"14px"}} value="CBM">CBM</MenuItem>
+                <MenuItem style={{fontSize:"14px"}} value="CFT">CFT</MenuItem>
               </Select>
             </FormControl>
           </div>
-          <FormHelperText style={{ color: "red", fontStyle: "italic" }}>
+          <FormHelperText style={{ color: "red" }}>
             {errors.total_volume && tsDatas?.volume_type === "CBM" &&
               tsDatas.total_volume > 15 &&
               `Maximum 15 ${tsDatas?.volume_type}`}
@@ -1112,7 +1122,7 @@ useEffect(() => {
           <div
             style={{
               height: "42px",
-              border: errors.total_weight && "1px solid red",
+              border: errors.total_weight && tsDatas?.total_weight && "1px solid red",
             }}
             className="btn-group"
             role="group"
@@ -1132,7 +1142,7 @@ useEffect(() => {
               }}
               step={'any'}
               onBlur={() =>
-                ((tsDatas?.total_weight < 10) || tsDatas?.total_weight > 15000 && tsDatas?.weight_type === "KG" ) || (tsDatas?.total_weight < 10 || tsDatas?.total_weight > 33000 && tsDatas?.weight_type === "LB")
+                ((tsDatas?.total_weight && tsDatas?.total_weight < 10) || tsDatas?.total_weight > 15000 && tsDatas?.weight_type === "KG" ) || (tsDatas?.total_weight < 10 || tsDatas?.total_weight > 33000 && tsDatas?.weight_type === "LB" && tsDatas?.total_weight)
                   ? seterrors((prev) => {
                       return { ...prev, total_weight: true };
                     })
@@ -1145,7 +1155,7 @@ useEffect(() => {
                 border: "1px solid rgba(207, 214, 223, 1)",
                 borderTopLeftRadius: "5px",
                 borderBottomLeftRadius: "5px",
-                fontSize: "1rem",
+                fontSize: "14px",
                 padding: "10px",
                 width: "60%",
               }}
@@ -1165,6 +1175,16 @@ useEffect(() => {
                   borderBottomRightRadius: "8px",
                   border: "1px solid rgba(207, 214, 223, 1)",
                   borderLeft: "0px",
+                  '& .MuiSelect-select': {
+                    textAlign: 'center', // Center the text
+                    '&:focus': {
+                      backgroundColor: 'transparent', // Optional: remove background on focus
+                    },
+                  },
+                  '& .MuiSelect-icon': {
+                    right: 22, // Adjust icon position
+                  },
+                  fontSize:"14px",
                 }}
                 labelId="demo-customized-select-label"
                 id="demo-customized-select"
@@ -1174,15 +1194,16 @@ useEffect(() => {
                 onChange={handleWeightDropChange}
                 name="weight_type"
                 ref={selectref}
+                
               >
-                <MenuItem value="KG">KG</MenuItem>
-                <MenuItem value="LB">LB</MenuItem>
+                <MenuItem style={{fontSize:"14px"}} value="KG">KG</MenuItem>
+                <MenuItem style={{fontSize:"14px"}} value="LB">LB</MenuItem>
               </Select>
             </FormControl>
           </div>
           {console.log(errors.total_weight)}
-          <FormHelperText style={{ color: "red", fontStyle: "italic" }}>
-            {errors.total_weight &&
+          <FormHelperText style={{ color: "red" }}>
+            {errors.total_weight && tsDatas?.total_weight &&
               ((tsDatas.total_weight > 15000 && tsDatas?.weight_type === "KG")
                 ? `Maximum 15000${tsDatas?.weight_type}`
                 : (tsDatas.total_weight < 10 && tsDatas?.weight_type === "KG")
@@ -1263,6 +1284,7 @@ useEffect(() => {
             aria-labelledby="demo-row-radio-buttons-group-label"
             name="row-radio-buttons-group"
             value={exim}
+            style={{fontSize:"13px"}}
           >
             <FormControlLabel
               value="I"
@@ -1285,6 +1307,7 @@ useEffect(() => {
                     "&.Mui-checked": {
                       color: "black",
                     },
+                    fontSize:"13px"
                   }}
                 />
               }
@@ -1312,6 +1335,7 @@ useEffect(() => {
                     "&.Mui-checked": {
                       color: "black",
                     },
+                    fontSize:"13px"
                   }}
                 />
               }

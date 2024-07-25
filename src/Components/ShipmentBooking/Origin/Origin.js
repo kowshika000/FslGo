@@ -48,7 +48,8 @@ const Origin = ({
   setorgerrormsg,
   shrinkValues,
   selectedDataToPatch,
-  destref
+  destref,
+  handleRateEngineClick
 }) => {
   // const [origin, setOrigin] = useState("");
   // const [modalOpen, setModalOpen] = useState(false);
@@ -257,7 +258,6 @@ const Origin = ({
         >
           <div
             className="w-100"
-            style={{ borderRight: "3px solid rgba(245, 247, 249, 1)" }}
           >
             <Typography
               className="bold"
@@ -301,6 +301,7 @@ const Origin = ({
               //     setOriginPortOptionsVisible(false); //this one clear the input values when mouse on leave without selectedlocation dropdowns
               //   }
               // }}
+              onFocus={handleRateEngineClick}
               onChange={handleOriginPortChange}
               value={shrinkValues(searchOriginPort)}
             />
@@ -313,7 +314,7 @@ const Origin = ({
               />
             )}
             {orgerrormsg && (
-              <FormHelperText style={{ color: "red", fontStyle: "italic" }}>
+              <FormHelperText style={{ color: "red" }}>
                 {orgerrormsg}
               </FormHelperText>
             )}

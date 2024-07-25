@@ -47,7 +47,8 @@ const Destination = ({
   setdeserrormsg,
   shrinkValues,
   selectedDataToPatch,
-  destref
+  destref,
+  handleRateEngineClick
 }) => {
   // const [searchDestPort, setSearchDestPort] = useState("");
   // const [originPortOptionsVisible, setOriginPortOptionsVisible] = useState(false);
@@ -128,7 +129,7 @@ const Destination = ({
     setDesPortCode(port?.port_code);
     setDestPortOptionsVisible(false);
     setDestPort(port);
-    setCargoOptionsVisible(true)
+    
     if (
       port?.Transport_mode === "SEA" &&
       originPort?.Transport_mode === "AIR"
@@ -151,6 +152,7 @@ const Destination = ({
       setSearchDestPort(port?.list_value);
       setSearchDestCode(port?.port_code);
       setdeserrormsg(null);
+      setCargoOptionsVisible(true)
     }
   };
 
@@ -268,6 +270,7 @@ const Destination = ({
             // onChange={handleDestinationChange}
             // onClick={handleDestinationFocus}
             // value={destination}
+            onFocus={handleRateEngineClick}
             onChange={handleDestPortChange}
             value={shrinkValues(searchDestPort)}
             ref={destref}
@@ -289,7 +292,7 @@ const Destination = ({
             />
           )}
           {deserrormsg && (
-            <FormHelperText style={{ color: "red", fontStyle: "italic" }}>
+            <FormHelperText style={{ color: "red" }}>
               {deserrormsg}
             </FormHelperText>
           )}

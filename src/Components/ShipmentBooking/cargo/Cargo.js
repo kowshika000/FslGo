@@ -47,7 +47,8 @@ const Cargo = ({
    unit, setunits,
    originPort,
    destPort,
-   searchref
+   searchref,
+   handleRateEngineClick
 }) => {
   const [lastsaved,setlastsaved] = useState("")
   const [activeIndex,setactiveIndex] = useState(0)
@@ -214,7 +215,7 @@ const Cargo = ({
             placeholder="Enter your Cargo details"
             // ref={cargoRef}
             // onChange={handleCargoChange}
-            // onFocus={handleCargoFocus}
+            onFocus={handleRateEngineClick}
             // onBlur={()=>setCargoOptionsVisible(false)}
             onClick={() => setCargoOptionsVisible((prev) => !prev)}
             value={showcargo ? cargo: ""}
@@ -233,7 +234,6 @@ const Cargo = ({
             <FormHelperText
               style={{
                 color: "red",
-                fontStyle: "italic",
               }}
             >
               {tserrmsg}
