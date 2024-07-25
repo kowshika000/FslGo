@@ -65,7 +65,7 @@ const Cargo = ({
   useEffect(() => {
     const handler = (e) => {
       console.log(e.target.className)
-      if (!cargoRef?.current?.contains(e.target) && !carref?.current.contains(e.target) && e.target.className !== "MuiButtonBase-root MuiMenuItem-root MuiMenuItem-gutters MuiMenuItem-root MuiMenuItem-gutters css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root" && e.target.className !== "MuiButtonBase-root MuiMenuItem-root MuiMenuItem-gutters Mui-selected MuiMenuItem-root MuiMenuItem-gutters Mui-selected css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root" && e.target.className !== "MuiBackdrop-root MuiBackdrop-invisible MuiModal-backdrop css-g3hgs1-MuiBackdrop-root-MuiModal-backdrop") {  
+      if (!cargoRef?.current?.contains(e.target) && !carref?.current.contains(e.target) && e.target.className !== /*"MuiButtonBase-root MuiMenuItem-root MuiMenuItem-gutters MuiMenuItem-root MuiMenuItem-gutters css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root"*/ "MuiButtonBase-root MuiMenuItem-root MuiMenuItem-gutters Mui-selected MuiMenuItem-root MuiMenuItem-gutters Mui-selected css-1km1ehz" && e.target.className !== /*"MuiButtonBase-root MuiMenuItem-root MuiMenuItem-gutters Mui-selected MuiMenuItem-root MuiMenuItem-gutters Mui-selected css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root"*/ "MuiButtonBase-root MuiMenuItem-root MuiMenuItem-gutters MuiMenuItem-root MuiMenuItem-gutters css-1km1ehz"  && e.target.className !== /*"MuiBackdrop-root MuiBackdrop-invisible MuiModal-backdrop css-g3hgs1-MuiBackdrop-root-MuiModal-backdrop"*/ "MuiBackdrop-root MuiBackdrop-invisible MuiModal-backdrop css-esi9ax") {  
         console.log("success")
         setCargoOptionsVisible(false);
       }
