@@ -416,7 +416,7 @@ const Fcl = ({
                         <input
                           type="number"
                           autoComplete="off"
-                          className="placeholder_style form-control"
+                          className="placeholder_style w-100"
                           placeholder="Quantity"
                           onKeyDown={(e) => {
                             if (
@@ -451,6 +451,8 @@ const Fcl = ({
                             borderBottomRightRadius: "0",
                             padding: "13px",
                             border: "none",
+                            borderRadius:"8px",
+                            fontSize:"1rem"
                           }}
                         />
                         <button

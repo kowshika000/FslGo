@@ -452,7 +452,7 @@ const displayedData = showAllData ? sortedData : sortedData?.slice(0, 4);
                 <Card className="track1 mb-2" key={index}>
                   <div className="d-flex justify-content-between">
                     <div>
-                      <p style={{ fontSize: "15px" }}>
+                      <p style={{ fontSize: "15px",margin:"0px" }}>
                         <img
                           src={Union}
                           className="pe-2 mb-1"
@@ -489,6 +489,7 @@ const displayedData = showAllData ? sortedData : sortedData?.slice(0, 4);
                           fontSize: "25px",
                           color: "#D32D2F",
                           fontWeight: "500",
+                          margin:"0px"
                         }}
                       >
                         {" "}

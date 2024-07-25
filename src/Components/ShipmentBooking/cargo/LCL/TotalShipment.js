@@ -33,12 +33,39 @@ const TotalShipment = ({
   setmode,
   originPort,
   destPort,
+  searchref
 }) => {
 
 
   console.log(exim);
 
+  const nunits= useRef()
+  console.log(nunits)
+  useEffect(() => {
+    nunits?.current?.focus()
+  }, [])
+  
+
   const [change, setchange] = useState(false)
+  const selectref = useRef()
+  console.log(selectref)
+
+  // useEffect(() => {
+  //   const handler = (e) => {
+  //     console.log(selectref,e.target)
+  //     if (selectref?.current?.contains(e.target)) {
+  //       // setCargoOptionsVisible(false);
+  //       return;
+  //     }
+  //     setCargoOptionsVisible(false);
+  //   };
+
+  //   document.addEventListener("mousedown", handler);
+
+  //   return () => {
+  //     document.removeEventListener("mousedown", handler);
+  //   };
+  // });
 
   // const [inputFields, setInputFields] = useState(
   //   JSON.parse(localStorage.getItem("inpfields")) || [{}]
@@ -231,6 +258,7 @@ useEffect(() => {
       seterrmsg("")
       setlastsaved("LCLTOTAL")
       setFinaldetails(values)
+      searchref?.current?.focus()
     } else {
       setCargo("");
       console.log("error");
@@ -845,7 +873,7 @@ useEffect(() => {
               </>
             )} */}
       <div className="d-flex">
-        <div className="w-50 my-3 ms-0 me-3">
+        <div className="w-50 mb-3 mt-0 ms-0 me-3">
           <Typography
             sx={{
               fontWeight: "500",
@@ -864,6 +892,7 @@ useEffect(() => {
               // labelId="demo-simple-select-label"
               // id="demo-simple-select"
               // label="Age"
+              className="package_type"
               value={tsDatas.package_type}
               onChange={handlePackChange}
               name="package_type"
@@ -880,7 +909,7 @@ useEffect(() => {
             </Select>
           </FormControl>{" "}
         </div>
-        <div className="w-50 my-3 ms-3 me-0">
+        <div className="w-50 mb-3  mt-0 ms-3 me-0">
           <Typography
             sx={{
               fontWeight: "500",
@@ -904,7 +933,7 @@ useEffect(() => {
             <input
               type="number"
               autoComplete="off"
-              className="form-control placeholder_style"
+              className=" w-100 placeholder_style"
               placeholder="Units"
               onKeyDown={(e) => {
                 if (
@@ -928,12 +957,15 @@ useEffect(() => {
               onWheel={(e) => e.target.blur()}
               value={tsDatas?.no_of_units}
               name="no_of_units"
+              ref={nunits}
               onChange={handleUnitsChange}
               style={{
                 borderTopRightRadius: "0",
                 borderBottomRightRadius: "0",
                 padding: "13px",
                 border: "none",
+                borderRadius:"4px",
+                fontSize:"1rem"
               }}
             />
             <button
@@ -1141,6 +1173,7 @@ useEffect(() => {
                 value={tsDatas?.weight_type}
                 onChange={handleWeightDropChange}
                 name="weight_type"
+                ref={selectref}
               >
                 <MenuItem value="KG">KG</MenuItem>
                 <MenuItem value="LB">LB</MenuItem>
@@ -1210,7 +1243,7 @@ useEffect(() => {
       </Tooltip> */}
       {/* </button> */}
 
-      <div className="my-3 d-flex justify-content-between">
+      <div className=" d-flex justify-content-between">
         <div className=" d-flex" style={{ justifyContent: "space-between" }}>
           <Typography
             sx={{

@@ -37,6 +37,8 @@ const Quotation = ({
   const [destPort, setDestPort] = useState(null);
   const [toscheck, settoscheck] = useState(false);
   const [selectedDataToPatch, setSelectedDataToPatch] = useState();
+  const [origin, setorigin] = useState(originPort?.port_name)
+  const [dest, setdes] = useState(destPort?.port_name)
   const handleScroll = () => {
     if (showReselt) {
       const scrollTop = window.scrollY;
@@ -55,8 +57,6 @@ const Quotation = ({
   //   window.scrollTo(0, 0);
   // }, [highlightShipmentCard]);
 
-  const [origin, setorigin] = useState(originPort?.port_name)
-  const [dest, setdes] = useState(destPort?.port_name)
 
   return (
     <div
@@ -72,12 +72,15 @@ const Quotation = ({
           <div className="col-lg">
             {showHeader && (
               <>
+                {
+                  !showReselt && 
                 <Typography
                   style={{ fontSize: "28px", fontWeight: "700" }}
                   className="shipments-head"
                 >
                   Quotations
                 </Typography>
+                 }
                 <Navbar showReselt={showReselt} />
               </>
             )}

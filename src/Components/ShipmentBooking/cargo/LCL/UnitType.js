@@ -535,7 +535,7 @@ const UnitType = ({
                           style={{ height: "45px",border:"none" }}
                           // value={utDatas.package_type}
                           // onChange={handleChange}
-                          className={`form-control ${
+                          className={`w-100   ${
                             errors[index]?.unit ? "error" : ""
                           }`}
                           value={item.package_type}
@@ -590,7 +590,7 @@ const UnitType = ({
                         <input
                           type="number"
                           autoComplete="off"
-                          className={`form-control placeholder_style ${
+                          className={`w-100   placeholder_style ${
                             errors[index]?.unit ? "error" : ""
                           }`}
                           placeholder="Units"
@@ -627,6 +627,8 @@ const UnitType = ({
                             borderBottomRightRadius: "0",
                             padding: "13px",
                             border: "none",
+                            borderRadius:"8px",
+                            fontSize:"1rem"
                           }}
                         />
                         <button

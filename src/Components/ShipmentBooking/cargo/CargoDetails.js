@@ -77,6 +77,7 @@ export default function CargoDetails({
   setunits,
   originPort,
   destPort,
+  searchref
 }) {
   
   const hasPageBeenRendered = useRef(false);
@@ -86,21 +87,6 @@ export default function CargoDetails({
   console.log(containerPack)
   const container_types = containerPack?.container_type
   const packages = containerPack?.package
-  // const [lastsavedfcl, setlastsavedfcl] = useState(false)
-  // console.log("lastsaved",lastsavedfcl)
-  // console.log(cargo)
-  // const tos = cargo.substring(0,3)
-  // console.log(tos)
-  console.log(originPort,destPort)
-
-  
-
-  
-
-
-  console.log(lastsaved)
-  
-
 
   // useEffect(() => {
   //   if (hasPageBeenRendered.current) {
@@ -153,18 +139,22 @@ export default function CargoDetails({
           }
           style={{ fontSize: "25px", width: "100%" }}
         >
-          <div className="d-flex text-center" style={{ margin: "30px 0px" }}>
+          <div className="d-flex text-center" style={{ margin: "20px 0px" }}>
             <div
               className={`lcl-card1 w-50 ${
                 isByTotalShipmentOpen ? "hovered" : ""
               }`}
               onClick={toggleByTotalShipment}
+              onKeyDown={toggleByTotalShipment}
+              tabIndex={0}
             >
               By Total Shipment
             </div>
             <div
               className={`lcl-card2 w-50 ${isByUnitTypeOpen ? "hovered" : ""}`}
               onClick={toggleByUnitType}
+              onKeyDown={toggleByUnitType}
+              tabIndex={1}
             >
               By Unit Type
             </div>
@@ -190,6 +180,7 @@ export default function CargoDetails({
               setmode={setmode}
               originPort={originPort}
               destPort={destPort}
+              searchref={searchref}
             />
           )}
 
@@ -233,6 +224,7 @@ export default function CargoDetails({
               setunits={setunits}
               originPort={originPort}
               destPort={destPort}
+              searchref={searchref}
             />
           )}
         </TabPanel>
@@ -280,6 +272,7 @@ export default function CargoDetails({
             // setfclediterrors={setfclediterrors}
             setshowcargo={setshowcargo}
             container_types={container_types}
+            searchref={searchref}
             // setlastsaved={setlastsaved}
           />
         </TabPanel>

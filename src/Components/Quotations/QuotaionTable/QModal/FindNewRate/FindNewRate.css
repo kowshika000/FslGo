@@ -22,10 +22,10 @@
 }
 .fixed {
   position: fixed;
-  top: 170px;
+  top: 118px;
   width: 272px;
-  height: calc(100vh - 170px); /*Adjust height based on the fixed top value */
-  z-index: 1001;
+  height: calc(100vh - 118px); /*Adjust height based on the fixed top value */
+  z-index: 999;
 }
 
 .quotationresult-leftdiv .fixed .ant-card {
@@ -44,7 +44,7 @@
   padding: 0px;
 }
 .ant-collapse-content-box {
-  padding: 12px 0px !important;
+  padding: 0px 0px 12px 0px !important;
 }
 
 .Service-card .ant-collapse {
@@ -317,8 +317,8 @@
   align-items: center;
   background-color: #f3f5f7;
   border-radius: 8px;
-  padding: 20px;
-  height: 117px;
+  padding:0px 20px;
+  height: 64px;
   margin-bottom: 15px;
   margin-top: 15px;
 }
@@ -450,7 +450,7 @@
   font-size: 15px;
   line-height: 22px;
   letter-spacing: 1%;
-  margin-top: 5px;
+  /* margin-top: 5px; */
 }
 
 .track1 .cardl {

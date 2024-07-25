@@ -47,6 +47,7 @@ const Destination = ({
   setdeserrormsg,
   shrinkValues,
   selectedDataToPatch,
+  destref
 }) => {
   // const [searchDestPort, setSearchDestPort] = useState("");
   // const [originPortOptionsVisible, setOriginPortOptionsVisible] = useState(false);
@@ -56,6 +57,8 @@ const Destination = ({
       setSearchDestPort(selectedDataToPatch?.destination);
     }
   }, [selectedDataToPatch]);
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const divRefs = useRef([]);
   const [desPortCode, setDesPortCode] = useState("");
   console.log(searchDestPort);
   const [prevValue, setPrevValue] = useState("");
@@ -125,6 +128,7 @@ const Destination = ({
     setDesPortCode(port?.port_code);
     setDestPortOptionsVisible(false);
     setDestPort(port);
+    setCargoOptionsVisible(true)
     if (
       port?.Transport_mode === "SEA" &&
       originPort?.Transport_mode === "AIR"
@@ -153,7 +157,7 @@ const Destination = ({
   const handleDestPortChange = (event) => {
     const { value } = event.target;
     setSearchDestPort(value);
-    if (value.length >= 4) {
+    if (value?.length >= 4) {
       dispatch(allportRequest({ search_key: value, limits: "30" }));
       setDestPortOptionsVisible(true);
     } else {
@@ -170,6 +174,56 @@ const Destination = ({
     setDestPortOptionsVisible(false);
   };
 
+  const destRef = useRef();
+  console.log(destRef.current)
+
+  useEffect(() => {
+    const handler = (e) => {
+      if (!destRef?.current?.contains(e.target)) {
+        setDestPortOptionsVisible(false);
+      }
+    };
+    const handleEscapeKey = (e) => {
+      if (e.key === "Escape") {
+        setDestPortOptionsVisible(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    document.addEventListener("keydown", handleEscapeKey);
+    return () => {
+      document.removeEventListener("mousedown", handler);
+      document.removeEventListener("keydown", handleEscapeKey);
+    };
+  });
+
+  useEffect(() => {
+    if (divRefs.current[selectedIndex]) {
+      divRefs.current[selectedIndex].scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+      });
+    }
+  }, [selectedIndex]);
+
+  const handleKeyDown = (event, filteredPorts) => {
+    if (event.key === "ArrowUp") {
+      setSelectedIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : filteredPorts?.length - 1));
+    } else if (event.key === "ArrowDown") {
+      setSelectedIndex((prevIndex) => (prevIndex < filteredPorts?.length - 1 ? prevIndex + 1 : 0));
+    } else if (event.key === "Enter") {
+      if (filteredPorts?.length > 0) {
+        const selectedPort = filteredPorts?.[selectedIndex];
+        handleDestPortSelect(selectedPort);
+      }
+    } else if(event.key === "Tab"){
+      if (filteredPorts?.length > 0) {
+        const selectedPort = filteredPorts?.[selectedIndex];
+        handleDestPortSelect(selectedPort);
+        setDestPortOptionsVisible(false)
+      }
+    }
+  };
+
   return (
     <>
       <div
@@ -182,8 +236,8 @@ const Destination = ({
             className="mx-2"
           />
         </div>
-        <Tooltip trigger={"hover"} title={searchDestPort.length > 28 && searchDestPort}>
-        <div className="w-100">
+        <Tooltip trigger={"hover"} title={searchDestPort?.length > 28 && searchDestPort}>
+        <div className="w-100" style={{borderRight: "3px solid rgba(245, 247, 249, 1)"}}>
           <Typography
             className="fw-bold"
             style={{ fontSize: "14px", fontWeight: "700", lineHeight: "20px" }}
@@ -216,6 +270,8 @@ const Destination = ({
             // value={destination}
             onChange={handleDestPortChange}
             value={shrinkValues(searchDestPort)}
+            ref={destref}
+            onKeyDown={(e) => handleKeyDown(e, [...filteredSeaPorts, ...filteredAirPorts, ...filteredCityPorts])}
             // onBlur={() => {
             //   console.log(destPort)
             //   if (!destPort) {
@@ -239,7 +295,7 @@ const Destination = ({
           )}
 
           {destPortOptionsVisible && (
-            <div className="outer-all-port">
+            <div className="outer-all-port" ref={destRef}>
               {loading ? (
                 <Box
                   sx={{
@@ -284,7 +340,9 @@ const Destination = ({
                           <div
                             key={index}
                             onClick={() => handleDestPortSelect(port)}
-                            className=""
+                            ref={(el) => (divRefs.current[index] = el)}
+                            className={selectedIndex === index ? "selectedlocation" : ""}
+                            style={selectedIndex === index ? { backgroundColor: "rgb(223, 226, 233)",borderRadius:"8px" } : {}}
                           >
                             <Row className="justify-content-between p-2 port-all-content">
                               <Col className="d-flex">
@@ -351,7 +409,9 @@ const Destination = ({
                           <div
                             key={index}
                             onClick={() => handleDestPortSelect(port)}
-                            className=""
+                            ref={(el) => (divRefs.current[index + filteredSeaPorts?.length] = el)}
+                            className={selectedIndex === index + filteredSeaPorts?.length ? "selectedlocation" : ""}
+                            style={selectedIndex === index + filteredSeaPorts?.length ? { backgroundColor: "rgb(223, 226, 233)",borderRadius: "8px" } : {}}
                           >
                             <Row className="justify-content-between p-2 port-all-content">
                               <Col className="d-flex">
@@ -418,7 +478,9 @@ const Destination = ({
                           <div
                             key={index}
                             onClick={() => handleDestPortSelect(port)}
-                            className=""
+                            ref={(el) => (divRefs.current[index + filteredSeaPorts?.length + filteredAirPorts?.length] = el)}
+                            className={selectedIndex === index + filteredSeaPorts?.length + filteredAirPorts?.length ? "selectedlocation" : ""}
+                            style={selectedIndex === index + filteredSeaPorts?.length + filteredAirPorts?.length ? { backgroundColor: "rgb(223, 226, 233)",borderRadius: "8px" } : {}}
                           >
                             <Row className="justify-content-between p-2 port-all-content">
                               <Col className="d-flex">
