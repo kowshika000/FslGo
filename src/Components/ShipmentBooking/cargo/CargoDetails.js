@@ -154,7 +154,7 @@ export default function CargoDetails({
               className={`lcl-card2 w-50 ${isByUnitTypeOpen ? "hovered" : ""}`}
               onClick={toggleByUnitType}
               onKeyDown={toggleByUnitType}
-              tabIndex={1}
+              tabIndex={0}
             >
               By Unit Type
             </div>

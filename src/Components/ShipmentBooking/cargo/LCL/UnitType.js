@@ -95,7 +95,7 @@ const UnitType = ({
     setutDatas((prevData) =>
       prevData.map((item, index) =>
         index === id
-          ? { ...item, [name]: name === "unit" ? parseFloat(value) : value }
+          ? { ...item, [name]: name === "unit" ? value < 1?1:parseFloat(value) : value }
           : item
       )
     );
@@ -301,66 +301,69 @@ const UnitType = ({
       }
 
       // Validate unit
-      if (!Number.isInteger(item.unit) || item.unit < 1 || item.unit > 999) {
-        if (item.unit < 1) {
+      if (!Number.isInteger(item.unit) || item.unit < 1 || item.unit > 999 ) {
+        if (item.unit && item.unit < 1 ) {
           error.unit = "Min 1";
-        } else if (item.unit > 999) {
+        } else if (item.unit  && item.unit > 999) {
           error.unit = "Max 999";
         }
+        // else if(item.unit === ("" || NaN || null)){
+        //   error.unit = ""
+        // }
       }
 
       // Validate length
       if (item.length < 10 || item.length > 120) {
-        if (item.length < 10 && utDatas[index]?.dimensionUnit === "CM") {
+        if (item.length && item.length < 10 && utDatas[index]?.dimensionUnit === "CM") {
           error.length = `Min 10 ${utDatas[index]?.dimensionUnit}`;
-        } else if (item.length > 310 && utDatas[index]?.dimensionUnit === "CM") {
+        } else if (item.length && item.length > 310 && utDatas[index]?.dimensionUnit === "CM") {
           error.length = `Max 310 ${utDatas[index]?.dimensionUnit}`;
         }
-        if (item.length < 10 && utDatas[index]?.dimensionUnit === "IN") {
+        if (item.length && item.length < 10 && utDatas[index]?.dimensionUnit === "IN") {
           error.length = `Min 10 ${utDatas[index]?.dimensionUnit}`;
-        } else if (item.length > 120 && utDatas[index]?.dimensionUnit === "IN") {
+        } else if (item.length && item.length > 120 && utDatas[index]?.dimensionUnit === "IN") {
           error.length = `Max 120 ${utDatas[index]?.dimensionUnit}`;
         }
       }
 
       // Validate width
       if (item.width < 10 || item.width > 86) {
-        if (item.width < 10 && utDatas[index]?.dimensionUnit === "CM") {
+        if (item.width && item.width < 10 && utDatas[index]?.dimensionUnit === "CM") {
           error.width = `Min 10 ${utDatas[index]?.dimensionUnit}`;
-        } else if (item.width > 220 && utDatas[index]?.dimensionUnit === "CM") {
+        } else if (item.width && item.width > 220 && utDatas[index]?.dimensionUnit === "CM") {
           error.width = `Max 220 ${utDatas[index]?.dimensionUnit}`;
         }
-        if (item.width < 10 && utDatas[index]?.dimensionUnit === "IN") {
+        if (item.width && item.width < 10 && utDatas[index]?.dimensionUnit === "IN") {
           error.width = `Min 10 ${utDatas[index]?.dimensionUnit}`;
-        } else if (item.width > 86 && utDatas[index]?.dimensionUnit === "IN") {
+        } else if (item.width && item.width > 86 && utDatas[index]?.dimensionUnit === "IN") {
           error.width = `Max 86 ${utDatas[index]?.dimensionUnit}`;
         }
       }
 
       // Validate height
       if (item.height < 10 || item.height > 86) {
-        if (item.height < 10 && utDatas[index]?.dimensionUnit === "CM") {
+        if (item.height && item.height < 10 && utDatas[index]?.dimensionUnit === "CM") {
           error.height = `Min 10 ${utDatas[index]?.dimensionUnit}`;
-        } else if (item.height > 220 && utDatas[index]?.dimensionUnit === "CM") {
+        } else if (item.height && item.height > 220 && utDatas[index]?.dimensionUnit === "CM") {
           error.height = `Max 220 ${utDatas[index]?.dimensionUnit}`;
         }
-        if (item.height < 10 && utDatas[index]?.dimensionUnit === "LB") {
+        if (item.height && item.height < 10 && utDatas[index]?.dimensionUnit === "LB") {
           error.height = `Min 10 ${utDatas[index]?.dimensionUnit}`;
-        } else if (item.height > 86 && utDatas[index]?.dimensionUnit === "LB") {
+        } else if (item.height && item.height > 86 && utDatas[index]?.dimensionUnit === "LB") {
           error.height = `Max 86 ${utDatas[index]?.dimensionUnit}`;
         }
       }
 
       // Validate weight
       if (item.weight <= 0 || item.weight > 3000) {
-        if (item.weight <= 0 && utDatas[index]?.weightUnit === "KG") {
+        if (item.weight && item.weight <= 0 && utDatas[index]?.weightUnit === "KG") {
           error.weight = `Min 1 ${utDatas[index]?.weightUnit}`;
-        } else if (item.weight > 3000 && utDatas[index]?.weightUnit === "KG") {
+        } else if (item.weight && item.weight > 3000 && utDatas[index]?.weightUnit === "KG") {
           error.weight = `Max 3000 ${utDatas[index]?.weightUnit}`;
         }
-        if (item.weight <= 0 && utDatas[index]?.weightUnit === "LB") {
+        if (item.weight && item.weight <= 0 && utDatas[index]?.weightUnit === "LB") {
           error.weight = `Min 1 ${utDatas[index]?.weightUnit}`;
-        } else if (item.weight > 6600 && utDatas[index]?.weightUnit === "LB") {
+        } else if (item.weight && item.weight > 6600 && utDatas[index]?.weightUnit === "LB") {
           error.weight = `Max 6600 ${utDatas[index]?.weightUnit}`;
         }
       }
@@ -390,7 +393,7 @@ const UnitType = ({
         error.weight
     );
     setHasErrors(hasError);
-
+    console.log(newErrors)
     return newErrors;
   };
 
@@ -532,7 +535,7 @@ const UnitType = ({
                       </Typography>
                       <FormControl fullWidth>
                         <Select
-                          style={{ height: "45px",border:"none" }}
+                          style={{ height: "45px",border:"none",fontSize:"14px" }}
                           // value={utDatas.package_type}
                           // onChange={handleChange}
                           className={`w-100   ${
@@ -548,7 +551,7 @@ const UnitType = ({
                         >
                           {packages?.map((item, index) => {
                             return (
-                              <MenuItem value={item?.code}>{item?.label}</MenuItem>
+                              <MenuItem style={{fontSize: "14px"}} value={item?.code}>{item?.label}</MenuItem>
                             );
                           })}
                         </Select>
@@ -559,7 +562,6 @@ const UnitType = ({
                           style={{
                             fontSize: "12px",
                             color: "red",
-                            fontStyle: "italic",
                           }}
                         >
                           {errors[index]?.package_type}
@@ -628,7 +630,7 @@ const UnitType = ({
                             padding: "13px",
                             border: "none",
                             borderRadius:"8px",
-                            fontSize:"1rem"
+                            fontSize:"14px"
                           }}
                         />
                         <button
@@ -673,7 +675,6 @@ const UnitType = ({
                           style={{
                             fontSize: "12px",
                             color: "red",
-                            fontStyle: "italic",
                           }}
                         >
                           {errors[index]?.unit}
@@ -736,7 +737,7 @@ const UnitType = ({
                             border: "1px solid rgb(207, 214, 223)",
                             borderTopLeftRadius: "5px",
                             borderBottomLeftRadius: "5px",
-                            fontSize: "1rem",
+                            fontSize: "14px",
                             padding: "12px",
                             // borderColor: uterrors.length ? "red" : null,
                           }}
@@ -776,7 +777,7 @@ const UnitType = ({
                             border: "1px solid rgb(207, 214, 223)",
                             borderRight: "1px solid rgb(207, 214, 223)",
                             borderLeft: "1px solid rgb(207, 214, 223)",
-                            fontSize: "1rem",
+                            fontSize: "14px",
                             padding: "12px",
                             // borderColor: uterrors.width ? "red" : null,
                           }}
@@ -816,7 +817,7 @@ const UnitType = ({
                             border: "1px solid rgb(207, 214, 223)",
                             borderRight: "1px solid rgb(207, 214, 223)",
                             borderLeft: "1px solid rgb(207, 214, 223)",
-                            fontSize: "1rem",
+                            fontSize: "14px",
                             padding: "12px",
                             // borderColor: uterrors.height ? "red" : null,
                           }}
@@ -836,6 +837,16 @@ const UnitType = ({
                               borderBottomRightRadius: "8px",
                               border: "1px solid rgba(207, 214, 223, 1)",
                               borderLeft: "0px",
+                              '& .MuiSelect-select': {
+                                textAlign: 'center', // Center the text
+                                '&:focus': {
+                                  backgroundColor: 'transparent', // Optional: remove background on focus
+                                },
+                              },
+                              '& .MuiSelect-icon': {
+                                right: 3, // Adjust icon position
+                              },
+                              fontSize:"14px",
                             }}
                             labelId="demo-customized-select-label"
                             id="demo-customized-select"
@@ -854,8 +865,8 @@ const UnitType = ({
                             // onChange={handleVolumeDropChange}
                             name="dimensionUnit"
                           >
-                            <MenuItem value="CM">CM</MenuItem>
-                            <MenuItem value="IN">IN</MenuItem>
+                            <MenuItem style={{fontSize:"14px"}} value="CM">CM</MenuItem>
+                            <MenuItem style={{fontSize:"14px"}} value="IN">IN</MenuItem>
                           </Select>
                         </FormControl>
                         {/* <div className="btn-group" role="group">
@@ -933,7 +944,6 @@ const UnitType = ({
                               style={{
                                 fontSize: "12px",
                                 color: "red",
-                                fontStyle: "italic",
                               }}
                             >
                               {errors[index]?.length}
@@ -947,7 +957,6 @@ const UnitType = ({
                               style={{
                                 fontSize: "12px",
                                 color: "red",
-                                fontStyle: "italic",
                               }}
                             >
                               {errors[index]?.width}
@@ -961,7 +970,6 @@ const UnitType = ({
                               style={{
                                 fontSize: "12px",
                                 color: "red",
-                                fontStyle: "italic",
                               }}
                             >
                               {errors[index]?.height}
@@ -1021,7 +1029,7 @@ const UnitType = ({
                             border: "1px solid rgb(207, 214, 223)",
                             borderTopLeftRadius: "5px",
                             borderBottomLeftRadius: "5px",
-                            fontSize: "1rem",
+                            fontSize: "14px",
                             padding: "12px",
                             width: "330%",
                             // borderColor: uterrors.weight ? "red" : null,
@@ -1042,6 +1050,16 @@ const UnitType = ({
                               borderBottomRightRadius: "8px",
                               border: "1px solid rgba(207, 214, 223, 1)",
                               borderLeft: "0px",
+                              '& .MuiSelect-select': {
+                                textAlign: 'center', // Center the text
+                                '&:focus': {
+                                  backgroundColor: 'transparent', // Optional: remove background on focus
+                                },
+                              },
+                              '& .MuiSelect-icon': {
+                                right: 3, // Adjust icon position
+                              },
+                              fontSize:"14px",
                               // borderColor: uterrors.weight ? "red" : null,
                             }}
                             labelId="demo-customized-select-label"
@@ -1057,8 +1075,8 @@ const UnitType = ({
                               handleChangeWeightDropDown(index, e)
                             }
                           >
-                            <MenuItem value="KG">KG</MenuItem>
-                            <MenuItem value="LB">LB</MenuItem>
+                            <MenuItem style={{fontSize:"14px"}} value="KG">KG</MenuItem>
+                            <MenuItem style={{fontSize:"14px"}} value="LB">LB</MenuItem>
                           </Select>
                         </FormControl>
                         {/* <div className="btn-group" role="group" >
@@ -1103,7 +1121,6 @@ const UnitType = ({
                           style={{
                             fontSize: "12px",
                             color: "red",
-                            fontStyle: "italic",
                           }}
                         >
                           {errors[index]?.weight}

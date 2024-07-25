@@ -358,6 +358,7 @@ const Fcl = ({
                               ? "red"
                               : "initial",
                             height: "45px",
+                            fontSize: "14px"
                           }}
                           value={item.container_type}
                           onChange={(e) => handleChange(index, e)}
@@ -370,7 +371,7 @@ const Fcl = ({
                         >
                           {container_types?.map((item, i) => {
                             return (
-                              <MenuItem value={item?.value}>
+                              <MenuItem value={item?.value} style={{fontSize: "14px"}}>
                                 {item?.label}
                               </MenuItem>
                             );
@@ -384,8 +385,8 @@ const Fcl = ({
               <MenuItem value="40 HICH CUBE">40 HICH CUBE</MenuItem> */}
                         </Select>
                       </FormControl>{" "}
-                      {errors[index]?.container_type && (
-                        <span style={{ color: "red",fontStyle:"italic",fontSize:"12px" }}>
+                      {errors[index]?.container_type && fclDatas?.container_type && (
+                        <span style={{ color: "red",fontSize:"12px" }}>
                           {errors[index].container_type}
                         </span>
                       )}
@@ -452,7 +453,7 @@ const Fcl = ({
                             padding: "13px",
                             border: "none",
                             borderRadius:"8px",
-                            fontSize:"1rem"
+                            fontSize:"14px"
                           }}
                         />
                         <button
@@ -492,7 +493,7 @@ const Fcl = ({
                         </button>
                       </div>
                       {errors[index]?.no_of_containers && (
-                        <span style={{ color: "red",fontStyle:"italic",fontSize:"12px" }}>
+                        <span style={{ color: "red",fontSize:"12px" }}>
                           {errors[index].no_of_containers}
                         </span>
                       )}

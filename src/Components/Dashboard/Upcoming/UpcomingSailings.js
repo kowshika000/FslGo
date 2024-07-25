@@ -161,7 +161,7 @@ const UpcomingSailings = () => {
                   </Typography>
                 </div>
               </div>
-              {/* <button
+              <button
                 className="book-now justify-content-end align-content-center ms-2 me-0"
                 style={{
                   backgroundColor: "#F01E1E",
@@ -174,7 +174,7 @@ const UpcomingSailings = () => {
                 }}
               >
                 <span style={{ fontSize: "13px" }}>Book Now</span>
-              </button> */}
+              </button>
             </div>
           </AccordionSummary>
           <AccordionDetails sx={{ display: "flex" }}>

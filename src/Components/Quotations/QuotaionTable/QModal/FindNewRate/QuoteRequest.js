@@ -153,7 +153,7 @@ function QuoteRequest({ setShowReselt, checkedItems, setCheckedItems,settoscheck
               {contentPara()}
             </p>
             <p className="mb-0" style={{ marginTop: "16px" }}>
-              Thank you for considering FSL GO for your shipping needs.
+              Thank you for considering FSL for your shipping needs.
             </p>
           </Col>
           <Col span={24}>

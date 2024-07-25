@@ -620,3 +620,6 @@
   line-height: 1.5714285714285714;
   word-wrap: break-word;
 }
+:where(.css-dev-only-do-not-override-1okl62o).ant-collapse>.ant-collapse-item >.ant-collapse-header{
+  padding: 12px 16px 4px 16px !important;
+}

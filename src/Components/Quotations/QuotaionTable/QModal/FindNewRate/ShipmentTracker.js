@@ -89,7 +89,7 @@ function ShipmentTracker({
     }
   }
   const tabs = [
-    { label: `All{${showAll()})`, key: "1" },
+    { label: `All(${showAll()})`, key: "1" },
     { label: `Ocean(${showAll()})`, key: "2" },
     { label: "Air(0)", key: "3" },
   ];
@@ -132,7 +132,7 @@ function ShipmentTracker({
           className="mt-4 d-flex flex-direction-row "
           style={{ fontWeight: "bold", fontSize: "16px" }}
         >
-          Powered by &nbsp;&nbsp; <div className="h5 text-danger">FSL</div>,
+          Powered by&nbsp;<div className="h5 text-danger">FSL&nbsp;</div>
           your trusted logistics partner.
         </div>
 
@@ -141,11 +141,11 @@ function ShipmentTracker({
     );
   }
   
- const sortedData = [...FindNRate].sort((a, b) => {
+ const sortedData = FindNRate && [...FindNRate]?.sort((a, b) => {
   if (selectedSort === "Low to High") {
-    return a.total_amount_in_usd - b.total_amount_in_usd;
+    return a?.total_amount_in_usd - b?.total_amount_in_usd;
   } else {
-    return b.total_amount_in_usd - a.total_amount_in_usd;
+    return b?.total_amount_in_usd - a?.total_amount_in_usd;
   }
 });
 const displayedData = showAllData ? sortedData : sortedData?.slice(0, 4);
@@ -155,7 +155,7 @@ const displayedData = showAllData ? sortedData : sortedData?.slice(0, 4);
     if (selectedValue?.length > 10) {
       return (
         <Tooltip placement="topLeft" title={selectedValue}>
-          <span>{selectedValue.substring(0, 10) + "..."}</span>
+          <span>{selectedValue?.substring(0, 10) + "..."}</span>
         </Tooltip>
       );
     } else {

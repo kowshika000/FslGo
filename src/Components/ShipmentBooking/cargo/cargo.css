@@ -1,7 +1,7 @@
 .lcl-card1, .lcl-card2{
     display: flex;
     justify-content: center;
-    padding:10px;
+    padding:8px 10px;
     font-size: 20px;
     border:1px solid rgba(0,0,0,0.5);
     font-weight: 700;
@@ -91,7 +91,7 @@
     box-sizing: border-box;
     max-height: 500px;
     overflow: auto;
-    padding: 16px;
+    padding: 0px 16px 6px 16px;
  }
  /* .p-tabview-panels{
     padding: 10px !important;
@@ -130,11 +130,14 @@
 }
 
 .css-1rxz5jq-MuiSelect-select-MuiInputBase-input-MuiInput-input.css-1rxz5jq-MuiSelect-select-MuiInputBase-input-MuiInput-input.css-1rxz5jq-MuiSelect-select-MuiInputBase-input-MuiInput-input{
-   padding: 1px !important;
+   /* padding: 10px 10px 10px 21px !important; */
    margin: 5px !important;
 }
-.cargo_details_section .css-13sljp9 {
+ .cargo_details_section .css-13sljp9  { /*.css-1nrlq1o-MuiFormControl-root / .css-13sljp9*/
    width: 50% !important;
+}
+.cargo_details_section .css-pqjvzy-MuiSvgIcon-root-MuiSelect-icon{
+   right: 7 !important;
 }
 .cargo_details_section .css-1cccqvr.css-1cccqvr.css-1cccqvr{
    padding-left: 3px !important;
@@ -169,3 +172,7 @@ input[type=number] {
    /* outline: none !important;
    border: 1px solid rgba(241, 146, 127, 1) !important;
 } */ 
+
+.css-j204z7-MuiFormControlLabel-root .MuiFormControlLabel-label{
+   font-size: 13px !important;
+}

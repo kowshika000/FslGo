@@ -437,10 +437,9 @@ const ShipmentCard = ({
     // setdimmed(false)
     if (originPort && destPort && finalDetails) {
       setShowReselt(true);
-      // setdimmed(false)
-      setdimmed(false);
       setHighlighted(false);
       settoscheck(false);
+      setdimmed(false)
       console.log("mounted in");
       setCheckedItems(initialChecks);
       setorigin(originPort?.port_name);
@@ -654,10 +653,14 @@ const ShipmentCard = ({
     } else if (originPort && searchOriginPort) {
       setSearchDestPort(searchOriginPort);
       setDestPort(originPort);
+      setSearchOriginPort(searchDestPort)
+      setOriginPort(destPort)
       // setOriginPortOptionsVisible(false)
     } else if (destPort && searchDestPort) {
       setSearchOriginPort(searchDestPort);
       setOriginPort(destPort);
+      setSearchDestPort(searchOriginPort);
+      setDestPort(originPort);
       // setOriginPortOptionsVisible(false)
     } else {
       if (searchOriginPort && !originPort) {
@@ -756,14 +759,34 @@ const ShipmentCard = ({
   };
   const destref = useRef();
 
+  // useEffect(() => {
+  //   const handler = (e) => {
+  //     console.log(e.target,searchref?.current)
+  //     if (searchref?.current?.contains(e.target)) {  
+  //       console.log("its worked")
+  //       setdimmed(false);
+  //       setHighlighted(false);
+  //     }
+  //   };
+
+  //   document.addEventListener("mousedown", handler);
+  //   // document.addEventListener("keydown", handleEscapeKey);
+
+  //   return () => {
+  //     document.removeEventListener("mousedown", handler);
+  //     // document.removeEventListener("keydown", handleEscapeKey);
+  //   };
+  // })
+  
+
   return (
     <div style={{ maxWidth: "1255px" }} className="mx-auto">
-      {dimmed && (
+      {dimmed ?(
         <div
           className="dimmeds-background"
           onClick={() => setdimmed(false)}
         ></div>
-      )}
+      ):null}
       <div
         className={`card shadow rate-engine-box ${
           highlighted ? "highlighted" : ""
@@ -773,7 +796,7 @@ const ShipmentCard = ({
           border: "1px solid #E7EAF0",
           borderRadius: "8px",
         }}
-        onClick={handleRateEngineClick}
+        // onClick={()=>handleRateEngineClick()}
       >
         <div className="card-body d-flex p-0" style={{ height: "102px" }}>
           <Origin
@@ -793,10 +816,12 @@ const ShipmentCard = ({
             shrinkValues={shrinkValues}
             selectedDataToPatch={selectedDataToPatch}
             destref={destref}
+            handleRateEngineClick={handleRateEngineClick}
           />
           <div
             className="align-content-center ps-2"
-            style={{ minWidth: "3.03%", position: "relative", left: "-22px" }}
+            style={{ minWidth: "3.03%", zIndex:"10",position:"relative" }}
+            
           >
             <img
               src={Arrow}
@@ -808,8 +833,12 @@ const ShipmentCard = ({
                 alignContent: "center",
                 margin: "auto",
                 alignSelf: "center",
+               
               }}
             />
+            <div style={{ position:"absolute",top:"30%",left:"50%",borderRight:"3px solid rgba(245, 247, 249, 1)",height:"42px",width:"2px",zIndex:"-1"}}>
+
+            </div>
           </div>
           <Destination
             setOriginPortOptionsVisible={setOriginPortOptionsVisible}
@@ -828,6 +857,7 @@ const ShipmentCard = ({
             shrinkValues={shrinkValues}
             selectedDataToPatch={selectedDataToPatch}
             destref={destref}
+            handleRateEngineClick={handleRateEngineClick}
           />
           {/* <div className="icon">
             <div className="divider"></div>
@@ -861,6 +891,7 @@ const ShipmentCard = ({
             destPort={destPort}
             setDestPortOptionsVisible={setDestPortOptionsVisible}
             searchref={searchref}
+            handleRateEngineClick={handleRateEngineClick}
           />
           {/* Search button */}
           <div
