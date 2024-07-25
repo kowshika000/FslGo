@@ -24,6 +24,7 @@ const style = {
 
 const Cargo = ({
   setCargoOptionsVisible,
+  setDestPortOptionsVisible,
   cargoOptionsVisible,
   exim,
   setexim,
@@ -46,6 +47,7 @@ const Cargo = ({
    unit, setunits,
    originPort,
    destPort,
+   searchref
 }) => {
   const [lastsaved,setlastsaved] = useState("")
   const [activeIndex,setactiveIndex] = useState(0)
@@ -56,31 +58,42 @@ const Cargo = ({
   // const [modalOpen, setModalOpen] = useState(false);
 
   const cargoRef = useRef();
+  const carref = useRef();
   console.log(cargoRef.current)
 
   useEffect(() => {
     const handler = (e) => {
-      if (!cargoRef?.current?.contains(e.target)) {
+      console.log(e.target.className)
+      if (!cargoRef?.current?.contains(e.target) && !carref?.current.contains(e.target) && e.target.className !== "MuiButtonBase-root MuiMenuItem-root MuiMenuItem-gutters MuiMenuItem-root MuiMenuItem-gutters css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root" && e.target.className !== "MuiButtonBase-root MuiMenuItem-root MuiMenuItem-gutters Mui-selected MuiMenuItem-root MuiMenuItem-gutters Mui-selected css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root" && e.target.className !== "MuiBackdrop-root MuiBackdrop-invisible MuiModal-backdrop css-g3hgs1-MuiBackdrop-root-MuiModal-backdrop") {  
         console.log("success")
         setCargoOptionsVisible(false);
       }
     };
-
+    const handleEscapeKey = (e) => {
+      if (e.key === "Escape") {
+        setCargoOptionsVisible(false);
+      }
+    };
     document.addEventListener("mousedown", handler);
+    document.addEventListener("keydown", handleEscapeKey);
 
     return () => {
       document.removeEventListener("mousedown", handler);
+      document.removeEventListener("keydown", handleEscapeKey);
     };
-  });
+  },[setCargoOptionsVisible]);
+
+  
 
   // const handleCargoChange = (event) => {
   //   const { value } = event.target;
   //   setCargo(value);
   // };
 
-  // const handleCargoFocus = () => {
-  //     setModalOpen(true);
-  // };
+  const handleCargoFocus = () => {
+    setDestPortOptionsVisible(false)
+    setCargoOptionsVisible(true)
+  };
 
   // const handleCloseModal = () => {
   //   setModalOpen(false);
@@ -172,6 +185,7 @@ const Cargo = ({
     <>
       <div
         className="column "
+        ref={carref}
         style={{ display: "flex", minWidth: "33%", position: "relative" }}
       >
         <div className="align-content-center">
@@ -294,6 +308,7 @@ const Cargo = ({
                 setkg={setkg}
                 unit={unit}
                 setunits={setunits}
+                searchref={searchref}
               />
             </div>
           )}
