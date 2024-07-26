@@ -218,7 +218,8 @@ const ShipmentBase = ({open,close,rowData}) => {
           //     </div>
           //     {/* <ShipmentDetailsModal open={true} /> */}
           // </div>
-          <>
+          <>  
+              {/* <VscClose size={22} color='red' role='button' onClick={()=>close(false)} style={{position:"absolute",top:"0px",right:"-22px"}} /> */}
               <Dialogs
                 open={open}
                 onClose={()=>close(false)}
@@ -227,11 +228,14 @@ const ShipmentBase = ({open,close,rowData}) => {
                 maxWidth={"xl"}
               >
                 <DialogContent>
-                  <ShipmentHeader rowDatas={rowData} />
+                  <VscClose size={22} color='black' role='button' onClick={()=>close(false)} style={{position:"absolute",top:"0px",right:"10px"}} />
+                  <ShipmentHeader rowDatas={rowData} close={close} />
                   <ShipmentTable contentListNoTitle={contentListNoTitle} tabListNoTitle={tabListNoTitle} setVesselmodalopen={setVesselmodalopen} close={close} rowDatas={rowData}  />
-                  <VscClose size={22} color='#ffff' role='button' onClick={()=>close(false)} style={{position:"absolute",top:"0px",right:"-22px"}} />
+                  {/* <VscClose size={22} color='black' role='button' onClick={()=>close(false)} style={{position:"absolute",top:"0px",right:"-22px"}} /> */}
                 </DialogContent>
+                
               </Dialogs>
+              
               <Dialog
                 open={vesselmodalopen}
                 onClose={()=>setVesselmodalopen(false)}

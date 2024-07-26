@@ -37,9 +37,9 @@ function FindNewRate({
   settoscheck,
   toscheck,
   dest,
-  origin
+  origin,
 }) {
-  console.log(selectedValue)
+  console.log(selectedValue);
   const [isPopoverOpen, setPopoverOpen] = useState(false);
   const [isDeliveryPopoverOpen, setDeliveryPopoverOpen] = useState(false);
   const [isInsurance, setInsurance] = useState(false);
@@ -50,15 +50,15 @@ function FindNewRate({
   // const [selectedDeliveryValue, setSelectedDeliveryValue] = useState("");
 
   const onChange = (e) => {
-    settoscheck(true)
+    settoscheck(true);
     const { name, checked } = e.target;
     setCheckedItems((prevItems) => {
-      const updatedItems = { ...prevItems, [name]: checked }; 
+      const updatedItems = { ...prevItems, [name]: checked };
 
       if (name === "CargoDelivery" && !checked) {
-        setSelectedDeliveryValue("")
-      } else if(name === "cargoPickup" && !checked){
-        setSelectedValue("")
+        setSelectedDeliveryValue("");
+      } else if (name === "cargoPickup" && !checked) {
+        setSelectedValue("");
       }
 
       // if(name == "originCharges" && !checked ){
@@ -165,7 +165,7 @@ function FindNewRate({
     disabled,
     defaultChecked,
   }) => {
-    console.log(value)
+    console.log(value);
     const handlePopoverOpenChange = (value) => {
       if (value === "cargoPickup") {
         return setPopoverOpen;
@@ -207,7 +207,11 @@ function FindNewRate({
               className="div-rowcentered"
               style={{ justifyContent: "flex-start" }}
             >
-              <Tooltip trigger={"hover"} placement="topLeft" title={tooltipText}>
+              <Tooltip
+                trigger={"hover"}
+                placement="topLeft"
+                title={tooltipText}
+              >
                 <span style={{ float: "right" }} role="button">
                   <img src={info} alt="more" />
                 </span>
@@ -328,7 +332,9 @@ function FindNewRate({
               onChange={onChange}
             >
               <span>
-                <img src={img} alt="icon" className="ms-2 mb-1" />
+                <Tooltip trigger={"hover"} title={"Recommended"}>
+                  <img src={img} alt="icon" className="ms-2 mb-1" />
+                </Tooltip>
               </span>
             </FilterCheckbox>
             <FilterCheckbox
@@ -378,7 +384,9 @@ function FindNewRate({
               onChange={onChange}
             >
               <span>
-                <img src={img} alt="icon" className="ms-2 mb-1" />
+                <Tooltip trigger={"hover"} title={"Recommended"}>
+                  <img src={img} alt="icon" className="ms-2 mb-1" />
+                </Tooltip>
               </span>
             </FilterCheckbox>
             <FilterCheckbox
@@ -410,7 +418,9 @@ function FindNewRate({
               onChange={onChange}
             >
               <span>
-                <img src={img} alt="icon" className="ms-2 mb-1" />
+                <Tooltip trigger={"hover"} title={"Recommended"}>
+                  <img src={img} alt="icon" className="ms-2 mb-1" />
+                </Tooltip>
               </span>
             </FilterCheckbox>
           </div>

@@ -127,6 +127,9 @@
 .css-cyxlny-MuiPaper-root-MuiDialog-paper{
     overflow-y: unset !important;
 }
+.css-bt38sg-MuiModal-root-MuiDialog-root .MuiDialog-paper{
+    overflow-y: auto !important;
+}
 
 /* edit_profile_modal_section */
 #vessel_modal_section .css-ypiqx9-MuiDialogContent-root{

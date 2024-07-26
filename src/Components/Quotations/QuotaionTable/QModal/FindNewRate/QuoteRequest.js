@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Card, Col, Row, Button, Image } from "antd";
 import "./FindNewRate.css";
 import Stripes from "../../../../../assets/Stripes.png";
@@ -23,6 +23,25 @@ function QuoteRequest({ setShowReselt, checkedItems, setCheckedItems,settoscheck
   if (Footer) {
     Footer.remove();
   }
+
+  // const scrolling=()=>{
+  //   console.log("scrolling")
+  //   window.scrollTo(0,60)
+  // }
+
+  const hasPageBeenRendered = useRef(false)
+
+  // useEffect(() => {
+  //   // if(hasPageBeenRendered?.current){
+  //     window.scrollTo(0,60)
+  //   // }  
+  //   //   hasPageBeenRendered.current = true
+
+  // },[])
+
+  // window.scrollTo(0,60)
+  
+
   const contentPara = () => {
     if (checkedItems?.StackableCargo === false) {
       return (
@@ -135,9 +154,9 @@ function QuoteRequest({ setShowReselt, checkedItems, setCheckedItems,settoscheck
   return (
     <>
       <Card className="Quote-Card" style={{ padding: "0px" }}>
-        <Row style={{ rowGap: "40px", padding: "55px 8px" }}>
-          <Col span={24}>
-            <img src={Stripes} alt="lines" className="img-stripe" />
+        <Row style={{ rowGap: "13px", padding: "15px 8px" }}>
+          <Col span={24} className="d-flex justify-content-center align-items-center">
+            {/* <img src={Stripes} alt="lines" className="img-stripe" /> */}
             <img src={Avatar} alt="Avatar" className="img-avatar" />
           </Col>
           <Col span={24} className="content" style={{ textAlign: "center" }}>

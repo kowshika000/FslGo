@@ -303,11 +303,11 @@
 
 .track-btn {
   background-color: #f8fafc;
-  padding: 4px 16px 4px 16px;
+  padding: 1.5px 16px;
   border-radius: 4px;
   font-size: 15px;
   font-weight: 500;
-  height: 32px;
+  height: 21px;
   color: #181e25;
 }
 
@@ -433,7 +433,7 @@
 }
 
 .track1 .ant-card-body {
-  padding: 20px;
+  padding: 8px 16px;
 }
 
 .detail-card .card-label {
@@ -518,11 +518,12 @@
   margin-right: auto;
   position: relative;
 }
-.Quote-Card .ant-card-body .img-avatar {
-  position: absolute;
-  top: 50px !important;
-  left: 410px;
-}
+/* .Quote-Card .ant-card-body .img-avatar { */
+  /* position: absolute; */
+  /* top: 50px !important;
+  left: 410px; */
+  /* text-align: center !important; */
+/* } */
 
 .content .content-title {
   margin: 0;

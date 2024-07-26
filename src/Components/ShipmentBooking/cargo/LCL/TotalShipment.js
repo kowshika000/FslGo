@@ -33,13 +33,13 @@ const TotalShipment = ({
   setmode,
   originPort,
   destPort,
-  searchref
+  searchref,nunits
 }) => {
 
 
   console.log(exim);
 
-  const nunits= useRef()
+ 
   console.log(nunits)
   useEffect(() => {
     nunits?.current?.focus()
