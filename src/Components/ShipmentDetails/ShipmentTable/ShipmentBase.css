@@ -127,7 +127,7 @@
 .css-cyxlny-MuiPaper-root-MuiDialog-paper{
     overflow-y: unset !important;
 }
-.css-bt38sg-MuiModal-root-MuiDialog-root .MuiDialog-paper{
+ .css-hlpgzn .MuiDialog-paper{ /*.css-bt38sg-MuiModal-root-MuiDialog-root .MuiDialog-paper*/
     overflow-y: auto !important;
 }
 
