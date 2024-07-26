@@ -173,6 +173,10 @@ input[type=number] {
    border: 1px solid rgba(241, 146, 127, 1) !important;
 } */ 
 
-.css-j204z7-MuiFormControlLabel-root .MuiFormControlLabel-label{
+/* .css-j204z7-MuiFormControlLabel-root .MuiFormControlLabel-label{  
+   font-size: 13px !important;
+} */
+
+.css-9l3uo3{
    font-size: 13px !important;
 }
