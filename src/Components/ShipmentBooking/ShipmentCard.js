@@ -53,6 +53,7 @@ const ShipmentCard = ({
   // const [active, setActive] = useState(false);
   const cargoRef = useRef(null);
   const searchref = useRef()
+  const nunits= useRef()
   const [originPortOptionsVisible, setOriginPortOptionsVisible] =
     useState(false);
   const [destPortOptionsVisible, setDestPortOptionsVisible] = useState(false);
@@ -108,6 +109,7 @@ const ShipmentCard = ({
   const handleRateEngineClick = () => {
     setdimmed(true);
     setHighlighted(true);
+    window.scrollTo(0,80)
   };
 
   // useEffect(() => {
@@ -758,6 +760,7 @@ const ShipmentCard = ({
     }
   };
   const destref = useRef();
+  const orgref = useRef()
 
   // useEffect(() => {
   //   const handler = (e) => {
@@ -816,6 +819,7 @@ const ShipmentCard = ({
             shrinkValues={shrinkValues}
             selectedDataToPatch={selectedDataToPatch}
             destref={destref}
+            orgref={orgref}
             handleRateEngineClick={handleRateEngineClick}
           />
           <div
@@ -857,7 +861,9 @@ const ShipmentCard = ({
             shrinkValues={shrinkValues}
             selectedDataToPatch={selectedDataToPatch}
             destref={destref}
+            orgref={orgref}
             handleRateEngineClick={handleRateEngineClick}
+            nunits={nunits}
           />
           {/* <div className="icon">
             <div className="divider"></div>
@@ -892,6 +898,7 @@ const ShipmentCard = ({
             setDestPortOptionsVisible={setDestPortOptionsVisible}
             searchref={searchref}
             handleRateEngineClick={handleRateEngineClick}
+            nunits ={nunits}
           />
           {/* Search button */}
           <div

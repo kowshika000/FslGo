@@ -450,9 +450,9 @@ const displayedData = showAllData ? sortedData : sortedData?.slice(0, 4);
             (data, index) =>
               data.mode == "SEA" && (
                 <Card className="track1 mb-2" key={index}>
-                  <div className="d-flex justify-content-between">
+                  <div className="d-flex justify-content-between align-items-center">
                     <div>
-                      <p style={{ fontSize: "15px",margin:"0px" }}>
+                      <p style={{ fontSize: "15px",margin:"10px 0px 14px 0px" }}>
                         <img
                           src={Union}
                           className="pe-2 mb-1"
@@ -461,7 +461,7 @@ const displayedData = showAllData ? sortedData : sortedData?.slice(0, 4);
                         <span
                           style={{
                             fontweight: "400",
-                            fontSize: "15px",
+                            fontSize: "14px",
                             lineHeight: "25px",
                             letterSpacing: "1%",
                             color: "#495A6E",
@@ -472,7 +472,7 @@ const displayedData = showAllData ? sortedData : sortedData?.slice(0, 4);
                         <span
                           style={{
                             fontWeight: "500",
-                            fontSize: "15px",
+                            fontSize: "14px",
                             lineHeight: "22px",
                             letterSpacing: "1%",
                             color: "#181E25",
@@ -486,26 +486,27 @@ const displayedData = showAllData ? sortedData : sortedData?.slice(0, 4);
                     <div>
                       <p
                         style={{
-                          fontSize: "25px",
+                          fontSize: "18px",
                           color: "#D32D2F",
-                          fontWeight: "500",
+                          fontWeight: "400",
                           margin:"0px"
                         }}
                       >
                         {" "}
                         {selectedCurrency}&nbsp;&nbsp;
                         {/* {data?.total_amount_in_usd} */}
-                        {calcTotalAmount(data)}
-                        <span className="ms-2">
-                          <img src={Share} alt="share" />
-                        </span>
+                        <span style={{fontWeight:"500",fontSize:"24px",marginRight: "5px"}}>
+                        {calcTotalAmount(data)}</span>
+                        {/* <span className="ms-2 "> */}
+                          <img src={Share} alt="share" className="mb-2" />
+                        {/* </span> */}
                       </p>
                     </div>
                   </div>
                   <div className="d-flex">
-                    <div className="track-btn">LCL</div>
-                    <div className="track-btn mx-2">Direct</div>
-                    <div className="track-btn">Cheapest</div>
+                    <div className="track-btn" style={{fontSize: "12px"}}>LCL</div>
+                    <div className="track-btn mx-2" style={{fontSize: "12px"}}>Direct</div>
+                    <div className="track-btn" style={{fontSize: "12px"}}>Cheapest</div>
                     <div
                       className="ms-auto align-self-center"
                       style={{
@@ -539,23 +540,23 @@ const displayedData = showAllData ? sortedData : sortedData?.slice(0, 4);
                   </div>
                   <div className="detail-card">
                     <div>
-                      <p className="card-label">VESSEL</p>
+                      <p className="card-label" style={{fontSize:"12px"}}>VESSEL</p>
                       <p className="p-value">{data.vessel}</p>
                     </div>
                     <div>
-                      <p className="card-label">VOYAGE</p>
+                      <p className="card-label" style={{fontSize:"12px"}}>VOYAGE</p>
                       <p className="p-value">{data.voyage}</p>
                     </div>
                     <div>
-                      <p className="card-label">CUT OFF</p>
+                      <p className="card-label" style={{fontSize:"12px"}}>CUT OFF</p>
                       <p className="p-value">{data.cut_off}</p>
                     </div>
                     <div>
-                      <p className="card-label">Depature Date</p>
+                      <p className="card-label" style={{fontSize:"12px"}}>Depature Date</p>
                       <p className="p-value">{data.etd}</p>
                     </div>
                     <div>
-                      <p className="card-label">Arrival Date</p>
+                      <p className="card-label" style={{fontSize:"12px"}}>Arrival Date</p>
                       <p className="p-value">{data.eta}</p>
                     </div>
                   </div>

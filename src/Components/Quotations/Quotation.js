@@ -124,13 +124,14 @@ const Quotation = ({
           </div>
         </div>
       </div>
-
+      {/* <div style={{backgroundColor: "white",width:"100%",height:"155px",position: "absolute"}}></div> */}
       <div
         style={{
           Width: "100%",
           minWidth: "1255px",
           padding: "20px",
           backgroundColor: "#f3f5f7",
+          zIndex:"10"
         }}
       >
         <div style={{ maxWidth: "1255px" }} className="mx-auto">

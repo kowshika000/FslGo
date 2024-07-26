@@ -30,28 +30,32 @@ const Cargo = ({
   setexim,
   setFinaldetails,
   setmode,
-  tserrmsg, 
+  tserrmsg,
   seterrmsg,
   // fclexim,
   // setfclexim,
   // utexim,
   // setutexim,
-  tsDatas, 
+  tsDatas,
   settsDatas,
-  fclDatas, 
+  fclDatas,
   setfclDatas,
-  utDatas, 
+  utDatas,
   setutDatas,
-  cbm, setcbm,
-   kg, setkg,
-   unit, setunits,
-   originPort,
-   destPort,
-   searchref,
-   handleRateEngineClick
+  cbm,
+  setcbm,
+  kg,
+  setkg,
+  unit,
+  setunits,
+  originPort,
+  destPort,
+  searchref,
+  handleRateEngineClick,
+  nunits
 }) => {
-  const [lastsaved,setlastsaved] = useState("")
-  const [activeIndex,setactiveIndex] = useState(0)
+  const [lastsaved, setlastsaved] = useState("");
+  const [activeIndex, setactiveIndex] = useState(0);
   const [cargo, setCargo] = useState("");
   const [showcargo, setshowcargo] = useState(false);
   const [isByTotalShipmentOpen, setIsByTotalShipmentOpen] = useState(true);
@@ -60,13 +64,22 @@ const Cargo = ({
 
   const cargoRef = useRef();
   const carref = useRef();
-  console.log(cargoRef.current)
+  console.log(cargoRef.current);
 
   useEffect(() => {
     const handler = (e) => {
-      console.log(e.target.className)
-      if (!cargoRef?.current?.contains(e.target) && !carref?.current.contains(e.target) && e.target.className !== /*"MuiButtonBase-root MuiMenuItem-root MuiMenuItem-gutters MuiMenuItem-root MuiMenuItem-gutters css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root"*/ "MuiButtonBase-root MuiMenuItem-root MuiMenuItem-gutters Mui-selected MuiMenuItem-root MuiMenuItem-gutters Mui-selected css-1km1ehz" && e.target.className !== /*"MuiButtonBase-root MuiMenuItem-root MuiMenuItem-gutters Mui-selected MuiMenuItem-root MuiMenuItem-gutters Mui-selected css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root"*/ "MuiButtonBase-root MuiMenuItem-root MuiMenuItem-gutters MuiMenuItem-root MuiMenuItem-gutters css-1km1ehz"  && e.target.className !== /*"MuiBackdrop-root MuiBackdrop-invisible MuiModal-backdrop css-g3hgs1-MuiBackdrop-root-MuiModal-backdrop"*/ "MuiBackdrop-root MuiBackdrop-invisible MuiModal-backdrop css-esi9ax") {  
-        console.log("success")
+      console.log(e.target.className);
+      if (
+        !cargoRef?.current?.contains(e.target) &&
+        !carref?.current.contains(e.target) &&
+        e.target.className !==
+          /*"MuiButtonBase-root MuiMenuItem-root MuiMenuItem-gutters MuiMenuItem-root MuiMenuItem-gutters css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root"*/ "MuiButtonBase-root MuiMenuItem-root MuiMenuItem-gutters Mui-selected MuiMenuItem-root MuiMenuItem-gutters Mui-selected css-1km1ehz" &&
+        e.target.className !==
+          /*"MuiButtonBase-root MuiMenuItem-root MuiMenuItem-gutters Mui-selected MuiMenuItem-root MuiMenuItem-gutters Mui-selected css-kk1bwy-MuiButtonBase-root-MuiMenuItem-root"*/ "MuiButtonBase-root MuiMenuItem-root MuiMenuItem-gutters MuiMenuItem-root MuiMenuItem-gutters css-1km1ehz" &&
+        e.target.className !==
+          /*"MuiBackdrop-root MuiBackdrop-invisible MuiModal-backdrop css-g3hgs1-MuiBackdrop-root-MuiModal-backdrop"*/ "MuiBackdrop-root MuiBackdrop-invisible MuiModal-backdrop css-esi9ax" 
+      ) {
+        console.log("success");
         setCargoOptionsVisible(false);
       }
     };
@@ -82,9 +95,7 @@ const Cargo = ({
       document.removeEventListener("mousedown", handler);
       document.removeEventListener("keydown", handleEscapeKey);
     };
-  },[setCargoOptionsVisible]);
-
-  
+  }, [setCargoOptionsVisible]);
 
   // const handleCargoChange = (event) => {
   //   const { value } = event.target;
@@ -92,8 +103,8 @@ const Cargo = ({
   // };
 
   const handleCargoFocus = () => {
-    setDestPortOptionsVisible(false)
-    setCargoOptionsVisible(true)
+    setDestPortOptionsVisible(false);
+    setCargoOptionsVisible(true);
   };
 
   // const handleCloseModal = () => {
@@ -119,7 +130,7 @@ const Cargo = ({
 
   //This is for Unit Shipment
 
-  const [utclickedId, setutclickedId] = useState([0])
+  const [utclickedId, setutclickedId] = useState([0]);
 
   //this is for fcl
 
@@ -129,8 +140,7 @@ const Cargo = ({
   // );
   // const [fclediteddata, setfclediteddata] = useState({});
   // const [fcleditedId, setfcleditedId] = useState("");
-  const [clickedId, setclickedId] = useState([0])
-
+  const [clickedId, setclickedId] = useState([0]);
 
   // const [fclerrors, setfclerrors] = useState({
   //     no_of_containers: false,
@@ -143,16 +153,15 @@ const Cargo = ({
 
   //This is for error
 
-  
   const handleClose = () => {
     setCargoOptionsVisible(false);
-    setFinaldetails("")
+    setFinaldetails("");
     setCargo("");
-    setmode("")
-    setlastsaved("LCLTOTAL")
+    setmode("");
+    setlastsaved("LCLTOTAL");
   };
 
-  console.log(lastsaved)
+  console.log(lastsaved);
 
   // useEffect(() => {
   //   dispatch(containerpackRequest())
@@ -160,33 +169,32 @@ const Cargo = ({
   // }, [])
 
   useEffect(() => {
-    if(lastsaved === 'LCLTOTAL'){
+    if (lastsaved === "LCLTOTAL") {
       setIsByUnitTypeOpen(false);
       setIsByTotalShipmentOpen(true);
-      setactiveIndex(0)
-    }
-    else if(lastsaved === 'LCLUNIT'){
+      setactiveIndex(0);
+    } else if (lastsaved === "LCLUNIT") {
       setIsByUnitTypeOpen(true);
       setIsByTotalShipmentOpen(false);
-      setactiveIndex(0)
-    }
-    else if(lastsaved === 'FCL'){
+      setactiveIndex(0);
+    } else if (lastsaved === "FCL") {
       // setIsByUnitTypeOpen(false);
       // setIsByTotalShipmentOpen(false);
-      setactiveIndex(1)
+      setactiveIndex(1);
     }
-  }, [lastsaved])
-  console.log(lastsaved)
+  }, [lastsaved]);
+  console.log(lastsaved);
 
   // useEffect(() => {
   //   setshowcargo("")
   // }, [activeIndex])
-  
+
   return (
     <>
       <div
         className="column "
         ref={carref}
+        // onClick={() => setCargoOptionsVisible((prev) => !prev)}
         style={{ display: "flex", minWidth: "33%", position: "relative" }}
       >
         <div className="align-content-center">
@@ -206,20 +214,24 @@ const Cargo = ({
               outline: "none",
               width: "90%",
               background: "transparent",
-              fontWeight:"600",
-              fontSize:"13px",
-              lineHeight:"22px",
-              letterSpacing:".01em"
+              fontWeight: "600",
+              fontSize: "13px",
+              lineHeight: "22px",
+              letterSpacing: ".01em",
             }}
             className="input-field "
             placeholder="Enter your Cargo details"
             // ref={cargoRef}
             // onChange={handleCargoChange}
-            onFocus={handleRateEngineClick}
+            onFocus={() => {
+              handleRateEngineClick();
+              // setCargoOptionsVisible(true);
+            }}
             // onBlur={()=>setCargoOptionsVisible(false)}
             onClick={() => setCargoOptionsVisible((prev) => !prev)}
-            value={showcargo ? cargo: ""}
+            value={showcargo ? cargo : ""}
             readOnly
+            // tabIndex={0}
           />
           {/* <Dropdown value={selectedCity} onChange={(e) => setSelectedCity(e.value)} options={cities} optionLabel="name" 
                 editable placeholder="Enter your Cargo details" className="w-full md:w-14rem" /> */}
@@ -285,7 +297,7 @@ const Cargo = ({
                 // fcleditedId={fcleditedId}
                 // setfcleditedId={setfcleditedId}
                 fclDatas={fclDatas}
-                setfclDatas={ setfclDatas}
+                setfclDatas={setfclDatas}
                 clickedId={clickedId}
                 setclickedId={setclickedId}
                 // fclerrors={fclerrors}
@@ -302,13 +314,14 @@ const Cargo = ({
                 setIsByTotalShipmentOpen={setIsByTotalShipmentOpen}
                 isByUnitTypeOpen={isByUnitTypeOpen}
                 setIsByUnitTypeOpen={setIsByUnitTypeOpen}
-                cbm={cbm} 
+                cbm={cbm}
                 setcbm={setcbm}
-                kg={kg} 
+                kg={kg}
                 setkg={setkg}
                 unit={unit}
                 setunits={setunits}
                 searchref={searchref}
+                nunits={nunits}
               />
             </div>
           )}

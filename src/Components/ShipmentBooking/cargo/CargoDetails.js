@@ -77,7 +77,8 @@ export default function CargoDetails({
   setunits,
   originPort,
   destPort,
-  searchref
+  searchref,
+  nunits
 }) {
   
   const hasPageBeenRendered = useRef(false);
@@ -111,6 +112,20 @@ export default function CargoDetails({
   useEffect(() => {
     dispatch(containerpackRequest());
   }, []);
+
+  const handleTs = (e) =>{
+    if(e.key === "Enter"){
+      setIsByTotalShipmentOpen(true);
+      setIsByUnitTypeOpen(false);
+    }
+  }
+
+  const handleUt = (e) =>{
+    if(e.key === "Enter"){
+      setIsByUnitTypeOpen(true);
+      setIsByTotalShipmentOpen(false);
+    }
+  }
   
 
   return (
@@ -145,7 +160,7 @@ export default function CargoDetails({
                 isByTotalShipmentOpen ? "hovered" : ""
               }`}
               onClick={toggleByTotalShipment}
-              onKeyDown={toggleByTotalShipment}
+              onKeyDown={handleTs}
               tabIndex={0}
             >
               By Total Shipment
@@ -153,7 +168,7 @@ export default function CargoDetails({
             <div
               className={`lcl-card2 w-50 ${isByUnitTypeOpen ? "hovered" : ""}`}
               onClick={toggleByUnitType}
-              onKeyDown={toggleByUnitType}
+              onKeyDown={handleUt}
               tabIndex={0}
             >
               By Unit Type
@@ -181,6 +196,7 @@ export default function CargoDetails({
               originPort={originPort}
               destPort={destPort}
               searchref={searchref}
+              nunits = {nunits}
             />
           )}
 

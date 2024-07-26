@@ -49,6 +49,7 @@ const Origin = ({
   shrinkValues,
   selectedDataToPatch,
   destref,
+  orgref,
   handleRateEngineClick
 }) => {
   // const [origin, setOrigin] = useState("");
@@ -233,8 +234,9 @@ const Origin = ({
     }
     else if(event.key === "Tab"){
       if (filteredPorts?.length > 0) {
-        const selectedPort = filteredPorts?.[selectedIndex];
-        handleOriginPortSelect(selectedPort);
+        // const selectedPort = filteredPorts?.[selectedIndex];
+        // handleOriginPortSelect(selectedPort);
+        setOriginPortOptionsVisible(false)
         setCargoOptionsVisible(false)
       }
     }
@@ -304,6 +306,7 @@ const Origin = ({
               onFocus={handleRateEngineClick}
               onChange={handleOriginPortChange}
               value={shrinkValues(searchOriginPort)}
+              ref={orgref}
             />
             {/* <IoIosClose size=15  /> */}
             {searchOriginPort && (

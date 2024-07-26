@@ -69,7 +69,18 @@ const UpcomingSailings = () => {
   //   return <div>No Data Found</div>
   // }
 
+  // const handleBookNow =(e) =>{
+  //   e.preventDefault()
+  //   console.log("booknow")
+  // }
+
   const renderAccordion = (data, index) => {
+
+    const handleBookNow =(e) =>{
+      e.preventDefault()
+      console.log("booknow")
+    }
+    
     return (
       <div key={index}>
         <Accordion
@@ -85,10 +96,21 @@ const UpcomingSailings = () => {
           className="acc-row mx-1"
         >
           <AccordionSummary
-            expandIcon={<ArrowDropDownIcon />}
+            // expandIcon={<ArrowDropDownIcon />}
+            sx={{
+              pointerEvents: "none",
+              border: "none"
+            }}
+            expandIcon={
+              <ArrowDropDownIcon
+                sx={{
+                  pointerEvents: "auto"
+                }}
+              />
+            }
             aria-controls="panel1-content"
             id="panel1-header"
-            sx={{ border: "none" }}
+            // sx={{ border: "none" }}
           >
             <div className="d-flex w-100">
               <div style={{ width: "15%" }}>
@@ -172,8 +194,9 @@ const UpcomingSailings = () => {
                   height: "30px",
                   alignSelf: "center",
                 }}
+                onClick={(e)=>handleBookNow(e)}
               >
-                <span style={{ fontSize: "13px" }}>Book Now</span>
+                <span style={{ fontSize: "13px" }} >Book Now</span>
               </button>
             </div>
           </AccordionSummary>

@@ -48,6 +48,8 @@ const Destination = ({
   shrinkValues,
   selectedDataToPatch,
   destref,
+  orgref,
+  nunits,
   handleRateEngineClick
 }) => {
   // const [searchDestPort, setSearchDestPort] = useState("");
@@ -72,13 +74,13 @@ const Destination = ({
 
   const filteredSeaPorts = destinationPortDataValue?.filter(
     (item) => item.Transport_mode === "SEA"
-  );
+  ) || [];
   const filteredAirPorts = destinationPortDataValue?.filter(
     (item) => item.Transport_mode === "AIR"
-  );
+  ) || [];
   const filteredCityPorts = destinationPortDataValue?.filter(
     (item) => item.Transport_mode === "CITY"
-  );
+  ) || [];
   console.log(filteredSeaPorts);
   // const [destination, setDestination] = useState("");
   // const [modalOpen, setModalOpen] = useState(false);
@@ -217,14 +219,31 @@ const Destination = ({
         const selectedPort = filteredPorts?.[selectedIndex];
         handleDestPortSelect(selectedPort);
       }
-    } else if(event.key === "Tab"){
-      if (filteredPorts?.length > 0) {
-        const selectedPort = filteredPorts?.[selectedIndex];
-        handleDestPortSelect(selectedPort);
+    } 
+    else if(event.key === "Tab" && event.shiftKey){
+      // if (filteredPorts?.length > 0) {
+        // const selectedPort = filteredPorts?.[selectedIndex];
+        // handleDestPortSelect(selectedPort);
+        console.log("tab+shift")
         setDestPortOptionsVisible(false)
-      }
+        setCargoOptionsVisible(false)
+        console.log(orgref)
+        // orgref?.current?.focus()
+      // }
+    }
+    else if(event.key === "Tab"){
+      // if (filteredPorts?.length > 0) {
+        console.log("tab only")
+        // const selectedPort = filteredPorts?.[selectedIndex];
+        // handleDestPortSelect(selectedPort);
+        setDestPortOptionsVisible(false)
+        setCargoOptionsVisible(true)
+        // nunits?.current?.focus()
+
+      // }
     }
   };
+  
 
   return (
     <>
@@ -282,7 +301,7 @@ const Destination = ({
             //     setDestPortOptionsVisible(false); //this one clear the input values when mouse on leave without selected dropdowns
             //   }
 
-            // }}
+            // }}]
           />
           {searchDestPort && (
             <IoClose
