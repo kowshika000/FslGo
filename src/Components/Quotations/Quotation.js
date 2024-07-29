@@ -11,6 +11,10 @@ const Quotation = ({
   setShowReselt,
   showHeader,
   setShowHeader,
+  originPort, 
+  setOriginPort,
+  destPort, 
+  setDestPort
 }) => {
   const [selectedCurrency, setSelectedCurrency] = useState("USD");
   const [checkedItems, setCheckedItems] = useState({
@@ -33,8 +37,8 @@ const Quotation = ({
   const [insuranceValue, setInsuranceValue] = useState("");
   const [selectedCode, setSelectedCode] = useState(null);
   const [selectedCode1, setSelectedCode1] = useState(null);
-  const [originPort, setOriginPort] = useState(null);
-  const [destPort, setDestPort] = useState(null);
+  // const [originPort, setOriginPort] = useState(null);
+  // const [destPort, setDestPort] = useState(null);
   const [toscheck, settoscheck] = useState(false);
   const [selectedDataToPatch, setSelectedDataToPatch] = useState();
   const [origin, setorigin] = useState(originPort?.port_name)

@@ -16,14 +16,19 @@ import CountryFlag from "../../Core-Components/CountryFlag";
 import { Port } from "./Port";
 import { opensailingRequest } from "../../../Redux/Actions/OpneSailingAction";
 import { profileRequest } from "../../../Redux/Actions/ProfileAction";
+import { useNavigate } from "react-router-dom";
+import { allportRequest } from "../../../Redux/Actions/AllPortAction";
 
-const UpcomingSailings = () => {
+const UpcomingSailings = ({setOriginPort,setDestPort}) => {
   const [displayedSchedules, setDisplayedSchedules] = useState(4);
   const [displaySailingData, setDisplaySailingData] = useState(4);
   const [orgPortCode, setOrgPortCode] = useState("");
   const [desPortCode, setDesPortCode] = useState("");
+  const navigate = useNavigate()
   const dispatch = useDispatch();
   const UpcomingData = useSelector((state) => state.Sailing);
+  const originPortData = useSelector((state) => state.allPort);
+  const originPortDataValue = originPortData?.allportData?.Data;
   // const { loading, error } = useSelector((state) => state.Sailing);
   console.log(UpcomingData);
   useEffect(() => {
@@ -73,13 +78,30 @@ const UpcomingSailings = () => {
   //   e.preventDefault()
   //   console.log("booknow")
   // }
+  const [expandedIndex, setExpandedIndex] = useState(null);
+
+  const handleAccordionToggle = (index) => {
+    setExpandedIndex(expandedIndex === index ? null : index);
+  };
+
+  const handleBookNow = (e,data) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log("booknow");
+    // if(data?.origin){
+    //   dispatch(allportRequest({ search_key: data?.origin, limits: "1" }));
+    //   setOriginPort(originPortDataValue[0])
+    //   navigate('/quotation') 
+    //   console.log(originPortDataValue)
+    // }
+    // if(data?.destination){
+    //   dispatch(allportRequest({ search_key: data?.destination, limits: "1" }));
+    // }
+    // console.log()
+    navigate('/quotation') 
+  };
 
   const renderAccordion = (data, index) => {
-
-    const handleBookNow =(e) =>{
-      e.preventDefault()
-      console.log("booknow")
-    }
     
     return (
       <div key={index}>
@@ -94,22 +116,30 @@ const UpcomingSailings = () => {
             borderBottom: "1px solid #F3F5F7",
           }}
           className="acc-row mx-1"
+          expanded={expandedIndex === index}
+          onChange={() => handleAccordionToggle(index)}
         >
           <AccordionSummary
             // expandIcon={<ArrowDropDownIcon />}
-            sx={{
-              pointerEvents: "none",
-              border: "none"
-            }}
-            expandIcon={
-              <ArrowDropDownIcon
-                sx={{
-                  pointerEvents: "auto"
-                }}
-              />
-            }
-            aria-controls="panel1-content"
-            id="panel1-header"
+            // sx={{
+            //   pointerEvents: "none",
+            //   border: "none"
+            // }}
+            // expandIcon={
+            //   <ArrowDropDownIcon
+            //     sx={{
+            //       pointerEvents: "auto"
+            //     }}
+            //   />
+            // }
+            // expandIcon={<ArrowDropDownIcon
+            //   onClick={toggleAccordion}
+            // />}
+            // aria-controls="panel1-content"
+            // id="panel1-header"
+            expandIcon={<ArrowDropDownIcon />}
+            aria-controls={`panel${index}-content`}
+            id={`panel${index}-header`}
             // sx={{ border: "none" }}
           >
             <div className="d-flex w-100">
@@ -193,8 +223,9 @@ const UpcomingSailings = () => {
                   border: "none",
                   height: "30px",
                   alignSelf: "center",
+                  pointerEvents: "auto"
                 }}
-                onClick={(e)=>handleBookNow(e)}
+                onClick={(e)=>handleBookNow(e,data)}
               >
                 <span style={{ fontSize: "13px" }} >Book Now</span>
               </button>
