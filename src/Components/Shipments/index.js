@@ -8,7 +8,7 @@ import ph_table from "../../assets/NewListB.svg";
 import globBlack from "../../assets/NewGlobeB.svg";
 import listGray from "../../assets/NewListG.svg";
 
-const ShipmentsHome = ({ showmap, setShowmap, showText, setShowText }) => {
+const ShipmentsHome = ({ showmap, setShowmap, showText, setShowText,setOriginPort,setDestPort }) => {
   const haddleShowMap = () => {
     setShowmap(true);
   };
@@ -88,7 +88,10 @@ const ShipmentsHome = ({ showmap, setShowmap, showText, setShowText }) => {
         ) : (
           <div style={{ height: "90v" }}>
             {" "}
-            <UpcomingSailings />
+            <UpcomingSailings
+              setOriginPort={setOriginPort} 
+              setDestPort={setDestPort}
+            />
           </div>
         )}
       </div>

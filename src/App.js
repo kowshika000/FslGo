@@ -38,6 +38,8 @@ const MainContent = ({
   const location = useLocation();
   const showfooter = location.pathname !== "/quotation" || !showReselt;
   const [showHeader, setShowHeader] = useState(true);
+  const [originPort, setOriginPort] = useState(null);
+  const [destPort, setDestPort] = useState(null);
 
   const handleScroll = () => {
     if (location.pathname === "/quotation" && showReselt) {
@@ -71,6 +73,8 @@ const MainContent = ({
                 setShowmap={setShowmap}
                 showText={showText}
                 setShowText={setShowText}
+                setOriginPort={setOriginPort} 
+                setDestPort={setDestPort}
               />
             }
           />
@@ -85,6 +89,10 @@ const MainContent = ({
                 setShowReselt={setShowReselt}
                 showHeader={showHeader}
                 setShowHeader={setShowHeader}
+                originPort={originPort} 
+                setOriginPort={setOriginPort}
+                destPort={destPort} 
+                setDestPort={setDestPort}
               />
             }
           />
