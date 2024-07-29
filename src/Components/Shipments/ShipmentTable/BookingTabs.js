@@ -117,7 +117,7 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
   const handleDownloadDsr = (e) => {
     e.preventDefault();
     console.log("download")
-    // dispatch(DsrDownloadRequest({ payloadofdsrdownload }));
+    dispatch(DsrDownloadRequest({ payloadofdsrdownload }));
   };
 
   let sselectcolumn = "";

@@ -98,8 +98,9 @@ const UpcomingSailings = ({setOriginPort,setDestPort}) => {
     //   dispatch(allportRequest({ search_key: data?.destination, limits: "1" }));
     // }
     // console.log()
-    navigate('/quotation') 
+    navigate('/quotation',{state:{data}}) 
   };
+  
 
   const renderAccordion = (data, index) => {
     

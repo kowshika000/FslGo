@@ -44,6 +44,7 @@ const ShipmentCard = ({
   selectedDataToPatch,
   setorigin,
   setdes,
+  UpcomingSailingsData,
 }) => {
   const dispatch = useDispatch();
   const [destination] = useState("");
@@ -111,6 +112,46 @@ const ShipmentCard = ({
     setHighlighted(true);
     window.scrollTo(0,80)
   };
+
+  console.log(UpcomingSailingsData)
+  console.log(originPort)
+
+  useEffect(() => {
+    if(UpcomingSailingsData){
+      const originPayload = {
+        Transport_mode: "SEA",
+        air_port_code: "",
+        air_port_name: "",
+        list_value: UpcomingSailingsData?.origin,
+        port_code:UpcomingSailingsData?.origin_code,
+        port_country:  UpcomingSailingsData?.origin_country_code,
+        port_name: UpcomingSailingsData?.origin,
+        type : "PORT",
+        zip_code: ""
+      }
+      const destPayload = {
+        Transport_mode: "SEA",
+        air_port_code: "",
+        air_port_name: "",
+        list_value: UpcomingSailingsData?.destination ,
+        port_code:UpcomingSailingsData?.destination_code,
+        port_country:  UpcomingSailingsData?.dest_country_code,
+        port_name: UpcomingSailingsData?.destination,
+        type : "PORT",
+        zip_code: ""
+      }
+      setOriginPort(originPayload)
+      setDestPort(destPayload)
+      setSearchOriginPort(UpcomingSailingsData?.origin)
+      setSearchDestPort(UpcomingSailingsData?.destination )
+      setSearchOriginCode(UpcomingSailingsData?.origin_country_code)
+      setSearchDestCode(UpcomingSailingsData?.dest_country_code)
+      // setCargoOptionsVisible(true)
+      handleRateEngineClick()
+      setCargoOptionsVisible((prev)=>!prev)
+    }
+  }, [UpcomingSailingsData])
+  
 
   // useEffect(() => {
   //   if (destination && cargoRef.current) {
@@ -316,10 +357,10 @@ const ShipmentCard = ({
     volume_type:
       mode === "LCLTOTAL" ? "CBM" : mode === "LCLUNIT" ? "CBM" : null,
     weight_type: mode === "LCLTOTAL" ? "KG" : mode === "LCLUNIT" ? "KG" : null,
-    origin: searchOriginCode ? originPort?.port_code : null,
-    destination: searchDestCode ? destPort?.port_code : null,
-    origin_country_code: originPort ? originPort?.port_country : null,
-    dest_country_code: destPort ? destPort?.port_country : null,
+    origin: originPort ? originPort?.port_code: null,
+    destination: destPort ? destPort?.port_code: null,
+    origin_country_code: originPort ? originPort?.port_country: null,
+    dest_country_code: destPort ? destPort?.port_country: null,
     // TOS: toscheck ? console.log("my",tosfirst : toscheck? console.log("k",tosValue) : null,
     TOS: !toscheck ? tosfirst : toscheck ? tosValue : null,
     // TOS: tosfirst?tosfirst:tosValue,

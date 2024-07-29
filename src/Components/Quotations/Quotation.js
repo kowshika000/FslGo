@@ -5,6 +5,7 @@ import QuotationTabs from "./QuotaionTable/QuotationTabs";
 import "./Quotation.css";
 import ShipmentCard from "../ShipmentBooking/ShipmentCard";
 import FindNewRate from "./QuotaionTable/QModal/FindNewRate/FindNewRate";
+import { useLocation } from "react-router-dom";
 
 const Quotation = ({
   showReselt,
@@ -16,6 +17,9 @@ const Quotation = ({
   destPort, 
   setDestPort
 }) => {
+  const { state } = useLocation();
+  const UpcomingSailingsData = state?.data
+  console.log(UpcomingSailingsData)
   const [selectedCurrency, setSelectedCurrency] = useState("USD");
   const [checkedItems, setCheckedItems] = useState({
     originCharges: false,
@@ -124,6 +128,7 @@ const Quotation = ({
               selectedDataToPatch={selectedDataToPatch}
               setorigin={setorigin}
               setdes={setdes}
+              UpcomingSailingsData={UpcomingSailingsData}
             />
           </div>
         </div>
