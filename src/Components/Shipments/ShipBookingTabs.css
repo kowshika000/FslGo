@@ -171,3 +171,12 @@
   top: 0;
   z-index: 0;
 }
+.mapTable .ant-modal-content .ant-modal-footer {
+  display: none;
+}
+.mapTable .ant-modal-content .ant-modal-body {
+  padding: 0;
+}
+.mapTable .ant-modal-content .ant-modal-close-x {
+  display: none;
+}

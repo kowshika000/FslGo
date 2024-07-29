@@ -149,6 +149,7 @@ export default function MapMarker({
     <Modal
       open={showModal}
       onCancel={onClose}
+      className="mapTable" 
       key="id"
       style={{
         position: "absolute",

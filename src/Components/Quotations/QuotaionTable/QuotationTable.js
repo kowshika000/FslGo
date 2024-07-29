@@ -525,6 +525,8 @@ const QuotationTable = ({
     );
   };
 
+  console.log(quotationData)
+
   return (
     <div
       style={{
