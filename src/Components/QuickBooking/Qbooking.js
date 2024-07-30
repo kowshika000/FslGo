@@ -12,7 +12,9 @@ import CreateNewBooking from "./Modal/CreateNewBooking";
 import BookingSuccess from "./Modal/BookingScs";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import "../Dashboard/ShipmentHistory/ShipmentHistory.css"
+import { Tag } from "primereact/tag";
+import "../Dashboard/ShipmentHistory/ShipmentHistory.css";
+import { CloseOutlined } from "@ant-design/icons";
 
 const Qbooking = () => {
   const dataq = datas?.map((data) => data);
@@ -25,6 +27,7 @@ const Qbooking = () => {
   const itemsPerPage = 10;
   const [clicked, setClicked] = useState(false);
   const [data, setData] = useState(filteredData);
+  const [selectedRowIds, setSelectedRowIds] = useState(new Set());
   const [tblFilter, setTblFilter] = useState({
     mode: [],
     shipper: [],
@@ -64,16 +67,22 @@ const Qbooking = () => {
     }
   }, [clicked]);
 
-  const handleCheckboxChange = (index) => {
-    const pageIndex = currentPage - 1;
-    const dataIndex = pageIndex * itemsPerPage + index;
-    setSelectedRows((prev) => ({
-      ...prev,
-      [dataIndex]: !prev[dataIndex],
-    }));
-    console.log("Selected Row Data:", filteredData[dataIndex]);
+  const handleCheckboxChange = (rowData) => {
+    const uniqueId = `${currentPage}-${rowData.id}`;
+    const newSelectedRowIds = new Set(selectedRowIds);
+    if (newSelectedRowIds.has(uniqueId)) {
+      newSelectedRowIds.delete(uniqueId);
+    } else {
+      newSelectedRowIds.add(uniqueId);
+    }
+    setSelectedRowIds(newSelectedRowIds);
   };
-  
+
+  const isRowSelected = (rowData) => {
+    const uniqueId = `${currentPage}-${rowData.id}`;
+    return selectedRowIds.has(uniqueId);
+  };
+
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
 
@@ -197,6 +206,51 @@ const Qbooking = () => {
       );
     }
   };
+  const FilterTag = ({ field, filterValues, handleChangeFilter }) => {
+    if (!Array.isArray(filterValues)) {
+      return null;
+    }
+    const renderedColumns = new Set();
+    return (
+      <>
+        {filterValues.map((option) => {
+          if (!renderedColumns.has(field)) {
+            renderedColumns.add(field);
+            return (
+              <Tag
+                key={field}
+                style={{
+                  backgroundColor: "#F01E1E",
+                  marginRight: "10px",
+                  position: "relative",
+                  fontSize: "10px",
+                }}
+                className="px-2 py-1"
+                rounded
+              >
+                <div>
+                  {field === "mode" ? "Mode" : ""}
+                  {field === "shipper" ? "Shipper" : ""}
+                  {field === "consignee" ? "Consignee" : ""}
+                  {field === "pol" ? "POL" : ""}
+                  {field === "pod" ? "POD" : ""}
+                  {field === "commodity" ? "commodity" : ""}
+                  <span className="ms-2">
+                    <CloseOutlined
+                      onClick={() => {
+                        handleChangeFilter(field, []);
+                      }}
+                    />
+                  </span>
+                </div>
+              </Tag>
+            );
+          }
+          return null;
+        })}
+      </>
+    );
+  };
   // const handleMultiSelectChange = (e, key) => {
   //   const selectedValues = e.value;
   //   setTblFilter((prev) => ({ ...prev, [key]: selectedValues }));
@@ -218,7 +272,7 @@ const Qbooking = () => {
         }}
         className="pt-1"
       >
-        <Typography
+        {/* <Typography
           style={{
             fontSize: "16px",
             lineHeight: "20px",
@@ -229,24 +283,72 @@ const Qbooking = () => {
         >
           Speed up your booking process by reusing details from your recent
           bookings
-        </Typography>
+        </Typography> */}
+        <div>
+          {Object.keys(tblFilter)?.some(
+            (key) => tblFilter[key]?.length > 0
+          ) && (
+            <div
+              className="d-flex ps-2 justify-content-between"
+              style={{
+                backgroundColor: "#F8FAFC",
+                marginBottom: "7px",
+                padding: "5px 0px",
+                // marginTop: "-11px",
+                minWidth: "1214px",
+              }}
+            >
+              {Object.entries(tblFilter).map(([field, filterValues]) => (
+                <FilterTag
+                  key={field}
+                  field={field}
+                  filterValues={filterValues}
+                  handleChangeFilter={handleChangeFilter}
+                />
+              ))}
+              {Object.keys(tblFilter)?.some(
+                (key) => tblFilter[key]?.length > 0
+              ) && (
+                <Tag
+                  style={{
+                    backgroundColor: "#F01E1E",
+                    marginRight: "10px",
+                    position: "relative",
+                    fontSize: "10px",
+                    marginLeft: "auto",
+                  }}
+                  className="px-2 py-1"
+                  rounded
+                >
+                  <div>
+                    Clear All
+                    <span className="ms-2">
+                      <CloseOutlined
+                        onClick={() => handleChangeFilter("all", [])}
+                      />
+                    </span>
+                  </div>
+                </Tag>
+              )}
+            </div>
+          )}
+        </div>
         <div className="mt-3">
           <div style={{ height: "593px" }}>
             <DataTable
               value={currentPageData}
               selection={selectedRows}
-              onSelectionChange={handleCheckboxChange}
               selectionMode="multiple"
             >
               <Column
                 header="Select"
                 style={{ width: "80px", paddingLeft: "30px" }}
-                body={(rowData, options, index) => (
+                body={(rowData, options) => (
                   <div>
                     <input
                       type="checkbox"
-                      checked={selectedRows[startIndex + options.rowIndex || false]}
-                      onChange={() => handleCheckboxChange(startIndex + options.rowIndex)}
+                      checked={isRowSelected(rowData)}
+                      onChange={() => handleCheckboxChange(rowData)}
                       id={`checkbox-${options.rowIndex}`}
                       className="custom-checkbox"
                     />

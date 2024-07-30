@@ -1,5 +1,6 @@
 export const datas = [
     {
+      
       mode: "LCL",
       shipper: "GLOBAL CO.LTD",
       consignee: "INDIA AUTOMOBILE LTD",
@@ -8,6 +9,7 @@ export const datas = [
       commodity: "Automotive ssss",
     },
     {
+      id:1,
       mode: "LCL",
       shipper: "GLOBAL CO.LTD",
       consignee: "INDIA AUTOMOBILE LTD",
@@ -16,6 +18,7 @@ export const datas = [
       commodity: "Automotive ssss",
     },
     {
+      id:2,
       mode: "AIR",
       shipper: "GLOBAL CO.LTD",
       consignee: "INDIA AUTOMOBILE LTD",
@@ -24,6 +27,7 @@ export const datas = [
       commodity: "Automotive ssss",
     },
     {
+      id:3,
       mode: "LCL",
       shipper: "GLOBAL CO.LTD",
       consignee: "INDIA AUTOMOBILE LTD",
@@ -32,6 +36,7 @@ export const datas = [
       commodity: "Automotive ssss",
     },
     {
+      id:4,
       mode: "FCL",
       shipper: "GLOBAL CO.LTD",
       consignee: "INDIA AUTOMOBILE LTD",
@@ -40,6 +45,7 @@ export const datas = [
       commodity: "Automotive ssss",
     },
     {
+      id:5,
       mode: "LCL",
       shipper: "GLOBAL CO.LTD",
       consignee: "INDIA AUTOMOBILE LTD",
@@ -48,6 +54,7 @@ export const datas = [
       commodity: "Automotive ssss",
     },
     {
+      id:6,
       mode: "AIR",
       shipper: "GLOBAL CO.LTD",
       consignee: "INDIA AUTOMOBILE LTD",
@@ -56,6 +63,7 @@ export const datas = [
       commodity: "Automotive ssss",
     },
     {
+      id:7,
       mode: "LCL",
       shipper: "GLOBAL CO.LTD",
       consignee: "INDIA AUTOMOBILE LTD",
@@ -64,6 +72,7 @@ export const datas = [
       commodity: "Automotive ssss",
     },
     {
+      id:8,
       mode: "LCL",
       shipper: "GLOBAL CO.LTD",
       consignee: "INDIA AUTOMOBILE LTD",
@@ -72,6 +81,7 @@ export const datas = [
       commodity: "Automotive ssss",
     },
     {
+      id:9,
       mode: "FCL",
       shipper: "GLOBAL CO.LTD",
       consignee: "INDIA AUTOMOBILE LTD",
@@ -80,6 +90,7 @@ export const datas = [
       commodity: "Automotive ssss",
     },
     {
+      id:10,
       mode: "LCL",
       shipper: "GLOBAL CO.LTD",
       consignee: "INDIA AUTOMOBILE LTD",
@@ -88,6 +99,7 @@ export const datas = [
       commodity: "Automotive ssss",
     },
     {
+      id:11,
       mode: "LCL",
       shipper: "GLOBAL CO.LTD",
       consignee: "INDIA AUTOMOBILE LTD",
