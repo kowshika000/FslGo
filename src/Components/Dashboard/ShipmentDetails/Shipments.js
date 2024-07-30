@@ -18,6 +18,7 @@ import Inbox from "./Inbox";
 import "../ShipmentDetails/shipmentDetails.css";
 import { useDispatch, useSelector } from "react-redux";
 import { shipmentCountRequest } from "../../../Redux/Actions/ShipmentAction";
+import shipgif from '../../../assets/shiploadinggif.gif'
 
 const Shipments = () => {
   const dispatch = useDispatch();
@@ -96,7 +97,8 @@ const Shipments = () => {
                   height: "200px",
                 }}
               >
-                <CircularProgress style={{ color: "red" }} />
+                {/* <CircularProgress style={{ color: "red" }} /> */}
+                <img src={shipgif} width="140px" height="140px" />
               </Box>
             ) : (
               <>

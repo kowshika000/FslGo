@@ -19,6 +19,7 @@ import sea from "../../../assets/Shipement.svg";
 import city from "../../../assets/Business2.svg";
 import { IoIosClose } from "react-icons/io";
 import { IoClose } from "react-icons/io5";
+import shipgif from "../../../assets/shiploadinggif.gif"
 
 const style = {
   position: "absolute",
@@ -335,7 +336,8 @@ const Origin = ({
                       height: "100%",
                     }}
                   >
-                    <CircularProgress style={{ color: "red" }} />
+                    {/* <CircularProgress style={{ color: "red" }} /> */}
+                    <img src={shipgif} width="140px" height="140px" />
                   </Box>
                 ) : (
                   <>

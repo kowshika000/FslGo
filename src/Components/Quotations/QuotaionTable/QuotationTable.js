@@ -24,6 +24,7 @@ import { MultiSelect } from "primereact/multiselect";
 import { Tag } from "primereact/tag";
 import { CloseOutlined } from "@ant-design/icons";
 import "../../Dashboard/ShipmentHistory/ShipmentHistory.css";
+import shipgif from '../../../assets/shiploadinggif.gif'
 // import { FindNewRateRequest } from "../../../Redux/Actions/FindNewRateAction";
 
 const QuotationTable = ({
@@ -470,7 +471,8 @@ const QuotationTable = ({
           height: "353px",
         }}
       >
-        <CircularProgress style={{ color: "red" }} />
+        {/* <CircularProgress style={{ color: "red" }} /> */}
+        <img src={shipgif} width="140px" height="140px" />
       </Box>
     );
   }

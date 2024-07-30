@@ -15,8 +15,10 @@ import { IconButton } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { DsrReportRequest } from "../../../../Redux/Actions/DsrReportAction";
 import { CircularProgress, Box } from "@mui/material";
+import shipgif from '../../../../assets/shiploadinggif.gif'
 
-function DailyReportTable({ filtercolumn, setfiltercolumn }) {
+
+function DailyReportTable({ filtercolumn, setfiltercolumn,filterReport, setFilterReport}) {
   //This is for get usertoken from profile API data
   const Profileusertoken = useSelector(
     (state) => state.ProfileData?.profileData?.usertoken
@@ -111,10 +113,20 @@ function DailyReportTable({ filtercolumn, setfiltercolumn }) {
   const [currentPage, setCurrentPage] = useState(1);
   const [sidebaropen, setSidebaropen] = useState(false);
   const [dsrFilter, setDsrFilter] = useState();
-  const [filterReport, setFilterReport] = useState();
+  // const [filterReport, setFilterReport] = useState();
   const [clicked, setClicked] = useState(false);
   const [data, setData] = useState();
   const itemsPerPage = 6;
+  console.log(filterReport)
+
+  if(filterReport){
+    for (const freport of filterReport) {
+      for (const [key, value] of Object.entries(freport)) {
+        console.log(`Key: ${key}, Value: ${value}`);
+      }
+    }
+  }
+  
 
   useEffect(() => {
     setfiltercolumn(TableColumnObject);
@@ -312,6 +324,7 @@ function DailyReportTable({ filtercolumn, setfiltercolumn }) {
     startIndex + itemsPerPage
   );
 
+  console.log(paginatedData)
   // const noData = () => {
   //   return (
   //     <div
@@ -322,6 +335,9 @@ function DailyReportTable({ filtercolumn, setfiltercolumn }) {
   //     </div>
   //   );
   // };
+
+  
+
   const columnValueData = (fieldName) => (rowData) => {
     const fieldValue = rowData[fieldName];
 
@@ -409,6 +425,36 @@ function DailyReportTable({ filtercolumn, setfiltercolumn }) {
     checkArrows();
   }, []);
 
+//   const exportExcel = () => {
+//     import('xlsx').then((xlsx) => {
+//         const worksheet = xlsx.utils.json_to_sheet(paginatedData);
+//         const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
+//         const excelBuffer = xlsx.write(workbook, {
+//             bookType: 'xlsx',
+//             type: 'array'
+//         });
+
+//         saveAsExcelFile(excelBuffer, 'paginatedData');
+//     });
+// };
+
+// const saveAsExcelFile = (buffer, fileName) => {
+//     import('file-saver').then((module) => {
+//         if (module && module.default) {
+//             let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+//             let EXCEL_EXTENSION = '.xlsx';
+//             const data = new Blob([buffer], {
+//                 type: EXCEL_TYPE
+//             });
+
+//             module.default.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+//         }
+//     });
+// };
+
+// const filteredDownload = filterReport?.map((item,index)=> console.log(item) )  
+// console.log(filteredDownload)
+
   if (loading) {
     return (
       <Box
@@ -420,7 +466,8 @@ function DailyReportTable({ filtercolumn, setfiltercolumn }) {
           // alignSelf:"center"
         }}
       >
-        <CircularProgress style={{ color: "red" }} />
+        {/* <CircularProgress style={{ color: "red" }} /> */}
+        <img src={shipgif} width="140px" height="140px" />
       </Box>
     );
   }
@@ -501,7 +548,6 @@ function DailyReportTable({ filtercolumn, setfiltercolumn }) {
           // emptyMessage={noData()}
         >
           {arrayOfObj?.map((item, index) => {
-            console.log(item);
             if (filtercolumn[item.header]) {
               return (
                 <Column
