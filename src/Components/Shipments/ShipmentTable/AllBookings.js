@@ -21,6 +21,7 @@ import { Tag } from "primereact/tag";
 import { CloseOutlined } from "@ant-design/icons";
 import { CircularProgress, Box } from "@mui/material";
 import "../../Dashboard/ShipmentHistory/ShipmentHistory.css"
+import shipgif from '../../../assets/shiploadinggif.gif'
 
 const AllBookings = ({
   filterData,
@@ -438,7 +439,8 @@ const AllBookings = ({
           // alignSelf:"center"
         }}
       >
-        <CircularProgress style={{ color: "red" }} />
+        {/* <CircularProgress style={{ color: "red" }} /> */}
+        <img src={shipgif} width="140px" height="140px" />
       </Box>
     );
   }

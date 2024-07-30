@@ -35,6 +35,7 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
   const [selectedDropdownItem, setSelectedDropdownItem] =
     useState("Past 60 Days");
   const [filterValue, setFilterValue] = useState(60);
+  const [filterReport, setFilterReport] = useState();
   const [filterMonthValue, setFilterMonthValue] = useState(null);
   const dispatch = useDispatch();
   const ShipmentData = useSelector((state) => state.Booking);
@@ -116,7 +117,7 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
   };
   const handleDownloadDsr = (e) => {
     e.preventDefault();
-    console.log("download")
+    console.log("download");
     dispatch(DsrDownloadRequest({ payloadofdsrdownload }));
   };
 
@@ -188,6 +189,37 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
         setSelectedButton(null);
         setCurrentPage(1);
     }
+  };
+
+  const exportExcel = () => {
+    import("xlsx").then((xlsx) => {
+      const worksheet = xlsx.utils.json_to_sheet(filterReport);
+      const workbook = { Sheets: { data: worksheet }, SheetNames: ["data"] };
+      const excelBuffer = xlsx.write(workbook, {
+        bookType: "xlsx",
+        type: "array",
+      });
+
+      saveAsExcelFile(excelBuffer, "filterReport");
+    });
+  };
+
+  const saveAsExcelFile = (buffer, fileName) => {
+    import("file-saver").then((module) => {
+      if (module && module.default) {
+        let EXCEL_TYPE =
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8";
+        let EXCEL_EXTENSION = ".xlsx";
+        const data = new Blob([buffer], {
+          type: EXCEL_TYPE,
+        });
+
+        module.default.saveAs(
+          data,
+          fileName + "_export_" + new Date().getTime() + EXCEL_EXTENSION
+        );
+      }
+    });
   };
 
   const handleUpcomingDep = () => {
@@ -437,7 +469,8 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
                     className="mx-1"
                     style={{ width: "12px", height: "13.5px" }}
                     role="button"
-                    onClick={handleDownloadDsr}
+                    // onClick={handleDownloadDsr}
+                    onClick={exportExcel}
                   />
                   <img
                     src={image3}
@@ -476,6 +509,8 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
             <DailyReportTable
               filtercolumn={filtercolumn}
               setfiltercolumn={setfiltercolumn}
+              filterReport={filterReport}
+              setFilterReport={setFilterReport}
             />
           )}
         </Col>

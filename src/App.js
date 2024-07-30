@@ -26,6 +26,7 @@ import FindNewRate from "./Components/Quotations/QuotaionTable/QModal/FindNewRat
 import Quick from "./Components/QuickBooking/Quick";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import shipgif from "./assets/shiploadinggif.gif"
 
 const MainContent = ({
   showmap,
@@ -183,7 +184,8 @@ function App() {
           height: "100vh",
         }}
       >
-        <CircularProgress style={{ color: "red" }} />
+        {/* <CircularProgress style={{ color: "red" }} /> */}
+        <img src={shipgif} width="140px" height="140px" />
       </Box>
     );
   }

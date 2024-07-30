@@ -4,6 +4,7 @@ import "./ToDo.css";
 import "./shipmentDetails.css";
 import { useDispatch, useSelector } from "react-redux";
 import { todoRequest } from "../../../Redux/Actions/ShipmentAction";
+import shipgif from '../../../assets/shiploadinggif.gif'
 
 const ToDo = () => {
   const dispatch = useDispatch();
@@ -66,7 +67,8 @@ const ToDo = () => {
             height: "200px",
           }}
         >
-          <CircularProgress style={{ color: "red" }} />
+          {/* <CircularProgress style={{ color: "red" }} /> */}
+          <img src={shipgif} width="140px" height="140px" />
         </Box>
         ) : (
         <>

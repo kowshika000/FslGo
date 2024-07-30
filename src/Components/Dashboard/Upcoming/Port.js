@@ -11,6 +11,7 @@ import { opensailingRequest } from "../../../Redux/Actions/OpneSailingAction";
 import { CircularProgress, Box } from "@mui/material";
 import { Select, Menu } from "antd";
 import { CalendarOutlined, CaretDownOutlined } from "@ant-design/icons";
+import shipgif from '../../../assets/shiploadinggif.gif'
 
 const { Option } = Select;
 
@@ -203,7 +204,8 @@ export const Port = () => {
                     height: "100%",
                   }}
                 >
-                  <CircularProgress style={{ color: "red" }} />
+                  {/* <CircularProgress style={{ color: "red" }} /> */}
+                  <img src={shipgif} width="140px" height="140px" />
                 </Box>
               ) : (
                 <div className="inner-port">
@@ -318,7 +320,8 @@ export const Port = () => {
                     height: "200px",
                   }}
                 >
-                  <CircularProgress style={{ color: "red" }} />
+                  {/* <CircularProgress style={{ color: "red" }} /> */}
+                  <img src={shipgif} width="140px" height="140px" />
                 </Box>
               ) : (
                 <div className="inner-port">
