@@ -18,7 +18,7 @@ import { CircularProgress, Box } from "@mui/material";
 import shipgif from '../../../../assets/shiploadinggif.gif'
 
 
-function DailyReportTable({ filtercolumn, setfiltercolumn,filterReport, setFilterReport}) {
+function DailyReportTable({ filtercolumn, setfiltercolumn,filterReport, setFilterReport, setdownload, download}) {
   //This is for get usertoken from profile API data
   const Profileusertoken = useSelector(
     (state) => state.ProfileData?.profileData?.usertoken
@@ -50,6 +50,7 @@ function DailyReportTable({ filtercolumn, setfiltercolumn,filterReport, setFilte
   //Hooks and Variables
   const { loading } = useSelector((state) => state.DsrReport);
   const DsrReportData = useSelector((state) => state.DsrReport.dsrData);
+  const [columnOrder, setcolumnOrder] = useState([])
 
   const DsrColumns = DsrReportData?.columns; //get column datas from dsr api response
   const DsrDatas = DsrReportData?.data; //get datas from dsr api response
@@ -118,14 +119,6 @@ function DailyReportTable({ filtercolumn, setfiltercolumn,filterReport, setFilte
   const [data, setData] = useState();
   const itemsPerPage = 6;
   console.log(filterReport)
-
-  if(filterReport){
-    for (const freport of filterReport) {
-      for (const [key, value] of Object.entries(freport)) {
-        console.log(`Key: ${key}, Value: ${value}`);
-      }
-    }
-  }
   
 
   useEffect(() => {
@@ -143,6 +136,7 @@ function DailyReportTable({ filtercolumn, setfiltercolumn,filterReport, setFilte
     header: e[0],
   }));
 
+
   useEffect(() => {
     const filterReportTbl = report?.filter((items) =>
       Object.keys(dsrFilter || {})?.every(
@@ -153,6 +147,85 @@ function DailyReportTable({ filtercolumn, setfiltercolumn,filterReport, setFilte
     setFilterReport(filterReportTbl);
     setCurrentPage(1);
   }, [dsrFilter]);
+
+
+  // const handleWholeData = async(val)=>{
+  //   console.log(val)
+  //   const filteredData = report.map(item => {
+  //     const filteredItem = {};
+  //     // headersToInclude.forEach(header => {
+  //         if (item.hasOwnProperty(val)) {
+  //             filteredItem[val] += item[val];
+  //         }
+  //     // });
+      
+  //     return filteredItem;
+  // });
+  // console.log(filteredData)
+  // return filteredData
+  //   // const filteredData = report.map(item => console.log(item) );
+  //   // console.log(filteredData)
+  // // setFilterReport(filteredData);
+  // }
+
+  const filterDataByKeys = (data) => {
+    return data?.map(item => {
+        const filteredItem = {};
+        // allowedKeys?.forEach(key => {
+        //     if (item.hasOwnProperty(key?.header)) {
+        //         filteredItem[key?.header] = item[key?.header];
+        //     }
+        // });
+        for (const [key, value] of Object.entries(filtercolumn)) {
+          if(value === true){
+            filteredItem[key] = item[key];
+          }    
+      }
+        return filteredItem;
+    });
+};
+
+
+  // const fdata = filterDataByKeys(filterReport, arrayOfObj);
+  // console.log(fdata)
+
+  useEffect(() => {
+    const res = filterDataByKeys(filterReport);
+    setdownload(res)
+
+}, [filtercolumn])
+
+// console.log(download)
+
+const handleArrange = (columns) => {
+  console.log(columns)
+  const reorderedKeys = columns.map(col => col?.props?.field);
+  console.log(reorderedKeys)
+  setcolumnOrder(reorderedKeys)
+  const columnObject = reorderedKeys?.reduce((obj, col) => {
+    obj[col] = true;
+    return obj;
+  }, {});
+  const newDownload = download.map((item) => {
+    const reorderedItem = {};
+    reorderedKeys.forEach((key) => {
+      reorderedItem[key] = item[key];
+    });
+    return reorderedItem;
+  });
+  setdownload(newDownload);
+  setfiltercolumn(columnObject)
+  
+};
+
+// useEffect(() => {
+//   first
+
+//   return () => {
+//     second
+//   }
+// }, [third])
+
 
   const getUniqueOptions = (array, key) => {
     if (!Array?.isArray(array) || !array?.length) {
@@ -185,7 +258,6 @@ function DailyReportTable({ filtercolumn, setfiltercolumn,filterReport, setFilte
     }
   };
   function MultiSelectFilter(filterKey, options, value, additionalStyles) {
-    console.log(options);
     const renderOption = (option) => {
       if (option?.label?.length <= 14) {
         return <span>{option?.label}</span>;
@@ -544,11 +616,22 @@ function DailyReportTable({ filtercolumn, setfiltercolumn,filterReport, setFilte
         )}
         <DataTable
           value={paginatedData}
+          reorderableColumns
+          // reorderableRows 
+          // onRowReorder={(e) => console.log(e)}
+          onColReorder={(e) => handleArrange(e.columns)}
           style={{ height: "380px", width: "fit-content" }}
           // emptyMessage={noData()}
         >
           {arrayOfObj?.map((item, index) => {
             if (filtercolumn[item.header]) {
+              
+              // let res = []
+              // res.push(item?.header)
+              // console.log(res)
+
+              // handleWholeData(item?.header)
+
               return (
                 <Column
                   key={index}
@@ -630,6 +713,7 @@ function DailyReportTable({ filtercolumn, setfiltercolumn,filterReport, setFilte
             setfiltercolumn={setfiltercolumn}
             ColumnObject={ColumnObject}
             DsrColumns={DsrModifiedArray}
+            columnOrder={columnOrder}
           />
         )}
       </div>

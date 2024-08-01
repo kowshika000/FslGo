@@ -57,6 +57,7 @@ const Columns = ({ setfiltercolumn, ColumnObject, DsrColumns }) => {
   useEffect(() => {
     setChecked(checked);
     setfiltercolumn(checked);
+    
   }, [checked , DsrColumns]);
   // useEffect(() => {
   //   setfiltercolumn(ColumnObject);

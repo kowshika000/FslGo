@@ -16,6 +16,7 @@ import ShowChargesModal from "./ShowChargesModal";
 import { CircularProgress, Box } from "@mui/material";
 import airplane from "../../../../../assets/mdi_aeroplane.svg";
 import QuoteRequest from "./QuoteRequest";
+import shipbggif from "../../../../../assets/shipbg-gif.gif"
 
 function ShipmentTracker({
   selectedCurrency,
@@ -136,7 +137,8 @@ function ShipmentTracker({
           your trusted logistics partner.
         </div>
 
-        <CircularProgress style={{ color: "red" }} className="mt-4" />
+        {/* <CircularProgress style={{ color: "red" }} className="mt-4" /> */}
+        <img src={shipbggif} width="140px" height="140px" /> <img src="" />
       </Box>
     );
   }

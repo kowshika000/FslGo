@@ -260,3 +260,7 @@
 .p-inputtext:enabled:hover{
   border-color: #d1d5db !important;
 }
+/* 
+.scrolloftable::-webkit-scrollbar{
+  display: none !important;
+} */

@@ -18,6 +18,7 @@ import { opensailingRequest } from "../../../Redux/Actions/OpneSailingAction";
 import { profileRequest } from "../../../Redux/Actions/ProfileAction";
 import { useNavigate } from "react-router-dom";
 import { allportRequest } from "../../../Redux/Actions/AllPortAction";
+import { hover } from "@testing-library/user-event/dist/hover";
 
 const UpcomingSailings = ({setOriginPort,setDestPort}) => {
   const [displayedSchedules, setDisplayedSchedules] = useState(4);
@@ -115,6 +116,11 @@ const UpcomingSailings = ({setOriginPort,setDestPort}) => {
             padding: "10px",
             border: "none",
             borderBottom: "1px solid #F3F5F7",
+            "&:hover": {
+              backgroundColor: "#F8FAFC",
+              borderBottom:" 3px solid #F3F5F7",
+              boxShadow:" 0px 3px 6px 0px #00000040",
+            },
           }}
           className="acc-row mx-1"
           expanded={expandedIndex === index}
@@ -141,7 +147,7 @@ const UpcomingSailings = ({setOriginPort,setDestPort}) => {
             expandIcon={<ArrowDropDownIcon />}
             aria-controls={`panel${index}-content`}
             id={`panel${index}-header`}
-            // sx={{ border: "none" }}
+            // sx={{ border: "none",background: "red" }}
           >
             <div className="d-flex w-100">
               <div style={{ width: "15%" }}>
