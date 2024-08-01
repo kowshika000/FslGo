@@ -20,8 +20,8 @@ import { useSelector } from "react-redux";
 import { Tag } from "primereact/tag";
 import { CloseOutlined } from "@ant-design/icons";
 import { CircularProgress, Box } from "@mui/material";
-import "../../Dashboard/ShipmentHistory/ShipmentHistory.css"
-import shipgif from '../../../assets/shiploadinggif.gif'
+import "../../Dashboard/ShipmentHistory/ShipmentHistory.css";
+import shipgif from "../../../assets/shiploadinggif.gif";
 
 const AllBookings = ({
   filterData,
@@ -39,6 +39,7 @@ const AllBookings = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalRowData, setModalRowData] = useState(null);
   const { loading } = useSelector((state) => state.Booking);
+  const [showAllData, setshowAllData] = useState(false)
   const [tblFilter, setTblFilter] = useState({
     id: [],
     order_no: [],
@@ -69,15 +70,18 @@ const AllBookings = ({
   }, [filterValue, filterMonthValue]);
 
   useEffect(() => {
-    const filterDataTable = filterData.map((item, index) => ({
-      key: index,
-      ...item, 
-    })).filter((filteredItem) =>
-      Object.keys(tblFilter).every(
-        (key) =>
-          tblFilter[key]?.length === 0 || tblFilter[key]?.includes(filteredItem[key])
-      )
-    );
+    const filterDataTable = filterData
+      .map((item, index) => ({
+        key: index,
+        ...item,
+      }))
+      .filter((filteredItem) =>
+        Object.keys(tblFilter).every(
+          (key) =>
+            tblFilter[key]?.length === 0 ||
+            tblFilter[key]?.includes(filteredItem[key])
+        )
+      );
     setFilteredData(filterDataTable);
     setCurrentPage(1);
   }, [tblFilter, filterData]);
@@ -86,11 +90,13 @@ const AllBookings = ({
     if (!Array.isArray(array) || !array?.length) {
       return [];
     }
-    return Array.from(new Set(array.map((data) => data[key]))).map((value,index) => ({
-      key:index,
-      label: value,
-      value,
-    }));
+    return Array.from(new Set(array.map((data) => data[key]))).map(
+      (value, index) => ({
+        key: index,
+        label: value,
+        value,
+      })
+    );
   };
 
   useEffect(() => {
@@ -414,9 +420,10 @@ const AllBookings = ({
     );
   };
 
-  const paginatedData = filteredData?.slice(
+  const paginatedData = showAllData ? filterData : filteredData?.slice(
     startIndex,
-    startIndex + itemsPerPage
+    10
+    // startIndex + itemsPerPage
   );
   const noData = () => {
     return (
@@ -544,9 +551,13 @@ const AllBookings = ({
       )}
       <DataTable
         value={paginatedData}
+        // reorderableColumns
+        // reorderableRows 
+        // onRowReorder={(e) => setFilteredData(e.value)}
         dataKey="shipmentId"
-        className={`${filteredData?.length === 0 ? "text-center" : ""}`}
-        style={{ height: "353px" }}
+        className={`${filteredData?.length === 0 ? "text-center" : ""} scrolloftable`}
+        style={{ height: "653px", overflowY: "auto", marginBottom: "10px" }}
+        // style={{overflowY: "auto" }}
         emptyMessage={noData()}
       >
         <Column
@@ -683,7 +694,10 @@ const AllBookings = ({
           headerStyle={{ paddingLeft: "10px" }}
         ></Column>
       </DataTable>
-      <Pagination
+      <span role="button"  className="show-more" onClick={()=>setshowAllData(!showAllData)} >
+        {showAllData ? "Show Less" : "Show More"}
+      </span>
+      {/* <Pagination
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         totalItems={filteredData?.length}
@@ -694,7 +708,7 @@ const AllBookings = ({
         open={isModalOpen}
         close={setIsModalOpen}
         rowData={modalRowData}
-      />
+      /> */}
     </div>
   );
 };

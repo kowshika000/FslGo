@@ -36,6 +36,7 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
     useState("Past 60 Days");
   const [filterValue, setFilterValue] = useState(60);
   const [filterReport, setFilterReport] = useState();
+  const [download, setdownload] = useState();
   const [filterMonthValue, setFilterMonthValue] = useState(null);
   const dispatch = useDispatch();
   const ShipmentData = useSelector((state) => state.Booking);
@@ -115,11 +116,11 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
     setafrmdate: "",
     setatodate: "",
   };
-  const handleDownloadDsr = (e) => {
-    e.preventDefault();
-    console.log("download");
-    dispatch(DsrDownloadRequest({ payloadofdsrdownload }));
-  };
+  // const handleDownloadDsr = (e) => {
+  //   e.preventDefault();
+  //   console.log("download");
+  //   dispatch(DsrDownloadRequest({ payloadofdsrdownload }));
+  // };
 
   let sselectcolumn = "";
   const filteredCol = Object?.keys(filtercolumn || {})?.filter(
@@ -193,14 +194,14 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
 
   const exportExcel = () => {
     import("xlsx").then((xlsx) => {
-      const worksheet = xlsx.utils.json_to_sheet(filterReport);
+      const worksheet = xlsx.utils.json_to_sheet(download);
       const workbook = { Sheets: { data: worksheet }, SheetNames: ["data"] };
       const excelBuffer = xlsx.write(workbook, {
         bookType: "xlsx",
         type: "array",
       });
 
-      saveAsExcelFile(excelBuffer, "filterReport");
+      saveAsExcelFile(excelBuffer, "download");
     });
   };
 
@@ -511,6 +512,8 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
               setfiltercolumn={setfiltercolumn}
               filterReport={filterReport}
               setFilterReport={setFilterReport}
+              setdownload={setdownload}
+              download={download}
             />
           )}
         </Col>
