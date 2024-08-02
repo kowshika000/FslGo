@@ -3,6 +3,8 @@ import "./invoice.css";
 import React from "react";
 import Navbar from "../Layout/Navbar";
 import InvoiceDetails from "./Credit/InvoiceDetails";
+import CashTable from "./Cash/CashTable";
+import "./Credit/invoiceTbl.css";
 
 const Invoice = () => {
   return (
@@ -30,8 +32,12 @@ const Invoice = () => {
               </div>
             </div>
           </div>
-          <div className="shadow mx-auto mt-3" style={{ maxWidth: "1255px",position:"relative",zIndex:1 }}>
-            <InvoiceDetails />
+          <div
+            className="shadow mx-auto mt-3"
+            style={{ maxWidth: "1255px", position: "relative", zIndex: 1 }}
+          >
+            {/* <InvoiceDetails /> */}
+            <CashTable />
           </div>
         </div>
       </div>
