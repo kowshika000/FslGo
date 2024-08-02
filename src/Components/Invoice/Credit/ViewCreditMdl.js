@@ -1,8 +1,8 @@
 import { Modal, Row, Col, Button, Tooltip } from "antd";
 import React from "react";
-// import creditLimit from "../../../assets/creditLimit.svg";
-// import creditSpend from "../../../assets/creditSpend.svg";
-// import money from "../../../assets/money.png";
+import creditLimit from "../../../assets/creditLimit.svg";
+import creditSpend from "../../../assets/creditSpend.svg";
+import money from "../../../assets/money.png";
 import { DataTable } from "primereact/datatable";
 import Column from "antd/es/table/Column";
 
@@ -53,7 +53,7 @@ const ViewCreditMdl = ({ open, close }) => {
                 className="d-flex flex-direction-column gap-3 "
                 style={{ paddingRight: "50px" }}
               >
-                {/* <img src={creditLimit} alt="credit" /> */}
+                <img src={creditLimit} alt="credit" />
                 <div>
                   <div className="creditText">Total Credit Limit</div>
                   <div className="creditTextAmt">5,00,000 INR</div>
@@ -65,7 +65,7 @@ const ViewCreditMdl = ({ open, close }) => {
                 className="d-flex flex-direction-column gap-3"
                 style={{ paddingRight: "50px" }}
               >
-                {/* <img src={creditSpend} alt="credit" /> */}
+                <img src={creditSpend} alt="credit" />
                 <div>
                   <div className="creditText">Credit Spent</div>
                   <div className="creditTextAmt">2,00,000 INR</div>
@@ -77,7 +77,7 @@ const ViewCreditMdl = ({ open, close }) => {
                 className="d-flex flex-direction-column gap-3"
                 style={{ paddingRight: "50px" }}
               >
-                {/* <img src={money} alt="credit" /> */}
+                <img src={money} alt="credit" />
                 <div>
                   <div className="creditText">Credit Balance</div>
                   <div className="creditTextAmt">3,00,000 INR</div>
