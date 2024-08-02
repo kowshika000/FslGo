@@ -121,20 +121,16 @@ export default function MapMarker({
     };
     return (
       <div className="text-start">
-        <span style={{ cursor: "pointer" }}  onClick={handleHblClick}>
+        <span style={{ cursor: "pointer" }} onClick={handleHblClick}>
           {rowData?.hbl_no}
         </span>
       </div>
     );
   };
-  const filteredIds = bookingData?.data?.filter(
-    (item) => item?.id
-  );
+  const filteredIds = bookingData?.data?.filter((item) => item?.id);
   console.log("Filtered Id:", filteredIds);
   const showMore = (hbl_no) => {
-    const filteredId = bookingData?.data?.filter(
-      (item) => hbl_no === item?.id
-    );
+    const filteredId = bookingData?.data?.filter((item) => hbl_no === item?.id);
     if (filteredId?.length) {
       setFilterData(filteredId);
       setmodal(true);
@@ -149,7 +145,7 @@ export default function MapMarker({
     <Modal
       open={showModal}
       onCancel={onClose}
-      className="mapTable" 
+      className="mapTable"
       key="id"
       style={{
         position: "absolute",
@@ -158,152 +154,156 @@ export default function MapMarker({
         marginLeft: "57%",
         marginTop: "-8%",
       }}
+      footer={null}
+      closable={false}
     >
       <div>
         <div className="shadow modalmap">
-              <DataTable
-                value={filteredData}
-                className="p-0 p-datatable-custom"
-              >
-                <Column
-                  field="hbl_no"
-                  align="left"
-                  body={bodyHblNo}
-                  header={
-                    <span style={{ fontSize: "13px" }} className="d-flex">
-                      Booking ID
-                      <div
-                        className="d-flex sorticon"
-                        style={{ flexDirection: "column" }}
-                      >
-                        <IconButton
-                          onClick={() => {
-                            handleSort("hbl_no");
-                          }}
-                          className="p-0"
-                          style={{ color: "white" }}
-                        >
-                          <ExpandLessIcon className="sortup" />
-                        </IconButton>
-                        <IconButton
-                          onClick={() => {
-                            handleSortDown("hbl_no");
-                          }}
-                          className="p-0"
-                          style={{ color: "white" }}
-                        >
-                          <ExpandMoreIcon className="sortdown" />
-                        </IconButton>
-                      </div>
-                    </span>
-                  }
-                  headerClassName="custom-header1 p-1"
-                  className="p-1 text-start"
-                />
-                <Column
-                  field="sea_air"
-                  align="left"
-                  header={
-                    <span style={{ fontSize: "13px" }} className="d-flex">
-                      Mode
-                      <div
-                        className="d-flex sorticon"
-                        style={{ flexDirection: "column" }}
-                      >
-                        <IconButton
-                          onClick={() => {
-                            handleSort("mode");
-                          }}
-                          className="p-0"
-                          style={{ color: "white" }}
-                        >
-                          <ExpandLessIcon className="sortup" />
-                        </IconButton>
-                        <IconButton
-                          onClick={() => {
-                            handleSortDown("mode");
-                          }}
-                          className="p-0"
-                          style={{ color: "white" }}
-                        >
-                          <ExpandMoreIcon className="sortdown" />
-                        </IconButton>
-                      </div>
-                    </span>
-                  }
-                  headerClassName="custom-header1 p-1 "
-                  className="text-start p-1"
-                />
-                <Column
-                  field="route"
-                  align="left"
-                  header={
-                    <span style={{ fontSize: "13px" }} className="d-flex ">
-                      Route
-                      <div
-                        className="d-flex sorticon"
-                        style={{ flexDirection: "column" }}
-                      >
-                        <IconButton
-                          onClick={() => {
-                            handleSort("route");
-                          }}
-                          className="p-0"
-                          style={{ color: "white" }}
-                        >
-                          <ExpandLessIcon className="sortup" />
-                        </IconButton>
-                        <IconButton
-                          onClick={() => {
-                            handleSortDown("route");
-                          }}
-                          className="p-0"
-                          style={{ color: "white" }}
-                        >
-                          <ExpandMoreIcon className="sortdown" />
-                        </IconButton>
-                      </div>
-                    </span>
-                  }
-                  headerClassName="custom-header1 p-1 "
-                  className="text-start p-1"
-                />
-                <Column
-                  field="status"
-                  align="left"
-                  header={
-                    <span style={{ fontSize: "13px" }} className="d-flex">
-                      Status
-                      <div
-                        className="d-flex sorticon"
-                        style={{ flexDirection: "column" }}
-                      >
-                        <IconButton
-                          onClick={() => {
-                            handleSort("status");
-                          }}
-                          className="p-0"
-                          style={{ color: "white" }}
-                        >
-                          <ExpandLessIcon className="sortup" />
-                        </IconButton>
-                        <IconButton
-                          onClick={() => {
-                            handleSortDown("status");
-                          }}
-                          className="p-0"
-                          style={{ color: "white" }}
-                        >
-                          <ExpandMoreIcon className="sortdown" />
-                        </IconButton>
-                      </div>
-                    </span>
-                  }
-                  bodyClassName="custom-cell"
-                  className="p-1 text-start"
-                  headerClassName="custom-header1 p-1"
-                />
-              </DataTable>
+          <DataTable
+            value={filteredData}
+            className="p-0 p-datatable-custom"
+            scrollable
+            scrollHeight="210px"
+          >
+            <Column
+              field="hbl_no"
+              align="left"
+              body={bodyHblNo}
+              header={
+                <span style={{ fontSize: "13px" }} className="d-flex">
+                  Booking ID
+                  <div
+                    className="d-flex sorticon"
+                    style={{ flexDirection: "column" }}
+                  >
+                    <IconButton
+                      onClick={() => {
+                        handleSort("hbl_no");
+                      }}
+                      className="p-0"
+                      style={{ color: "white" }}
+                    >
+                      <ExpandLessIcon className="sortup" />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => {
+                        handleSortDown("hbl_no");
+                      }}
+                      className="p-0"
+                      style={{ color: "white" }}
+                    >
+                      <ExpandMoreIcon className="sortdown" />
+                    </IconButton>
+                  </div>
+                </span>
+              }
+              headerClassName="custom-header1 p-1"
+              className="p-1 text-start"
+            />
+            <Column
+              field="sea_air"
+              align="left"
+              header={
+                <span style={{ fontSize: "13px" }} className="d-flex">
+                  Mode
+                  <div
+                    className="d-flex sorticon"
+                    style={{ flexDirection: "column" }}
+                  >
+                    <IconButton
+                      onClick={() => {
+                        handleSort("mode");
+                      }}
+                      className="p-0"
+                      style={{ color: "white" }}
+                    >
+                      <ExpandLessIcon className="sortup" />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => {
+                        handleSortDown("mode");
+                      }}
+                      className="p-0"
+                      style={{ color: "white" }}
+                    >
+                      <ExpandMoreIcon className="sortdown" />
+                    </IconButton>
+                  </div>
+                </span>
+              }
+              headerClassName="custom-header1 p-1 "
+              className="text-start p-1"
+            />
+            <Column
+              field="route"
+              align="left"
+              header={
+                <span style={{ fontSize: "13px" }} className="d-flex ">
+                  Route
+                  <div
+                    className="d-flex sorticon"
+                    style={{ flexDirection: "column" }}
+                  >
+                    <IconButton
+                      onClick={() => {
+                        handleSort("route");
+                      }}
+                      className="p-0"
+                      style={{ color: "white" }}
+                    >
+                      <ExpandLessIcon className="sortup" />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => {
+                        handleSortDown("route");
+                      }}
+                      className="p-0"
+                      style={{ color: "white" }}
+                    >
+                      <ExpandMoreIcon className="sortdown" />
+                    </IconButton>
+                  </div>
+                </span>
+              }
+              headerClassName="custom-header1 p-1 "
+              className="text-start p-1"
+            />
+            <Column
+              field="status"
+              align="left"
+              header={
+                <span style={{ fontSize: "13px" }} className="d-flex">
+                  Status
+                  <div
+                    className="d-flex sorticon"
+                    style={{ flexDirection: "column" }}
+                  >
+                    <IconButton
+                      onClick={() => {
+                        handleSort("status");
+                      }}
+                      className="p-0"
+                      style={{ color: "white" }}
+                    >
+                      <ExpandLessIcon className="sortup" />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => {
+                        handleSortDown("status");
+                      }}
+                      className="p-0"
+                      style={{ color: "white" }}
+                    >
+                      <ExpandMoreIcon className="sortdown" />
+                    </IconButton>
+                  </div>
+                </span>
+              }
+              bodyClassName="custom-cell"
+              className="p-1 text-start"
+              headerClassName="custom-header1 p-1"
+            />
+          </DataTable>
         </div>
       </div>
       {modal && Shipmentpopup(filterdata)}

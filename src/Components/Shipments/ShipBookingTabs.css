@@ -124,7 +124,6 @@
 .custom-header1 {
   background-color: rgb(25, 25, 101);
   color: white;
-  /* position: fixed !important; */
 }
 .booked-cell {
   border-left: 1px solid #008000;
@@ -162,21 +161,8 @@
   align-self: center;
 }
 
-.modalmap .p-datatable-wrapper {
-  height: 210px !important;
-}
 
-.modalmap .custom-header1 {
-  position: sticky;
-  top: 0;
-  z-index: 0;
-}
-.mapTable .ant-modal-content .ant-modal-footer {
-  display: none;
-}
 .mapTable .ant-modal-content .ant-modal-body {
   padding: 0;
 }
-.mapTable .ant-modal-content .ant-modal-close-x {
-  display: none;
-}
+

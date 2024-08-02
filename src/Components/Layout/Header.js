@@ -222,7 +222,7 @@ const Header = ({ setShowText, setShowmap,setShowReselt }) => {
               Quotations
             </Typography>
           </Link>
-          {/* <Link to="/invoice" style={{ textDecoration: "none" }}>
+          <Link to="/invoice" style={{ textDecoration: "none" }}>
             <Typography
               sx={{
                 fontSize: "15px",
@@ -239,7 +239,7 @@ const Header = ({ setShowText, setShowmap,setShowReselt }) => {
             >
               Invoice
             </Typography>
-          </Link> */}
+          </Link>
           <Link to="/quick" style={{ textDecoration: "none" }}>
             <Typography
               sx={{
