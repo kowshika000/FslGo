@@ -1,12 +1,15 @@
-import { Modal, Row, Col, Button, Tooltip } from "antd";
-import React from "react";
+import {  Row, Col, Button, Tooltip } from "antd";
+import React, { useState } from "react";
 import creditLimit from "../../../assets/creditLimit.svg";
 import creditSpend from "../../../assets/creditSpend.svg";
 import money from "../../../assets/money.png";
 import { DataTable } from "primereact/datatable";
 import Column from "antd/es/table/Column";
+import { Dialog } from "@mui/material";
+import CreditRequestMdl from "./creditRequestMdl";
 
 const ViewCreditMdl = ({ open, close }) => {
+  const [reqModal, setReqMdl] = useState(false);
   const tableHeaders = [
     { label: "Location", key: "location" },
     { label: "Segment", key: "segment" },
@@ -14,6 +17,30 @@ const ViewCreditMdl = ({ open, close }) => {
     { label: "Credit Days", key: "creaditDays" },
   ];
   const tableBody = [
+    {
+      location: "Ahmadabad",
+      segment: "Un-Asingned",
+      credintAmount: "400000",
+      creaditDays: "30",
+    },
+    {
+      location: "Ahmadabad",
+      segment: "Un-Asingned",
+      credintAmount: "400000",
+      creaditDays: "30",
+    },
+    {
+      location: "Ahmadabad",
+      segment: "Un-Asingned",
+      credintAmount: "400000",
+      creaditDays: "30",
+    },
+    {
+      location: "Ahmadabad",
+      segment: "Un-Asingned",
+      credintAmount: "400000",
+      creaditDays: "30",
+    },
     {
       location: "Ahmadabad",
       segment: "Un-Asingned",
@@ -35,14 +62,16 @@ const ViewCreditMdl = ({ open, close }) => {
       );
     }
   };
-
+  const handleClick = () => {
+    setReqMdl(true);
+  };
   return (
-    <Modal
+    <Dialog
       open={open}
       footer={null}
-      onCancel={close}
-      closable={false}
-      width={800}
+      onClose={close}
+      maxWidth={830}
+      className="invoiceMdl"
     >
       <div style={{ fontWeight: 700, fontSize: "24px" }}>My Credit</div>
       <div className="shadow p-4 mt-3">
@@ -87,10 +116,15 @@ const ViewCreditMdl = ({ open, close }) => {
           </Row>
         </div>
         <div className="mt-3">
-          <Button type="primary" style={{ background: "#D32D2F" }}>
+          <Button
+            type="primary"
+            style={{ background: "#D32D2F" }}
+            onClick={handleClick}
+          >
             Request More Credit
           </Button>
         </div>
+        <CreditRequestMdl open={reqModal} close={() => setReqMdl(false)} closeCredit={close} />
       </div>
       <div className="shadow mt-3 p-4">
         <DataTable value={tableBody}>
@@ -100,11 +134,13 @@ const ViewCreditMdl = ({ open, close }) => {
               fixed={header.key}
               header={header.label}
               body={(rowData) => renderTruncatedText(rowData[header.key])}
+              headerClassName="invoiceTblHeader"
+              bodyClassName="invoiceTblbody"
             />
           ))}
         </DataTable>
       </div>
-    </Modal>
+    </Dialog>
   );
 };
 
