@@ -119,7 +119,6 @@ function DailyReportTable({ filtercolumn, setfiltercolumn,filterReport, setFilte
   const [data, setData] = useState();
   const itemsPerPage = 6;
   console.log(filterReport)
-  
 
   useEffect(() => {
     setfiltercolumn(TableColumnObject);
@@ -218,13 +217,41 @@ const handleArrange = (columns) => {
   
 };
 
-// useEffect(() => {
-//   first
+const hasPageBeenRendered = useRef(false)
 
-//   return () => {
-//     second
+// useEffect(() => {
+//   const handleArrange = (columns) => {
+
+//     // console.log(columns)
+//     // const reorderedKeys = columns.map(col => col?.props?.field);
+//     // console.log(reorderedKeys)
+//     // setcolumnOrder(reorderedKeys)
+//     const columnObject = columns?.reduce((obj, col) => {
+//       obj[col] = true;
+//       return obj;
+//     }, {});
+//     const newDownload = download?.map((item) => {
+//       const reorderedItem = {};
+//       columns?.forEach((key) => {
+//         reorderedItem[key] = item[key];
+//       });
+//       return reorderedItem;
+//     });
+//     setdownload(newDownload);
+//     setfiltercolumn(columnObject)
+    
+//   };
+
+//   if(hasPageBeenRendered.current){
+//     if(columnOrder){
+//       handleArrange(columnOrder)
+//       console.log("colorder")
+//     }
 //   }
-// }, [third])
+
+//   hasPageBeenRendered.current = true
+
+// }, [checked])
 
 
   const getUniqueOptions = (array, key) => {

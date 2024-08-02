@@ -38,7 +38,7 @@ const Android12Switch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-const Columns = ({ setfiltercolumn, ColumnObject, DsrColumns }) => {
+const Columns = ({ setfiltercolumn, ColumnObject, DsrColumns,columnOrder }) => {
   // const DsrColumns = DsrReportdatas?.columns
   // console.log(DsrColumns)
   // const ColumnObject = DsrColumns.reduce((o, key) => ({ ...o, [key]: true}), {})
@@ -54,11 +54,65 @@ const Columns = ({ setfiltercolumn, ColumnObject, DsrColumns }) => {
   //   e.preventDefault()
   //   setsearch(e.target.value)
   // }
+
+  // useEffect(() => {
+  //   const reorderObject = (obj, order) => {
+  //     const orderedObject = {};
+  //     order.forEach(key => {
+  //       if (obj.hasOwnProperty(key)) {
+  //         orderedObject[key] = obj[key];
+  //       }
+  //     });
+  //     return orderedObject;
+  //   };
+    
+  //   const reorderedObject = reorderObject(checked, columnOrder);
+  //   setChecked(reorderedObject);
+  //   setfiltercolumn(reorderedObject);
+  //   console.log(reorderedObject)
+  // }, [checked, DsrColumns])
+
+  const reorderObject = (obj, order) => {
+    const orderedObject = {};
+    order.forEach(key => {
+      if (obj.hasOwnProperty(key)) {
+        orderedObject[key] = obj[key];
+      }
+    });
+    return orderedObject;
+  };
+  
+  const reorderedObject = reorderObject(ColumnObject, columnOrder);
+  console.log(reorderedObject);
+  
+  // useEffect(() => {
+  //   setChecked(reorderedObject)
+  // }, [columnOrder])
+  
+
   useEffect(() => {
-    setChecked(checked);
-    setfiltercolumn(checked);
+
+    
+
+    // if(!columnOrder){
+    //   setChecked(checked);
+    //   setfiltercolumn(checked);
+    // }
+    // else if(columnOrder){
+      setChecked(checked);
+      setfiltercolumn(checked);
+    // }
+    
     
   }, [checked , DsrColumns]);
+
+  console.log(checked)
+  console.log(columnOrder)
+  console.log(ColumnObject)
+
+  
+  
+
   // useEffect(() => {
   //   setfiltercolumn(ColumnObject);
   // }, [DsrColumns]);
@@ -81,7 +135,7 @@ const Columns = ({ setfiltercolumn, ColumnObject, DsrColumns }) => {
   //This is for selectall checkbox change handler
   const handleChange1 = (event) => {
     if (event.target.checked) {
-      setChecked(ColumnObject);
+      setChecked(columnOrder ? reorderedObject : ColumnObject);
     } else {
       const newObj = DsrColumns?.reduce(
         (o, key) => ({ ...o, [key]: false }),
