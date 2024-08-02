@@ -16,7 +16,7 @@
   font-size: 12px !important;
   font-weight: 400 !important;
 }
-.css-1t1j96h-MuiPaper-root-MuiDialog-paper{
+.css-1t1j96h-MuiPaper-root-MuiDialog-paper {
   padding: 0 !important;
   border-radius: 8px !important;
 }
@@ -194,3 +194,39 @@
   background: #c90e0e;
   transform: translate(-50%, -50%);
 } */
+.shipmentIndex .white-box {
+  background-color: white !important;
+  color: black !important;
+  border-bottom: 1px solid #e7eaf0;
+  gap: 20px;
+  width: 100%;
+  height: 251px;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+.shipmentIndex .text-show {
+  z-index: 10;
+  padding: 0px 30px;
+  width: 100%;
+  color: black !important;
+  position: relative;
+}
+
+.quickTbl .p-datatable-wrapper {
+  border-radius: 8px 8px 0 0;
+  border: 1px solid #e7eaf0;
+  border-bottom: none;
+}
+.quickTbl .p-datatable-thead {
+  border-bottom: 1px solid #e7eaf0;
+}
+.tblFooter {
+  border-radius: 0 0 8px 8px;
+  border: 1px solid #e7eaf0;
+  border-top: none;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  padding-right: 30px;
+}
+

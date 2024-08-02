@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Typography } from "@mui/material";
 import { Button } from "antd";
-import Pagination from "../Core-Components/Pagination";
+// import Pagination from "../Core-Components/Pagination";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { IconButton } from "@mui/material";
@@ -18,16 +17,16 @@ import { CloseOutlined } from "@ant-design/icons";
 
 const Qbooking = () => {
   const dataq = datas?.map((data) => data);
-  const [selectedRows, setSelectedRows] = useState({});
+  const [selectedRows, setSelectedRows] = useState(false);
   const [filteredData, setFilteredData] = useState(dataq);
-  const [currentPage, setCurrentPage] = useState(1);
+  // const [currentPage, setCurrentPage] = useState(1);
   const [bookingSuccessMdl, setBookingSuccessMdl] = useState(false);
   const [newBooking, setNewBooking] = useState(false);
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
-  const itemsPerPage = 10;
+  // const itemsPerPage = 10;
   const [clicked, setClicked] = useState(false);
   const [data, setData] = useState(filteredData);
-  const [selectedRowIds, setSelectedRowIds] = useState(new Set());
+  // const [selectedRowIds, setSelectedRowIds] = useState(new Set());
   const [tblFilter, setTblFilter] = useState({
     mode: [],
     shipper: [],
@@ -45,7 +44,7 @@ const Qbooking = () => {
       )
     );
     setFilteredData(filterDataTable);
-    setCurrentPage(1);
+    // setCurrentPage(1);
   }, [tblFilter]);
 
   const getUniqueOptions = (array, key) => {
@@ -67,27 +66,20 @@ const Qbooking = () => {
     }
   }, [clicked]);
 
-  const handleCheckboxChange = (rowData) => {
-    const uniqueId = `${currentPage}-${rowData.id}`;
-    const newSelectedRowIds = new Set(selectedRowIds);
-    if (newSelectedRowIds.has(uniqueId)) {
-      newSelectedRowIds.delete(uniqueId);
-    } else {
-      newSelectedRowIds.add(uniqueId);
-    }
-    setSelectedRowIds(newSelectedRowIds);
-  };
+  // const handleCheckboxChange = (rowData) => {
+  //   setSelectedRows(true);
+  // };
 
-  const isRowSelected = (rowData) => {
-    const uniqueId = `${currentPage}-${rowData.id}`;
-    return selectedRowIds.has(uniqueId);
-  };
+  // const isRowSelected = (rowData) => {
+  //   const uniqueId = `${currentPage}-${rowData.id}`;
+  //   return selectedRowIds.has(uniqueId);
+  // };
 
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
+  // const startIndex = (currentPage - 1) * itemsPerPage;
+  // const endIndex = startIndex + itemsPerPage;
 
   // Extract the data for the current page
-  const currentPageData = filteredData?.slice(startIndex, endIndex);
+  // const currentPageData = filteredData?.slice(startIndex, endIndex);
 
   // sort data
   const sort = (col) => {
@@ -234,7 +226,7 @@ const Qbooking = () => {
                   {field === "consignee" ? "Consignee" : ""}
                   {field === "pol" ? "POL" : ""}
                   {field === "pod" ? "POD" : ""}
-                  {field === "commodity" ? "commodity" : ""}
+                  {field === "commodity" ? "Commodity" : ""}
                   <span className="ms-2">
                     <CloseOutlined
                       onClick={() => {
@@ -272,29 +264,17 @@ const Qbooking = () => {
         }}
         className="pt-1"
       >
-        {/* <Typography
-          style={{
-            fontSize: "16px",
-            lineHeight: "20px",
-            color: "#29333D",
-            fontWeight: 700,
-          }}
-          className="mt-4"
-        >
-          Speed up your booking process by reusing details from your recent
-          bookings
-        </Typography> */}
         <div>
           {Object.keys(tblFilter)?.some(
             (key) => tblFilter[key]?.length > 0
           ) && (
             <div
-              className="d-flex ps-2 justify-content-between"
+              className="d-flex ps-2 justify-content-between "
               style={{
                 backgroundColor: "#F8FAFC",
-                marginBottom: "7px",
-                padding: "5px 0px",
-                // marginTop: "-11px",
+                // marginBottom: "7px",
+                padding: "10px 0px",
+                marginTop: "-30px",
                 minWidth: "1214px",
               }}
             >
@@ -333,22 +313,29 @@ const Qbooking = () => {
             </div>
           )}
         </div>
-        <div className="mt-3">
-          <div style={{ height: "593px" }}>
+        <div className="">
+          <div
+          // style={{ height: "300px", overflowY: "auto" }}
+          // className="quickTbl"
+          >
             <DataTable
-              value={currentPageData}
+              value={filteredData}
               selection={selectedRows}
               selectionMode="multiple"
+              className="quickTbl"
+              scrollable
+              scrollHeight="320px"
             >
               <Column
                 header="Select"
-                style={{ width: "80px", paddingLeft: "30px" }}
+                headerClassName="quickHeader"
+                style={{ width: "80px", paddingLeft: "60px" }}
                 body={(rowData, options) => (
                   <div>
                     <input
                       type="checkbox"
-                      checked={isRowSelected(rowData)}
-                      onChange={() => handleCheckboxChange(rowData)}
+                      checked={selectedRows}
+                      onChange={(e) => setSelectedRows(e.checked)}
                       id={`checkbox-${options.rowIndex}`}
                       className="custom-checkbox"
                     />
@@ -362,6 +349,7 @@ const Qbooking = () => {
                   field={header.key}
                   className="p-3"
                   style={{ width: "80px" }}
+                  headerClassName="quickHeader"
                   header={
                     <div className="d-flex justify-content-between p-3">
                       {header.label}
@@ -378,14 +366,14 @@ const Qbooking = () => {
               ))}
             </DataTable>
           </div>
-          <Pagination
+          {/* <Pagination
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             totalItems={filteredData?.length}
             itemsPerPage={itemsPerPage}
-          />
+          /> */}
         </div>
-        <div className="d-flex justify-content-end gap-3 mt-3">
+        <div className="d-flex justify-content-end gap-3 tblFooter">
           <Button
             type="primary"
             style={{
