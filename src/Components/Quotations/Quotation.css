@@ -239,3 +239,7 @@
 .marginTop{
   margin-top: 150px;
 }
+
+:where(.css-dev-only-do-not-override-1okl62o).ant-tabs-top >.ant-tabs-nav::before{
+  border-bottom: none !important;
+}

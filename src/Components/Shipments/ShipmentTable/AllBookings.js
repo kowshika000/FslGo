@@ -703,12 +703,12 @@ const AllBookings = ({
         totalItems={filteredData?.length}
         onPageChange={() => setCurrentPage(1)}
         itemsPerPage={itemsPerPage}
-      />
+      /> */}
       <ShipmentBase
         open={isModalOpen}
         close={setIsModalOpen}
         rowData={modalRowData}
-      /> */}
+      />
     </div>
   );
 };

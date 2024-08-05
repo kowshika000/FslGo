@@ -59,6 +59,7 @@ function DailyReportTable({ filtercolumn, setfiltercolumn,filterReport, setFilte
   const DsrCopied = { ...DsrDataObj }; //this copies data from previous line data
   const DsrModifiedArray = Object?.keys(DsrCopied || {}); //change objects into array
   console.log(DsrModifiedArray);
+  console.log(DsrColumns)
 
   //This is modify arrayofvalues into objects with default true value
 
@@ -96,6 +97,21 @@ function DailyReportTable({ filtercolumn, setfiltercolumn,filterReport, setFilte
     {}
   );
   console.log(ColumnObject);
+
+  let comparisonResult = {};
+  if(columnOrder.length){
+    columnOrder?.forEach(item => {
+      comparisonResult[item] = DsrModifiedArray?.includes(item);
+    });     
+  }else{
+    DsrColumns?.forEach(item => {
+      comparisonResult[item] = DsrModifiedArray?.includes(item);
+    });
+  }
+  
+  console.log(comparisonResult);
+  const [checked, setChecked] = useState(comparisonResult);
+  console.log(checked)
 
   const TableColumnObject = DsrColumns?.reduce(
     (o, key) => ({ ...o, [key]: true }),
@@ -739,8 +755,11 @@ const hasPageBeenRendered = useRef(false)
           <Columns
             setfiltercolumn={setfiltercolumn}
             ColumnObject={ColumnObject}
+            comparisonResult={comparisonResult}
             DsrColumns={DsrModifiedArray}
             columnOrder={columnOrder}
+            checked={checked}
+            setChecked={setChecked}
           />
         )}
       </div>
