@@ -596,7 +596,6 @@ const hasPageBeenRendered = useRef(false)
           <div
             className="d-flex ps-2"
             style={{
-              backgroundColor: "#F8FAFC",
               marginBottom: "20px",
               padding: "5px 0px",
               position: "sticky",
