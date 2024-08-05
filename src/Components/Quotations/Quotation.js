@@ -82,12 +82,12 @@ const Quotation = ({
               <>
                 {
                   !showReselt && 
-                <Typography
-                  style={{ fontSize: "28px", fontWeight: "700" }}
+                <p
+                  style={{ fontSize: "28px", fontWeight: "700", margin: "0px" }}
                   className="shipments-head"
                 >
                   Quotations
-                </Typography>
+                </p>
                  }
                 <Navbar showReselt={showReselt} />
               </>
@@ -133,7 +133,7 @@ const Quotation = ({
           </div>
         </div>
       </div>
-      {/* <div style={{backgroundColor: "white",width:"100%",height:"155px",position: "absolute"}}></div> */}
+      <div style={{backgroundColor: "white",width:"100%",height:"185px",position: "absolute"}}></div>
       <div
         style={{
           Width: "100%",

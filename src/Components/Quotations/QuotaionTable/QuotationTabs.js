@@ -133,8 +133,8 @@ const QuotationTabs = ({setHighlightShipmentCard,selectedDataToPatch,setSelected
         borderRadius: "8px",
       }}
     >
-      <Row className="border" style={{ borderRadius: "8px" }}>
-        <Col span={24} style={{ backgroundColor: "#F8FAFC",borderRadius: "8px" }}>
+      <Row style={{ borderRadius: "8px" }}>
+        <Col span={24} style={{ backgroundColor: "#F8FAFC",borderRadius: "8px 8px 0px 0px", border: "1px solid #f0f0f0",borderBottom: "0px" }}>
           <Row justify="space-between" style={{ height: "57px" }}>
             <Col span={20}>
               <Tabs
@@ -162,7 +162,7 @@ const QuotationTabs = ({setHighlightShipmentCard,selectedDataToPatch,setSelected
             </Col>
           </Row>
         </Col>
-        <Col span={24} style={{ padding: "20px", backgroundColor: "white",borderRadius: "8px"}}>
+        <Col span={24} style={{ padding: "20px", backgroundColor: "white",borderRadius: "0px 0px 8px 8px", border: "1px solid #f0f0f0"}}>
           <QuotationTable
             filterData={filteredData}
             selectedStatus={selectedStatus}
