@@ -19,14 +19,17 @@ import ttlBookAmt from "../../../assets/ttlBookAmt.svg";
 import money from "../../../assets/money.png";
 import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
+import { useDispatch, useSelector } from "react-redux";
+import { InvoiceCashAction } from "../../../Redux/Actions/InvoiceCashAction";
 
 const CashTable = () => {
+  const dispatch = useDispatch();
   const [searchvalue, setSearchvalue] = useState("");
   const [expandedRows, setExpandedRows] = useState([]);
-  const [rowClick, setRowClick] = useState(true);
   const [selectedData, setSelectedData] = useState([]);
-  const dataq = datas?.map((data) => data);
-  const [filteredData, setFilteredData] = useState(dataq);
+  const invoice = useSelector((state) => state.InvoiceC.InvoiceCash.data);
+  const invoiceCashData = datas?.map((data) => data);
+  const [filteredData, setFilteredData] = useState(invoiceCashData);
   const [data, setData] = useState(filteredData);
   const [clicked, setClicked] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
@@ -44,18 +47,32 @@ const CashTable = () => {
   const handleSubmit = () => {};
 
   //   table
-
   const [tblFilter, setTblFilter] = useState({
-    shipment: [],
+    shipment_id: [],
     pol: [],
     pod: [],
-    dateTime: [],
-    services: [],
+    booking_date_and_time: [],
+    service: [],
     etd: [],
     eta: [],
   });
+  const payload = {
+    filter_month: "",
+    spagesize: "",
+    sperpage: "",
+    invoice_no: "",
+    origin: "",
+    destination: "",
+    mode: "",
+    from_date: "",
+    to_date: "",
+  };
   useEffect(() => {
-    const filterDataTable = dataq.filter((filteredItem) =>
+    dispatch(InvoiceCashAction(payload));
+  }, []);
+
+  useEffect(() => {
+    const filterDataTable = invoiceCashData?.filter((filteredItem) =>
       Object.keys(tblFilter).every(
         (key) =>
           tblFilter[key]?.length === 0 ||
@@ -179,11 +196,11 @@ const CashTable = () => {
   const handleChangeFilter = (field, filterValues) => {
     if (field === "all") {
       setTblFilter({
-        shipment: [],
+        shipment_id: [],
         pol: [],
         pod: [],
-        dateTime: [],
-        services: [],
+        booking_date_and_time: [],
+        service: [],
         etd: [],
         eta: [],
       });
@@ -234,11 +251,11 @@ const CashTable = () => {
     );
   }
   const tableHeaders = [
-    { label: "Shipment", key: "shipment" },
+    { label: "Shipment", key: "shipment_id" },
     { label: "POL", key: "pol" },
     { label: "POD", key: "pod" },
-    { label: "Booking Date & Time", key: "dateTime" },
-    { label: "Services", key: "services" },
+    { label: "Booking Date & Time", key: "booking_date_and_time" },
+    { label: "Services", key: "service" },
     { label: "ETD", key: "etd" },
     { label: "ETA", key: "eta" },
   ];
@@ -265,11 +282,13 @@ const CashTable = () => {
                 rounded
               >
                 <div>
-                  {field === "shipment" ? "Shipment" : ""}
+                  {field === "shipment_id" ? "Shipment" : ""}
                   {field === "pol" ? "POL" : ""}
                   {field === "pod" ? "POD" : ""}
-                  {field === "dateTime" ? "Booking Date & Time" : ""}
-                  {field === "services" ? "Services" : ""}
+                  {field === "booking_date_and_time"
+                    ? "Booking Date & Time"
+                    : ""}
+                  {field === "service" ? "Services" : ""}
                   {field === "etd" ? "ETD" : ""}
                   {field === "eta" ? "ETA" : ""}
 
@@ -289,19 +308,12 @@ const CashTable = () => {
       </>
     );
   };
-  const actionBody = () => {
-    return (
-      <div style={{ paddingTop: 10, paddingBottom: 10 }}>
-        <Button type="primary" style={{ background: "#F01E1E", width: 160 }}>
-          Download
-        </Button>
-      </div>
-    );
-  };
+
+
   const handleRowToggle = (e) => {
     let newExpandedRows = expandedRows ? [...expandedRows] : [];
     if (newExpandedRows.includes(e.data)) {
-      newExpandedRows = newExpandedRows.filter((item) => item !== e.data);
+      newExpandedRows = newExpandedRows?.filter((item) => item !== e.data);
     } else {
       newExpandedRows.push(e.data);
     }
@@ -322,10 +334,24 @@ const CashTable = () => {
     );
   };
   const rowExpansionTemplate = (data) => {
+    const actionBody = (rowData) => {
+      return (
+        <div style={{ paddingTop: 10, paddingBottom: 10 }}>
+          <Button
+            type="primary"
+            style={{ background: "#F01E1E", width: 160 }}
+            onClick={() => window.open(rowData.download_link, "_blank")}
+          >
+            Download
+          </Button>
+        </div>
+      );
+    };
+
     return (
       <div className="p-3">
         <DataTable
-          value={data.expend}
+          value={data.transactions}
           selectionMode="multiple"
           selection={selectedData}
           onSelectionChange={(e) => setSelectedData(e.value)}
@@ -341,17 +367,17 @@ const CashTable = () => {
             style={{ width: 230 }}
           ></Column>
           <Column
-            field="paymentMethod"
+            field="Payment_method"
             header="Payment Method"
             style={{ width: 230 }}
           ></Column>
           <Column
-            field="transDataTime"
+            field="transaction_date_and_time"
             header="Transaction Date & Time"
             style={{ padding: 10, width: 230 }}
           ></Column>
           <Column
-            field="action"
+            field="actions"
             header="Action"
             body={actionBody}
             style={{ width: 150 }}
@@ -363,7 +389,7 @@ const CashTable = () => {
 
   const rowClassName = (rowData) => {
     return {
-      "highlighted-row": rowData.shipment === "Total Shipments",
+      "highlighted-row": rowData.shipment_id === "Total Shipments",
     };
   };
 
@@ -506,12 +532,13 @@ const CashTable = () => {
               <DataTable
                 value={currentPageData}
                 selectionMode="multiple"
-                // scrollable
-                // scrollHeight="320px"
+                scrollable
+                scrollHeight="400px"
                 expandedRows={expandedRows}
                 onRowToggle={(e) => setExpandedRows(e.data)}
                 rowExpansionTemplate={rowExpansionTemplate}
                 rowClassName={rowClassName}
+                style={{ height: 400 }}
               >
                 {tableHeaders.map((header, index) => (
                   <Column
