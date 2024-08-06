@@ -13,6 +13,7 @@ import styled from "styled-components";
 import { FaArrowUpWideShort } from "react-icons/fa6";
 import { LuSigma } from "react-icons/lu";
 import { DsrReportdatas } from "./ApiStaticData";
+import { useRef } from "react";
 
 const Android12Switch = styled(Switch)(({ theme }) => ({
   padding: 8,
@@ -38,16 +39,17 @@ const Android12Switch = styled(Switch)(({ theme }) => ({
   },
 }));
 
-const Columns = ({ setfiltercolumn, ColumnObject, DsrColumns,columnOrder }) => {
+const Columns = ({ setfiltercolumn, ColumnObject, DsrColumns, columnOrder, comparisonResult,checked , setChecked }) => {
   // const DsrColumns = DsrReportdatas?.columns
   // console.log(DsrColumns)
   // const ColumnObject = DsrColumns.reduce((o, key) => ({ ...o, [key]: true}), {})
   console.log("ColumnObject", ColumnObject);
   const [check, setcheck] = useState(false);
-  const [checked, setChecked] = useState(() => {
-    const savedChecked = localStorage.getItem("checkedColumns");
-    return savedChecked ? JSON.parse(savedChecked) : ColumnObject;
-  });
+  // const [checked, setChecked] = useState(() => {
+  //   const savedChecked = localStorage.getItem("checkedColumns");
+  //   return savedChecked ? JSON.parse(savedChecked) : comparisonResult;
+  // });
+  // const [checked, setChecked] = useState( ColumnObject);
   // const [search, setsearch] = useState("")
   // console.log(search)
   // const handleSearch =(e)=>{
@@ -72,18 +74,18 @@ const Columns = ({ setfiltercolumn, ColumnObject, DsrColumns,columnOrder }) => {
   //   console.log(reorderedObject)
   // }, [checked, DsrColumns])
 
-  const reorderObject = (obj, order) => {
-    const orderedObject = {};
-    order.forEach(key => {
-      if (obj.hasOwnProperty(key)) {
-        orderedObject[key] = obj[key];
-      }
-    });
-    return orderedObject;
-  };
+  // const reorderObject = (obj, order) => {
+  //   const orderedObject = {};
+  //   order.forEach(key => {
+  //     if (obj.hasOwnProperty(key)) {
+  //       orderedObject[key] = obj[key];
+  //     }
+  //   });
+  //   return orderedObject;
+  // };
   
-  const reorderedObject = reorderObject(ColumnObject, columnOrder);
-  console.log(reorderedObject);
+  // const reorderedObject = reorderObject(ColumnObject, columnOrder);
+  // console.log(reorderedObject);
   
   // useEffect(() => {
   //   setChecked(reorderedObject)
@@ -104,38 +106,48 @@ const Columns = ({ setfiltercolumn, ColumnObject, DsrColumns,columnOrder }) => {
     // }
     
     
-  }, [checked , DsrColumns]);
+  }, [checked]);
 
   console.log(checked)
   console.log(columnOrder)
   console.log(ColumnObject)
+  console.log(DsrColumns)
+  console.log(comparisonResult)
 
   
   
 
-  // useEffect(() => {
-  //   setfiltercolumn(ColumnObject);
-  // }, [DsrColumns]);
   useEffect(() => {
-    localStorage.setItem("checkedColumns", JSON.stringify(checked));
-  }, [checked]);
+    setChecked(comparisonResult)
+  }, []);
+  const hasPageBeenRendered = useRef(false)
+
+  useEffect(() => {
+    if(hasPageBeenRendered.current){
+      console.log("worked")
+      localStorage.setItem("checkedColumns", JSON.stringify(checked));
+    }
+    
+    hasPageBeenRendered.current = true
+  }, [checked,columnOrder]);
 
   //This is for seperate checkbox change handler
   const handleChange = (event) => {
-    const { checked, name } = event.target;
+    // const { checked, name } = event.target;
     setChecked((prev) => {
       return {
         ...prev,
-        [name]: checked,
+        [event.target.name]: event.target.checked,
       };
     });
+    console.log(checked)
   };
   console.log(checked);
 
   //This is for selectall checkbox change handler
   const handleChange1 = (event) => {
     if (event.target.checked) {
-      setChecked(columnOrder ? reorderedObject : ColumnObject);
+  setChecked(ColumnObject);
     } else {
       const newObj = DsrColumns?.reduce(
         (o, key) => ({ ...o, [key]: false }),
