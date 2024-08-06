@@ -45,7 +45,7 @@ export const datas = [
     service: "Door To Door",
     etd: "12/05/2023",
     eta: "20/05/2023",
-    expend: [
+    transactions: [
       {
         id:"5q",
         transaction: "Booking Payment",
@@ -69,7 +69,7 @@ export const datas = [
     service: "Door To Door",
     etd: "12/05/2023",
     eta: "20/05/2023",
-    expend: [
+    transactions: [
       {
         id:"7q",
         transaction: "Booking Payment",
@@ -99,7 +99,7 @@ export const datas = [
     service: "Door To Door",
     etd: "12/05/2023",
     eta: "20/05/2023",
-    expend: [
+    transactions: [
       {
         transaction: "Booking Payment",
         Payment_method: "Credit",
@@ -116,7 +116,7 @@ export const datas = [
     service: "Door To Door",
     etd: "12/05/2023",
     eta: "20/05/2023",
-    expend: [
+    transactions: [
       {
         id:"10q",
         transaction: "Booking Payment",
@@ -140,7 +140,7 @@ export const datas = [
     service: "Door To Door",
     etd: "12/05/2023",
     eta: "20/05/2023",
-    expend: [
+    transactions: [
       {
         id:"12q",
         transaction: "Booking Payment",
@@ -164,7 +164,7 @@ export const datas = [
     service: "Door To Door",
     etd: "12/05/2023",
     eta: "20/05/2023",
-    expend: [
+    transactions: [
       {
         id:"14q",
         transaction: "Booking Payment",
@@ -188,7 +188,7 @@ export const datas = [
     service: "Door To Door",
     etd: "12/05/2023",
     eta: "20/05/2023",
-    expend: [
+    transactions: [
       {
         transaction: "Booking Payment",
         Payment_method: "Credit",
@@ -205,7 +205,7 @@ export const datas = [
     service: "Door To Door",
     etd: "12/05/2023",
     eta: "20/05/2023",
-    expend: [
+    transactions: [
       {
         transaction: "Booking Payment",
         Payment_method: "Credit",
@@ -222,7 +222,7 @@ export const datas = [
     service: "Door To Door",
     etd: "12/05/2023",
     eta: "20/05/2023",
-    expend: [
+    transactions: [
       {
         transaction: "Booking Payment",
         Payment_method: "Credit",
@@ -239,7 +239,7 @@ export const datas = [
     service: "Door To Door",
     etd: "12/05/2023",
     eta: "20/05/2023",
-    expend: [
+    transactions: [
       {
         transaction: "Booking Payment",
         Payment_method: "Credit",
