@@ -90,6 +90,11 @@ const Origin = ({
   );
   console.log(filteredSeaPorts);
 
+  useEffect(() => {
+    setOriginPort("")
+  }, [])
+  
+
   // Mock suggestions data
   // const suggestions = [
   //   {
