@@ -27,12 +27,12 @@ const CreditTable = () => {
   const itemsPerPage = 10;
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
   const [selectedDropdownItem, setSelectedDropdownItem] =
-    useState("Past 60 Days");
+    useState("Past 30 Days");
   const items = [
     "Past 30 Days",
-    "Past 60 Days",
-    "Past 90 Days",
+    "Past 3 Months",
     "Past 6 Months",
+    "Past 1 Year",
   ];
   const tabs = [
     { label: "All", key: "1" },

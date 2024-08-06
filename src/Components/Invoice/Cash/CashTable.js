@@ -36,12 +36,12 @@ const CashTable = () => {
   const itemsPerPage = 10;
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
   const [selectedDropdownItem, setSelectedDropdownItem] =
-    useState("Past 60 Days");
+    useState("Past 30 Days");
   const items = [
     "Past 30 Days",
-    "Past 60 Days",
-    "Past 90 Days",
+    "Past 3 Months",
     "Past 6 Months",
+    "Past 1 Year",
   ];
 
   const handleSubmit = () => {};
@@ -57,7 +57,7 @@ const CashTable = () => {
     eta: [],
   });
   const payload = {
-    filter_month: "",
+    filter_month: selectedDropdownItem,
     spagesize: "",
     sperpage: "",
     invoice_no: "",
@@ -68,8 +68,8 @@ const CashTable = () => {
     to_date: "",
   };
   useEffect(() => {
-    dispatch(InvoiceCashAction(payload));
-  }, []);
+    dispatch(InvoiceCashAction({payload}));
+  }, [dispatch,selectedDropdownItem]);
 
   useEffect(() => {
     const filterDataTable = invoiceCashData?.filter((filteredItem) =>
