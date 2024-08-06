@@ -12,14 +12,14 @@ const Quotation = ({
   setShowReselt,
   showHeader,
   setShowHeader,
-  originPort, 
+  originPort,
   setOriginPort,
-  destPort, 
-  setDestPort
+  destPort,
+  setDestPort,
 }) => {
   const { state } = useLocation();
-  const UpcomingSailingsData = state?.data
-  console.log(UpcomingSailingsData)
+  const UpcomingSailingsData = state?.data;
+  console.log(UpcomingSailingsData);
   const [selectedCurrency, setSelectedCurrency] = useState("USD");
   const [checkedItems, setCheckedItems] = useState({
     originCharges: false,
@@ -45,8 +45,8 @@ const Quotation = ({
   // const [destPort, setDestPort] = useState(null);
   const [toscheck, settoscheck] = useState(false);
   const [selectedDataToPatch, setSelectedDataToPatch] = useState();
-  const [origin, setorigin] = useState(originPort?.port_name)
-  const [dest, setdes] = useState(destPort?.port_name)
+  const [origin, setorigin] = useState(originPort?.port_name);
+  const [dest, setdes] = useState(destPort?.port_name);
   const handleScroll = () => {
     if (showReselt) {
       const scrollTop = window.scrollY;
@@ -65,7 +65,6 @@ const Quotation = ({
   //   window.scrollTo(0, 0);
   // }, [highlightShipmentCard]);
 
-
   return (
     <div
       style={{
@@ -80,15 +79,18 @@ const Quotation = ({
           <div className="col-lg">
             {showHeader && (
               <>
-                {
-                  !showReselt && 
-                <p
-                  style={{ fontSize: "28px", fontWeight: "700", margin: "0px" }}
-                  className="shipments-head"
-                >
-                  Quotations
-                </p>
-                 }
+                {!showReselt && (
+                  <p
+                    style={{
+                      fontSize: "28px",
+                      fontWeight: "700",
+                      margin: "0px",
+                    }}
+                    className="shipments-head"
+                  >
+                    Quotations
+                  </p>
+                )}
                 <Navbar showReselt={showReselt} />
               </>
             )}
@@ -133,14 +135,23 @@ const Quotation = ({
           </div>
         </div>
       </div>
-      <div style={{backgroundColor: "white",width:"100%",height:"185px",position: "absolute"}}></div>
+      {!showReselt && (
+        <div
+          style={{
+            backgroundColor: "white",
+            width: "100%",
+            height: "185px",
+            position: "absolute",
+          }}
+        ></div>
+      )}
       <div
         style={{
           Width: "100%",
           minWidth: "1255px",
           padding: "20px",
           backgroundColor: "#f3f5f7",
-          zIndex:"10"
+          zIndex: "10",
         }}
       >
         <div style={{ maxWidth: "1255px" }} className="mx-auto">

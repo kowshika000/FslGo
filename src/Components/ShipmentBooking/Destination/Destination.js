@@ -125,6 +125,10 @@ const Destination = ({
   //   setModalOpen(false);
   // };
 
+  useEffect(() => {
+    setDestPort("")
+  }, [])
+
   const handleDestPortSelect = (port) => {
     console.log("Dest selected:", port);
     setcheckleave(port);

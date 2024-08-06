@@ -405,7 +405,6 @@ const QuotationTable = ({
               <div
                 className="d-flex ps-2 justify-content-between"
                 style={{
-                  backgroundColor: "#F8FAFC",
                   marginBottom: "9px",
                   padding: "5px 0px",
                   marginTop: "-11px",
