@@ -36,12 +36,11 @@ const Invoice = () => {
             className="shadow mx-auto mt-3"
             style={{ maxWidth: "1255px", position: "relative", zIndex: 1 }}
           >
-            {/* <InvoiceDetails /> */}
-            <CashTable />
+            <InvoiceDetails />
+            {/* <CashTable /> */}
           </div>
         </div>
       </div>
-      {/* <div style={{height:"90vh",textAlign:"center",alignItems:"center",alignContent:"center"}}>No Data Found</div> */}
     </>
   );
 };

@@ -21,12 +21,14 @@ import ArrowDropUpIcon from "@mui/icons-material/ArrowDropUp";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 import { useDispatch, useSelector } from "react-redux";
 import { InvoiceCashAction } from "../../../Redux/Actions/InvoiceCashAction";
+import { HiArrowDownTray } from "react-icons/hi2";
 
 const CashTable = () => {
   const dispatch = useDispatch();
   const [searchvalue, setSearchvalue] = useState("");
   const [expandedRows, setExpandedRows] = useState([]);
   const [selectedData, setSelectedData] = useState([]);
+  const [showDownload, setShowDownload] = useState(false);
   const invoice = useSelector((state) => state.InvoiceC.InvoiceCash.data);
   const invoiceCashData = datas?.map((data) => data);
   const [filteredData, setFilteredData] = useState(invoiceCashData);
@@ -68,8 +70,8 @@ const CashTable = () => {
     to_date: "",
   };
   useEffect(() => {
-    dispatch(InvoiceCashAction({payload}));
-  }, [dispatch,selectedDropdownItem]);
+    dispatch(InvoiceCashAction({ payload }));
+  }, [dispatch, selectedDropdownItem]);
 
   useEffect(() => {
     const filterDataTable = invoiceCashData?.filter((filteredItem) =>
@@ -309,7 +311,6 @@ const CashTable = () => {
     );
   };
 
-
   const handleRowToggle = (e) => {
     let newExpandedRows = expandedRows ? [...expandedRows] : [];
     if (newExpandedRows.includes(e.data)) {
@@ -339,8 +340,9 @@ const CashTable = () => {
         <div style={{ paddingTop: 10, paddingBottom: 10 }}>
           <Button
             type="primary"
-            style={{ background: "#F01E1E", width: 160 }}
+            style={{ background: showDownload ? "" : "#F01E1E", width: 160 }}
             onClick={() => window.open(rowData.download_link, "_blank")}
+            disabled={showDownload}
           >
             Download
           </Button>
@@ -354,7 +356,10 @@ const CashTable = () => {
           value={data.transactions}
           selectionMode="multiple"
           selection={selectedData}
-          onSelectionChange={(e) => setSelectedData(e.value)}
+          onSelectionChange={(e) => {
+            setSelectedData(e.value);
+            setShowDownload(e.value.length > 1);
+          }}
         >
           <Column
             selectionMode="multiple"
@@ -378,7 +383,16 @@ const CashTable = () => {
           ></Column>
           <Column
             field="actions"
-            header="Action"
+            header={
+              <div>
+                Action &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                {showDownload && (
+                  <span>
+                    <HiArrowDownTray size={16} />
+                  </span>
+                )}
+              </div>
+            }
             body={actionBody}
             style={{ width: 150 }}
           ></Column>
