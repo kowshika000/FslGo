@@ -23,6 +23,8 @@ function DailyReportTable({ filtercolumn, setfiltercolumn,filterReport, setFilte
   const Profileusertoken = useSelector(
     (state) => state.ProfileData?.profileData?.usertoken
   );
+  const [showAllData, setshowAllData] = useState(false)
+  const [scrollHeight, setscrollHeight] = useState("653px")
   const payload = {
     sl_no: Profileusertoken,
     sorigin: "",
@@ -434,9 +436,14 @@ const hasPageBeenRendered = useRef(false)
   //This is for pagination
   const startIndex = (currentPage - 1) * itemsPerPage;
 
-  const paginatedData = filterReport?.slice(
+  // const paginatedData = filterReport?.slice(
+  //   startIndex,
+  //   startIndex + itemsPerPage
+  // );
+  const paginatedData = showAllData ? filterReport : filterReport?.slice(
     startIndex,
-    startIndex + itemsPerPage
+    10
+    // startIndex + itemsPerPage
   );
 
   console.log(paginatedData)
@@ -659,10 +666,12 @@ const hasPageBeenRendered = useRef(false)
         <DataTable
           value={paginatedData}
           reorderableColumns
+          scrollable={showAllData}
+          scrollHeight={scrollHeight}
           // reorderableRows 
           // onRowReorder={(e) => console.log(e)}
           onColReorder={(e) => handleArrange(e.columns)}
-          style={{ height: "380px", width: "fit-content" }}
+          // style={{ height: "380px", width: "fit-content" }}
           // emptyMessage={noData()}
         >
           {arrayOfObj?.map((item, index) => {
@@ -728,6 +737,7 @@ const hasPageBeenRendered = useRef(false)
             }
           })}
         </DataTable>
+        
         <div
           style={{
             position: "absolute",
@@ -762,13 +772,16 @@ const hasPageBeenRendered = useRef(false)
           />
         )}
       </div>
-      <Pagination
+      {/* <Pagination
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         totalItems={filterReport?.length}
         onPageChange={() => setCurrentPage(1)}
         itemsPerPage={itemsPerPage}
-      />
+      /> */}
+      <span role="button"  className="show-more" onClick={()=>{return (setshowAllData(!showAllData),setscrollHeight((prev)=>prev==="653px"?"1243px":"653px"))}} >
+        {showAllData ? "Show Less" : "Show More"}
+      </span>
     </>
   );
 }
