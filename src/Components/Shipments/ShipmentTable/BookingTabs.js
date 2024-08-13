@@ -38,6 +38,7 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
   const [filterReport, setFilterReport] = useState();
   const [download, setdownload] = useState();
   const [filterMonthValue, setFilterMonthValue] = useState(null);
+  const [showMore, setshowMore] = useState(true)
   const dispatch = useDispatch();
   const ShipmentData = useSelector((state) => state.Booking);
   const bookingData = ShipmentData?.booking;
@@ -192,6 +193,9 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
     }
   };
 
+  console.log(activeTab)
+  console.log(schedule)
+
   const exportExcel = () => {
     import("xlsx").then((xlsx) => {
       const worksheet = xlsx.utils.json_to_sheet(download);
@@ -204,6 +208,36 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
       saveAsExcelFile(excelBuffer, "download");
     });
   };
+
+  //for tab change according to show display showmore button
+
+  useEffect(() => {
+    if(activeTab == 1 && Number(schedule?.all)>10){
+      setshowMore(true)
+    }
+    else if(activeTab == 2 && Number(schedule?.booked)>10){
+      setshowMore(true)
+    }
+    else if(activeTab == 3 && Number(schedule?.in_transit)>10){
+      setshowMore(true)
+    }
+    else if(activeTab == 4 && Number(schedule?.arrived)>10){
+      setshowMore(true)
+    }
+    else if(activeTab == 5 && Number(schedule?.delivered)>10){
+      setshowMore(true)
+    }
+    else if(activeTab == 6 && Number(schedule?.cancelled)>10){
+      setshowMore(true)
+    }
+    else{
+      setshowMore(false)
+    }
+  }, [activeTab])
+  
+  console.log(typeof schedule?.all)
+  console.log(activeTab)
+  console.log(showMore)
 
   const saveAsExcelFile = (buffer, fileName) => {
     import("file-saver").then((module) => {
@@ -505,6 +539,10 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
               filterMonthValue={filterMonthValue}
+              activeTab={activeTab}
+              schedule={schedule}
+              showMore={showMore}
+              setshowMore={setshowMore}
             />
           ) : (
             <DailyReportTable

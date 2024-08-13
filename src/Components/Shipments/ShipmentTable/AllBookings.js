@@ -30,6 +30,10 @@ const AllBookings = ({
   setCurrentPage,
   filterMonthValue,
   selectedStatus,
+  activeTab,
+  schedule,
+  showMore,
+  setshowMore
 }) => {
   const itemsPerPage = 5;
   const dispatch = useDispatch();
@@ -40,6 +44,8 @@ const AllBookings = ({
   const [modalRowData, setModalRowData] = useState(null);
   const { loading } = useSelector((state) => state.Booking);
   const [showAllData, setshowAllData] = useState(false)
+  const [scrollHeight, setscrollHeight] = useState("653px")
+  console.log(showMore)
   const [tblFilter, setTblFilter] = useState({
     id: [],
     order_no: [],
@@ -420,7 +426,7 @@ const AllBookings = ({
     );
   };
 
-  const paginatedData = showAllData ? filterData : filteredData?.slice(
+  const paginatedData = showAllData ? filteredData : filteredData?.slice(
     startIndex,
     10
     // startIndex + itemsPerPage
@@ -553,9 +559,11 @@ const AllBookings = ({
         // reorderableColumns
         // reorderableRows 
         // onRowReorder={(e) => setFilteredData(e.value)}
+        scrollable={showAllData}
+        scrollHeight={scrollHeight}
         dataKey="shipmentId"
         className={`${filteredData?.length === 0 ? "text-center" : ""} scrolloftable`}
-        style={{ height: "653px", overflowY: "auto", marginBottom: "10px" }}
+        // style={{ height: "653px", overflowY: "auto", marginBottom: "10px" }}
         // style={{overflowY: "auto" }}
         emptyMessage={noData()}
       >
@@ -693,9 +701,15 @@ const AllBookings = ({
           headerStyle={{ paddingLeft: "10px" }}
         ></Column>
       </DataTable>
-      <span role="button"  className="show-more" onClick={()=>setshowAllData(!showAllData)} >
-        {showAllData ? "Show Less" : "Show More"}
-      </span>
+      {/* {
+        showMore && <span role="button"  className="show-more" onClick={()=>{return (setshowAllData(!showAllData),setscrollHeight((prev)=>prev==="653px"?"1243px":"653px"))}} >
+            {showAllData ? "Show Less" : "Show More"}
+        </span>
+            } */}
+            
+            <span role="button"  className="show-more" onClick={()=>{return (setshowAllData(!showAllData),setscrollHeight((prev)=>prev==="653px"?"1243px":"653px"))}} >
+            {showAllData ? "Show Less" : "Show More"}
+        </span>
       {/* <Pagination
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}

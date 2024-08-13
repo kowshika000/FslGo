@@ -36,6 +36,7 @@ const QuotationTable = ({
   setHighlightShipmentCard,
   selectedDataToPatch,
   setSelectedDataToPatch,
+  showMore
   // setSelectedDropdownItem,
 }) => {
   const navigate = useNavigate();
@@ -46,6 +47,8 @@ const QuotationTable = ({
   const [globalFilter, setGlobalFilter] = useState("");
   const [clicked, setClicked] = useState(false);
   const [data, setData] = useState(filteredData);
+  const [showAllData, setshowAllData] = useState(false)
+  const [scrollHeight, setscrollHeight] = useState("653px")
 
   const itemsPerPage = 10;
   const quotationData = useSelector(
@@ -209,7 +212,12 @@ const QuotationTable = ({
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
   // Extract the data for the current page
-  const currentPageData = filteredData?.slice(startIndex, endIndex);
+  // const currentPageData = filteredData?.slice(startIndex, endIndex);
+  const currentPageData = showAllData ? filteredData : filteredData?.slice(
+    startIndex,
+    10
+    // startIndex + itemsPerPage
+  );
   const FilterTag = ({ field, filterValues, handleChangeFilter }) => {
     if (!Array.isArray(filterValues)) {
       return null;
@@ -536,7 +544,9 @@ const QuotationTable = ({
     >
       <DataTable
         value={currentPageData}
-        style={{ height: "420px" }}
+        // style={{ height: "420px" }}
+        scrollable={showAllData}
+        scrollHeight={scrollHeight}
         header={renderHeader}
         emptyMessage={noData}
       >
@@ -650,12 +660,17 @@ const QuotationTable = ({
           className="p-3 text-start"
         ></Column>
       </DataTable>
-      <Pagination
+      {
+        showMore &&  <span role="button"  className="show-more" onClick={()=>{return (setshowAllData(!showAllData),setscrollHeight((prev)=>prev==="653px"?"1243px":"653px"))}} >
+        {showAllData ? "Show Less" : "Show More"}
+      </span>
+            }
+      {/* <Pagination
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
         totalItems={filteredData?.length}
         itemsPerPage={itemsPerPage}
-      />
+      /> */}
       <Requested
         requstedModal={requstedModal}
         handleCancel={() => setrequstedModal(false)}

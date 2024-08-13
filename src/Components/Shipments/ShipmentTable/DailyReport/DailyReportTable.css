@@ -1,9 +1,9 @@
 .dsr_section .p-datatable .p-datatable-thead > tr > th {
   background-color: #f8fafc !important;
 }
-.dsr_section {
+/* .dsr_section {
   overflow: auto;
-}
+} */
 .dsr_section::-webkit-scrollbar {
   height: 8px !important;
 }
@@ -100,4 +100,7 @@
 } */
 .css-1hyl1h2{
   background-color: unset !important;
+}
+.p-datatable-wrapper::-webkit-scrollbar{
+  height:10px !important;
 }

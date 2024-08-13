@@ -15,6 +15,7 @@ const Invoice = () => {
           background: "#F8FAFC",
           paddingTop: "20px",
           paddingBottom: "50px",
+          height:"1100px"
         }}
       >
         <div className="invoiceC  mx-auto container-fluid">
@@ -34,10 +35,10 @@ const Invoice = () => {
           </div>
           <div
             className="shadow mx-auto mt-3"
-            style={{ maxWidth: "1255px", position: "relative", zIndex: 1 }}
+            style={{ maxWidth: "1255px", position: "relative", zIndex: 1,maxHeight:"100vh" }}
           >
-            <InvoiceDetails />
-            {/* <CashTable /> */}
+            {/* <InvoiceDetails /> */}
+            <CashTable />
           </div>
         </div>
       </div>

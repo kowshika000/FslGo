@@ -13,6 +13,7 @@ const QuotationTabs = ({setHighlightShipmentCard,selectedDataToPatch,setSelected
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState(data);
   const [selectedStatus, setSelectedStatus] = useState(null);
+  const [showMore, setshowMore] = useState(false)
   const [selectedDropdownItem, setSelectedDropdownItem] =
     useState("Past 30 Days");
     const items = [
@@ -96,6 +97,36 @@ const QuotationTabs = ({setHighlightShipmentCard,selectedDataToPatch,setSelected
       key: "5",
     },
   ];
+
+  console.log(activeKey)
+  console.log(data)
+
+  //for tab change according to show display showmore button
+
+  useEffect(() => {
+    if(activeKey==1 && Number(data?.length)>10){
+      setshowMore(true)
+    }
+    // else if(activeKey == 2 && Number(schedule?.booked)>10){
+    //   setshowMore(true)
+    // }
+    // else if(activeKey == 3 && Number(schedule?.in_transit)>10){
+    //   setshowMore(true)
+    // }
+    // else if(activeKey == 4 && Number(schedule?.arrived)>10){
+    //   setshowMore(true)
+    // }
+    // else if(activeKey == 5 && Number(schedule?.delivered)>10){
+    //   setshowMore(true)
+    // }
+    // else if(activeKey == 6 && Number(schedule?.cancelled)>10){
+    //   setshowMore(true)
+    // }
+    else{
+      setshowMore(false)
+    }
+  }, [activeKey])
+
   const valueTemplate = () => {
     return (
       <div>
@@ -174,6 +205,7 @@ const QuotationTabs = ({setHighlightShipmentCard,selectedDataToPatch,setSelected
             setHighlightShipmentCard={setHighlightShipmentCard}
             selectedDataToPatch={selectedDataToPatch}
             setSelectedDataToPatch={setSelectedDataToPatch} 
+            showMore={showMore}
           />
         </Col>
       </Row>

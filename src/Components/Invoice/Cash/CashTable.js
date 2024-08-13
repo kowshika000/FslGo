@@ -36,6 +36,8 @@ const CashTable = () => {
   const [clicked, setClicked] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
+  const [showAllData, setshowAllData] = useState(false)
+  const [scrollHeight, setscrollHeight] = useState("653px")
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
   const [selectedDropdownItem, setSelectedDropdownItem] =
     useState("Past 30 Days");
@@ -152,7 +154,13 @@ const CashTable = () => {
   const endIndex = startIndex + itemsPerPage;
 
   //   Extract the data for the current page
-  const currentPageData = filteredData?.slice(startIndex, endIndex);
+  // const currentPageData = filteredData?.slice(startIndex, endIndex);
+
+  const currentPageData = showAllData ? filteredData : filteredData?.slice(
+    startIndex,
+    10
+    // startIndex + itemsPerPage
+  );
 
   const sort = (col) => {
     const handleSort = (key) => {
@@ -388,7 +396,7 @@ const CashTable = () => {
                 Action &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 {showDownload && (
                   <span>
-                    <HiArrowDownTray size={16} />
+                    <HiArrowDownTray size={16} role="button" />
                   </span>
                 )}
               </div>
@@ -546,13 +554,12 @@ const CashTable = () => {
               <DataTable
                 value={currentPageData}
                 selectionMode="multiple"
-                scrollable
-                scrollHeight="400px"
+                scrollable={showAllData}
+                scrollHeight={scrollHeight}
                 expandedRows={expandedRows}
                 onRowToggle={(e) => setExpandedRows(e.data)}
                 rowExpansionTemplate={rowExpansionTemplate}
                 rowClassName={rowClassName}
-                style={{ height: 400 }}
               >
                 {tableHeaders.map((header, index) => (
                   <Column
@@ -581,12 +588,15 @@ const CashTable = () => {
                 />
               </DataTable>
             </div>
-            <Pagination
+            <span role="button"  className="show-more" onClick={()=>{return (setshowAllData(!showAllData),setscrollHeight((prev)=>prev==="653px"?"1243px":"653px"))}} >
+                {showAllData ? "Show Less" : "Show More"}
+            </span>
+            {/* <Pagination
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
               totalItems={filteredData?.length}
               itemsPerPage={itemsPerPage}
-            />
+            /> */}
           </div>
         </div>
       </div>
