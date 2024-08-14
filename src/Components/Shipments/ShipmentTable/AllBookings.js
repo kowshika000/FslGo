@@ -30,10 +30,11 @@ const AllBookings = ({
   setCurrentPage,
   filterMonthValue,
   selectedStatus,
-  activeTab,
-  schedule,
   showMore,
-  setshowMore
+  showAllData,
+  setshowAllData,
+  scrollHeight,
+  setscrollHeight
 }) => {
   const itemsPerPage = 5;
   const dispatch = useDispatch();
@@ -43,8 +44,8 @@ const AllBookings = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalRowData, setModalRowData] = useState(null);
   const { loading } = useSelector((state) => state.Booking);
-  const [showAllData, setshowAllData] = useState(false)
-  const [scrollHeight, setscrollHeight] = useState("653px")
+  // const [showAllData, setshowAllData] = useState(false)
+  // const [scrollHeight, setscrollHeight] = useState("653px")
   console.log(showMore)
   const [tblFilter, setTblFilter] = useState({
     id: [],
@@ -91,6 +92,36 @@ const AllBookings = ({
     setFilteredData(filterDataTable);
     setCurrentPage(1);
   }, [tblFilter, filterData]);
+
+  //for adjust scrollbar
+  const wrapper = document.querySelector('.scrolloftable .p-datatable-wrapper');
+  // console.log(scrollArea)
+  // useEffect(() => {
+  //   if(wrapper){
+    //   wrapper?.addEventListener('scroll', function() {
+    //     const scrollHeight = wrapper.scrollHeight;
+    //     const clientHeight = wrapper.clientHeight;
+    //     const scrollTop = wrapper.scrollTop;
+    //     const thumbHeight = Math.max(clientHeight * (clientHeight / scrollHeight), 20); // Ensure a minimum thumb height
+    //     const thumbPosition = (scrollTop / scrollHeight) * clientHeight;
+    
+    //     // Apply custom styles to the scrollbar thumb
+    //     wrapper.style.setProperty('--thumb-height', `${thumbHeight}px`);
+    //     wrapper.style.setProperty('--thumb-position', `${thumbPosition}px`);
+    // });
+  //   }
+  // }, [wrapper])
+  
+  // useEffect(() => {
+  //   document.addEventListener('DOMContentLoaded', function() {
+  //     // const scrollArea = document.querySelector('.scrolloftable .p-datatable-wrapper');
+      
+  //     console.log("height",scrollArea)
+  //     // Apply additional height reduction
+  //     scrollArea.style.height = "10px"; // Reduced height
+  // });
+  // }, [showMore])
+  
 
   const getUniqueOptions = (array, key) => {
     if (!Array.isArray(array) || !array?.length) {
@@ -701,15 +732,15 @@ const AllBookings = ({
           headerStyle={{ paddingLeft: "10px" }}
         ></Column>
       </DataTable>
-      {/* {
+      {
         showMore && <span role="button"  className="show-more" onClick={()=>{return (setshowAllData(!showAllData),setscrollHeight((prev)=>prev==="653px"?"1243px":"653px"))}} >
             {showAllData ? "Show Less" : "Show More"}
         </span>
-            } */}
+      }
             
-            <span role="button"  className="show-more" onClick={()=>{return (setshowAllData(!showAllData),setscrollHeight((prev)=>prev==="653px"?"1243px":"653px"))}} >
+            {/* <span role="button"  className="show-more" onClick={()=>{return (setshowAllData(!showAllData),setscrollHeight((prev)=>prev==="653px"?"1243px":"653px"))}} >
             {showAllData ? "Show Less" : "Show More"}
-        </span>
+        </span> */}
       {/* <Pagination
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}

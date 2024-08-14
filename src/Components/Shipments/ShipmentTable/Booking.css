@@ -260,7 +260,25 @@
 .p-inputtext:enabled:hover{
   border-color: #d1d5db !important;
 }
-/* 
-.scrolloftable::-webkit-scrollbar{
-  display: none !important;
+
+
+/* .scrolloftable .p-datatable-wrapper::-webkit-scrollbar{
+  width: 8px !important;
 } */
+
+/* .scrolloftable .p-datatable-wrapper::-webkit-scrollbar-thumb {
+  border: 2px solid #f1f1f1;
+  height: 10px !important;
+} */
+
+
+
+.scrolloftable .simplebar-scrollbar:before {
+  background-color: #01ffa2 !important;
+  width: 8px !important;
+  height: 8px !important;
+}
+.scrolloftable .simplebar-track.simplebar-vertical .simplebar-scrollbar {
+  width: 8px !important; /* Adjust width */
+  height: 8px !important;
+}

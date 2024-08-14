@@ -36,7 +36,11 @@ const QuotationTable = ({
   setHighlightShipmentCard,
   selectedDataToPatch,
   setSelectedDataToPatch,
-  showMore
+  showMore,
+  showAllData,
+  setshowAllData,
+  scrollHeight,
+  setscrollHeight,
   // setSelectedDropdownItem,
 }) => {
   const navigate = useNavigate();
@@ -47,8 +51,8 @@ const QuotationTable = ({
   const [globalFilter, setGlobalFilter] = useState("");
   const [clicked, setClicked] = useState(false);
   const [data, setData] = useState(filteredData);
-  const [showAllData, setshowAllData] = useState(false)
-  const [scrollHeight, setscrollHeight] = useState("653px")
+  // const [showAllData, setshowAllData] = useState(false)
+  // const [scrollHeight, setscrollHeight] = useState("653px")
 
   const itemsPerPage = 10;
   const quotationData = useSelector(

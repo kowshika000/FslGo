@@ -38,7 +38,9 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
   const [filterReport, setFilterReport] = useState();
   const [download, setdownload] = useState();
   const [filterMonthValue, setFilterMonthValue] = useState(null);
-  const [showMore, setshowMore] = useState(true)
+  const [showMore, setshowMore] = useState(false)
+  const [showAllData, setshowAllData] = useState(false)
+  const [scrollHeight, setscrollHeight] = useState("653px")
   const dispatch = useDispatch();
   const ShipmentData = useSelector((state) => state.Booking);
   const bookingData = ShipmentData?.booking;
@@ -212,30 +214,40 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
   //for tab change according to show display showmore button
 
   useEffect(() => {
-    if(activeTab == 1 && Number(schedule?.all)>10){
-      setshowMore(true)
+    if(activeTab && schedule){
+      if(Number(activeTab) === 1 && Number(schedule?.all) > 10){
+        setshowMore(true)
+      }
+      else if(Number(activeTab) === 2 && Number(schedule?.booked) > 10){
+        setshowMore(true)
+      }
+      else if(Number(activeTab) === 3 && Number(schedule?.in_transit) > 10){
+        setshowMore(true)
+      }
+      else if(Number(activeTab) === 4 && Number(schedule?.arrived) > 10){
+        setshowMore(true)
+      }
+      else if(Number(activeTab) === 5 && Number(schedule?.delivered) > 10){
+        setshowMore(true)
+      }
+      else if(Number(activeTab) === 6 && Number(schedule?.cancelled) > 10){
+        setshowMore(true)
+      }
+      else{
+        setshowMore(false)
+      }
     }
-    else if(activeTab == 2 && Number(schedule?.booked)>10){
-      setshowMore(true)
-    }
-    else if(activeTab == 3 && Number(schedule?.in_transit)>10){
-      setshowMore(true)
-    }
-    else if(activeTab == 4 && Number(schedule?.arrived)>10){
-      setshowMore(true)
-    }
-    else if(activeTab == 5 && Number(schedule?.delivered)>10){
-      setshowMore(true)
-    }
-    else if(activeTab == 6 && Number(schedule?.cancelled)>10){
-      setshowMore(true)
-    }
-    else{
-      setshowMore(false)
-    }
-  }, [activeTab])
+    
+
+    setshowAllData(false)
+    setscrollHeight("653px")
+    console.log("working")
+  }, [activeTab && schedule,activeTab])
+
+
   
-  console.log(typeof schedule?.all)
+  
+  console.log(schedule?.all,activeTab)
   console.log(activeTab)
   console.log(showMore)
 
@@ -543,6 +555,10 @@ function BookingTabs({ showText, setShowText, setShowmap }) {
               schedule={schedule}
               showMore={showMore}
               setshowMore={setshowMore}
+              showAllData={showAllData}
+              setshowAllData={setshowAllData}
+              scrollHeight={scrollHeight}
+              setscrollHeight={setscrollHeight}
             />
           ) : (
             <DailyReportTable
