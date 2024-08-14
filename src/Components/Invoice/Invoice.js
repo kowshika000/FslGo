@@ -15,19 +15,24 @@ const Invoice = () => {
           background: "#F8FAFC",
           paddingTop: "20px",
           paddingBottom: "50px",
-          height:"1100px"
         }}
       >
         <div className="invoiceC  mx-auto container-fluid">
           <div className="white-box container-fluid"></div>
           <div className="text-show">
             <div>
-              <Typography
+              {/* <Typography
                 style={{ fontSize: "28px", fontWeight: "700" }}
                 className="shipments-head"
               >
                 Invoice
-              </Typography>
+              </Typography> */}
+              <p
+                style={{ fontSize: "28px", fontWeight: "700" }}
+                className="m-0 shipments-head"
+              >
+                Invoice
+              </p>
               <div>
                 <Navbar />
               </div>
@@ -35,7 +40,7 @@ const Invoice = () => {
           </div>
           <div
             className="shadow mx-auto mt-3"
-            style={{ maxWidth: "1255px", position: "relative", zIndex: 1,maxHeight:"100vh" }}
+            style={{ maxWidth: "1255px", position: "relative", zIndex: 1 }}
           >
             {/* <InvoiceDetails /> */}
             <CashTable />

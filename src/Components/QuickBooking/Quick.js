@@ -26,12 +26,18 @@ const Quick = () => {
       <div className="white-box container-fluid"></div>
       <div className="text-show">
         <div>
-          <Typography
+          {/* <Typography
             style={{ fontSize: "28px", fontWeight: "700", color: "black" }}
             className="shipments-head text-dark"
           >
             Quick Booking
-          </Typography>
+          </Typography> */}
+          <p
+            style={{ fontSize: "28px", fontWeight: "700", color: "black" }}
+            className="shipments-head text-dark m-0"
+          >
+            Quick Booking
+          </p>
           <div>
             <Navbar />
           </div>

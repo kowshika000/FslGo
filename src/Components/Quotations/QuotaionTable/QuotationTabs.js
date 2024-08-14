@@ -14,6 +14,8 @@ const QuotationTabs = ({setHighlightShipmentCard,selectedDataToPatch,setSelected
   const [filteredData, setFilteredData] = useState(data);
   const [selectedStatus, setSelectedStatus] = useState(null);
   const [showMore, setshowMore] = useState(false)
+  const [showAllData, setshowAllData] = useState(false)
+  const [scrollHeight, setscrollHeight] = useState("653px")
   const [selectedDropdownItem, setSelectedDropdownItem] =
     useState("Past 30 Days");
     const items = [
@@ -125,7 +127,9 @@ const QuotationTabs = ({setHighlightShipmentCard,selectedDataToPatch,setSelected
     else{
       setshowMore(false)
     }
-  }, [activeKey])
+    setshowAllData(false)
+    setscrollHeight("653px")
+  }, [activeKey && data])
 
   const valueTemplate = () => {
     return (
@@ -206,6 +210,10 @@ const QuotationTabs = ({setHighlightShipmentCard,selectedDataToPatch,setSelected
             selectedDataToPatch={selectedDataToPatch}
             setSelectedDataToPatch={setSelectedDataToPatch} 
             showMore={showMore}
+            showAllData={showAllData}
+            setshowAllData={setshowAllData}
+            scrollHeight={scrollHeight}
+            setscrollHeight={setscrollHeight}
           />
         </Col>
       </Row>
