@@ -34,7 +34,7 @@ const AllBookings = ({
   showAllData,
   setshowAllData,
   scrollHeight,
-  setscrollHeight
+  setscrollHeight,
 }) => {
   const itemsPerPage = 5;
   const dispatch = useDispatch();
@@ -46,7 +46,7 @@ const AllBookings = ({
   const { loading } = useSelector((state) => state.Booking);
   // const [showAllData, setshowAllData] = useState(false)
   // const [scrollHeight, setscrollHeight] = useState("653px")
-  console.log(showMore)
+  console.log(showMore);
   const [tblFilter, setTblFilter] = useState({
     id: [],
     order_no: [],
@@ -94,34 +94,33 @@ const AllBookings = ({
   }, [tblFilter, filterData]);
 
   //for adjust scrollbar
-  const wrapper = document.querySelector('.scrolloftable .p-datatable-wrapper');
+  const wrapper = document.querySelector(".scrolloftable .p-datatable-wrapper");
   // console.log(scrollArea)
   // useEffect(() => {
   //   if(wrapper){
-    //   wrapper?.addEventListener('scroll', function() {
-    //     const scrollHeight = wrapper.scrollHeight;
-    //     const clientHeight = wrapper.clientHeight;
-    //     const scrollTop = wrapper.scrollTop;
-    //     const thumbHeight = Math.max(clientHeight * (clientHeight / scrollHeight), 20); // Ensure a minimum thumb height
-    //     const thumbPosition = (scrollTop / scrollHeight) * clientHeight;
-    
-    //     // Apply custom styles to the scrollbar thumb
-    //     wrapper.style.setProperty('--thumb-height', `${thumbHeight}px`);
-    //     wrapper.style.setProperty('--thumb-position', `${thumbPosition}px`);
-    // });
+  //   wrapper?.addEventListener('scroll', function() {
+  //     const scrollHeight = wrapper.scrollHeight;
+  //     const clientHeight = wrapper.clientHeight;
+  //     const scrollTop = wrapper.scrollTop;
+  //     const thumbHeight = Math.max(clientHeight * (clientHeight / scrollHeight), 20); // Ensure a minimum thumb height
+  //     const thumbPosition = (scrollTop / scrollHeight) * clientHeight;
+
+  //     // Apply custom styles to the scrollbar thumb
+  //     wrapper.style.setProperty('--thumb-height', `${thumbHeight}px`);
+  //     wrapper.style.setProperty('--thumb-position', `${thumbPosition}px`);
+  // });
   //   }
   // }, [wrapper])
-  
+
   // useEffect(() => {
   //   document.addEventListener('DOMContentLoaded', function() {
   //     // const scrollArea = document.querySelector('.scrolloftable .p-datatable-wrapper');
-      
+
   //     console.log("height",scrollArea)
   //     // Apply additional height reduction
   //     scrollArea.style.height = "10px"; // Reduced height
   // });
   // }, [showMore])
-  
 
   const getUniqueOptions = (array, key) => {
     if (!Array.isArray(array) || !array?.length) {
@@ -186,9 +185,15 @@ const AllBookings = ({
     }
   }, [selectedStatus]);
 
-  function MultiSelectFilter(filterKey, options, value, additionalStyles) {
+  function MultiSelectFilter(
+    filterKey,
+    options,
+    value,
+    headerText,
+    additionalStyles
+  ) {
     const renderOption = (option) => {
-      if (option.label.length <= 14) {
+      if (option?.label?.length <= 14) {
         return <span>{option.label}</span>;
       } else {
         const truncatedText = option.label?.slice(0, 14).trim() + "..";
@@ -200,6 +205,7 @@ const AllBookings = ({
       }
     };
 
+    const dynamicWidth = headerText?.length * 8 + "px";
     return (
       <MultiSelect
         className="custom-multi-select"
@@ -209,7 +215,7 @@ const AllBookings = ({
         style={{
           position: "absolute",
           opacity: "0",
-          width: "20px",
+          width: dynamicWidth,
           fontSize: "10px",
           ...additionalStyles,
         }}
@@ -457,11 +463,13 @@ const AllBookings = ({
     );
   };
 
-  const paginatedData = showAllData ? filteredData : filteredData?.slice(
-    startIndex,
-    10
-    // startIndex + itemsPerPage
-  );
+  const paginatedData = showAllData
+    ? filteredData
+    : filteredData?.slice(
+        startIndex,
+        10
+        // startIndex + itemsPerPage
+      );
   const noData = () => {
     return (
       <div
@@ -588,14 +596,15 @@ const AllBookings = ({
       <DataTable
         value={paginatedData}
         // reorderableColumns
-        // reorderableRows 
+        // reorderableRows
         // onRowReorder={(e) => setFilteredData(e.value)}
         scrollable={showAllData}
         scrollHeight={scrollHeight}
         dataKey="shipmentId"
-        className={`${filteredData?.length === 0 ? "text-center" : ""} scrolloftable`}
+        className={`${
+          filteredData?.length === 0 ? "text-center" : ""
+        } scrolloftable`}
         // style={{ height: "653px", overflowY: "auto", marginBottom: "10px" }}
-        // style={{overflowY: "auto" }}
         emptyMessage={noData()}
       >
         <Column
@@ -606,12 +615,12 @@ const AllBookings = ({
               className=" d-flex"
             >
               Shipment ID
-              {MultiSelectFilter("id", ShipId, tblFilter.id)}
+              {MultiSelectFilter("id", ShipId, tblFilter.id, "Shipment ID")}
               {sort("id")}
             </span>
           }
           body={shipmentTemplateFilterData}
-          style={{ paddingRight: "10px", width: "170px" }}
+          style={{ paddingRight: "10px", width: "170px",paddingLeft:10 }}
         ></Column>
         <Column
           field="order_no"
@@ -621,7 +630,12 @@ const AllBookings = ({
               className="py-3 d-flex "
             >
               Order No
-              {MultiSelectFilter("order_no", orderId_, tblFilter.order_no)}
+              {MultiSelectFilter(
+                "order_no",
+                orderId_,
+                tblFilter.order_no,
+                "Order No"
+              )}
               {sort("order_no")}
             </span>
           }
@@ -637,7 +651,7 @@ const AllBookings = ({
               className=" d-flex"
             >
               Mode
-              {MultiSelectFilter("mode", Mode_, tblFilter.mode)}
+              {MultiSelectFilter("mode", Mode_, tblFilter.mode, "Mode")}
               {sort("mode")}
             </span>
           }
@@ -652,7 +666,7 @@ const AllBookings = ({
               className="d-flex"
             >
               Origin
-              {MultiSelectFilter("origin", Org_, tblFilter.origin)}
+              {MultiSelectFilter("origin", Org_, tblFilter.origin, "Origin")}
               {sort("origin")}
             </span>
           }
@@ -668,7 +682,12 @@ const AllBookings = ({
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
             >
               Destination
-              {MultiSelectFilter("destination", dest_, tblFilter.destination)}
+              {MultiSelectFilter(
+                "destination",
+                dest_,
+                tblFilter.destination,
+                "Destination"
+              )}
               {sort("destination")}
             </span>
           }
@@ -681,7 +700,7 @@ const AllBookings = ({
           header={
             <span className=" d-flex" style={{ position: "relative" }}>
               ETD/ATD
-              {MultiSelectFilter("etd_atd", etd_, tblFilter.etd_atd)}
+              {MultiSelectFilter("etd_atd", etd_, tblFilter.etd_atd, "ETD/ATD")}
               {sort("etd_atd")}
             </span>
           }
@@ -694,7 +713,7 @@ const AllBookings = ({
           header={
             <span className=" d-flex">
               ETA/ATA
-              {MultiSelectFilter("eta_ata", eta_, tblFilter.eta_ata)}
+              {MultiSelectFilter("eta_ata", eta_, tblFilter.eta_ata, "ETA/ATA")}
               {sort("eta_ata")}
             </span>
           }
@@ -707,7 +726,7 @@ const AllBookings = ({
           header={
             <span className=" d-flex">
               Status
-              {MultiSelectFilter("status", status_, tblFilter.status)}
+              {MultiSelectFilter("status", status_, tblFilter.status, "Status")}
               {sort("status")}
             </span>
           }
@@ -732,13 +751,22 @@ const AllBookings = ({
           headerStyle={{ paddingLeft: "10px" }}
         ></Column>
       </DataTable>
-      {
-        showMore && <span role="button"  className="show-more" onClick={()=>{return (setshowAllData(!showAllData),setscrollHeight((prev)=>prev==="653px"?"1243px":"653px"))}} >
-            {showAllData ? "Show Less" : "Show More"}
+      {showMore && (
+        <span
+          role="button"
+          className="show-more"
+          onClick={() => {
+            return (
+              setshowAllData(!showAllData),
+              setscrollHeight((prev) => (prev === "653px" ? "1243px" : "653px"))
+            );
+          }}
+        >
+          {showAllData ? "Show Less" : "Show More"}
         </span>
-      }
-            
-            {/* <span role="button"  className="show-more" onClick={()=>{return (setshowAllData(!showAllData),setscrollHeight((prev)=>prev==="653px"?"1243px":"653px"))}} >
+      )}
+
+      {/* <span role="button"  className="show-more" onClick={()=>{return (setshowAllData(!showAllData),setscrollHeight((prev)=>prev==="653px"?"1243px":"653px"))}} >
             {showAllData ? "Show Less" : "Show More"}
         </span> */}
       {/* <Pagination

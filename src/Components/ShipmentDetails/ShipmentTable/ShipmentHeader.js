@@ -1,16 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
-import uaeFlag from "../../../assets/ae.svg";
-import indFlag from "../../../assets/in.svg";
-import ship from "../../../assets/Ship.svg";
-import menuIcon from "../../../assets/menuDots.png";
+// import uaeFlag from "../../../assets/ae.svg";
+// import indFlag from "../../../assets/in.svg";
+// import ship from "../../../assets/Ship.svg";
+// import menuIcon from "../../../assets/menuDots.png";
 import rightArrow from "../../../assets/rigtharrow.png";
-import OrImg from "../../../assets/orSymbol.png";
+// import OrImg from "../../../assets/orSymbol.png";
 // import co2 from "../../../assets/Co2 Icons-05 1.png";
 import co2 from "../../../assets/Co2 Icons-05 1.svg";
 import lcl from "../../../assets/LCL.svg";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 import Stepper from "./Track/Stepper";
-import { Card, Dropdown, Space, Tooltip, message } from "antd";
+import { Card, Tooltip } from "antd";
 import "./ShipmentHeader.css";
 import Modal from "./Modal/Modal";
 import TransactionModal from "./Modal/TransactionModal";
@@ -19,7 +19,8 @@ import CancelRequestModal from "./Modal/CancelRequestModal";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { ViewBookingAction } from "../../../Redux/Actions/ViewBookingAction";
-import { useLocation } from "react-router-dom";
+// import { useLocation } from "react-router-dom";
+import CountryFlag from "../../Core-Components/CountryFlag";
 
 const ShipmentHeader = ({ rowDatas }) => {
   //This is for getting id from previous page
@@ -49,30 +50,30 @@ const ShipmentHeader = ({ rowDatas }) => {
   const fileteredMilestone = Booking?.filter((item) => item.id === progress);
 
   // for Cancel Booking Dropdown
-  const onClick = ({ key }) => {
-    handleCancelOpen();
-  };
-  const items = [
-    {
-      label: "Cancel Booking",
-      key: "1",
-    },
-  ];
+  // const onClick = ({ key }) => {
+  //   handleCancelOpen();
+  // };
+  // const items = [
+  //   {
+  //     label: "Cancel Booking",
+  //     key: "1",
+  //   },
+  // ];
 
   //transaction_modal
 
   const [openTransmodal, setOpenTransModal] = useState(false);
-  const handleOpen = () => {
-    setOpenTransModal(true);
-  };
+  // const handleOpen = () => {
+  //   setOpenTransModal(true);
+  // };
   const handleClose = () => {
     setOpenTransModal(false);
   };
   //cancel_booking_modal
   const [openCancelmodal, setOpenCancelModal] = useState(false);
-  const handleCancelOpen = () => {
-    setOpenCancelModal(true);
-  };
+  // const handleCancelOpen = () => {
+  //   setOpenCancelModal(true);
+  // };
   const handleCancelClose = () => {
     setOpenCancelModal(false);
   };
@@ -145,9 +146,6 @@ const ShipmentHeader = ({ rowDatas }) => {
     stepbox.current.scrollLeft += 125;
     manageIcons();
   };
-
-  const ship_id = "12060400067845654567";
-  const order_no = "ASO/0143/245757755555555555555555555555555555555555";
 
   return (
     <>
@@ -243,39 +241,42 @@ const ShipmentHeader = ({ rowDatas }) => {
                   </h6>
                 </div>
               </div>
-         
-        <div className="row destination_row">
-          <div className="col-10 left_column">
-            <div className="from_box">
-              <img src={uaeFlag} alt="" className="flag_img me-2" />
-             
-                  <h6 className="m-0">
-                    {item.origin}&nbsp;({item.origin_countrycode})
-                  </h6>
-             
-              <img src={rightArrow} alt="" className="mx-3" />
-            </div>
-            <div className="to_box">
-              <img src={indFlag} alt="" className="flag_img me-2" />
-              
-                  <h6 className="m-0">
-                    {item.destination}&nbsp;({item.destination_countrycode})
-                  </h6>
-              
-              {/* <img src={OrImg} alt="" className='mx-3' /> */}
-            </div>
-            {/* <div className="estimate_box">
+
+              <div className="row destination_row">
+                <div className="col-10 left_column">
+                  <div className="from_box">
+                    <CountryFlag
+                      countryCode={item?.origin_countrycode}
+                      className="flag_img me-2"
+                    />
+                    <h6 className="m-0">
+                      {item.origin}&nbsp;({item.origin_countrycode})
+                    </h6>
+
+                    <img src={rightArrow} alt="" className="mx-3" />
+                  </div>
+                  <div className="to_box">
+                    <CountryFlag
+                      countryCode={item?.destination_countrycode}
+                      className="flag_img me-2"
+                    />
+                    <h6 className="m-0">
+                      {item.destination}&nbsp;({item.destination_countrycode})
+                    </h6>
+
+                    {/* <img src={OrImg} alt="" className='mx-3' /> */}
+                  </div>
+                  {/* <div className="estimate_box">
                         <img src={ship} alt="" className='me-2' />
                         <p className='m-0'>Est. T/T</p>
                         <p className='mx-2 m-0'>9 Days (5 Days Port to Port)</p>
                     </div> */}
-          </div>
-          <div className="col-2 right_column">
-            <div className="bookedButton">
-              <span>{item.status}</span>
-           
-            </div>
-            {/* <div className="menu_icon">
+                </div>
+                <div className="col-2 right_column">
+                  <div className="bookedButton">
+                    <span>{item.status}</span>
+                  </div>
+                  {/* <div className="menu_icon">
               <Dropdown
                 menu={{
                   items,
@@ -289,86 +290,85 @@ const ShipmentHeader = ({ rowDatas }) => {
                 </a>
               </Dropdown>
             </div> */}
-          </div>
-        </div>
-        <div className="booking_row">
-          <div className="booking_content">
-            <p className="m-0 mb-1">Booking Date</p>
-            <p className="m-0">{item.booked_on}</p>
-           
-          </div>
-          <div className="booking_content">
-            <p className="m-0 mb-1">Estimated time of Departure</p>
-          <p className="m-0">{item.etd_atd}</p>
-          </div>
-          <div className="booking_content">
-            <p className="m-0 mb-1">Estimated time of Arrival</p>
-            <p className="m-0">{item.eta_ata}</p>
-          </div>
-          <div className="booking_content">
-            <p className="m-0 mb-1">Mode</p>
-                <p className="m-0">
-                  <img className="me-1" src={lcl} />
-                  {item.mode}
-                </p>
-            
-          </div>
-          <div className="booking_content">
-            <p className="m-0 mb-1">Incoterm</p>
-            <p className="m-0 text-center">{item.tos}</p>
-           
-          </div>
-          <div className="booking_content">
-            <p className="m-0 mb-1">
-              <span style={{ marginRight: "7px" }}>
-                <img src={co2}></img>
-              </span>
-              Emission
-            </p>
-           
-             <p className="m-0 text-center">{item.co_emission}</p>
-          
-          </div>
-        </div>
-        {/* stepper_box */}
-        <div className="booking_status_row" style={{ position: "relative" }}>
-          <div
-            className="table-responsive dragging"
-            ref={stepbox}
-            id="tab"
-            onMouseDown={() => setIsDragging(true)}
-            onMouseUp={() => dragStop()}
-            onMouseMove={(e) => dragging(e)}
-          >
-            {fileteredMilestone[0]?.milestones.length > 7 && (
-              <div className="arrow_icon">
-                {showLeftArrow && (
-                  <IoIosArrowBack
-                    size={17}
-                    color="rgb(109 114 120)"
-                    onClick={() => handleScrollLeft()}
-                  />
-                )}
+                </div>
               </div>
-            )}
+              <div className="booking_row">
+                <div className="booking_content">
+                  <p className="m-0 mb-1">Booking Date</p>
+                  <p className="m-0">{item.booked_on}</p>
+                </div>
+                <div className="booking_content">
+                  <p className="m-0 mb-1">Estimated time of Departure</p>
+                  <p className="m-0">{item.etd_atd}</p>
+                </div>
+                <div className="booking_content">
+                  <p className="m-0 mb-1">Estimated time of Arrival</p>
+                  <p className="m-0">{item.eta_ata}</p>
+                </div>
+                <div className="booking_content">
+                  <p className="m-0 mb-1">Mode</p>
+                  <p className="m-0">
+                    <img className="me-1" src={lcl} />
+                    {item.mode}
+                  </p>
+                </div>
+                <div className="booking_content">
+                  <p className="m-0 mb-1">Incoterm</p>
+                  <p className="m-0 text-center">{item.tos}</p>
+                </div>
+                <div className="booking_content">
+                  <p className="m-0 mb-1">
+                    <span style={{ marginRight: "7px" }}>
+                      <img src={co2}></img>
+                    </span>
+                    Emission
+                  </p>
 
-            {/* stepper */}
-
-            <Stepper booking_id={progress} />
-            {fileteredMilestone[0]?.milestones.length > 7 && (
-              <div className="arrow_icon">
-                {showRightArrow && (
-                  <IoIosArrowForward
-                    size={17}
-                    color="rgb(109 114 120)"
-                    onClick={() => handleScrollRight()}
-                  />
-                )}
+                  <p className="m-0 text-center">{item.co_emission}</p>
+                </div>
               </div>
-            )}
-          </div>
-        </div>
-        </div>
+              {/* stepper_box */}
+              <div
+                className="booking_status_row"
+                style={{ position: "relative" }}
+              >
+                <div
+                  className="table-responsive dragging"
+                  ref={stepbox}
+                  id="tab"
+                  onMouseDown={() => setIsDragging(true)}
+                  onMouseUp={() => dragStop()}
+                  onMouseMove={(e) => dragging(e)}
+                >
+                  {fileteredMilestone[0]?.milestones.length > 7 && (
+                    <div className="arrow_icon">
+                      {showLeftArrow && (
+                        <IoIosArrowBack
+                          size={17}
+                          color="rgb(109 114 120)"
+                          onClick={() => handleScrollLeft()}
+                        />
+                      )}
+                    </div>
+                  )}
+
+                  {/* stepper */}
+
+                  <Stepper booking_id={progress} />
+                  {fileteredMilestone[0]?.milestones.length > 7 && (
+                    <div className="arrow_icon">
+                      {showRightArrow && (
+                        <IoIosArrowForward
+                          size={17}
+                          color="rgb(109 114 120)"
+                          onClick={() => handleScrollRight()}
+                        />
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
           );
         })}
         {/* <div className="estimated_row">

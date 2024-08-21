@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
 import "./DailyReportTable.css";
-import Pagination from "../../../Core-Components/Pagination";
+// import Pagination from "../../../Core-Components/Pagination";
 import group from "../../../../assets/Group 20851.svg";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -14,17 +14,23 @@ import { CloseOutlined, LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { IconButton } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { DsrReportRequest } from "../../../../Redux/Actions/DsrReportAction";
-import { CircularProgress, Box } from "@mui/material";
-import shipgif from '../../../../assets/shiploadinggif.gif'
+import { Box } from "@mui/material";
+import shipgif from "../../../../assets/shiploadinggif.gif";
 
-
-function DailyReportTable({ filtercolumn, setfiltercolumn,filterReport, setFilterReport, setdownload, download}) {
+function DailyReportTable({
+  filtercolumn,
+  setfiltercolumn,
+  filterReport,
+  setFilterReport,
+  setdownload,
+  download,
+}) {
   //This is for get usertoken from profile API data
   const Profileusertoken = useSelector(
     (state) => state.ProfileData?.profileData?.usertoken
   );
-  const [showAllData, setshowAllData] = useState(false)
-  const [scrollHeight, setscrollHeight] = useState("653px")
+  const [showAllData, setshowAllData] = useState(false);
+  const [scrollHeight, setscrollHeight] = useState("653px");
   const payload = {
     sl_no: Profileusertoken,
     sorigin: "",
@@ -52,7 +58,7 @@ function DailyReportTable({ filtercolumn, setfiltercolumn,filterReport, setFilte
   //Hooks and Variables
   const { loading } = useSelector((state) => state.DsrReport);
   const DsrReportData = useSelector((state) => state.DsrReport.dsrData);
-  const [columnOrder, setcolumnOrder] = useState([])
+  const [columnOrder, setcolumnOrder] = useState([]);
 
   const DsrColumns = DsrReportData?.columns; //get column datas from dsr api response
   const DsrDatas = DsrReportData?.data; //get datas from dsr api response
@@ -61,15 +67,14 @@ function DailyReportTable({ filtercolumn, setfiltercolumn,filterReport, setFilte
   const DsrCopied = { ...DsrDataObj }; //this copies data from previous line data
   const DsrModifiedArray = Object?.keys(DsrCopied || {}); //change objects into array
   console.log(DsrModifiedArray);
-  console.log(DsrColumns)
+  console.log(DsrColumns);
 
   //This is modify arrayofvalues into objects with default true value
-
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
- 
+
   //This function is used to change the
   // function changeKey(arr) {
   //   var newArr = [];
@@ -101,19 +106,19 @@ function DailyReportTable({ filtercolumn, setfiltercolumn,filterReport, setFilte
   console.log(ColumnObject);
 
   let comparisonResult = {};
-  if(columnOrder.length){
-    columnOrder?.forEach(item => {
+  if (columnOrder.length) {
+    columnOrder?.forEach((item) => {
       comparisonResult[item] = DsrModifiedArray?.includes(item);
-    });     
-  }else{
-    DsrColumns?.forEach(item => {
+    });
+  } else {
+    DsrColumns?.forEach((item) => {
       comparisonResult[item] = DsrModifiedArray?.includes(item);
     });
   }
-  
+
   console.log(comparisonResult);
   const [checked, setChecked] = useState(comparisonResult);
-  console.log(checked)
+  console.log(checked);
 
   const TableColumnObject = DsrColumns?.reduce(
     (o, key) => ({ ...o, [key]: true }),
@@ -136,7 +141,7 @@ function DailyReportTable({ filtercolumn, setfiltercolumn,filterReport, setFilte
   const [clicked, setClicked] = useState(false);
   const [data, setData] = useState();
   const itemsPerPage = 6;
-  console.log(filterReport)
+  console.log(filterReport);
 
   useEffect(() => {
     setfiltercolumn(TableColumnObject);
@@ -153,7 +158,6 @@ function DailyReportTable({ filtercolumn, setfiltercolumn,filterReport, setFilte
     header: e[0],
   }));
 
-
   useEffect(() => {
     const filterReportTbl = report?.filter((items) =>
       Object.keys(dsrFilter || {})?.every(
@@ -165,7 +169,6 @@ function DailyReportTable({ filtercolumn, setfiltercolumn,filterReport, setFilte
     setCurrentPage(1);
   }, [dsrFilter]);
 
-
   // const handleWholeData = async(val)=>{
   //   console.log(val)
   //   const filteredData = report.map(item => {
@@ -175,7 +178,7 @@ function DailyReportTable({ filtercolumn, setfiltercolumn,filterReport, setFilte
   //             filteredItem[val] += item[val];
   //         }
   //     // });
-      
+
   //     return filteredItem;
   // });
   // console.log(filteredData)
@@ -186,91 +189,87 @@ function DailyReportTable({ filtercolumn, setfiltercolumn,filterReport, setFilte
   // }
 
   const filterDataByKeys = (data) => {
-    return data?.map(item => {
-        const filteredItem = {};
-        // allowedKeys?.forEach(key => {
-        //     if (item.hasOwnProperty(key?.header)) {
-        //         filteredItem[key?.header] = item[key?.header];
-        //     }
-        // });
-        for (const [key, value] of Object.entries(filtercolumn)) {
-          if(value === true){
-            filteredItem[key] = item[key];
-          }    
+    return data?.map((item) => {
+      const filteredItem = {};
+      // allowedKeys?.forEach(key => {
+      //     if (item.hasOwnProperty(key?.header)) {
+      //         filteredItem[key?.header] = item[key?.header];
+      //     }
+      // });
+      for (const [key, value] of Object.entries(filtercolumn)) {
+        if (value === true) {
+          filteredItem[key] = item[key];
+        }
       }
-        return filteredItem;
+      return filteredItem;
     });
-};
-
+  };
 
   // const fdata = filterDataByKeys(filterReport, arrayOfObj);
   // console.log(fdata)
 
   useEffect(() => {
     const res = filterDataByKeys(filterReport);
-    setdownload(res)
+    setdownload(res);
+  }, [filtercolumn]);
 
-}, [filtercolumn])
+  // console.log(download)
 
-// console.log(download)
-
-const handleArrange = (columns) => {
-  console.log(columns)
-  const reorderedKeys = columns.map(col => col?.props?.field);
-  console.log(reorderedKeys)
-  setcolumnOrder(reorderedKeys)
-  const columnObject = reorderedKeys?.reduce((obj, col) => {
-    obj[col] = true;
-    return obj;
-  }, {});
-  const newDownload = download.map((item) => {
-    const reorderedItem = {};
-    reorderedKeys.forEach((key) => {
-      reorderedItem[key] = item[key];
+  const handleArrange = (columns) => {
+    console.log(columns);
+    const reorderedKeys = columns.map((col) => col?.props?.field);
+    console.log(reorderedKeys);
+    setcolumnOrder(reorderedKeys);
+    const columnObject = reorderedKeys?.reduce((obj, col) => {
+      obj[col] = true;
+      return obj;
+    }, {});
+    const newDownload = download.map((item) => {
+      const reorderedItem = {};
+      reorderedKeys.forEach((key) => {
+        reorderedItem[key] = item[key];
+      });
+      return reorderedItem;
     });
-    return reorderedItem;
-  });
-  setdownload(newDownload);
-  setfiltercolumn(columnObject)
-  
-};
+    setdownload(newDownload);
+    setfiltercolumn(columnObject);
+  };
 
-const hasPageBeenRendered = useRef(false)
+  const hasPageBeenRendered = useRef(false);
 
-// useEffect(() => {
-//   const handleArrange = (columns) => {
+  // useEffect(() => {
+  //   const handleArrange = (columns) => {
 
-//     // console.log(columns)
-//     // const reorderedKeys = columns.map(col => col?.props?.field);
-//     // console.log(reorderedKeys)
-//     // setcolumnOrder(reorderedKeys)
-//     const columnObject = columns?.reduce((obj, col) => {
-//       obj[col] = true;
-//       return obj;
-//     }, {});
-//     const newDownload = download?.map((item) => {
-//       const reorderedItem = {};
-//       columns?.forEach((key) => {
-//         reorderedItem[key] = item[key];
-//       });
-//       return reorderedItem;
-//     });
-//     setdownload(newDownload);
-//     setfiltercolumn(columnObject)
-    
-//   };
+  //     // console.log(columns)
+  //     // const reorderedKeys = columns.map(col => col?.props?.field);
+  //     // console.log(reorderedKeys)
+  //     // setcolumnOrder(reorderedKeys)
+  //     const columnObject = columns?.reduce((obj, col) => {
+  //       obj[col] = true;
+  //       return obj;
+  //     }, {});
+  //     const newDownload = download?.map((item) => {
+  //       const reorderedItem = {};
+  //       columns?.forEach((key) => {
+  //         reorderedItem[key] = item[key];
+  //       });
+  //       return reorderedItem;
+  //     });
+  //     setdownload(newDownload);
+  //     setfiltercolumn(columnObject)
 
-//   if(hasPageBeenRendered.current){
-//     if(columnOrder){
-//       handleArrange(columnOrder)
-//       console.log("colorder")
-//     }
-//   }
+  //   };
 
-//   hasPageBeenRendered.current = true
+  //   if(hasPageBeenRendered.current){
+  //     if(columnOrder){
+  //       handleArrange(columnOrder)
+  //       console.log("colorder")
+  //     }
+  //   }
 
-// }, [checked])
+  //   hasPageBeenRendered.current = true
 
+  // }, [checked])
 
   const getUniqueOptions = (array, key) => {
     if (!Array?.isArray(array) || !array?.length) {
@@ -302,7 +301,13 @@ const hasPageBeenRendered = useRef(false)
       }));
     }
   };
-  function MultiSelectFilter(filterKey, options, value, additionalStyles) {
+  function MultiSelectFilter(
+    filterKey,
+    options,
+    value,
+    headerText,
+    additionalStyles
+  ) {
     const renderOption = (option) => {
       if (option?.label?.length <= 14) {
         return <span>{option?.label}</span>;
@@ -315,7 +320,7 @@ const hasPageBeenRendered = useRef(false)
         );
       }
     };
-
+    const dynamicWidth = headerText?.length * 8 + "px";
     return (
       <MultiSelect
         className="custom-multi-select"
@@ -324,10 +329,11 @@ const hasPageBeenRendered = useRef(false)
         name="ShipId"
         filter
         style={{
-          position: "absolute",
+          position: "sticky",
           opacity: "0",
-          width: "20px",
+          width: dynamicWidth,
           fontSize: "10px",
+          marginLeft: `-${dynamicWidth}`,
           ...additionalStyles,
         }}
         showSelectAll={false}
@@ -382,7 +388,7 @@ const hasPageBeenRendered = useRef(false)
       </>
     );
   };
- 
+
   const sort = (col) => {
     const handleSort = (col) => {
       const sorted = [...filterReport].sort((a, b) => {
@@ -432,7 +438,6 @@ const hasPageBeenRendered = useRef(false)
     );
   };
 
-
   //This is for pagination
   const startIndex = (currentPage - 1) * itemsPerPage;
 
@@ -440,13 +445,15 @@ const hasPageBeenRendered = useRef(false)
   //   startIndex,
   //   startIndex + itemsPerPage
   // );
-  const paginatedData = showAllData ? filterReport : filterReport?.slice(
-    startIndex,
-    10
-    // startIndex + itemsPerPage
-  );
+  const paginatedData = showAllData
+    ? filterReport
+    : filterReport?.slice(
+        startIndex,
+        10
+        // startIndex + itemsPerPage
+      );
 
-  console.log(paginatedData)
+  console.log(paginatedData);
   // const noData = () => {
   //   return (
   //     <div
@@ -457,8 +464,6 @@ const hasPageBeenRendered = useRef(false)
   //     </div>
   //   );
   // };
-
-  
 
   const columnValueData = (fieldName) => (rowData) => {
     const fieldValue = rowData[fieldName];
@@ -547,35 +552,35 @@ const hasPageBeenRendered = useRef(false)
     checkArrows();
   }, []);
 
-//   const exportExcel = () => {
-//     import('xlsx').then((xlsx) => {
-//         const worksheet = xlsx.utils.json_to_sheet(paginatedData);
-//         const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
-//         const excelBuffer = xlsx.write(workbook, {
-//             bookType: 'xlsx',
-//             type: 'array'
-//         });
+  //   const exportExcel = () => {
+  //     import('xlsx').then((xlsx) => {
+  //         const worksheet = xlsx.utils.json_to_sheet(paginatedData);
+  //         const workbook = { Sheets: { data: worksheet }, SheetNames: ['data'] };
+  //         const excelBuffer = xlsx.write(workbook, {
+  //             bookType: 'xlsx',
+  //             type: 'array'
+  //         });
 
-//         saveAsExcelFile(excelBuffer, 'paginatedData');
-//     });
-// };
+  //         saveAsExcelFile(excelBuffer, 'paginatedData');
+  //     });
+  // };
 
-// const saveAsExcelFile = (buffer, fileName) => {
-//     import('file-saver').then((module) => {
-//         if (module && module.default) {
-//             let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
-//             let EXCEL_EXTENSION = '.xlsx';
-//             const data = new Blob([buffer], {
-//                 type: EXCEL_TYPE
-//             });
+  // const saveAsExcelFile = (buffer, fileName) => {
+  //     import('file-saver').then((module) => {
+  //         if (module && module.default) {
+  //             let EXCEL_TYPE = 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8';
+  //             let EXCEL_EXTENSION = '.xlsx';
+  //             const data = new Blob([buffer], {
+  //                 type: EXCEL_TYPE
+  //             });
 
-//             module.default.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
-//         }
-//     });
-// };
+  //             module.default.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
+  //         }
+  //     });
+  // };
 
-// const filteredDownload = filterReport?.map((item,index)=> console.log(item) )  
-// console.log(filteredDownload)
+  // const filteredDownload = filterReport?.map((item,index)=> console.log(item) )
+  // console.log(filteredDownload)
 
   if (loading) {
     return (
@@ -668,7 +673,7 @@ const hasPageBeenRendered = useRef(false)
           reorderableColumns
           scrollable={showAllData}
           scrollHeight={scrollHeight}
-          // reorderableRows 
+          // reorderableRows
           // onRowReorder={(e) => console.log(e)}
           onColReorder={(e) => handleArrange(e.columns)}
           // style={{ height: "380px", width: "fit-content" }}
@@ -676,7 +681,6 @@ const hasPageBeenRendered = useRef(false)
         >
           {arrayOfObj?.map((item, index) => {
             if (filtercolumn[item.header]) {
-              
               // let res = []
               // res.push(item?.header)
               // console.log(res)
@@ -694,30 +698,10 @@ const hasPageBeenRendered = useRef(false)
                       {MultiSelectFilter(
                         item?.header,
                         getUniqueOptions(data, item?.header),
-                        dsrFilter
+                        dsrFilter,
+                        item?.header
                       )}
                       {sort(item?.header)}
-                      {/* <div
-                        className="d-flex sorticon"
-                        style={{ flexDirection: "column" }}
-                      >
-                        <IconButton
-                          onClick={() => {
-                            handleSort(item?.header);
-                          }}
-                          className="p-0"
-                        >
-                          <ExpandLessIcon className="sortup" />
-                        </IconButton>
-                        <IconButton
-                          onClick={() => {
-                            handleSortDown(item?.header);
-                          }}
-                          className="p-0"
-                        >
-                          <ExpandMoreIcon className="sortdown" />
-                        </IconButton>
-                      </div> */}
                     </span>
                   }
                   style={{
@@ -737,7 +721,7 @@ const hasPageBeenRendered = useRef(false)
             }
           })}
         </DataTable>
-        
+
         <div
           style={{
             position: "absolute",
@@ -779,7 +763,16 @@ const hasPageBeenRendered = useRef(false)
         onPageChange={() => setCurrentPage(1)}
         itemsPerPage={itemsPerPage}
       /> */}
-      <span role="button"  className="show-more" onClick={()=>{return (setshowAllData(!showAllData),setscrollHeight((prev)=>prev==="653px"?"1243px":"653px"))}} >
+      <span
+        role="button"
+        className="show-more"
+        onClick={() => {
+          return (
+            setshowAllData(!showAllData),
+            setscrollHeight((prev) => (prev === "653px" ? "1243px" : "653px"))
+          );
+        }}
+      >
         {showAllData ? "Show Less" : "Show More"}
       </span>
     </>

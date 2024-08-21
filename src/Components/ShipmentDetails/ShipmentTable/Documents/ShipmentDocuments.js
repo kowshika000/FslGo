@@ -3,7 +3,7 @@ import "./ShipmentDocuments.css";
 import { HiArrowDownTray } from "react-icons/hi2";
 import CustomCheckBox from "../Track/CustomCheckBox";
 import { useSelector } from "react-redux";
-import { Button } from "antd";
+// import { Button } from "antd";
 import { Link } from "react-router-dom";
 
 const ShipmentDocuments = () => {
@@ -56,14 +56,14 @@ const ShipmentDocuments = () => {
   };
 
   //This is for handle AllDownloadFiles
-  const handleAllDownload=()=>{
-    for(let i = 0; i < checkinputs.length; i++) {
+  const handleAllDownload = () => {
+    for (let i = 0; i < checkinputs.length; i++) {
       var frame = document.createElement("iframe");
       frame.src = checkinputs[i];
-      frame["download"] = 1
+      frame["download"] = 1;
       document.body.appendChild(frame);
     }
-  }
+  };
 
   return (
     <>
@@ -91,10 +91,11 @@ const ShipmentDocuments = () => {
                     onClick={handleAllDownload}
                     role="button"
                     style={{
-                      visibility: checkinputs?.length > 1 ? "visible" : "hidden",
+                      visibility:
+                        checkinputs?.length > 1 ? "visible" : "hidden",
                       background: "rgba(243, 245, 247, 1)",
                       borderRadius: "4px",
-                      padding: "8px"
+                      padding: "8px",
                     }}
                   >
                     <HiArrowDownTray size={16} />
@@ -109,44 +110,57 @@ const ShipmentDocuments = () => {
               </tr>
             </thead>
             <tbody>
-              {Documents?.map((item) => {
-                return (
-                  <tr key={item.id}>
-                    <td>
-                      <div className="d-flex justify-content-start align-items-center">
-                        <div
-                          className="checkbox"
-                          style={{ marginRight: "5px"}}
-                        >
-                          <CustomCheckBox
-                            checked={checkinputs.includes(item.link)}
-                            value={item.link}
-                            onChange={handleCheckInputs}
-                          />
+              {Documents && Documents.length > 0 ? (
+                Documents?.map((item) => {
+                  return (
+                    <tr key={item.id}>
+                      <td>
+                        <div className="d-flex justify-content-start align-items-center">
+                          <div
+                            className="checkbox"
+                            style={{ marginRight: "5px" }}
+                          >
+                            <CustomCheckBox
+                              checked={checkinputs.includes(item.link)}
+                              value={item.link}
+                              onChange={handleCheckInputs}
+                            />
+                          </div>
+                          <div>
+                            <span>{item.document_name}</span>
+                            <p className=" m-0" style={{ opacity: "0.5" }}>
+                              {item.file_name}
+                            </p>{" "}
+                          </div>
                         </div>
-                        <div>
-                          <span>{item.document_name}</span>
-                          <p className=" m-0" style={{ opacity: "0.5" }}>
-                            {item.file_name}
-                          </p>{" "}
-                        </div>
-                      </div>
-                    </td>
-                    <td>{item.id}</td>
-                    <td>{item.document_date}</td>
-                    <td>
-                      <Link to={item.link}>
-                        <button  style={{opacity:checkinputs.length>1 ? ".5":"1",border:"none"}} disabled={checkinputs.length>1 &&true}  >
-                        <span className="px-1 py-1" >
-                          <HiArrowDownTray size={16} />
-                        </span>
-                        </button>
-                      </Link>
-                      
-                    </td>
-                  </tr>
-                );
-              })}
+                      </td>
+                      <td>{item.id}</td>
+                      <td>{item.document_date}</td>
+                      <td>
+                        <Link to={item.link}>
+                          <button
+                            style={{
+                              opacity: checkinputs.length > 1 ? ".5" : "1",
+                              border: "none",
+                            }}
+                            disabled={checkinputs.length > 1 && true}
+                          >
+                            <span className="px-1 py-1">
+                              <HiArrowDownTray size={16} />
+                            </span>
+                          </button>
+                        </Link>
+                      </td>
+                    </tr>
+                  );
+                })
+              ) : (
+                <tr>
+                  <td colSpan="4" className="text-center">
+                    No document to display
+                  </td>
+                </tr>
+              )}
               {/* <tr>
                 <td>
                     <div className="d-flex justify-content-start align-items-center">
