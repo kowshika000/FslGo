@@ -33,8 +33,8 @@
 
 /* destination_row */
 .ship_section .destination_row .flag_img{
-    width: 18px;
-    height: 14px;
+    width: 18px !important;
+    height: 14px !important;
 }
 .ship_section{
     margin-bottom: 20px;
