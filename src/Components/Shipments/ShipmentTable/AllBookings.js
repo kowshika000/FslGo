@@ -463,13 +463,15 @@ const AllBookings = ({
     );
   };
 
+  // const paginatedData = showAllData
+  //   ? filteredData
+  //   : filteredData?.slice(
+  //       startIndex,
+  //       10
+       
+  //     );
   const paginatedData = showAllData
-    ? filteredData
-    : filteredData?.slice(
-        startIndex,
-        10
-        // startIndex + itemsPerPage
-      );
+    ? filteredData : filteredData
   const noData = () => {
     return (
       <div
