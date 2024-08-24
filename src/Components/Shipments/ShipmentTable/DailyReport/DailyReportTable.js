@@ -445,15 +445,13 @@ function DailyReportTable({
   //   startIndex,
   //   startIndex + itemsPerPage
   // );
-  const paginatedData = showAllData
-    ? filterReport
-    : filterReport?.slice(
-        startIndex,
-        10
-        // startIndex + itemsPerPage
-      );
-
-  console.log(paginatedData);
+  // const paginatedData = showAllData
+  //   ? filterReport
+  //   : filterReport?.slice(
+  //       startIndex,
+  //       10
+  //     );
+  const paginatedData = showAllData ? filterReport : filterReport
   // const noData = () => {
   //   return (
   //     <div
