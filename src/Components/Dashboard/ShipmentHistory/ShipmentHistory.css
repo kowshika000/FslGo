@@ -103,8 +103,8 @@
   font-weight: 400;
   color: rgba(24, 30, 37, 1);
   align-items: center;
-  padding-left: 10px !important;
+  /* padding-left: 10px !important; */
 }
-.p-datatable .p-datatable-thead > tr > th:nth-child(1) {
+/* .p-datatable .p-datatable-thead > tr > th:nth-child(1) {
   padding-left: 10px !important;
-}
+} */

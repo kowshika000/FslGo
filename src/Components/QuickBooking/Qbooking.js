@@ -140,7 +140,13 @@ const Qbooking = () => {
       }));
     }
   };
-  function MultiSelectFilter(filterKey, options, value, additionalStyles) {
+  function MultiSelectFilter(
+    filterKey,
+    options,
+    value,
+    headerText,
+    additionalStyles
+  ) {
     const renderOption = (option) => {
       if (option.label.length <= 14) {
         return <span>{option.label}</span>;
@@ -153,7 +159,7 @@ const Qbooking = () => {
         );
       }
     };
-
+    const dynamicWidth = headerText?.length * 8 + "px";
     return (
       <MultiSelect
         className="custom-multi-select"
@@ -163,7 +169,7 @@ const Qbooking = () => {
         style={{
           position: "absolute",
           opacity: "0",
-          width: "20px",
+          width: dynamicWidth,
           fontSize: "10px",
           ...additionalStyles,
         }}
@@ -356,7 +362,8 @@ const Qbooking = () => {
                       {MultiSelectFilter(
                         header.key,
                         getUniqueOptions(data, header.key),
-                        tblFilter[header.key]
+                        tblFilter[header.key],
+                        header.label
                       )}
                       {sort(header.key)}
                     </div>

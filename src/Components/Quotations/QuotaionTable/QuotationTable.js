@@ -24,7 +24,7 @@ import { MultiSelect } from "primereact/multiselect";
 import { Tag } from "primereact/tag";
 import { CloseOutlined } from "@ant-design/icons";
 import "../../Dashboard/ShipmentHistory/ShipmentHistory.css";
-import shipgif from '../../../assets/shiploadinggif.gif'
+import shipgif from "../../../assets/shiploadinggif.gif";
 // import { FindNewRateRequest } from "../../../Redux/Actions/FindNewRateAction";
 
 const QuotationTable = ({
@@ -137,7 +137,13 @@ const QuotationTable = ({
     }
   }, [selectedStatus]);
 
-  function MultiSelectFilter(filterKey, options, value, additionalStyles) {
+  function MultiSelectFilter(
+    filterKey,
+    options,
+    value,
+    headerText,
+    additionalStyles
+  ) {
     const renderOption = (option) => {
       if (option.label.length <= 14) {
         return <span>{option.label}</span>;
@@ -150,7 +156,7 @@ const QuotationTable = ({
         );
       }
     };
-
+    const dynamicWidth = headerText?.length * 8 + "px";
     return (
       <MultiSelect
         className="custom-multi-select"
@@ -160,7 +166,7 @@ const QuotationTable = ({
         style={{
           position: "absolute",
           opacity: "0",
-          width: "20px",
+          width: dynamicWidth,
           fontSize: "10px",
           ...additionalStyles,
         }}
@@ -217,11 +223,13 @@ const QuotationTable = ({
   const endIndex = startIndex + itemsPerPage;
   // Extract the data for the current page
   // const currentPageData = filteredData?.slice(startIndex, endIndex);
-  const currentPageData = showAllData ? filteredData : filteredData?.slice(
-    startIndex,
-    10
-    // startIndex + itemsPerPage
-  );
+  const currentPageData = showAllData
+    ? filteredData
+    : filteredData?.slice(
+        startIndex,
+        10
+        // startIndex + itemsPerPage
+      );
   const FilterTag = ({ field, filterValues, handleChangeFilter }) => {
     if (!Array.isArray(filterValues)) {
       return null;
@@ -538,7 +546,7 @@ const QuotationTable = ({
     );
   };
 
-  console.log(quotationData)
+  console.log(quotationData);
 
   return (
     <div
@@ -562,7 +570,7 @@ const QuotationTable = ({
               className="px-4 d-flex"
             >
               Ref. ID
-              {MultiSelectFilter("ref_id", refId_, tblFilter.ref_id)}
+              {MultiSelectFilter("ref_id", refId_, tblFilter.ref_id, "Ref. ID")}
               {sort("ref_id")}
             </span>
           }
@@ -577,7 +585,7 @@ const QuotationTable = ({
               className="d-flex"
             >
               Origin
-              {MultiSelectFilter("origin", Org_, tblFilter.origin)}
+              {MultiSelectFilter("origin", Org_, tblFilter.origin, "Origin")}
               {sort("origin")}
             </span>
           }
@@ -593,7 +601,12 @@ const QuotationTable = ({
               style={{ fontFamily: "Roboto", cursor: "pointer" }}
             >
               Destination
-              {MultiSelectFilter("destination", dest_, tblFilter.destination)}
+              {MultiSelectFilter(
+                "destination",
+                dest_,
+                tblFilter.destination,
+                "Destination"
+              )}
               {sort("destination")}
             </span>
           }
@@ -605,7 +618,7 @@ const QuotationTable = ({
           header={
             <span className="p-3 d-flex">
               Load
-              {MultiSelectFilter("load", load_, tblFilter.load)}
+              {MultiSelectFilter("load", load_, tblFilter.load, "Load")}
               {sort("load")}
             </span>
           }
@@ -617,7 +630,7 @@ const QuotationTable = ({
           header={
             <span className="p-3 d-flex">
               ETD
-              {MultiSelectFilter("etd", etd_, tblFilter.etd)}
+              {MultiSelectFilter("etd", etd_, tblFilter.etd, "ETD")}
               {sort("etd")}
             </span>
           }
@@ -629,7 +642,7 @@ const QuotationTable = ({
           header={
             <span className="p-3 d-flex">
               ETA
-              {MultiSelectFilter("eta", eta_, tblFilter.eta)}
+              {MultiSelectFilter("eta", eta_, tblFilter.eta, "ETA")}
               {sort("eta")}
             </span>
           }
@@ -644,7 +657,8 @@ const QuotationTable = ({
               {MultiSelectFilter(
                 "rate_validity",
                 rate_,
-                tblFilter.rate_validity
+                tblFilter.rate_validity,
+                "Rate Validity"
               )}
               {sort("rate_validity")}
             </span>
@@ -657,18 +671,27 @@ const QuotationTable = ({
           header={
             <span className="p-3 d-flex">
               Action
-              {MultiSelectFilter("status", status_, tblFilter.status)}
+              {MultiSelectFilter("status", status_, tblFilter.status, "Action")}
               {sort("status")}
             </span>
           }
           className="p-3 text-start"
         ></Column>
       </DataTable>
-      {
-        showMore &&  <span role="button"  className="show-more" onClick={()=>{return (setshowAllData(!showAllData),setscrollHeight((prev)=>prev==="653px"?"1243px":"653px"))}} >
-        {showAllData ? "Show Less" : "Show More"}
-      </span>
-            }
+      {showMore && (
+        <span
+          role="button"
+          className="show-more"
+          onClick={() => {
+            return (
+              setshowAllData(!showAllData),
+              setscrollHeight((prev) => (prev === "653px" ? "1243px" : "653px"))
+            );
+          }}
+        >
+          {showAllData ? "Show Less" : "Show More"}
+        </span>
+      )}
       {/* <Pagination
         currentPage={currentPage}
         setCurrentPage={setCurrentPage}
