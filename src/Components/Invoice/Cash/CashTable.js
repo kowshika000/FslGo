@@ -36,8 +36,8 @@ const CashTable = () => {
   const [clicked, setClicked] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
-  const [showAllData, setshowAllData] = useState(false)
-  const [scrollHeight, setscrollHeight] = useState("653px")
+  const [showAllData, setshowAllData] = useState(false);
+  const [scrollHeight, setscrollHeight] = useState("653px");
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
   const [selectedDropdownItem, setSelectedDropdownItem] =
     useState("Past 30 Days");
@@ -151,16 +151,18 @@ const CashTable = () => {
     }
   };
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const endIndex = startIndex + itemsPerPage;
+  // const endIndex = startIndex + itemsPerPage;
 
   //   Extract the data for the current page
   // const currentPageData = filteredData?.slice(startIndex, endIndex);
 
-  const currentPageData = showAllData ? filteredData : filteredData?.slice(
-    startIndex,
-    10
-    // startIndex + itemsPerPage
-  );
+  const currentPageData = showAllData
+    ? filteredData
+    : filteredData?.slice(
+        startIndex,
+        10
+        // startIndex + itemsPerPage
+      );
 
   const sort = (col) => {
     const handleSort = (key) => {
@@ -222,7 +224,13 @@ const CashTable = () => {
     }
   };
 
-  function MultiSelectFilter(filterKey, options, value, additionalStyles) {
+  function MultiSelectFilter(
+    filterKey,
+    options,
+    value,
+    headerText,
+    additionalStyles
+  ) {
     const renderOption = (option) => {
       if (option?.label?.length <= 14) {
         return <span>{option.label}</span>;
@@ -235,7 +243,7 @@ const CashTable = () => {
         );
       }
     };
-
+    const dynamicWidth = headerText?.length * 8 + "px";
     return (
       <MultiSelect
         className="custom-multi-select"
@@ -245,7 +253,7 @@ const CashTable = () => {
         style={{
           position: "absolute",
           opacity: "0",
-          width: "20px",
+          width: dynamicWidth,
           fontSize: "10px",
           ...additionalStyles,
         }}
@@ -573,7 +581,8 @@ const CashTable = () => {
                         {MultiSelectFilter(
                           header.key,
                           getUniqueOptions(data, header.key),
-                          tblFilter[header.key]
+                          tblFilter[header.key],
+                          header.label
                         )}
                         {sort(header.key)}
                       </div>
@@ -588,8 +597,19 @@ const CashTable = () => {
                 />
               </DataTable>
             </div>
-            <span role="button"  className="show-more" onClick={()=>{return (setshowAllData(!showAllData),setscrollHeight((prev)=>prev==="653px"?"1243px":"653px"))}} >
-                {showAllData ? "Show Less" : "Show More"}
+            <span
+              role="button"
+              className="show-more"
+              onClick={() => {
+                return (
+                  setshowAllData(!showAllData),
+                  setscrollHeight((prev) =>
+                    prev === "653px" ? "1243px" : "653px"
+                  )
+                );
+              }}
+            >
+              {showAllData ? "Show Less" : "Show More"}
             </span>
             {/* <Pagination
               currentPage={currentPage}
