@@ -10,6 +10,7 @@ const Requested = ({ requstedModal, handleCancel }) => {
       open={requstedModal}
       onCancel={handleCancel}
       style={{ marginTop: "-70px" }}
+      footer={null}
     >
       <div
         className="py-4 text-center"

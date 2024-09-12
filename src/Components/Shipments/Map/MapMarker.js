@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { DataTable } from "primereact/datatable";
 import { Column } from "primereact/column";
-import sort from "../../../assets/sort.png";
 import { Modal } from "antd";
 import { mapRequest } from "../../../Redux/Actions/MapAction";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,7 +9,6 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import { IconButton } from "@mui/material";
 import ShipmentBase from "../../ShipmentDetails/ShipmentTable/ShipmentBase";
 import { Dialog, DialogContent } from "@mui/material";
-import { map } from "leaflet";
 
 export default function MapMarker({
   showModal,
@@ -22,7 +20,7 @@ export default function MapMarker({
   const [notfoundmodal, setNotfoundmodal] = useState(false);
   const [filterdata, setFilterData] = useState("");
   const [modal, setmodal] = useState(false);
-  const [searchHistory, setSearchHistory] = useState([]);
+  // const [searchHistory, setSearchHistory] = useState([]);
 
   const dispatch = useDispatch();
 
@@ -32,24 +30,34 @@ export default function MapMarker({
 
   const mapData = useSelector((state) => state.Map);
   const mapMarkerData = mapData?.MapData?.countries;
-
+ 
   const ShipmentData = useSelector((state) => state.Booking);
   const bookingData = ShipmentData?.booking;
 
+  // useEffect(() => {
+  //   if (mapMarkerData) {
+  //     const flattenedData = mapMarkerData.flatMap(
+  //       (country) => country.hbl_list === markerId
+  //     );
+  //     setFilteredData(flattenedData);
+  //   }
+  // }, [mapMarkerData]);
+
   useEffect(() => {
     if (mapMarkerData) {
-      const flattenedData = mapMarkerData.flatMap(
-        (country) => country.hbl_list
-      );
-      setFilteredData(flattenedData);
+      // Find the marker data based on markerId
+      const countryData = mapMarkerData.find((country) => country.country_code === markerId);
+      if (countryData) {
+        setFilteredData(countryData.hbl_list);
+      }
     }
-  }, [mapMarkerData]);
+  }, [mapMarkerData, markerId]);
 
-  const dataShow = filteredData?.map((data) => data.hbl_no);
-  console.log(
-    "datas",
-    filteredData?.map((data) => data.hbl_no)
-  );
+  // const dataShow = filteredData?.map((data) => data.hbl_no);
+  // console.log(
+  //   "datas",
+  //   filteredData?.map((data) => data.hbl_no)
+  // );
 
   const Shipmentpopup = () => {
     return (

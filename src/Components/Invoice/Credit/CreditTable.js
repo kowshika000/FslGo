@@ -14,7 +14,7 @@ import "./invoiceTbl.css";
 import { Dropdown } from "primereact/dropdown";
 import { CaretDownOutlined } from "@ant-design/icons";
 import cal from "../../../assets/calVector.svg";
-import Pagination from "../../Core-Components/Pagination";
+// import Pagination from "../../Core-Components/Pagination";
 
 const CreditTable = () => {
   const [searchvalue, setSearchvalue] = useState("");
@@ -26,6 +26,8 @@ const CreditTable = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 10;
   const [sortConfig, setSortConfig] = useState({ key: "", direction: "" });
+  // const [showAllData, setshowAllData] = useState(false);
+  // const [scrollHeight, setscrollHeight] = useState("653px");
   const [selectedDropdownItem, setSelectedDropdownItem] =
     useState("Past 30 Days");
   const items = [
@@ -407,7 +409,7 @@ const CreditTable = () => {
           <div className="">
             <div>
               <DataTable
-                value={currentPageData}
+                value={filteredData}
                 selectionMode="multiple"
                 scrollable
                 scrollHeight="320px"
@@ -443,12 +445,26 @@ const CreditTable = () => {
                 />
               </DataTable>
             </div>
-            <Pagination
+            {/* <span
+              role="button"
+              className="show-more"
+              onClick={() => {
+                return (
+                  setshowAllData(!showAllData),
+                  setscrollHeight((prev) =>
+                    prev === "653px" ? "1243px" : "653px"
+                  )
+                );
+              }}
+            >
+              {showAllData ? "Show Less" : "Show More"}
+            </span> */}
+            {/* <Pagination
               currentPage={currentPage}
               setCurrentPage={setCurrentPage}
               totalItems={filteredData?.length}
               itemsPerPage={itemsPerPage}
-            />
+            /> */}
           </div>
         </div>
       </div>
