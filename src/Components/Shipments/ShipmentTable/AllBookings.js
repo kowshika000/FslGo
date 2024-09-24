@@ -356,22 +356,45 @@ const AllBookings = ({
     );
   };
   const bodyTemplate = (rowData) => {
-    const hasUpdated =
-      rowData?.is_updated === "Y" ? rowData?.updated_message : "";
+    const getDepartMessage = () => {
+      if (rowData.depart_diff === "") return null;
+      if (rowData.depart_diff === "0") return { color: "green" };
+      if (rowData.depart_diff > 0) return { color: "red" };
+      if (rowData.depart_diff < 0) return { color: "green" };
+    };
 
+    const departInfo = getDepartMessage();
+    const EtdTitle = () => {
+      if (rowData.depart_diff === "") return null;
+      if (rowData.depart_diff === "0") return <div>Departed On-time</div>;
+      if (rowData.depart_diff > 0)
+        return (
+          <div>
+            Departed Late{" "}
+            <span style={{ color: "red" }}> (+{rowData.depart_diff} days)</span>
+          </div>
+        );
+      if (rowData.depart_diff < 0)
+        return (
+          <div>
+            Departed Early{" "}
+            <span style={{ color: "green" }}>({rowData.depart_diff} days)</span>
+          </div>
+        );
+    };
     return (
       <div className="message">
-        <span className={hasUpdated ? "text-red" : ""}>
-          {hasUpdated ? (
+        <span style={{ color: departInfo ? departInfo.color : "" }}>
+          {departInfo ? (
             <Tooltip
               placement="topLeft"
               title={
                 <span>
-                  <div style={{ fontSize: "13px" }}>ETD Changed</div>
+                  <div style={{ fontSize: "13px" }}>{EtdTitle()}</div>
                   <div style={{ fontSize: "10px" }}>
                     {/* {rowData?.updated_message} */}
-                    Previous ETD : 10/05/2024 <br />
-                    New ETD : 12/05/2024
+                    Estimated Departure : {rowData.estimated_departure} <br />
+                    Actual Departure : {rowData.actual_departure}
                   </div>
                 </span>
               }
@@ -387,19 +410,50 @@ const AllBookings = ({
   };
 
   const bodyTemplateEta = (rowData) => {
-    const hasUpdated =
-      rowData?.is_updated === "Y" ? rowData?.updated_message : "";
+    const getArrivalMessage = () => {
+      if (rowData.arrival_diff === "") return null;
+      if (rowData.arrival_diff === "0") return { color: "green" };
+      if (rowData.arrival_diff > 0)
+        return { color: "red" };
+      if (rowData.arrival_diff < 0)
+        return { color: "green" };
+    };
+    const arrivalInfo = getArrivalMessage();
+    const EtaTitle = () => {
+      if (rowData.arrival_diff === "") return null;
+      if (rowData.arrival_diff === "0") return <div>Arrived On-time</div>;
+      if (rowData.arrival_diff > 0)
+        return (
+          <div>
+            Arrived Late{" "}
+            <span style={{ color: "red" }}>
+              {" "}
+              (+{rowData.arrival_diff} days)
+            </span>
+          </div>
+        );
+      if (rowData.arrival_diff < 0)
+        return (
+          <div>
+            Arrived Early{" "}
+            <span style={{ color: "green" }}>
+              ({rowData.arrival_diff} days)
+            </span>
+          </div>
+        );
+    };
     return (
       <div className="message">
-        <span className={hasUpdated ? "text-red" : ""}>
-          {hasUpdated ? (
+        <span style={{ color: arrivalInfo ? arrivalInfo.color : ""}}>
+          {arrivalInfo ? (
             <Tooltip
               placement="topLeft"
               title={
                 <span>
-                  <div style={{ fontSize: "13px" }}>ETA Changed</div>
+                  <div style={{ fontSize: "13px" }}>{EtaTitle()}</div>
                   <div style={{ fontSize: "10px" }}>
-                    {rowData?.updated_message}
+                  Estimated Arrival : {rowData.estimated_arrival} <br />
+                  Actual Arrival : {rowData.actuval_arrival}
                   </div>
                 </span>
               }
@@ -418,6 +472,9 @@ const AllBookings = ({
       const sorted = [...filteredData].sort((a, b) => {
         const valA = a[col];
         const valB = b[col];
+        if (Date.parse(valA) && Date.parse(valB)) {
+          return new Date(valA) - new Date(valB);
+        }
         if (!isNaN(valA) && !isNaN(valB)) {
           return valA - valB;
         }
@@ -430,6 +487,9 @@ const AllBookings = ({
       const sorted = [...filteredData].sort((a, b) => {
         const valA = a[col];
         const valB = b[col];
+        if (Date.parse(valA) && Date.parse(valB)) {
+          return new Date(valB) - new Date(valA);
+        }
         if (!isNaN(valA) && !isNaN(valB)) {
           return valB - valA;
         }
@@ -467,10 +527,9 @@ const AllBookings = ({
   //   : filteredData?.slice(
   //       startIndex,
   //       10
-       
+
   //     );
-  const paginatedData = showAllData
-    ? filteredData : filteredData
+  const paginatedData = showAllData ? filteredData : filteredData;
   const noData = () => {
     return (
       <div
@@ -599,7 +658,7 @@ const AllBookings = ({
         // reorderableColumns
         // reorderableRows
         // onRowReorder={(e) => setFilteredData(e.value)}
-        scrollable={showAllData}
+        scrollable={true}
         scrollHeight={scrollHeight}
         dataKey="shipmentId"
         className={`${
@@ -607,6 +666,7 @@ const AllBookings = ({
         } scrolloftable`}
         // style={{ height: "653px", overflowY: "auto", marginBottom: "10px" }}
         emptyMessage={noData()}
+
       >
         <Column
           field="id"
@@ -621,7 +681,7 @@ const AllBookings = ({
             </span>
           }
           body={shipmentTemplateFilterData}
-          style={{ paddingRight: "10px", width: "170px",paddingLeft:10 }}
+          style={{ paddingRight: "10px", width: "170px", paddingLeft: 10 }}
         ></Column>
         <Column
           field="order_no"
