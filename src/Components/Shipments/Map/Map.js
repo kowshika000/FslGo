@@ -3,8 +3,6 @@ import {
   MapContainer,
   Marker,
   TileLayer,
-  Tooltip,
-  SVGOverlay,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -13,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { mapRequest } from "../../../Redux/Actions/MapAction";
 import { CountryData } from "./CountryData";
 import "../ShipmentTable/Booking.css";
+import { Button } from "antd";
 
 // Define the position and coordinates
 const position = [10.586958, -34.623453];
@@ -61,9 +60,13 @@ export default function Americas() {
 
   return (
     <div className="mb-5">
+      <div className="d-flex mb-3 gap-3" style={{justifyContent:"end"}}>
+        <button type="text" className="custom-button" >Import</button>
+        <button type="text" className="custom-button">Export</button>
+      </div>
       <MapContainer
         center={position}
-        zoom={1.5}
+        zoom={1.5} c 
         minZoom={1.5}
         style={{ height: "300px", position: "relative" }}
       >
