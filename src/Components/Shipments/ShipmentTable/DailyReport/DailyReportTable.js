@@ -16,6 +16,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { DsrReportRequest } from "../../../../Redux/Actions/DsrReportAction";
 import { Box } from "@mui/material";
 import shipgif from "../../../../assets/shiploadinggif.gif";
+import { IoCloseCircleSharp } from 'react-icons/io5';
+import { BsThreeDotsVertical } from 'react-icons/bs';
+import { Popover } from "antd";
+import { Button } from "primereact";
 
 function DailyReportTable({
   filtercolumn,
@@ -353,6 +357,38 @@ function DailyReportTable({
     }
     const renderedColumns = new Set();
     console.log(renderedColumns);
+    const renderTags = (field, filterValues) => {
+      return (
+        <div>
+          <ul>
+            {filterValues?.map((item, index) => {
+              return (
+                <li
+                  style={{
+                    fontSize: "13px",
+                    fontWeight: "500",
+                    listStyle: "none",
+                  }}
+                  key={index}
+                >
+                  {item}{" "}
+                  <IoCloseCircleSharp
+                    onClick={() => handleDeleteValue(field, item)}
+                  />
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      );
+    };
+
+    const handleDeleteValue = (field, value) => {
+      console.log(field, value);
+      const newValues = filterValues.filter((item) => item !== value);
+      console.log(field, newValues);
+      handleChangeFilter(field, newValues);
+    };
     return (
       <>
         {filterValues?.map((option) => {
@@ -372,6 +408,27 @@ function DailyReportTable({
               >
                 <div>
                   {field ? field.split("_").join(" ") : ""}
+                  &nbsp; :{" "}
+                  {filterValues?.length === 1 ? (
+                    <span className="me-2">{filterValues[0]}</span>
+                  ) : (
+                    <span>
+                      {filterValues[0]}&nbsp;
+                      <Popover
+                        content={renderTags(field, filterValues)}
+                        title="Filters"
+                        trigger="click"
+                        placement="bottom"
+                      >
+                        <Button>
+                          <BsThreeDotsVertical
+                            size={10}
+                            style={{ marginBottom: "3px", marginLeft: "6px" }}
+                          />
+                        </Button>
+                      </Popover>
+                    </span>
+                  )}
                   <span className="ms-2">
                     <CloseOutlined
                       onClick={() => {
@@ -451,7 +508,7 @@ function DailyReportTable({
   //       startIndex,
   //       10
   //     );
-  const paginatedData = showAllData ? filterReport : filterReport
+  const paginatedData = showAllData ? filterReport : filterReport;
   // const noData = () => {
   //   return (
   //     <div
