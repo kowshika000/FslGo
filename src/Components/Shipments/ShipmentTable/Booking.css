@@ -282,3 +282,8 @@
   width: 8px !important; /* Adjust width */
   height: 8px !important;
 }
+.ant-popover.wrapper-notify {
+  position: fixed;
+  
+  width: 150px;
+}
